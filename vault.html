@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Number Vault Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0d0d1f 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header .vault-address {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #8b8ba7;
+            word-break: break-all;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header .update-time {
+            color: #6b6b8d;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-card.primary {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .metric-card.positive {
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .metric-card.warning {
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: #8b8ba7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .metric-value.positive {
+            color: #22c55e;
+        }
+
+        .metric-value.negative {
+            color: #ef4444;
+        }
+
+        .metric-subtext {
+            font-size: 0.8rem;
+            color: #6b6b8d;
+            margin-top: 8px;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            color: #00d4ff;
+        }
+
+        .fee-structure {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .fee-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .fee-row:last-child {
+            border-bottom: none;
+        }
+
+        .fee-label {
+            color: #8b8ba7;
+        }
+
+        .fee-value {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #8b8ba7;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            color: #ef4444;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .metric-value {
+                font-size: 1.4rem;
+            }
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a3e;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Prime Number KeyVault Dashboard</h1>
+        <div class="vault-address">Vault: G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp</div>
+        <div class="update-time" id="updateTime">Loading...</div>
+    </div>
+
+    <div class="dashboard">
+        <div id="content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading vault data...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fee structure from spreadsheet (post management fee)
+        const FEE_CONFIG = {
+            basePerformanceFeeRate: 0.20,      // 20% base performance fee
+            kickerPerformanceFeeRate: 0.05,    // 5% kicker on outperformance
+            benchmarkAPY: 0.20,                // 20% benchmark
+            primeNumberRewardRate: 0.10        // 10% prime number reward
+        };
+
+        const VAULT_ADDRESS = 'G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp';
+
+        let currentData = null;
+        let historicalData = null;
+        let chart = null;
+
+        async function fetchData() {
+            try {
+                const [currentResponse, historyResponse] = await Promise.all([
+                    fetch('https://corsproxy.io/?https://app.primenumber.trade/data/PN_KV1.json'),
+                    fetch('https://corsproxy.io/?https://app.primenumber.trade/data/PN_KV1_history.json')
+                ]);
+
+                currentData = await currentResponse.json();
+                historicalData = await historyResponse.json();
+
+                renderDashboard();
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('content').innerHTML = `
+                    <div class="error">
+                        <p>Error loading vault data. Please try again later.</p>
+                        <p style="font-size: 0.8rem; margin-top: 10px;">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function calculateMetrics(data, history) {
+            // Get current values - handle both object and array formats
+            const tvl = data.tvl || data.TVL || (Array.isArray(data) ? data[data.length - 1]?.tvl : 0);
+            const sharePrice = data.SharePrice || data.sharePrice || (Array.isArray(data) ? data[data.length - 1]?.SharePrice : 1);
+            const updateTime = data.update_time_utc || data.updateTime || (Array.isArray(data) ? data[data.length - 1]?.update_time_utc : new Date().toISOString());
+
+            // Get historical data for calculations
+            const historyArray = Array.isArray(history) ? history : [history];
+            const sortedHistory = historyArray.sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
+
+            const initialSharePrice = sortedHistory.length > 0 ? sortedHistory[0].SharePrice : 1;
+
+            // Current Balance = TVL (AUM)
+            const currentBalance = tvl;
+
+            // Cumulative Net Deposits = TVL / Share Price (base capital without returns)
+            const cumulativeNetDeposits = tvl / sharePrice;
+
+            // Total PNL = Current Balance - Net Deposits
+            const totalPNL = currentBalance - cumulativeNetDeposits;
+
+            // Calculate returns as percentage
+            const grossReturn = ((sharePrice - 1) / 1) * 100; // Return since inception (share price started at 1)
+            const periodReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100; // Return over historical period
+
+
+            // Fee calculations based on spreadsheet model (post management fee)
+            const grossProfit = Math.max(0, totalPNL);
+
+            // Performance fee calculation
+            const basePerformanceFee = grossProfit * FEE_CONFIG.basePerformanceFeeRate;
+
+            // Outperformance calculation (vs benchmark)
+            const benchmarkReturn = tvl * (FEE_CONFIG.benchmarkAPY / 4); // Quarterly benchmark
+            const outperformance = Math.max(0, grossProfit - benchmarkReturn);
+            const kickerFee = outperformance * FEE_CONFIG.kickerPerformanceFeeRate;
+
+            // Total quarterly performance fee
+            const quarterlyPerformanceFee = basePerformanceFee + kickerFee;
+
+            // Prime Number Rewards (10% of gross profit)
+            const primeNumberRewards = grossProfit * FEE_CONFIG.primeNumberRewardRate;
+
+            // Net return after fees
+            const netReturn = grossReturn - (quarterlyPerformanceFee / tvl * 100);
+
+            return {
+                currentBalance,
+                cumulativeNetDeposits,
+                aum: tvl,
+                sharePrice,
+                grossReturn,
+                periodReturn,
+                netReturn,
+                totalPNL,
+                quarterlyPerformanceFee,
+                primeNumberRewards,
+                updateTime,
+                history: sortedHistory
+            };
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(value);
+        }
+
+        function formatPercent(value) {
+            const sign = value >= 0 ? '+' : '';
+            return `${sign}${value.toFixed(4)}%`;
+        }
+
+        function formatDate(dateStr) {
+            return new Date(dateStr).toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            });
+        }
+
+        function renderDashboard() {
+            const metrics = calculateMetrics(currentData, historicalData);
+
+            document.getElementById('updateTime').textContent = `Last Updated: ${formatDate(metrics.updateTime)}`;
+
+            const returnClass = metrics.grossReturn >= 0 ? 'positive' : 'negative';
+            const netReturnClass = metrics.netReturn >= 0 ? 'positive' : 'negative';
+            const pnlClass = metrics.totalPNL >= 0 ? 'positive' : 'negative';
+
+            document.getElementById('content').innerHTML = `
+                <!-- Primary Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card primary">
+                        <div class="metric-label">Current Balance</div>
+                        <div class="metric-value">${formatCurrency(metrics.currentBalance)}</div>
+                        <div class="metric-subtext">Total Value (AUM)</div>
+                    </div>
+
+                    <div class="metric-card primary">
+                        <div class="metric-label">Cumulative Net Deposits</div>
+                        <div class="metric-value">${formatCurrency(metrics.cumulativeNetDeposits)}</div>
+                        <div class="metric-subtext">Total capital deposited</div>
+                    </div>
+
+                    <div class="metric-card primary">
+                        <div class="metric-label">Share Price</div>
+                        <div class="metric-value">${metrics.sharePrice.toFixed(6)}</div>
+                        <div class="metric-subtext">Current NAV per Share</div>
+                    </div>
+
+                    <div class="metric-card ${returnClass === 'positive' ? 'positive' : ''}">
+                        <div class="metric-label">Gross Return</div>
+                        <div class="metric-value ${returnClass}">${formatPercent(metrics.grossReturn)}</div>
+                        <div class="metric-subtext">Since inception (Share Price - 1)</div>
+                    </div>
+
+                    <div class="metric-card ${netReturnClass === 'positive' ? 'positive' : ''}">
+                        <div class="metric-label">Net Return</div>
+                        <div class="metric-value ${netReturnClass}">${formatPercent(metrics.netReturn)}</div>
+                        <div class="metric-subtext">After all fees</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Profit & Loss</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card ${pnlClass === 'positive' ? 'positive' : ''}">
+                        <div class="metric-label">Total PNL</div>
+                        <div class="metric-value ${pnlClass}">${formatCurrency(metrics.totalPNL)}</div>
+                        <div class="metric-subtext">Current Balance - Net Deposits</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Fees & Rewards</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card warning">
+                        <div class="metric-label tooltip" data-tooltip="20% base + 5% outperformance kicker">Est. Quarterly Performance Fee</div>
+                        <div class="metric-value">${formatCurrency(metrics.quarterlyPerformanceFee)}</div>
+                        <div class="metric-subtext">20% base + 5% kicker on outperformance</div>
+                    </div>
+
+                    <div class="metric-card positive">
+                        <div class="metric-label tooltip" data-tooltip="10% of gross profits">Est. Prime Number Rewards</div>
+                        <div class="metric-value positive">${formatCurrency(metrics.primeNumberRewards)}</div>
+                        <div class="metric-subtext">10% of gross profit</div>
+                    </div>
+                </div>
+
+                <!-- Historical Chart -->
+                <div class="chart-container">
+                    <h3 class="chart-title">Historical Performance</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="historyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Fee Structure Reference -->
+                <div class="two-col">
+                    <div class="fee-structure">
+                        <h3 class="chart-title">Fee Structure</h3>
+                        <div class="fee-row">
+                            <span class="fee-label">Base Performance Fee</span>
+                            <span class="fee-value">20.00%</span>
+                        </div>
+                        <div class="fee-row">
+                            <span class="fee-label">Kicker Performance Fee</span>
+                            <span class="fee-value">5.00%</span>
+                        </div>
+                        <div class="fee-row">
+                            <span class="fee-label">Benchmark APY</span>
+                            <span class="fee-value">20.00%</span>
+                        </div>
+                        <div class="fee-row">
+                            <span class="fee-label">Prime Number Reward Rate</span>
+                            <span class="fee-value">10.00%</span>
+                        </div>
+                    </div>
+
+                    <div class="fee-structure">
+                        <h3 class="chart-title">Vault Details</h3>
+                        <div class="fee-row">
+                            <span class="fee-label">Vault Address</span>
+                            <span class="fee-value" style="font-size: 0.7rem; font-family: monospace;">G3RT2w...gUZp</span>
+                        </div>
+                        <div class="fee-row">
+                            <span class="fee-label">Strategy</span>
+                            <span class="fee-value">KeyVault</span>
+                        </div>
+                        <div class="fee-row">
+                            <span class="fee-label">Data Points</span>
+                            <span class="fee-value">${metrics.history.length}</span>
+                        </div>
+                        <div class="fee-row">
+                            <span class="fee-label">Network</span>
+                            <span class="fee-value">Solana</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Render chart
+            renderChart(metrics.history);
+        }
+
+        function renderChart(history) {
+            const ctx = document.getElementById('historyChart').getContext('2d');
+
+            const labels = history.map(h => {
+                const date = new Date(h.update_time_utc);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            });
+
+            const tvlData = history.map(h => h.tvl);
+            const sharePriceData = history.map(h => h.SharePrice);
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'TVL ($)',
+                            data: tvlData,
+                            borderColor: '#00d4ff',
+                            backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Share Price',
+                            data: sharePriceData,
+                            borderColor: '#7c3aed',
+                            backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#8b8ba7'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.9)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    if (context.datasetIndex === 0) {
+                                        return `TVL: $${context.parsed.y.toLocaleString()}`;
+                                    }
+                                    return `Share Price: ${context.parsed.y.toFixed(6)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: '#6b6b8d'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: '#00d4ff',
+                                callback: function(value) {
+                                    return '$' + (value / 1000000).toFixed(2) + 'M';
+                                }
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                            ticks: {
+                                color: '#7c3aed',
+                                callback: function(value) {
+                                    return value.toFixed(4);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Auto-refresh every 1 minute
+        setInterval(fetchData, 60 * 1000);
+
+        // Initial load
+        fetchData();
+    </script>
+</body>
+</html>

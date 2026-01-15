@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PN_JLP1 Fund Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d1f 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #8b8ba7;
+            font-size: 1rem;
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-card.highlight {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: #8b8ba7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .metric-value.positive {
+            color: #22c55e;
+        }
+
+        .metric-value.negative {
+            color: #ef4444;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin: 30px 0 15px 0;
+            color: #00d4ff;
+        }
+
+        .tabs-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #8b8ba7;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            color: #ffffff;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 350px;
+        }
+
+        .apy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .apy-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .apy-period {
+            font-size: 0.7rem;
+            color: #6b6b8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .apy-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .apy-value.negative {
+            color: #ef4444;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .metric-value {
+                font-size: 1.3rem;
+            }
+            .chart-wrapper {
+                height: 280px;
+            }
+        }
+
+        .info-box {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #8b8ba7;
+        }
+
+        .vault-address {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #6b6b8d;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+
+        .section-header {
+            margin-bottom: 15px;
+        }
+
+        .update-badge {
+            font-size: 0.7rem;
+            color: #6b6b8d;
+            margin-top: 5px;
+        }
+
+        .live-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>KeyVault Fund Dashboard</h1>
+        <div class="subtitle">Jupiter Liquidity Pool Strategy</div>
+    </div>
+
+    <div class="dashboard">
+        <!-- Private Vault Section -->
+        <div class="section-header">
+            <h2 class="section-title" style="margin-top: 0;">Private Vault (Live)</h2>
+            <div class="vault-address">G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp</div>
+        </div>
+        <div class="metrics-grid" id="vaultMetrics">
+            <div class="metric-card">
+                <div class="metric-label">Loading...</div>
+                <div class="metric-value">--</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Historical Performance (PN_JLP1)</h2>
+        <!-- Performance Metrics -->
+        <div class="metrics-grid" id="metricsGrid">
+            <!-- Populated by JS -->
+        </div>
+
+        <!-- Rolling APY Section -->
+        <h2 class="section-title">Rolling APY Performance</h2>
+        <div class="apy-grid" id="apyGrid">
+            <!-- Populated by JS -->
+        </div>
+
+        <!-- Share Price Chart -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Share Price History</h3>
+                <div class="tabs-container" id="priceChartTabs">
+                    <div class="tab active" data-period="all">All Time</div>
+                    <div class="tab" data-period="365">1 Year</div>
+                    <div class="tab" data-period="180">180 Days</div>
+                    <div class="tab" data-period="90">90 Days</div>
+                    <div class="tab" data-period="30">30 Days</div>
+                </div>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Cumulative ROI Chart -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Cumulative ROI (Net of Fees)</h3>
+                <div class="tabs-container" id="roiChartTabs">
+                    <div class="tab active" data-period="all">All Time</div>
+                    <div class="tab" data-period="365">1 Year</div>
+                    <div class="tab" data-period="180">180 Days</div>
+                    <div class="tab" data-period="90">90 Days</div>
+                    <div class="tab" data-period="30">30 Days</div>
+                </div>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="roiChart"></canvas>
+            </div>
+        </div>
+
+        <!-- APY Chart -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">APY Performance (Annualized)</h3>
+                <div class="tabs-container" id="apyChartTabs">
+                    <div class="tab active" data-period="all">All Time</div>
+                    <div class="tab" data-period="365">1 Year</div>
+                    <div class="tab" data-period="180">180 Days</div>
+                    <div class="tab" data-period="90">90 Days</div>
+                    <div class="tab" data-period="30">30 Days</div>
+                </div>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="apyChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Historical data from spreadsheet
+        const historicalData = [
+            {date: "2025-02-26", net: 0.9626, pct1d: 0.00, realRet: 0.00},
+            {date: "2025-02-27", net: 0.9643, pct1d: 0.18, realRet: 0.18},
+            {date: "2025-02-28", net: 0.9621, pct1d: -0.22, realRet: -0.04},
+            {date: "2025-03-01", net: 0.9664, pct1d: 0.44, realRet: 0.40},
+            {date: "2025-03-02", net: 0.9673, pct1d: 0.10, realRet: 0.49},
+            {date: "2025-03-03", net: 0.9717, pct1d: 0.46, realRet: 0.95},
+            {date: "2025-03-04", net: 0.9671, pct1d: -0.48, realRet: 0.47},
+            {date: "2025-03-05", net: 0.9703, pct1d: 0.34, realRet: 0.81},
+            {date: "2025-03-06", net: 0.9712, pct1d: 0.09, realRet: 0.90},
+            {date: "2025-03-07", net: 0.9712, pct1d: 0.00, realRet: 0.90},
+            {date: "2025-03-08", net: 0.97, pct1d: -0.13, realRet: 0.77},
+            {date: "2025-03-09", net: 0.9706, pct1d: 0.06, realRet: 0.83},
+            {date: "2025-03-10", net: 0.9686, pct1d: -0.20, realRet: 0.63},
+            {date: "2025-03-11", net: 0.9682, pct1d: -0.05, realRet: 0.58},
+            {date: "2025-03-12", net: 0.9682, pct1d: 0.00, realRet: 0.58},
+            {date: "2025-03-13", net: 0.9676, pct1d: -0.05, realRet: 0.53},
+            {date: "2025-03-14", net: 0.9684, pct1d: 0.08, realRet: 0.61},
+            {date: "2025-03-15", net: 0.9719, pct1d: 0.37, realRet: 0.98},
+            {date: "2025-03-16", net: 0.9722, pct1d: 0.03, realRet: 1.00},
+            {date: "2025-03-17", net: 0.9723, pct1d: 0.01, realRet: 1.02},
+            {date: "2025-03-18", net: 0.9718, pct1d: -0.06, realRet: 0.96},
+            {date: "2025-03-19", net: 0.972, pct1d: 0.03, realRet: 0.99},
+            {date: "2025-03-20", net: 0.9748, pct1d: 0.28, realRet: 1.27},
+            {date: "2025-03-21", net: 0.9745, pct1d: -0.02, realRet: 1.24},
+            {date: "2025-03-22", net: 0.9729, pct1d: -0.17, realRet: 1.08},
+            {date: "2025-03-23", net: 0.9737, pct1d: 0.08, realRet: 1.16},
+            {date: "2025-03-24", net: 0.9751, pct1d: 0.14, realRet: 1.30},
+            {date: "2025-03-25", net: 0.9761, pct1d: 0.11, realRet: 1.41},
+            {date: "2025-03-26", net: 0.9766, pct1d: 0.05, realRet: 1.46},
+            {date: "2025-03-27", net: 0.9766, pct1d: -0.01, realRet: 1.46},
+            {date: "2025-03-28", net: 0.9747, pct1d: -0.19, realRet: 1.26},
+            {date: "2025-03-29", net: 0.9744, pct1d: -0.03, realRet: 1.23},
+            {date: "2025-03-30", net: 0.9745, pct1d: 0.00, realRet: 1.24},
+            {date: "2025-03-31", net: 0.9753, pct1d: 0.08, realRet: 1.32},
+            {date: "2025-04-01", net: 0.9757, pct1d: 0.04, realRet: 1.36},
+            {date: "2025-04-02", net: 0.975, pct1d: -0.07, realRet: 1.29},
+            {date: "2025-04-03", net: 0.9741, pct1d: -0.09, realRet: 1.19},
+            {date: "2025-04-04", net: 0.9702, pct1d: -0.40, realRet: 0.79},
+            {date: "2025-04-05", net: 0.9717, pct1d: 0.16, realRet: 0.95},
+            {date: "2025-04-06", net: 0.9727, pct1d: 0.11, realRet: 1.06},
+            {date: "2025-04-07", net: 0.9696, pct1d: -0.32, realRet: 0.73},
+            {date: "2025-04-08", net: 0.9718, pct1d: 0.23, realRet: 0.96},
+            {date: "2025-04-09", net: 0.9723, pct1d: 0.06, realRet: 1.02},
+            {date: "2025-04-10", net: 0.9748, pct1d: 0.26, realRet: 1.28},
+            {date: "2025-04-11", net: 0.9757, pct1d: 0.08, realRet: 1.36},
+            {date: "2025-04-12", net: 0.9788, pct1d: 0.33, realRet: 1.69},
+            {date: "2025-04-13", net: 0.9818, pct1d: 0.30, realRet: 2.00},
+            {date: "2025-04-14", net: 0.9821, pct1d: 0.03, realRet: 2.03},
+            {date: "2025-04-15", net: 0.983, pct1d: 0.09, realRet: 2.13},
+            {date: "2025-04-16", net: 0.9838, pct1d: 0.08, realRet: 2.21},
+            {date: "2025-04-17", net: 0.9843, pct1d: 0.05, realRet: 2.26},
+            {date: "2025-04-18", net: 0.9859, pct1d: 0.16, realRet: 2.42},
+            {date: "2025-04-19", net: 0.9891, pct1d: 0.33, realRet: 2.76},
+            {date: "2025-04-20", net: 0.988, pct1d: -0.11, realRet: 2.64},
+            {date: "2025-04-21", net: 0.9871, pct1d: -0.09, realRet: 2.55},
+            {date: "2025-04-22", net: 0.9874, pct1d: 0.03, realRet: 2.58},
+            {date: "2025-04-23", net: 0.9911, pct1d: 0.38, realRet: 2.97},
+            {date: "2025-04-24", net: 0.9915, pct1d: 0.04, realRet: 3.01},
+            {date: "2025-04-25", net: 0.9919, pct1d: 0.04, realRet: 3.05},
+            {date: "2025-04-26", net: 0.9912, pct1d: -0.07, realRet: 2.98},
+            {date: "2025-04-27", net: 0.9918, pct1d: 0.06, realRet: 3.04},
+            {date: "2025-04-28", net: 0.9917, pct1d: -0.01, realRet: 3.03},
+            {date: "2025-04-29", net: 0.9913, pct1d: -0.04, realRet: 2.98},
+            {date: "2025-04-30", net: 0.9906, pct1d: -0.06, realRet: 2.92},
+            {date: "2025-05-01", net: 0.9909, pct1d: 0.02, realRet: 2.94},
+            {date: "2025-05-02", net: 0.9931, pct1d: 0.22, realRet: 3.17},
+            {date: "2025-05-03", net: 0.9926, pct1d: -0.05, realRet: 3.12},
+            {date: "2025-05-04", net: 0.9925, pct1d: -0.01, realRet: 3.11},
+            {date: "2025-05-05", net: 0.9928, pct1d: 0.03, realRet: 3.14},
+            {date: "2025-05-06", net: 0.9906, pct1d: -0.22, realRet: 2.91},
+            {date: "2025-05-07", net: 0.9942, pct1d: 0.36, realRet: 3.29},
+            {date: "2025-05-08", net: 0.9943, pct1d: 0.02, realRet: 3.30},
+            {date: "2025-05-09", net: 0.9997, pct1d: 0.54, realRet: 3.86},
+            {date: "2025-05-10", net: 1.0033, pct1d: 0.36, realRet: 4.23},
+            {date: "2025-05-11", net: 1.0047, pct1d: 0.14, realRet: 4.38},
+            {date: "2025-05-12", net: 1.0049, pct1d: 0.02, realRet: 4.39},
+            {date: "2025-05-13", net: 1.0043, pct1d: -0.06, realRet: 4.34},
+            {date: "2025-05-14", net: 1.0096, pct1d: 0.53, realRet: 4.89},
+            {date: "2025-05-15", net: 1.0087, pct1d: -0.09, realRet: 4.79},
+            {date: "2025-05-16", net: 1.0095, pct1d: 0.09, realRet: 4.88},
+            {date: "2025-05-17", net: 1.0093, pct1d: -0.02, realRet: 4.86},
+            {date: "2025-05-18", net: 1.0084, pct1d: -0.09, realRet: 4.77},
+            {date: "2025-05-19", net: 1.0084, pct1d: 0.00, realRet: 4.76},
+            {date: "2025-05-20", net: 1.0092, pct1d: 0.07, realRet: 4.84},
+            {date: "2025-05-21", net: 1.009, pct1d: -0.02, realRet: 4.82},
+            {date: "2025-05-22", net: 1.0102, pct1d: 0.13, realRet: 4.95},
+            {date: "2025-05-23", net: 1.013, pct1d: 0.27, realRet: 5.24},
+            {date: "2025-05-24", net: 1.0116, pct1d: -0.14, realRet: 5.10},
+            {date: "2025-05-25", net: 1.0102, pct1d: -0.14, realRet: 4.96},
+            {date: "2025-05-26", net: 1.0126, pct1d: 0.23, realRet: 5.20},
+            {date: "2025-05-27", net: 1.0121, pct1d: -0.05, realRet: 5.15},
+            {date: "2025-05-28", net: 1.0123, pct1d: 0.01, realRet: 5.16},
+            {date: "2025-05-29", net: 1.0145, pct1d: 0.22, realRet: 5.40},
+            {date: "2025-05-30", net: 1.0146, pct1d: 0.00, realRet: 5.40},
+            {date: "2025-05-31", net: 1.0112, pct1d: -0.33, realRet: 5.05},
+            {date: "2025-06-01", net: 1.0127, pct1d: 0.15, realRet: 5.21},
+            {date: "2025-06-02", net: 1.0111, pct1d: -0.16, realRet: 5.05},
+            {date: "2025-06-03", net: 1.0133, pct1d: 0.22, realRet: 5.28},
+            {date: "2025-06-04", net: 1.013, pct1d: -0.04, realRet: 5.24},
+            {date: "2025-06-05", net: 1.0129, pct1d: -0.01, realRet: 5.23},
+            {date: "2025-06-06", net: 1.0112, pct1d: -0.16, realRet: 5.06},
+            {date: "2025-06-07", net: 1.0124, pct1d: 0.12, realRet: 5.18},
+            {date: "2025-06-08", net: 1.0133, pct1d: 0.08, realRet: 5.27},
+            {date: "2025-06-09", net: 1.0135, pct1d: 0.03, realRet: 5.30},
+            {date: "2025-06-10", net: 1.0176, pct1d: 0.40, realRet: 5.72},
+            {date: "2025-06-11", net: 1.0192, pct1d: 0.16, realRet: 5.89},
+            {date: "2025-06-12", net: 1.0193, pct1d: 0.01, realRet: 5.89},
+            {date: "2025-06-13", net: 1.0142, pct1d: -0.49, realRet: 5.37},
+            {date: "2025-06-14", net: 1.0156, pct1d: 0.14, realRet: 5.51},
+            {date: "2025-06-15", net: 1.0164, pct1d: 0.08, realRet: 5.60},
+            {date: "2025-06-16", net: 1.0188, pct1d: 0.23, realRet: 5.84},
+            {date: "2025-06-17", net: 1.0177, pct1d: -0.10, realRet: 5.73},
+            {date: "2025-06-18", net: 1.0152, pct1d: -0.25, realRet: 5.47},
+            {date: "2025-06-19", net: 1.0146, pct1d: -0.07, realRet: 5.40},
+            {date: "2025-06-20", net: 1.0144, pct1d: -0.02, realRet: 5.39},
+            {date: "2025-06-21", net: 1.0124, pct1d: -0.20, realRet: 5.17},
+            {date: "2025-06-22", net: 1.0114, pct1d: -0.09, realRet: 5.08},
+            {date: "2025-06-23", net: 1.011, pct1d: -0.05, realRet: 5.03},
+            {date: "2025-06-24", net: 1.0166, pct1d: 0.55, realRet: 5.61},
+            {date: "2025-06-25", net: 1.0187, pct1d: 0.20, realRet: 5.83},
+            {date: "2025-06-26", net: 1.0186, pct1d: -0.01, realRet: 5.82},
+            {date: "2025-06-27", net: 1.0184, pct1d: -0.02, realRet: 5.81},
+            {date: "2025-06-28", net: 1.0197, pct1d: 0.12, realRet: 5.93},
+            {date: "2025-06-29", net: 1.0217, pct1d: 0.20, realRet: 6.15},
+            {date: "2025-06-30", net: 1.0232, pct1d: 0.15, realRet: 6.30},
+            {date: "2025-07-01", net: 1.0231, pct1d: -0.01, realRet: 6.29},
+            {date: "2025-07-02", net: 1.0257, pct1d: 0.25, realRet: 6.56},
+            {date: "2025-07-03", net: 1.0284, pct1d: 0.26, realRet: 6.84},
+            {date: "2025-07-04", net: 1.0281, pct1d: -0.03, realRet: 6.81},
+            {date: "2025-07-05", net: 1.0264, pct1d: -0.17, realRet: 6.63},
+            {date: "2025-07-06", net: 1.0259, pct1d: -0.05, realRet: 6.58},
+            {date: "2025-07-07", net: 1.0271, pct1d: 0.12, realRet: 6.71},
+            {date: "2025-07-08", net: 1.0271, pct1d: 0.00, realRet: 6.71},
+            {date: "2025-07-09", net: 1.0285, pct1d: 0.13, realRet: 6.85},
+            {date: "2025-07-10", net: 1.03, pct1d: 0.15, realRet: 7.01},
+            {date: "2025-07-11", net: 1.0355, pct1d: 0.53, realRet: 7.58},
+            {date: "2025-07-12", net: 1.0381, pct1d: 0.25, realRet: 7.85},
+            {date: "2025-07-13", net: 1.0367, pct1d: -0.14, realRet: 7.70},
+            {date: "2025-07-14", net: 1.0401, pct1d: 0.33, realRet: 8.05},
+            {date: "2025-07-15", net: 1.0409, pct1d: 0.08, realRet: 8.14},
+            {date: "2025-07-16", net: 1.0422, pct1d: 0.13, realRet: 8.28},
+            {date: "2025-07-17", net: 1.0485, pct1d: 0.60, realRet: 8.93},
+            {date: "2025-07-18", net: 1.055, pct1d: 0.61, realRet: 9.60},
+            {date: "2025-07-19", net: 1.053, pct1d: -0.19, realRet: 9.40},
+            {date: "2025-07-20", net: 1.0537, pct1d: 0.06, realRet: 9.47},
+            {date: "2025-07-21", net: 1.0609, pct1d: 0.69, realRet: 10.22},
+            {date: "2025-07-22", net: 1.0674, pct1d: 0.61, realRet: 10.89},
+            {date: "2025-07-23", net: 1.0696, pct1d: 0.21, realRet: 11.12},
+            {date: "2025-07-24", net: 1.0686, pct1d: -0.10, realRet: 11.01},
+            {date: "2025-07-25", net: 1.0694, pct1d: 0.07, realRet: 11.10},
+            {date: "2025-07-26", net: 1.0735, pct1d: 0.39, realRet: 11.53},
+            {date: "2025-07-27", net: 1.0747, pct1d: 0.11, realRet: 11.65},
+            {date: "2025-07-28", net: 1.0778, pct1d: 0.29, realRet: 11.98},
+            {date: "2025-07-29", net: 1.0777, pct1d: -0.01, realRet: 11.97},
+            {date: "2025-07-30", net: 1.0769, pct1d: -0.08, realRet: 11.88},
+            {date: "2025-07-31", net: 1.0773, pct1d: 0.03, realRet: 11.92},
+            {date: "2025-08-01", net: 1.0747, pct1d: -0.24, realRet: 11.65},
+            {date: "2025-08-02", net: 1.0721, pct1d: -0.23, realRet: 11.39},
+            {date: "2025-08-03", net: 1.0707, pct1d: -0.13, realRet: 11.24},
+            {date: "2025-08-04", net: 1.0725, pct1d: 0.17, realRet: 11.43},
+            {date: "2025-08-05", net: 1.0744, pct1d: 0.18, realRet: 11.62},
+            {date: "2025-08-06", net: 1.073, pct1d: -0.13, realRet: 11.47},
+            {date: "2025-08-07", net: 1.0769, pct1d: 0.37, realRet: 11.88},
+            {date: "2025-08-08", net: 1.08, pct1d: 0.29, realRet: 12.21},
+            {date: "2025-08-09", net: 1.0811, pct1d: 0.10, realRet: 12.32},
+            {date: "2025-08-10", net: 1.0831, pct1d: 0.19, realRet: 12.53},
+            {date: "2025-08-11", net: 1.0856, pct1d: 0.22, realRet: 12.78},
+            {date: "2025-08-12", net: 1.0866, pct1d: 0.10, realRet: 12.89},
+            {date: "2025-08-13", net: 1.0977, pct1d: 1.02, realRet: 14.05},
+            {date: "2025-08-14", net: 1.1041, pct1d: 0.58, realRet: 14.70},
+            {date: "2025-08-15", net: 1.1017, pct1d: -0.22, realRet: 14.46},
+            {date: "2025-08-16", net: 1.1007, pct1d: -0.09, realRet: 14.35},
+            {date: "2025-08-17", net: 1.1001, pct1d: -0.05, realRet: 14.29},
+            {date: "2025-08-18", net: 1.0992, pct1d: -0.09, realRet: 14.19},
+            {date: "2025-08-19", net: 1.0969, pct1d: -0.20, realRet: 13.96},
+            {date: "2025-08-20", net: 1.0967, pct1d: -0.02, realRet: 13.94},
+            {date: "2025-08-21", net: 1.0986, pct1d: 0.18, realRet: 14.14},
+            {date: "2025-08-22", net: 1.0985, pct1d: -0.01, realRet: 14.13},
+            {date: "2025-08-23", net: 1.1036, pct1d: 0.46, realRet: 14.65},
+            {date: "2025-08-24", net: 1.1061, pct1d: 0.23, realRet: 14.91},
+            {date: "2025-08-25", net: 1.1065, pct1d: 0.04, realRet: 14.96},
+            {date: "2025-08-26", net: 1.1037, pct1d: -0.26, realRet: 14.66},
+            {date: "2025-08-27", net: 1.109, pct1d: 0.48, realRet: 15.22},
+            {date: "2025-08-28", net: 1.1125, pct1d: 0.31, realRet: 15.57},
+            {date: "2025-08-29", net: 1.1145, pct1d: 0.19, realRet: 15.79},
+            {date: "2025-08-30", net: 1.1136, pct1d: -0.08, realRet: 15.69},
+            {date: "2025-08-31", net: 1.1126, pct1d: -0.09, realRet: 15.59},
+            {date: "2025-09-01", net: 1.1124, pct1d: -0.01, realRet: 15.57},
+            {date: "2025-09-02", net: 1.1142, pct1d: 0.16, realRet: 15.76},
+            {date: "2025-09-03", net: 1.1156, pct1d: 0.12, realRet: 15.90},
+            {date: "2025-09-04", net: 1.1162, pct1d: 0.06, realRet: 15.96},
+            {date: "2025-09-05", net: 1.1163, pct1d: 0.01, realRet: 15.97},
+            {date: "2025-09-06", net: 1.1156, pct1d: -0.06, realRet: 15.90},
+            {date: "2025-09-07", net: 1.1147, pct1d: -0.08, realRet: 15.81},
+            {date: "2025-09-08", net: 1.1163, pct1d: 0.14, realRet: 15.97},
+            {date: "2025-09-09", net: 1.1201, pct1d: 0.34, realRet: 16.37},
+            {date: "2025-09-10", net: 1.1209, pct1d: 0.07, realRet: 16.45},
+            {date: "2025-09-11", net: 1.1236, pct1d: 0.24, realRet: 16.73},
+            {date: "2025-09-12", net: 1.1307, pct1d: 0.63, realRet: 17.46},
+            {date: "2025-09-13", net: 1.1342, pct1d: 0.31, realRet: 17.83},
+            {date: "2025-09-14", net: 1.1372, pct1d: 0.27, realRet: 18.14},
+            {date: "2025-09-15", net: 1.138, pct1d: 0.07, realRet: 18.23},
+            {date: "2025-09-16", net: 1.1373, pct1d: -0.06, realRet: 18.16},
+            {date: "2025-09-17", net: 1.1383, pct1d: 0.08, realRet: 18.26},
+            {date: "2025-09-18", net: 1.1408, pct1d: 0.22, realRet: 18.51},
+            {date: "2025-09-19", net: 1.1426, pct1d: 0.16, realRet: 18.70},
+            {date: "2025-09-20", net: 1.1414, pct1d: -0.10, realRet: 18.58},
+            {date: "2025-09-21", net: 1.1412, pct1d: -0.01, realRet: 18.56},
+            {date: "2025-09-22", net: 1.1382, pct1d: -0.27, realRet: 18.25},
+            {date: "2025-09-23", net: 1.1382, pct1d: 0.00, realRet: 18.25},
+            {date: "2025-09-24", net: 1.1378, pct1d: -0.03, realRet: 18.21},
+            {date: "2025-09-25", net: 1.1368, pct1d: -0.10, realRet: 18.10},
+            {date: "2025-09-26", net: 1.1377, pct1d: 0.18, realRet: 18.20},
+            {date: "2025-09-27", net: 1.1405, pct1d: 0.25, realRet: 18.49},
+            {date: "2025-09-28", net: 1.141, pct1d: 0.04, realRet: 18.54},
+            {date: "2025-09-29", net: 1.1433, pct1d: 0.21, realRet: 18.78},
+            {date: "2025-09-30", net: 1.1442, pct1d: 0.07, realRet: 18.87},
+            {date: "2025-10-01", net: 1.1465, pct1d: 0.21, realRet: 19.11},
+            {date: "2025-10-02", net: 1.1501, pct1d: 0.31, realRet: 19.48},
+            {date: "2025-10-03", net: 1.1546, pct1d: 0.39, realRet: 19.95},
+            {date: "2025-10-04", net: 1.1546, pct1d: 0.00, realRet: 19.95},
+            {date: "2025-10-05", net: 1.1575, pct1d: 0.25, realRet: 20.26},
+            {date: "2025-10-06", net: 1.1569, pct1d: -0.05, realRet: 20.19},
+            {date: "2025-10-07", net: 1.1572, pct1d: 0.03, realRet: 20.22},
+            {date: "2025-10-08", net: 1.1568, pct1d: -0.04, realRet: 20.18},
+            {date: "2025-10-09", net: 1.1579, pct1d: 0.09, realRet: 20.29},
+            {date: "2025-10-10", net: 1.1561, pct1d: -0.15, realRet: 20.11},
+            {date: "2025-10-11", net: 1.152, pct1d: -0.36, realRet: 19.68},
+            {date: "2025-10-12", net: 1.1537, pct1d: 0.14, realRet: 19.85},
+            {date: "2025-10-13", net: 1.1549, pct1d: 0.10, realRet: 19.98},
+            {date: "2025-10-14", net: 1.1544, pct1d: -0.04, realRet: 19.93},
+            {date: "2025-10-15", net: 1.155, pct1d: 0.05, realRet: 19.99},
+            {date: "2025-10-16", net: 1.1531, pct1d: -0.17, realRet: 19.79},
+            {date: "2025-10-17", net: 1.153, pct1d: -0.01, realRet: 19.78},
+            {date: "2025-10-18", net: 1.1522, pct1d: -0.07, realRet: 19.70},
+            {date: "2025-10-19", net: 1.1533, pct1d: 0.09, realRet: 19.82},
+            {date: "2025-10-20", net: 1.1558, pct1d: 0.22, realRet: 20.07},
+            {date: "2025-10-21", net: 1.1539, pct1d: -0.16, realRet: 19.88},
+            {date: "2025-10-22", net: 1.1543, pct1d: 0.03, realRet: 19.92},
+            {date: "2025-10-23", net: 1.1552, pct1d: 0.08, realRet: 20.02},
+            {date: "2025-10-24", net: 1.1589, pct1d: 0.32, realRet: 20.40},
+            {date: "2025-10-25", net: 1.1598, pct1d: 0.08, realRet: 20.49},
+            {date: "2025-10-26", net: 1.161, pct1d: 0.10, realRet: 20.61},
+            {date: "2025-10-27", net: 1.1636, pct1d: 0.23, realRet: 20.88},
+            {date: "2025-10-28", net: 1.1635, pct1d: -0.01, realRet: 20.87},
+            {date: "2025-10-29", net: 1.1641, pct1d: 0.06, realRet: 20.94},
+            {date: "2025-10-30", net: 1.1634, pct1d: -0.06, realRet: 20.86},
+            {date: "2025-10-31", net: 1.1628, pct1d: -0.05, realRet: 20.81},
+            {date: "2025-11-01", net: 1.1624, pct1d: -0.04, realRet: 20.76},
+            {date: "2025-11-02", net: 1.1615, pct1d: -0.07, realRet: 20.67},
+            {date: "2025-11-03", net: 1.1627, pct1d: 0.10, realRet: 20.80},
+            {date: "2025-11-04", net: 1.1633, pct1d: 0.05, realRet: 20.86},
+            {date: "2025-11-05", net: 1.1662, pct1d: 0.25, realRet: 21.16},
+            {date: "2025-11-06", net: 1.1667, pct1d: 0.04, realRet: 21.21},
+            {date: "2025-11-07", net: 1.1682, pct1d: 0.13, realRet: 21.36},
+            {date: "2025-11-08", net: 1.1701, pct1d: 0.16, realRet: 21.56},
+            {date: "2025-11-09", net: 1.1703, pct1d: 0.02, realRet: 21.59},
+            {date: "2025-11-10", net: 1.1703, pct1d: 0.00, realRet: 21.59},
+            {date: "2025-11-11", net: 1.1705, pct1d: 0.02, realRet: 21.61},
+            {date: "2025-11-12", net: 1.1722, pct1d: 0.14, realRet: 21.78},
+            {date: "2025-11-13", net: 1.1726, pct1d: 0.03, realRet: 21.82},
+            {date: "2025-11-14", net: 1.1739, pct1d: 0.12, realRet: 21.96},
+            {date: "2025-11-15", net: 1.1769, pct1d: 0.25, realRet: 22.26},
+            {date: "2025-11-16", net: 1.1771, pct1d: 0.02, realRet: 22.29},
+            {date: "2025-11-17", net: 1.1775, pct1d: 0.03, realRet: 22.33},
+            {date: "2025-11-18", net: 1.18, pct1d: 0.21, realRet: 22.59},
+            {date: "2025-11-19", net: 1.18, pct1d: 0.00, realRet: 22.59},
+            {date: "2025-11-20", net: 1.1803, pct1d: 0.03, realRet: 22.63},
+            {date: "2025-11-21", net: 1.1809, pct1d: 0.05, realRet: 22.68},
+            {date: "2025-11-22", net: 1.1805, pct1d: -0.03, realRet: 22.64},
+            {date: "2025-11-23", net: 1.1802, pct1d: -0.02, realRet: 22.61},
+            {date: "2025-11-24", net: 1.1809, pct1d: 0.06, realRet: 22.68},
+            {date: "2025-11-25", net: 1.1825, pct1d: 0.14, realRet: 22.85},
+            {date: "2025-11-26", net: 1.1821, pct1d: -0.03, realRet: 22.81},
+            {date: "2025-11-27", net: 1.1808, pct1d: -0.11, realRet: 22.67},
+            {date: "2025-11-28", net: 1.1798, pct1d: -0.09, realRet: 22.57},
+            {date: "2025-11-29", net: 1.1793, pct1d: -0.04, realRet: 22.52},
+            {date: "2025-11-30", net: 1.18, pct1d: 0.06, realRet: 22.59},
+            {date: "2025-12-01", net: 1.1808, pct1d: 0.06, realRet: 22.67},
+            {date: "2025-12-02", net: 1.1817, pct1d: 0.08, realRet: 22.77},
+            {date: "2025-12-03", net: 1.183, pct1d: 0.11, realRet: 22.91},
+            {date: "2025-12-04", net: 1.1826, pct1d: -0.04, realRet: 22.86},
+            {date: "2025-12-05", net: 1.184, pct1d: 0.12, realRet: 23.01},
+            {date: "2025-12-06", net: 1.184, pct1d: 0.00, realRet: 23.01},
+            {date: "2025-12-07", net: 1.1845, pct1d: 0.04, realRet: 23.05},
+            {date: "2025-12-08", net: 1.1839, pct1d: -0.04, realRet: 23.00},
+            {date: "2025-12-09", net: 1.1842, pct1d: 0.02, realRet: 23.03},
+            {date: "2025-12-10", net: 1.1824, pct1d: -0.15, realRet: 22.84},
+            {date: "2025-12-11", net: 1.1824, pct1d: 0.00, realRet: 22.84},
+            {date: "2025-12-12", net: 1.1815, pct1d: -0.08, realRet: 22.74},
+            {date: "2025-12-13", net: 1.1815, pct1d: 0.00, realRet: 22.74},
+            {date: "2025-12-14", net: 1.1815, pct1d: 0.00, realRet: 22.74},
+            {date: "2025-12-15", net: 1.1815, pct1d: 0.00, realRet: 22.74},
+            {date: "2025-12-16", net: 1.1845, pct1d: 0.26, realRet: 23.06},
+            {date: "2025-12-17", net: 1.1845, pct1d: 0.00, realRet: 23.06},
+            {date: "2025-12-18", net: 1.1835, pct1d: -0.09, realRet: 22.95},
+            {date: "2025-12-19", net: 1.1855, pct1d: 0.17, realRet: 23.16},
+            {date: "2025-12-20", net: 1.1855, pct1d: 0.00, realRet: 23.16},
+            {date: "2025-12-21", net: 1.1855, pct1d: 0.00, realRet: 23.16},
+            {date: "2025-12-22", net: 1.1859, pct1d: 0.04, realRet: 23.21},
+            {date: "2025-12-23", net: 1.1868, pct1d: 0.08, realRet: 23.30},
+            {date: "2025-12-24", net: 1.1882, pct1d: 0.11, realRet: 23.44},
+            {date: "2025-12-25", net: 1.1891, pct1d: 0.08, realRet: 23.54},
+            {date: "2025-12-26", net: 1.1893, pct1d: 0.01, realRet: 23.55},
+            {date: "2025-12-27", net: 1.1893, pct1d: 0.00, realRet: 23.55},
+            {date: "2025-12-28", net: 1.1901, pct1d: 0.07, realRet: 23.64},
+            {date: "2025-12-29", net: 1.1902, pct1d: 0.01, realRet: 23.65},
+            {date: "2025-12-30", net: 1.1907, pct1d: 0.04, realRet: 23.70},
+            {date: "2025-12-31", net: 1.1915, pct1d: 0.07, realRet: 23.79},
+            {date: "2026-01-01", net: 1.1915, pct1d: 0.00, realRet: 23.79},
+            {date: "2026-01-02", net: 1.1915, pct1d: 0.00, realRet: 23.79},
+            {date: "2026-01-03", net: 1.1915, pct1d: 0.00, realRet: 23.79},
+            {date: "2026-01-04", net: 1.1915, pct1d: 0.00, realRet: 23.79},
+            {date: "2026-01-05", net: 1.1908, pct1d: -0.06, realRet: 23.71},
+            {date: "2026-01-06", net: 1.1908, pct1d: 0.00, realRet: 23.71},
+            {date: "2026-01-07", net: 1.1917, pct1d: 0.07, realRet: 23.80}
+        ];
+
+        // Fee structure (20% performance fee + 10% Prime Number fee = 30% total)
+        const PERFORMANCE_FEE_RATE = 0.20;
+        const PRIME_NUMBER_FEE_RATE = 0.10;
+        const TOTAL_FEE_RATE = PERFORMANCE_FEE_RATE + PRIME_NUMBER_FEE_RATE; // 30%
+
+        // Calculate metrics
+        function calculateMetrics() {
+            const latest = historicalData[historicalData.length - 1];
+            const first = historicalData[0];
+            const totalDays = historicalData.length;
+
+            // Gross return from spreadsheet
+            const grossReturn = latest.realRet;
+
+            // Net return (after 20% performance fee on gains)
+            const netReturn = grossReturn * (1 - TOTAL_FEE_RATE);
+
+            // Annualized APY
+            const annualizedAPY = (netReturn / totalDays) * 365;
+
+            // Rolling APYs
+            const rollingAPYs = calculateRollingAPYs();
+
+            return {
+                sharePrice: latest.net,
+                grossROI: grossReturn,
+                netROI: netReturn,
+                allTimeAPY: annualizedAPY,
+                daysSinceInception: totalDays,
+                inceptionDate: first.date,
+                rollingAPYs
+            };
+        }
+
+        function calculateRollingAPYs() {
+            const latest = historicalData[historicalData.length - 1];
+            const periods = [
+                { name: '30D', days: 30 },
+                { name: '90D', days: 90 },
+                { name: '180D', days: 180 },
+                { name: '1Y', days: 365 },
+                { name: 'All Time', days: historicalData.length }
+            ];
+
+            return periods.map(period => {
+                const daysAvailable = Math.min(period.days, historicalData.length);
+                const startIndex = historicalData.length - daysAvailable;
+                const startData = historicalData[startIndex];
+
+                const periodReturn = ((latest.net - startData.net) / startData.net) * 100;
+                const netPeriodReturn = periodReturn * (1 - TOTAL_FEE_RATE);
+                const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
+
+                return {
+                    name: period.name,
+                    days: daysAvailable,
+                    return: netPeriodReturn,
+                    apy: annualizedAPY
+                };
+            });
+        }
+
+        function getFilteredData(days) {
+            if (days === 'all' || days >= historicalData.length) {
+                return historicalData;
+            }
+            return historicalData.slice(-days);
+        }
+
+        function formatPercent(value, decimals = 2) {
+            const sign = value >= 0 ? '+' : '';
+            return `${sign}${value.toFixed(decimals)}%`;
+        }
+
+        // Render metrics
+        function renderMetrics() {
+            const metrics = calculateMetrics();
+
+            document.getElementById('metricsGrid').innerHTML = `
+                <div class="metric-card highlight">
+                    <div class="metric-label">Share Price</div>
+                    <div class="metric-value">${metrics.sharePrice.toFixed(4)}</div>
+                </div>
+                <div class="metric-card highlight">
+                    <div class="metric-label">ROI (Net of Fees)</div>
+                    <div class="metric-value positive">${formatPercent(metrics.netROI)}</div>
+                </div>
+                <div class="metric-card highlight">
+                    <div class="metric-label">Net APY (All Time)</div>
+                    <div class="metric-value positive">${formatPercent(metrics.allTimeAPY)}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Days Since Inception</div>
+                    <div class="metric-value">${metrics.daysSinceInception}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Inception Date</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(metrics.inceptionDate).toLocaleDateString()}</div>
+                </div>
+            `;
+
+            // Render APY grid
+            document.getElementById('apyGrid').innerHTML = metrics.rollingAPYs.map(apy => `
+                <div class="apy-card">
+                    <div class="apy-period">${apy.name} APY</div>
+                    <div class="apy-value ${apy.apy >= 0 ? '' : 'negative'}">${formatPercent(apy.apy)}</div>
+                </div>
+            `).join('');
+        }
+
+        // Charts
+        let priceChart = null;
+        let roiChart = null;
+        let apyChart = null;
+
+        function renderPriceChart(period = 'all') {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            const data = getFilteredData(period === 'all' ? 'all' : parseInt(period));
+
+            if (priceChart) priceChart.destroy();
+
+            priceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.date),
+                    datasets: [{
+                        label: 'Share Price',
+                        data: data.map(d => d.net),
+                        borderColor: '#00d4ff',
+                        backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => `Price: ${ctx.parsed.y.toFixed(4)}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 8 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#00d4ff' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderROIChart(period = 'all') {
+            const ctx = document.getElementById('roiChart').getContext('2d');
+            const periodDays = period === 'all' ? 'all' : parseInt(period);
+            const data = getFilteredData(periodDays);
+            const isRolling = periodDays !== 'all' && periodDays <= 180;
+
+            let roiData;
+            let chartLabel;
+
+            if (isRolling) {
+                // Rolling ROI for 30, 90, 180 day periods
+                const lookbackDays = periodDays;
+                chartLabel = `${lookbackDays}-Day Rolling ROI`;
+                roiData = historicalData.map((d, i) => {
+                    if (i < lookbackDays) return null;
+                    const startPrice = historicalData[i - lookbackDays].net;
+                    const periodReturn = ((d.net - startPrice) / startPrice) * 100;
+                    return periodReturn * (1 - TOTAL_FEE_RATE);
+                }).filter(v => v !== null);
+                // Adjust data to match roiData length
+                data.length = 0;
+                data.push(...historicalData.slice(periodDays));
+            } else {
+                // Cumulative ROI for All Time and 1 Year
+                chartLabel = 'Cumulative ROI';
+                const firstPrice = data[0].net;
+                roiData = data.map((d, i) => {
+                    const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
+                    return cumulativeReturn * (1 - TOTAL_FEE_RATE);
+                });
+            }
+
+            if (roiChart) roiChart.destroy();
+
+            roiChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.date),
+                    datasets: [{
+                        label: chartLabel,
+                        data: roiData,
+                        borderColor: '#22c55e',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => `ROI: ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 8 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#22c55e',
+                                callback: v => v.toFixed(0) + '%'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderAPYChart(period = 'all') {
+            const ctx = document.getElementById('apyChart').getContext('2d');
+            const periodDays = period === 'all' ? 'all' : parseInt(period);
+            const data = getFilteredData(periodDays);
+            const isRolling = periodDays !== 'all' && periodDays <= 180;
+
+            let apyData;
+            let chartLabel;
+
+            if (isRolling) {
+                // Rolling APY for 30, 90, 180 day periods
+                const lookbackDays = periodDays;
+                chartLabel = `${lookbackDays}-Day Rolling APY`;
+                apyData = historicalData.map((d, i) => {
+                    if (i < lookbackDays) return null;
+                    const startPrice = historicalData[i - lookbackDays].net;
+                    const periodReturn = ((d.net - startPrice) / startPrice) * 100;
+                    const netReturn = periodReturn * (1 - TOTAL_FEE_RATE);
+                    return (netReturn / lookbackDays) * 365;
+                }).filter(v => v !== null);
+                // Adjust data to match apyData length
+                data.length = 0;
+                data.push(...historicalData.slice(periodDays));
+            } else {
+                // Cumulative APY for All Time and 1 Year
+                chartLabel = 'Cumulative APY';
+                const firstPrice = data[0].net;
+                apyData = data.map((d, i) => {
+                    if (i === 0) return 0;
+                    const daysSinceStart = i + 1;
+                    const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
+                    const netReturn = cumulativeReturn * (1 - TOTAL_FEE_RATE);
+                    return (netReturn / daysSinceStart) * 365;
+                });
+            }
+
+            if (apyChart) apyChart.destroy();
+
+            apyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.date),
+                    datasets: [{
+                        label: chartLabel,
+                        data: apyData,
+                        borderColor: '#7c3aed',
+                        backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => `APY: ${ctx.parsed.y.toFixed(2)}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 8 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#7c3aed',
+                                callback: v => v.toFixed(0) + '%'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Tab handling
+        function setupTabs() {
+            document.getElementById('priceChartTabs').addEventListener('click', e => {
+                if (e.target.classList.contains('tab')) {
+                    document.querySelectorAll('#priceChartTabs .tab').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    renderPriceChart(e.target.dataset.period);
+                }
+            });
+
+            document.getElementById('roiChartTabs').addEventListener('click', e => {
+                if (e.target.classList.contains('tab')) {
+                    document.querySelectorAll('#roiChartTabs .tab').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    renderROIChart(e.target.dataset.period);
+                }
+            });
+
+            document.getElementById('apyChartTabs').addEventListener('click', e => {
+                if (e.target.classList.contains('tab')) {
+                    document.querySelectorAll('#apyChartTabs .tab').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    renderAPYChart(e.target.dataset.period);
+                }
+            });
+        }
+
+        // Vault data fetching
+        async function fetchVaultData() {
+            try {
+                const [currentResponse, historyResponse] = await Promise.all([
+                    fetch('https://corsproxy.io/?https://app.primenumber.trade/data/PN_KV1.json'),
+                    fetch('https://corsproxy.io/?https://app.primenumber.trade/data/PN_KV1_history.json')
+                ]);
+
+                const currentData = await currentResponse.json();
+                const historyData = await historyResponse.json();
+
+                renderVaultMetrics(currentData, historyData);
+            } catch (error) {
+                console.error('Error fetching vault data:', error);
+                document.getElementById('vaultMetrics').innerHTML = `
+                    <div class="metric-card">
+                        <div class="metric-label">Error</div>
+                        <div class="metric-value" style="font-size: 1rem; color: #ef4444;">Unable to load vault data</div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderVaultMetrics(current, history) {
+            const tvl = current.tvl || current.TVL;
+            const sharePrice = current.SharePrice || current.sharePrice;
+            const updateTime = current.update_time_utc || current.updateTime;
+
+            // Calculate net deposits and PNL
+            const cumulativeNetDeposits = tvl / sharePrice;
+            const totalPNL = tvl - cumulativeNetDeposits;
+            const pnlClass = totalPNL >= 0 ? 'positive' : 'negative';
+
+            const formatCurrency = (value) => {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(value);
+            };
+
+            const formatDate = (dateStr) => {
+                return new Date(dateStr).toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            };
+
+            document.getElementById('vaultMetrics').innerHTML = `
+                <div class="metric-card highlight">
+                    <div class="metric-label">Current Balance</div>
+                    <div class="metric-value">${formatCurrency(tvl)}</div>
+                    <div class="update-badge"><span class="live-indicator"></span>Live</div>
+                </div>
+            `;
+        }
+
+        // Initialize
+        fetchVaultData();
+        setInterval(fetchVaultData, 60 * 1000); // Refresh every minute
+
+        renderMetrics();
+        renderPriceChart('all');
+        renderROIChart('all');
+        renderAPYChart('all');
+        setupTabs();
+    </script>
+</body>
+</html>
