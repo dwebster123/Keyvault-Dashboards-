@@ -1022,8 +1022,8 @@
         async function fetchVaultData() {
             try {
                 const [currentResponse, historyResponse] = await Promise.all([
-                    fetch('https://api.allorigins.win/raw?url=https://app.primenumber.trade/data/PN_KV1.json'),
-                    fetch('https://api.allorigins.win/raw?url=https://app.primenumber.trade/data/PN_KV1_history.json')
+                    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1.json')),
+                    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json'))
                 ]);
 
                 const currentData = await currentResponse.json();
