@@ -343,53 +343,213 @@
     </div>
 
     <script>
-        // Historical data - fetched from Google Sheets
+        // Google Sheets URL for historical data (old fund)
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1tCkeY0rYnBTacwrn4DFAASY89JpnWBo06X2x333u2YA/gviz/tq?tqx=out:csv&gid=0';
+
+        // Live vault API for new fund data
+        const VAULT_HISTORY_URL = 'https://app.primenumber.trade/data/PN_KV1_history.json';
+
+        // Combined historical data (spreadsheet + live vault)
         let historicalData = [];
 
-        const SHEET_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://docs.google.com/spreadsheets/d/1tCkeY0rYnBTacwrn4DFAASY89JpnWBo06X2x333u2YA/export?format=csv&gid=0');
-
-        async function fetchSheetData() {
+        // Fetch and parse data from Google Sheets
+        // Note: The spreadsheet has alternating rows - date row, then data row
+        async function fetchSpreadsheetData() {
             try {
+                console.log('Fetching spreadsheet from:', SHEET_URL);
                 const response = await fetch(SHEET_URL);
                 const csvText = await response.text();
-                historicalData = parseCSV(csvText);
-                console.log('Loaded', historicalData.length, 'rows from spreadsheet');
+                console.log('Spreadsheet CSV length:', csvText.length);
 
-                // Render everything after data loads
-                renderMetrics();
-                renderPriceChart('all');
-                renderROIChart('all');
-                renderAPYChart('all');
-                setupTabs();
-            } catch (error) {
-                console.error('Error fetching spreadsheet:', error);
-                document.getElementById('metricsGrid').innerHTML = '<div class="metric-card"><div class="metric-label">Error loading data</div></div>';
-            }
-        }
+                // Parse CSV - handle alternating date/data rows
+                const lines = csvText.trim().split('\n');
+                const data = [];
 
-        function parseCSV(csv) {
-            const lines = csv.trim().split('\n');
-            const headers = lines[0].split(',');
-            const data = [];
+                // Skip header, process pairs of rows (date row + data row)
+                for (let i = 1; i < lines.length - 1; i += 2) {
+                    const dateRow = lines[i];
+                    const dataRow = lines[i + 1];
 
-            for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split(',');
-                if (values.length >= 4) {
-                    const date = values[0].trim().replace(/"/g, '');
-                    const net = parseFloat(values[1]);
-                    const pct1d = parseFloat(values[2].replace('%', ''));
-                    const realRet = parseFloat(values[3].replace('%', ''));
+                    // Extract date from date row (last column)
+                    const dateMatch = dateRow.match(/(\d{4}-\d{2}-\d{2})/);
+                    const date = dateMatch ? dateMatch[1] : null;
 
-                    if (!isNaN(net) && date) {
-                        data.push({ date, net, pct1d, realRet });
+                    // Extract values from data row
+                    const values = dataRow.split(',').map(v => v.replace(/"/g, '').trim());
+                    // Format: [fund_name, NET, PCT_1D, REAL_RET, empty]
+                    const net = parseFloat(values[1]) || 0;
+                    const pct1d = parseFloat(values[2]) || 0;
+                    const realRet = parseFloat(values[3]) || 0;
+
+                    if (date && net > 0) {
+                        data.push({
+                            date: date,
+                            net: net,
+                            pct1d: pct1d,
+                            realRet: realRet,
+                            source: 'spreadsheet'
+                        });
                     }
                 }
+
+                data.sort((a, b) => new Date(a.date) - new Date(b.date));
+                console.log(`Parsed ${data.length} rows from spreadsheet`);
+                return data;
+            } catch (error) {
+                console.error('Error fetching spreadsheet:', error);
+                return [];
             }
-            return data;
         }
 
-        // Placeholder data removed - now fetched from Google Sheets
-        /*
+        // Fetch live vault history
+        async function fetchVaultHistory() {
+            try {
+                console.log('Fetching vault history from:', VAULT_HISTORY_URL);
+                const response = await fetch(VAULT_HISTORY_URL);
+                const data = await response.json();
+                console.log('Vault raw data:', data);
+                return data.map(d => ({
+                    date: d.update_time_utc.split('T')[0],
+                    sharePrice: d.SharePrice,
+                    tvl: d.tvl
+                })).sort((a, b) => new Date(a.date) - new Date(b.date));
+            } catch (error) {
+                console.error('Error fetching vault history:', error);
+                return [];
+            }
+        }
+
+        // Combine spreadsheet data with live vault data
+        async function fetchHistoricalData() {
+            try {
+                const [spreadsheetData, vaultHistory] = await Promise.all([
+                    fetchSpreadsheetData(),
+                    fetchVaultHistory()
+                ]);
+
+                console.log('DEBUG: Spreadsheet rows:', spreadsheetData.length);
+                console.log('DEBUG: Vault history rows:', vaultHistory.length);
+                console.log('DEBUG: Vault dates:', vaultHistory.map(v => v.date));
+
+                if (spreadsheetData.length === 0) {
+                    console.error('No spreadsheet data');
+                    return false;
+                }
+
+                // Get the last entry from spreadsheet to use as baseline
+                const lastSpreadsheetEntry = spreadsheetData[spreadsheetData.length - 1];
+                const lastSpreadsheetDate = new Date(lastSpreadsheetEntry.date);
+                const baselineNet = lastSpreadsheetEntry.net;
+                const baselineReturn = lastSpreadsheetEntry.realRet;
+
+                console.log('DEBUG: Last spreadsheet date:', lastSpreadsheetEntry.date);
+                console.log('DEBUG: Last spreadsheet net:', baselineNet);
+
+                console.log(`Spreadsheet ends: ${lastSpreadsheetEntry.date}, net: ${baselineNet}, return: ${baselineReturn}%`);
+
+                // Find vault data that comes AFTER the spreadsheet data
+                const newVaultData = vaultHistory.filter(v => new Date(v.date) > lastSpreadsheetDate);
+
+                console.log('DEBUG: newVaultData length:', newVaultData.length);
+                console.log('DEBUG: newVaultData:', newVaultData);
+
+                if (newVaultData.length > 0) {
+                    // Get the first vault entry as the baseline for the new vault
+                    const vaultBaseline = newVaultData[0].sharePrice;
+                    const firstVaultDate = new Date(newVaultData[0].date);
+
+                    // Fill in missing days between spreadsheet end and vault start with actual data
+                    const gapData = {
+                        '2026-01-08': { net: 1.19466 },
+                        '2026-01-09': { net: 1.197647 },
+                        '2026-01-10': { net: 1.192856 },
+                        '2026-01-11': { net: 1.194047 },
+                        '2026-01-12': { net: 1.193526 }
+                    };
+
+                    const interpolatedData = [];
+                    const gapDays = Math.floor((firstVaultDate - lastSpreadsheetDate) / (1000 * 60 * 60 * 24)) - 1;
+                    const inceptionNet = 0.9626;
+
+                    if (gapDays > 0) {
+                        console.log(`Filling ${gapDays} gap days with actual data`);
+                        let prevNet = baselineNet;
+
+                        for (let i = 1; i <= gapDays; i++) {
+                            const gapDate = new Date(lastSpreadsheetDate);
+                            gapDate.setDate(gapDate.getDate() + i);
+                            const dateStr = gapDate.toISOString().split('T')[0];
+
+                            const dayData = gapData[dateStr];
+                            const net = dayData ? dayData.net : prevNet;
+                            const pct1d = ((net - prevNet) / prevNet) * 100;
+                            const realRet = ((net / inceptionNet) - 1) * 100;
+
+                            interpolatedData.push({
+                                date: dateStr,
+                                net: net,
+                                pct1d: pct1d,
+                                realRet: realRet,
+                                source: 'gap_fill'
+                            });
+
+                            prevNet = net;
+                        }
+                    }
+
+                    // Use the last gap value as the baseline for vault data (not spreadsheet's last value)
+                    const lastBeforeVault = interpolatedData.length > 0
+                        ? interpolatedData[interpolatedData.length - 1].net
+                        : baselineNet;
+
+                    console.log(`Vault baseline share price: ${vaultBaseline}`);
+                    console.log(`Last value before vault: ${lastBeforeVault}`);
+                    console.log(`Adding ${newVaultData.length} days from live vault`);
+
+                    // Convert vault data to combined format
+                    const combinedVaultData = newVaultData.map((v, i) => {
+                        // Combined net: gap's ending value * new vault's growth
+                        const combinedNet = lastBeforeVault * (v.sharePrice / vaultBaseline);
+
+                        // Combined return from inception
+                        const combinedReturn = ((combinedNet / inceptionNet) - 1) * 100;
+
+                        // Daily change
+                        const prevNet = i === 0 ? lastBeforeVault : (lastBeforeVault * (newVaultData[i-1].sharePrice / vaultBaseline));
+                        const pct1d = ((combinedNet - prevNet) / prevNet) * 100;
+
+                        return {
+                            date: v.date,
+                            net: combinedNet,
+                            pct1d: pct1d,
+                            realRet: combinedReturn,
+                            source: 'vault',
+                            vaultSharePrice: v.sharePrice
+                        };
+                    });
+
+                    historicalData = [...spreadsheetData, ...interpolatedData, ...combinedVaultData];
+                } else {
+                    historicalData = spreadsheetData;
+                }
+
+                console.log(`Total combined data points: ${historicalData.length}`);
+                return true;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return false;
+            }
+        }
+
+        // Fallback data in case Google Sheets fails
+        const fallbackData = [
+            {date: "2025-02-26", net: 0.9626, pct1d: 0.00, realRet: 0.00},
+            {date: "2025-02-27", net: 0.9643, pct1d: 0.18, realRet: 0.18},
+            {date: "2025-02-28", net: 0.9621, pct1d: -0.22, realRet: -0.04},
+            {date: "2025-03-01", net: 0.9664, pct1d: 0.44, realRet: 0.40},
+            {date: "2025-03-02", net: 0.9673, pct1d: 0.10, realRet: 0.49},
+            {date: "2025-03-03", net: 0.9717, pct1d: 0.46, realRet: 0.95},
+            {date: "2025-03-04", net: 0.9671, pct1d: -0.48, realRet: 0.47},
             {date: "2025-03-05", net: 0.9703, pct1d: 0.34, realRet: 0.81},
             {date: "2025-03-06", net: 0.9712, pct1d: 0.09, realRet: 0.90},
             {date: "2025-03-07", net: 0.9712, pct1d: 0.00, realRet: 0.90},
@@ -699,7 +859,7 @@
             {date: "2026-01-05", net: 1.1908, pct1d: -0.06, realRet: 23.71},
             {date: "2026-01-06", net: 1.1908, pct1d: 0.00, realRet: 23.71},
             {date: "2026-01-07", net: 1.1917, pct1d: 0.07, realRet: 23.80}
-        */
+        ];
 
         // Fee structure (20% performance fee + 10% Prime Number fee = 30% total)
         const PERFORMANCE_FEE_RATE = 0.20;
@@ -874,27 +1034,23 @@
             let roiData;
             let chartLabel;
 
-            if (isRolling) {
-                // Rolling ROI for 30, 90, 180 day periods
-                const lookbackDays = periodDays;
-                chartLabel = `${lookbackDays}-Day Rolling ROI`;
-                roiData = historicalData.map((d, i) => {
-                    if (i < lookbackDays) return null;
-                    const startPrice = historicalData[i - lookbackDays].net;
-                    const periodReturn = ((d.net - startPrice) / startPrice) * 100;
-                    return periodReturn * (1 - TOTAL_FEE_RATE);
-                }).filter(v => v !== null);
-                // Adjust data to match roiData length
-                data.length = 0;
-                data.push(...historicalData.slice(periodDays));
+            // All views show cumulative ROI from inception, just zoomed to different time periods
+            chartLabel = periodDays === 'all' ? 'Cumulative ROI (All Time)' : `Cumulative ROI (Last ${periodDays} Days)`;
+            const firstPrice = historicalData[0].net;
+
+            // Calculate cumulative ROI for all data points
+            const allRoiData = historicalData.map((d, i) => {
+                const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
+                return cumulativeReturn * (1 - TOTAL_FEE_RATE);
+            });
+
+            // Filter to the selected time period
+            if (periodDays === 'all' || periodDays >= historicalData.length) {
+                roiData = allRoiData;
             } else {
-                // Cumulative ROI for All Time and 1 Year
-                chartLabel = 'Cumulative ROI';
-                const firstPrice = data[0].net;
-                roiData = data.map((d, i) => {
-                    const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
-                    return cumulativeReturn * (1 - TOTAL_FEE_RATE);
-                });
+                roiData = allRoiData.slice(-periodDays);
+                data.length = 0;
+                data.push(...historicalData.slice(-periodDays));
             }
 
             if (roiChart) roiChart.destroy();
@@ -954,31 +1110,26 @@
             let apyData;
             let chartLabel;
 
-            if (isRolling) {
-                // Rolling APY for 30, 90, 180 day periods
-                const lookbackDays = periodDays;
-                chartLabel = `${lookbackDays}-Day Rolling APY`;
-                apyData = historicalData.map((d, i) => {
-                    if (i < lookbackDays) return null;
-                    const startPrice = historicalData[i - lookbackDays].net;
-                    const periodReturn = ((d.net - startPrice) / startPrice) * 100;
-                    const netReturn = periodReturn * (1 - TOTAL_FEE_RATE);
-                    return (netReturn / lookbackDays) * 365;
-                }).filter(v => v !== null);
-                // Adjust data to match apyData length
-                data.length = 0;
-                data.push(...historicalData.slice(periodDays));
+            // All views show cumulative APY from inception, just zoomed to different time periods
+            chartLabel = periodDays === 'all' ? 'Cumulative APY (All Time)' : `Cumulative APY (Last ${periodDays} Days)`;
+            const firstPrice = historicalData[0].net;
+
+            // Calculate cumulative APY for all data points
+            const allApyData = historicalData.map((d, i) => {
+                if (i === 0) return 0;
+                const daysSinceStart = i + 1;
+                const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
+                const netReturn = cumulativeReturn * (1 - TOTAL_FEE_RATE);
+                return (netReturn / daysSinceStart) * 365;
+            });
+
+            // Filter to the selected time period
+            if (periodDays === 'all' || periodDays >= historicalData.length) {
+                apyData = allApyData;
             } else {
-                // Cumulative APY for All Time and 1 Year
-                chartLabel = 'Cumulative APY';
-                const firstPrice = data[0].net;
-                apyData = data.map((d, i) => {
-                    if (i === 0) return 0;
-                    const daysSinceStart = i + 1;
-                    const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
-                    const netReturn = cumulativeReturn * (1 - TOTAL_FEE_RATE);
-                    return (netReturn / daysSinceStart) * 365;
-                });
+                apyData = allApyData.slice(-periodDays);
+                data.length = 0;
+                data.push(...historicalData.slice(-periodDays));
             }
 
             if (apyChart) apyChart.destroy();
@@ -1060,8 +1211,8 @@
         async function fetchVaultData() {
             try {
                 const [currentResponse, historyResponse] = await Promise.all([
-                    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1.json')),
-                    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json'))
+                    fetch('https://app.primenumber.trade/data/PN_KV1.json'),
+                    fetch('https://app.primenumber.trade/data/PN_KV1_history.json')
                 ]);
 
                 const currentData = await currentResponse.json();
@@ -1117,11 +1268,39 @@
         }
 
         // Initialize
-        fetchVaultData();
-        setInterval(fetchVaultData, 60 * 1000); // Refresh vault data every minute
+        async function init() {
+            // Show loading state
+            document.getElementById('metricsGrid').innerHTML = '<div class="metric-card"><div class="metric-value">Loading data from Google Sheets...</div></div>';
 
-        // Fetch spreadsheet data and render charts
-        fetchSheetData();
+            // Fetch historical data from Google Sheets
+            const success = await fetchHistoricalData();
+            if (!success || historicalData.length === 0) {
+                console.warn('Using fallback data');
+                historicalData = fallbackData;
+            }
+
+            // Render everything
+            renderMetrics();
+            renderPriceChart('all');
+            renderROIChart('all');
+            renderAPYChart('all');
+            setupTabs();
+
+            // Fetch vault data
+            fetchVaultData();
+            setInterval(fetchVaultData, 60 * 1000); // Refresh every minute
+
+            // Refresh spreadsheet data every 5 minutes
+            setInterval(async () => {
+                await fetchHistoricalData();
+                renderMetrics();
+                renderPriceChart('all');
+                renderROIChart('all');
+                renderAPYChart('all');
+            }, 5 * 60 * 1000);
+        }
+
+        init();
     </script>
 </body>
 </html>
