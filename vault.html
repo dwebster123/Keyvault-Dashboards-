@@ -267,12 +267,11 @@
     </div>
 
     <script>
-        // Fee structure from spreadsheet (post management fee)
+        // Fee structure (20% performance fee + 10% Prime Number fee = 30% total)
         const FEE_CONFIG = {
-            basePerformanceFeeRate: 0.20,      // 20% base performance fee
-            kickerPerformanceFeeRate: 0.05,    // 5% kicker on outperformance
-            benchmarkAPY: 0.20,                // 20% benchmark
-            primeNumberRewardRate: 0.10        // 10% prime number reward
+            performanceFeeRate: 0.20,          // 20% performance fee
+            primeNumberFeeRate: 0.10,          // 10% prime number fee
+            totalFeeRate: 0.30                 // 30% total fees on gains
         };
 
         const VAULT_ADDRESS = 'G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp';
@@ -314,6 +313,7 @@
             const sortedHistory = historyArray.sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
 
             const initialSharePrice = sortedHistory.length > 0 ? sortedHistory[0].SharePrice : 1;
+            const totalDays = sortedHistory.length;
 
             // Current Balance = TVL (AUM)
             const currentBalance = tvl;
@@ -325,29 +325,16 @@
             const totalPNL = currentBalance - cumulativeNetDeposits;
 
             // Calculate returns as percentage
-            const grossReturn = ((sharePrice - 1) / 1) * 100; // Return since inception (share price started at 1)
-            const periodReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100; // Return over historical period
+            const grossReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100;
 
+            // Net return after 30% fees
+            const netReturn = grossReturn * (1 - FEE_CONFIG.totalFeeRate);
 
-            // Fee calculations based on spreadsheet model (post management fee)
-            const grossProfit = Math.max(0, totalPNL);
+            // All-time APY (annualized, net of fees)
+            const allTimeAPY = totalDays > 0 ? (netReturn / totalDays) * 365 : 0;
 
-            // Performance fee calculation
-            const basePerformanceFee = grossProfit * FEE_CONFIG.basePerformanceFeeRate;
-
-            // Outperformance calculation (vs benchmark)
-            const benchmarkReturn = tvl * (FEE_CONFIG.benchmarkAPY / 4); // Quarterly benchmark
-            const outperformance = Math.max(0, grossProfit - benchmarkReturn);
-            const kickerFee = outperformance * FEE_CONFIG.kickerPerformanceFeeRate;
-
-            // Total quarterly performance fee
-            const quarterlyPerformanceFee = basePerformanceFee + kickerFee;
-
-            // Prime Number Rewards (10% of gross profit)
-            const primeNumberRewards = grossProfit * FEE_CONFIG.primeNumberRewardRate;
-
-            // Net return after fees
-            const netReturn = grossReturn - (quarterlyPerformanceFee / tvl * 100);
+            // Calculate rolling APYs
+            const rollingAPYs = calculateRollingAPYs(sortedHistory, sharePrice);
 
             return {
                 currentBalance,
@@ -355,14 +342,45 @@
                 aum: tvl,
                 sharePrice,
                 grossReturn,
-                periodReturn,
                 netReturn,
+                allTimeAPY,
+                rollingAPYs,
                 totalPNL,
-                quarterlyPerformanceFee,
-                primeNumberRewards,
+                totalDays,
                 updateTime,
                 history: sortedHistory
             };
+        }
+
+        function calculateRollingAPYs(history, currentSharePrice) {
+            const periods = [
+                { name: '7D', days: 7 },
+                { name: '30D', days: 30 },
+                { name: '90D', days: 90 },
+                { name: 'All Time', days: history.length }
+            ];
+
+            return periods.map(period => {
+                const daysAvailable = Math.min(period.days, history.length);
+                if (daysAvailable < 1) {
+                    return { name: period.name, days: 0, return: 0, apy: 0 };
+                }
+
+                const startIndex = Math.max(0, history.length - daysAvailable);
+                const startPrice = history[startIndex].SharePrice;
+                const endPrice = currentSharePrice;
+
+                const periodReturn = ((endPrice - startPrice) / startPrice) * 100;
+                const netPeriodReturn = periodReturn * (1 - FEE_CONFIG.totalFeeRate);
+                const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
+
+                return {
+                    name: period.name,
+                    days: daysAvailable,
+                    return: netPeriodReturn,
+                    apy: annualizedAPY
+                };
+            });
         }
 
         function formatCurrency(value) {
@@ -376,7 +394,7 @@
 
         function formatPercent(value) {
             const sign = value >= 0 ? '+' : '';
-            return `${sign}${value.toFixed(4)}%`;
+            return `${sign}${value.toFixed(2)}%`;
         }
 
         function formatDate(dateStr) {
@@ -399,6 +417,8 @@
             const netReturnClass = metrics.netReturn >= 0 ? 'positive' : 'negative';
             const pnlClass = metrics.totalPNL >= 0 ? 'positive' : 'negative';
 
+            const apyClass = metrics.allTimeAPY >= 0 ? 'positive' : 'negative';
+
             document.getElementById('content').innerHTML = `
                 <!-- Primary Metrics -->
                 <div class="metrics-grid">
@@ -409,28 +429,33 @@
                     </div>
 
                     <div class="metric-card primary">
-                        <div class="metric-label">Cumulative Net Deposits</div>
-                        <div class="metric-value">${formatCurrency(metrics.cumulativeNetDeposits)}</div>
-                        <div class="metric-subtext">Total capital deposited</div>
-                    </div>
-
-                    <div class="metric-card primary">
                         <div class="metric-label">Share Price</div>
                         <div class="metric-value">${metrics.sharePrice.toFixed(6)}</div>
                         <div class="metric-subtext">Current NAV per Share</div>
                     </div>
 
-                    <div class="metric-card ${returnClass === 'positive' ? 'positive' : ''}">
-                        <div class="metric-label">Gross Return</div>
-                        <div class="metric-value ${returnClass}">${formatPercent(metrics.grossReturn)}</div>
-                        <div class="metric-subtext">Since inception (Share Price - 1)</div>
+                    <div class="metric-card ${netReturnClass === 'positive' ? 'positive' : ''}">
+                        <div class="metric-label">Net ROI</div>
+                        <div class="metric-value ${netReturnClass}">${formatPercent(metrics.netReturn)}</div>
+                        <div class="metric-subtext">After 30% fees (${metrics.totalDays} days)</div>
                     </div>
 
-                    <div class="metric-card ${netReturnClass === 'positive' ? 'positive' : ''}">
-                        <div class="metric-label">Net Return</div>
-                        <div class="metric-value ${netReturnClass}">${formatPercent(metrics.netReturn)}</div>
-                        <div class="metric-subtext">After all fees</div>
+                    <div class="metric-card ${apyClass === 'positive' ? 'positive' : ''}">
+                        <div class="metric-label">Net APY (All Time)</div>
+                        <div class="metric-value ${apyClass}">${formatPercent(metrics.allTimeAPY)}</div>
+                        <div class="metric-subtext">Annualized, after fees</div>
                     </div>
+                </div>
+
+                <h2 class="section-title">Rolling APY (Net of Fees)</h2>
+                <div class="metrics-grid">
+                    ${metrics.rollingAPYs.map(apy => `
+                        <div class="metric-card ${apy.apy >= 0 ? 'positive' : ''}">
+                            <div class="metric-label">${apy.name} APY</div>
+                            <div class="metric-value ${apy.apy >= 0 ? 'positive' : 'negative'}">${formatPercent(apy.apy)}</div>
+                            <div class="metric-subtext">${apy.days} days, ${formatPercent(apy.return)} return</div>
+                        </div>
+                    `).join('')}
                 </div>
 
                 <h2 class="section-title">Profit & Loss</h2>
@@ -440,20 +465,11 @@
                         <div class="metric-value ${pnlClass}">${formatCurrency(metrics.totalPNL)}</div>
                         <div class="metric-subtext">Current Balance - Net Deposits</div>
                     </div>
-                </div>
 
-                <h2 class="section-title">Fees & Rewards</h2>
-                <div class="metrics-grid">
-                    <div class="metric-card warning">
-                        <div class="metric-label tooltip" data-tooltip="20% base + 5% outperformance kicker">Est. Quarterly Performance Fee</div>
-                        <div class="metric-value">${formatCurrency(metrics.quarterlyPerformanceFee)}</div>
-                        <div class="metric-subtext">20% base + 5% kicker on outperformance</div>
-                    </div>
-
-                    <div class="metric-card positive">
-                        <div class="metric-label tooltip" data-tooltip="10% of gross profits">Est. Prime Number Rewards</div>
-                        <div class="metric-value positive">${formatCurrency(metrics.primeNumberRewards)}</div>
-                        <div class="metric-subtext">10% of gross profit</div>
+                    <div class="metric-card primary">
+                        <div class="metric-label">Net Deposits</div>
+                        <div class="metric-value">${formatCurrency(metrics.cumulativeNetDeposits)}</div>
+                        <div class="metric-subtext">Total capital deposited</div>
                     </div>
                 </div>
 
@@ -470,20 +486,16 @@
                     <div class="fee-structure">
                         <h3 class="chart-title">Fee Structure</h3>
                         <div class="fee-row">
-                            <span class="fee-label">Base Performance Fee</span>
+                            <span class="fee-label">Performance Fee</span>
                             <span class="fee-value">20.00%</span>
                         </div>
                         <div class="fee-row">
-                            <span class="fee-label">Kicker Performance Fee</span>
-                            <span class="fee-value">5.00%</span>
-                        </div>
-                        <div class="fee-row">
-                            <span class="fee-label">Benchmark APY</span>
-                            <span class="fee-value">20.00%</span>
-                        </div>
-                        <div class="fee-row">
-                            <span class="fee-label">Prime Number Reward Rate</span>
+                            <span class="fee-label">Prime Number Fee</span>
                             <span class="fee-value">10.00%</span>
+                        </div>
+                        <div class="fee-row">
+                            <span class="fee-label">Total Fees on Gains</span>
+                            <span class="fee-value">30.00%</span>
                         </div>
                     </div>
 
