@@ -346,8 +346,8 @@
         // Google Sheets URL for historical data (old fund)
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1tCkeY0rYnBTacwrn4DFAASY89JpnWBo06X2x333u2YA/gviz/tq?tqx=out:csv&gid=0';
 
-        // Live vault API for new fund data
-        const VAULT_HISTORY_URL = 'https://app.primenumber.trade/data/PN_KV1_history.json';
+        // Live vault API for new fund data (using CORS proxy)
+        const VAULT_HISTORY_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json');
 
         // Combined historical data (spreadsheet + live vault)
         let historicalData = [];
@@ -431,24 +431,26 @@
                 console.log('DEBUG: Vault history rows:', vaultHistory.length);
                 console.log('DEBUG: Vault dates:', vaultHistory.map(v => v.date));
 
+                // Use fallback data if spreadsheet fetch failed
+                let baseData = spreadsheetData;
                 if (spreadsheetData.length === 0) {
-                    console.error('No spreadsheet data');
-                    return false;
+                    console.warn('Spreadsheet empty, using fallback data');
+                    baseData = fallbackData;
                 }
 
-                // Get the last entry from spreadsheet to use as baseline
-                const lastSpreadsheetEntry = spreadsheetData[spreadsheetData.length - 1];
-                const lastSpreadsheetDate = new Date(lastSpreadsheetEntry.date);
-                const baselineNet = lastSpreadsheetEntry.net;
-                const baselineReturn = lastSpreadsheetEntry.realRet;
+                // Get the last entry from base data to use as baseline
+                const lastBaseEntry = baseData[baseData.length - 1];
+                const lastBaseDate = new Date(lastBaseEntry.date);
+                const baselineNet = lastBaseEntry.net;
+                const baselineReturn = lastBaseEntry.realRet;
 
-                console.log('DEBUG: Last spreadsheet date:', lastSpreadsheetEntry.date);
-                console.log('DEBUG: Last spreadsheet net:', baselineNet);
+                console.log('DEBUG: Last base data date:', lastBaseEntry.date);
+                console.log('DEBUG: Last base data net:', baselineNet);
 
-                console.log(`Spreadsheet ends: ${lastSpreadsheetEntry.date}, net: ${baselineNet}, return: ${baselineReturn}%`);
+                console.log(`Base data ends: ${lastBaseEntry.date}, net: ${baselineNet}, return: ${baselineReturn}%`);
 
                 // Find vault data that comes AFTER the spreadsheet data
-                const newVaultData = vaultHistory.filter(v => new Date(v.date) > lastSpreadsheetDate);
+                const newVaultData = vaultHistory.filter(v => new Date(v.date) > lastBaseDate);
 
                 console.log('DEBUG: newVaultData length:', newVaultData.length);
                 console.log('DEBUG: newVaultData:', newVaultData);
@@ -468,7 +470,7 @@
                     };
 
                     const interpolatedData = [];
-                    const gapDays = Math.floor((firstVaultDate - lastSpreadsheetDate) / (1000 * 60 * 60 * 24)) - 1;
+                    const gapDays = Math.floor((firstVaultDate - lastBaseDate) / (1000 * 60 * 60 * 24)) - 1;
                     const inceptionNet = 0.9626;
 
                     if (gapDays > 0) {
@@ -476,7 +478,7 @@
                         let prevNet = baselineNet;
 
                         for (let i = 1; i <= gapDays; i++) {
-                            const gapDate = new Date(lastSpreadsheetDate);
+                            const gapDate = new Date(lastBaseDate);
                             gapDate.setDate(gapDate.getDate() + i);
                             const dateStr = gapDate.toISOString().split('T')[0];
 
@@ -528,9 +530,9 @@
                         };
                     });
 
-                    historicalData = [...spreadsheetData, ...interpolatedData, ...combinedVaultData];
+                    historicalData = [...baseData, ...interpolatedData, ...combinedVaultData];
                 } else {
-                    historicalData = spreadsheetData;
+                    historicalData = baseData;
                 }
 
                 console.log(`Total combined data points: ${historicalData.length}`);
@@ -1211,8 +1213,8 @@
         async function fetchVaultData() {
             try {
                 const [currentResponse, historyResponse] = await Promise.all([
-                    fetch('https://app.primenumber.trade/data/PN_KV1.json'),
-                    fetch('https://app.primenumber.trade/data/PN_KV1_history.json')
+                    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1.json')),
+                    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json'))
                 ]);
 
                 const currentData = await currentResponse.json();
