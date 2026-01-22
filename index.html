@@ -293,22 +293,6 @@
             <!-- Populated by JS -->
         </div>
 
-        <!-- Share Price Chart -->
-        <div class="chart-container">
-            <div class="chart-header">
-                <h3 class="chart-title">Share Price History</h3>
-                <div class="tabs-container" id="priceChartTabs">
-                    <div class="tab active" data-period="all">All Time</div>
-                    <div class="tab" data-period="365">1 Year</div>
-                    <div class="tab" data-period="180">180 Days</div>
-                    <div class="tab" data-period="90">90 Days</div>
-                    <div class="tab" data-period="30">30 Days</div>
-                </div>
-            </div>
-            <div class="chart-wrapper">
-                <canvas id="priceChart"></canvas>
-            </div>
-        </div>
 
         <!-- Cumulative ROI Chart -->
         <div class="chart-container">
@@ -319,7 +303,6 @@
                     <div class="tab" data-period="365">1 Year</div>
                     <div class="tab" data-period="180">180 Days</div>
                     <div class="tab" data-period="90">90 Days</div>
-                    <div class="tab" data-period="30">30 Days</div>
                 </div>
             </div>
             <div class="chart-wrapper">
@@ -336,7 +319,6 @@
                     <div class="tab" data-period="365">1 Year</div>
                     <div class="tab" data-period="180">180 Days</div>
                     <div class="tab" data-period="90">90 Days</div>
-                    <div class="tab" data-period="30">30 Days</div>
                 </div>
             </div>
             <div class="chart-wrapper">
@@ -903,7 +885,6 @@
         function calculateRollingAPYs() {
             const latest = historicalData[historicalData.length - 1];
             const periods = [
-                { name: '30D', days: 30 },
                 { name: '90D', days: 90 },
                 { name: '180D', days: 180 },
                 { name: '1Y', days: 365 },
@@ -946,10 +927,6 @@
 
             document.getElementById('metricsGrid').innerHTML = `
                 <div class="metric-card highlight">
-                    <div class="metric-label">Share Price</div>
-                    <div class="metric-value">${metrics.sharePrice.toFixed(4)}</div>
-                </div>
-                <div class="metric-card highlight">
                     <div class="metric-label">ROI (Net of Fees)</div>
                     <div class="metric-value positive">${formatPercent(metrics.netROI)}</div>
                 </div>
@@ -977,58 +954,8 @@
         }
 
         // Charts
-        let priceChart = null;
         let roiChart = null;
         let apyChart = null;
-
-        function renderPriceChart(period = 'all') {
-            const ctx = document.getElementById('priceChart').getContext('2d');
-            const data = getFilteredData(period === 'all' ? 'all' : parseInt(period));
-
-            if (priceChart) priceChart.destroy();
-
-            priceChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: data.map(d => d.date),
-                    datasets: [{
-                        label: 'Share Price',
-                        data: data.map(d => d.net),
-                        borderColor: '#00d4ff',
-                        backgroundColor: 'rgba(0, 212, 255, 0.1)',
-                        fill: true,
-                        tension: 0.3,
-                        pointRadius: 0,
-                        pointHoverRadius: 5
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
-                            titleColor: '#fff',
-                            bodyColor: '#8b8ba7',
-                            callbacks: {
-                                label: ctx => `Price: ${ctx.parsed.y.toFixed(4)}`
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { color: 'rgba(255,255,255,0.05)' },
-                            ticks: { color: '#6b6b8d', maxTicksLimit: 8 }
-                        },
-                        y: {
-                            grid: { color: 'rgba(255,255,255,0.05)' },
-                            ticks: { color: '#00d4ff' }
-                        }
-                    }
-                }
-            });
-        }
 
         function renderROIChart(period = 'all') {
             const ctx = document.getElementById('roiChart').getContext('2d');
@@ -1187,14 +1114,6 @@
 
         // Tab handling
         function setupTabs() {
-            document.getElementById('priceChartTabs').addEventListener('click', e => {
-                if (e.target.classList.contains('tab')) {
-                    document.querySelectorAll('#priceChartTabs .tab').forEach(t => t.classList.remove('active'));
-                    e.target.classList.add('active');
-                    renderPriceChart(e.target.dataset.period);
-                }
-            });
-
             document.getElementById('roiChartTabs').addEventListener('click', e => {
                 if (e.target.classList.contains('tab')) {
                     document.querySelectorAll('#roiChartTabs .tab').forEach(t => t.classList.remove('active'));
@@ -1286,7 +1205,6 @@
 
             // Render everything
             renderMetrics();
-            renderPriceChart('all');
             renderROIChart('all');
             renderAPYChart('all');
             setupTabs();
@@ -1299,7 +1217,6 @@
             setInterval(async () => {
                 await fetchHistoricalData();
                 renderMetrics();
-                renderPriceChart('all');
                 renderROIChart('all');
                 renderAPYChart('all');
             }, 5 * 60 * 1000);
