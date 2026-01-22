@@ -25,160 +25,290 @@
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             padding: 20px;
         }
 
         .header h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             background: linear-gradient(90deg, #00d4ff, #7c3aed, #f472b6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 10px;
-        }
-
-        .header .vault-address {
-            font-family: monospace;
-            font-size: 0.85rem;
-            color: #8b8ba7;
-            word-break: break-all;
-            max-width: 600px;
-            margin: 0 auto;
+            margin-bottom: 8px;
         }
 
         .header .update-time {
             color: #6b6b8d;
-            font-size: 0.9rem;
-            margin-top: 10px;
+            font-size: 0.85rem;
+            margin-top: 8px;
         }
 
         .dashboard {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #8b8ba7;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Metrics Grid - Consistent 3 columns */
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 30px;
         }
 
+        .metrics-grid.two-col {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 900px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Metric Cards */
         .metric-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
             border-radius: 16px;
             padding: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .metric-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
         }
 
-        .metric-card.primary {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+        /* Color-coded borders */
+        .metric-card.realized {
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+
+        .metric-card.pending {
+            border-color: rgba(251, 191, 36, 0.4);
+        }
+
+        .metric-card.projected {
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .metric-card.prime {
+            border-color: rgba(124, 58, 237, 0.4);
+        }
+
+        .metric-card.management {
+            border-color: rgba(244, 114, 182, 0.4);
+        }
+
+        .metric-card.highlight {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(124, 58, 237, 0.12) 100%);
             border-color: rgba(0, 212, 255, 0.3);
         }
 
-        .metric-card.positive {
-            border-color: rgba(34, 197, 94, 0.3);
-        }
-
-        .metric-card.warning {
-            border-color: rgba(251, 191, 36, 0.3);
+        .metric-card.grand-total {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(0, 212, 255, 0.15) 100%);
+            border-color: rgba(34, 197, 94, 0.5);
+            grid-column: span 1;
         }
 
         .metric-label {
-            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
             color: #8b8ba7;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .metric-label .icon {
+            font-size: 1rem;
         }
 
         .metric-value {
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             font-weight: 700;
             color: #ffffff;
+            line-height: 1.2;
         }
 
-        .metric-value.positive {
-            color: #22c55e;
-        }
-
-        .metric-value.negative {
-            color: #ef4444;
-        }
+        .metric-value.realized { color: #22c55e; }
+        .metric-value.pending { color: #fbbf24; }
+        .metric-value.projected { color: #38bdf8; }
+        .metric-value.prime { color: #a78bfa; }
+        .metric-value.management { color: #f472b6; }
+        .metric-value.grand { color: #22c55e; font-size: 2rem; }
 
         .metric-subtext {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #6b6b8d;
             margin-top: 8px;
         }
 
-        .chart-container {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .chart-title {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: #ffffff;
-        }
-
-        .chart-wrapper {
+        /* Tooltips */
+        .has-tooltip {
             position: relative;
-            height: 300px;
+            cursor: help;
         }
 
-        .section-title {
-            font-size: 1.5rem;
-            margin: 30px 0 20px 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            color: #00d4ff;
+        .has-tooltip .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e1e3f;
+            color: #e2e2e2;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+            white-space: nowrap;
+            max-width: 280px;
+            white-space: normal;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            z-index: 100;
+            transition: opacity 0.2s, visibility 0.2s;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
-        .fee-structure {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .has-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
         }
 
-        .fee-row {
+        /* Section Dividers */
+        .section-header {
             display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+            gap: 12px;
+            margin: 35px 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .fee-row:last-child {
-            border-bottom: none;
+        .section-header .icon {
+            font-size: 1.3rem;
         }
 
-        .fee-label {
-            color: #8b8ba7;
-        }
-
-        .fee-value {
+        .section-header h2 {
+            font-size: 1.2rem;
             font-weight: 600;
             color: #ffffff;
         }
 
+        .section-header .badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #8b8ba7;
+        }
+
+        /* Charts */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 800px) {
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chart-card h3 {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 220px;
+        }
+
+        .chart-wrapper.tall {
+            height: 280px;
+        }
+
+        /* Loading */
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: 60px;
             color: #8b8ba7;
         }
 
@@ -197,70 +327,63 @@
         }
 
         .error {
-            background: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 24px;
             text-align: center;
             color: #ef4444;
         }
 
-        .two-col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        /* Color Legend */
+        .color-legend {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
         }
 
-        @media (max-width: 768px) {
-            .two-col {
-                grid-template-columns: 1fr;
-            }
-
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .metric-value {
-                font-size: 1.4rem;
-            }
-        }
-
-        .tooltip {
-            position: relative;
-            cursor: help;
-        }
-
-        .tooltip::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1a1a3e;
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 6px;
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             font-size: 0.75rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #8b8ba7;
         }
 
-        .tooltip:hover::after {
-            opacity: 1;
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
         }
+
+        .legend-dot.realized { background: #22c55e; }
+        .legend-dot.pending { background: #fbbf24; }
+        .legend-dot.projected { background: #38bdf8; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Private KeyVault Dashboard</h1>
-        <div class="vault-address">Vault: G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp</div>
         <div class="update-time" id="updateTime">Loading...</div>
     </div>
 
     <div class="dashboard">
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="overview">Overview</button>
+            <button class="tab-btn" data-tab="revenue">Fee Revenue</button>
+            <button class="tab-btn" data-tab="projections">Projections</button>
+        </div>
+
+        <!-- Color Legend -->
+        <div class="color-legend">
+            <div class="legend-item"><span class="legend-dot realized"></span> Realized/Collected</div>
+            <div class="legend-item"><span class="legend-dot pending"></span> Pending/Unrealized</div>
+            <div class="legend-item"><span class="legend-dot projected"></span> Projected/Future</div>
+        </div>
+
         <div id="content">
             <div class="loading">
                 <div class="loading-spinner"></div>
@@ -270,26 +393,24 @@
     </div>
 
     <script>
-        // Fee structure (20% performance fee + 10% Prime Number fee = 30% total on gains)
-        // Plus 2% management fee taken upfront before deposits enter vault
+        // Fee structure
         const FEE_CONFIG = {
-            performanceFeeRate: 0.20,          // 20% performance fee (your share)
-            primeNumberFeeRate: 0.10,          // 10% prime number fee
-            totalFeeRate: 0.30,                // 30% total fees on gains
-            managementFeeRate: 0.02            // 2% management fee (taken before vault entry)
+            performanceFeeRate: 0.20,
+            primeNumberFeeRate: 0.10,
+            totalFeeRate: 0.30,
+            managementFeeRate: 0.02
         };
 
         // Quarter end dates for fee realization (5pm ET on last day of quarter)
         function getQuarterEndDates(year) {
             return [
-                new Date(`${year}-03-31T17:00:00-05:00`), // Q1
-                new Date(`${year}-06-30T17:00:00-04:00`), // Q2 (EDT)
-                new Date(`${year}-09-30T17:00:00-04:00`), // Q3 (EDT)
-                new Date(`${year}-12-31T17:00:00-05:00`)  // Q4 (EST)
+                new Date(`${year}-03-31T17:00:00-05:00`),
+                new Date(`${year}-06-30T17:00:00-04:00`),
+                new Date(`${year}-09-30T17:00:00-04:00`),
+                new Date(`${year}-12-31T17:00:00-05:00`)
             ];
         }
 
-        // Get all past quarter ends since fund inception
         function getPastQuarterEnds(inceptionDate) {
             const quarters = [];
             const now = new Date();
@@ -306,7 +427,6 @@
             return quarters;
         }
 
-        // Get next quarter end date
         function getNextQuarterEnd() {
             const now = new Date();
             const year = now.getFullYear();
@@ -315,11 +435,9 @@
             for (const qEnd of quarters) {
                 if (qEnd > now) return qEnd;
             }
-            // Next year Q1
             return getQuarterEndDates(year + 1)[0];
         }
 
-        // Find the share price at a specific date from history
         function getSharePriceAtDate(history, targetDate) {
             const target = new Date(targetDate);
             let closest = history[0];
@@ -336,7 +454,6 @@
             return closest ? closest.SharePrice : null;
         }
 
-        // Calculate realized and unrealized performance fees
         function calculatePerformanceFees(history, currentSharePrice, inceptionDate) {
             const initialPrice = history[0]?.SharePrice || 1;
             const pastQuarters = getPastQuarterEnds(inceptionDate);
@@ -345,11 +462,9 @@
             let lastRealizedPrice = initialPrice;
             let lastRealizationDate = null;
 
-            // Calculate realized fees from each past quarter
             for (const qEnd of pastQuarters) {
                 const priceAtQuarter = getSharePriceAtDate(history, qEnd);
                 if (priceAtQuarter && priceAtQuarter > lastRealizedPrice) {
-                    // Gain since last realization
                     const gainPercent = (priceAtQuarter - lastRealizedPrice) / lastRealizedPrice;
                     realizedFees += gainPercent * FEE_CONFIG.performanceFeeRate * 100;
                     lastRealizedPrice = priceAtQuarter;
@@ -357,19 +472,15 @@
                 }
             }
 
-            // Calculate unrealized fees (gains since last quarter end)
             let unrealizedFees = 0;
             if (currentSharePrice > lastRealizedPrice) {
                 const unrealizedGainPercent = (currentSharePrice - lastRealizedPrice) / lastRealizedPrice;
                 unrealizedFees = unrealizedGainPercent * FEE_CONFIG.performanceFeeRate * 100;
             }
 
-            // Calculate dollar amounts based on a reference (total PNL)
-            const totalGainPercent = (currentSharePrice - initialPrice) / initialPrice;
-
             return {
-                realizedFees,           // As percentage of initial investment
-                unrealizedFees,         // As percentage of initial investment
+                realizedFees,
+                unrealizedFees,
                 totalFees: realizedFees + unrealizedFees,
                 lastRealizationDate,
                 nextQuarterEnd: getNextQuarterEnd(),
@@ -377,11 +488,9 @@
             };
         }
 
-        const VAULT_ADDRESS = 'G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp';
-
         let currentData = null;
         let historicalData = null;
-        let chart = null;
+        let charts = {};
 
         async function fetchData() {
             try {
@@ -406,102 +515,58 @@
         }
 
         function calculateMetrics(data, history) {
-            // Get current values - handle both object and array formats
-            const tvl = data.tvl || data.TVL || (Array.isArray(data) ? data[data.length - 1]?.tvl : 0);
-            const sharePrice = data.SharePrice || data.sharePrice || (Array.isArray(data) ? data[data.length - 1]?.SharePrice : 1);
-            const updateTime = data.update_time_utc || data.updateTime || (Array.isArray(data) ? data[data.length - 1]?.update_time_utc : new Date().toISOString());
+            const tvl = data.tvl || data.TVL || 0;
+            const sharePrice = data.SharePrice || data.sharePrice || 1;
+            const updateTime = data.update_time_utc || data.updateTime || new Date().toISOString();
 
-            // Get historical data for calculations
             const historyArray = Array.isArray(history) ? history : [history];
             const sortedHistory = historyArray.sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
 
             const initialSharePrice = sortedHistory.length > 0 ? sortedHistory[0].SharePrice : 1;
             const totalDays = sortedHistory.length;
 
-            // Current Balance = TVL (AUM)
             const currentBalance = tvl;
-
-            // Cumulative Net Deposits = TVL / Share Price (base capital without returns)
             const cumulativeNetDeposits = tvl / sharePrice;
-
-            // Total PNL = Current Balance - Net Deposits
             const totalPNL = currentBalance - cumulativeNetDeposits;
-
-            // Calculate returns as percentage
             const grossReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100;
-
-            // Net return after 30% fees
             const netReturn = grossReturn * (1 - FEE_CONFIG.totalFeeRate);
-
-            // All-time APY (annualized, net of fees)
             const allTimeAPY = totalDays > 0 ? (netReturn / totalDays) * 365 : 0;
 
-            // Calculate rolling APYs
             const rollingAPYs = calculateRollingAPYs(sortedHistory, sharePrice);
 
-            // Calculate performance fees
             const inceptionDate = sortedHistory[0]?.update_time_utc || new Date().toISOString();
             const performanceFees = calculatePerformanceFees(sortedHistory, sharePrice, inceptionDate);
 
-            // Calculate dollar amounts for fees based on net deposits
             const realizedFeeDollars = (performanceFees.realizedFees / 100) * cumulativeNetDeposits;
             const unrealizedFeeDollars = (performanceFees.unrealizedFees / 100) * cumulativeNetDeposits;
 
-            // Calculate Prime Number fees (10% - same schedule as performance fees)
-            const primeRealizedFeeDollars = (performanceFees.realizedFees / 100) * cumulativeNetDeposits * (FEE_CONFIG.primeNumberFeeRate / FEE_CONFIG.performanceFeeRate);
-            const primeUnrealizedFeeDollars = (performanceFees.unrealizedFees / 100) * cumulativeNetDeposits * (FEE_CONFIG.primeNumberFeeRate / FEE_CONFIG.performanceFeeRate);
+            const primeRealizedFeeDollars = realizedFeeDollars * (FEE_CONFIG.primeNumberFeeRate / FEE_CONFIG.performanceFeeRate);
+            const primeUnrealizedFeeDollars = unrealizedFeeDollars * (FEE_CONFIG.primeNumberFeeRate / FEE_CONFIG.performanceFeeRate);
 
-            // Calculate Management Fee (2% taken before vault entry - reverse engineer)
-            // If vault shows deposits of X, original was X / (1 - 0.02), so fee = X * (0.02 / 0.98)
             const managementFeeDollars = cumulativeNetDeposits * (FEE_CONFIG.managementFeeRate / (1 - FEE_CONFIG.managementFeeRate));
 
-            // Total Revenue calculations
             const totalRealizedRevenue = realizedFeeDollars + primeRealizedFeeDollars + managementFeeDollars;
             const totalUnrealizedRevenue = unrealizedFeeDollars + primeUnrealizedFeeDollars;
             const totalRevenue = totalRealizedRevenue + totalUnrealizedRevenue;
 
-            // Project to end of year calculations
             const now = new Date();
-            const endOfYear = new Date(now.getFullYear(), 11, 31, 17, 0, 0); // Dec 31 5pm
+            const endOfYear = new Date(now.getFullYear(), 11, 31, 17, 0, 0);
             const daysRemaining = Math.max(0, Math.ceil((endOfYear - now) / (1000 * 60 * 60 * 24)));
 
-            // Use all-time APY for projection (already net of fees, so we use gross for fee calc)
-            const projectedTotalReturn = allTimeAPY; // Same as all-time APY
-
-            // Calculate projected fees at end of year based on APY
-            // Convert APY back to gross return for fee calculation
+            const projectedTotalReturn = allTimeAPY;
             const projectedGrossReturn = allTimeAPY / (1 - FEE_CONFIG.totalFeeRate);
             const projectedPerformanceFees = (projectedGrossReturn / 100) * FEE_CONFIG.performanceFeeRate * cumulativeNetDeposits;
             const projectedPrimeFees = (projectedGrossReturn / 100) * FEE_CONFIG.primeNumberFeeRate * cumulativeNetDeposits;
             const projectedTotalRevenue = projectedPerformanceFees + projectedPrimeFees + managementFeeDollars;
 
             return {
-                currentBalance,
-                cumulativeNetDeposits,
-                aum: tvl,
-                sharePrice,
-                grossReturn,
-                netReturn,
-                allTimeAPY,
-                rollingAPYs,
-                totalPNL,
-                totalDays,
-                updateTime,
-                history: sortedHistory,
-                performanceFees,
-                realizedFeeDollars,
-                unrealizedFeeDollars,
-                primeRealizedFeeDollars,
-                primeUnrealizedFeeDollars,
-                managementFeeDollars,
-                totalRealizedRevenue,
-                totalUnrealizedRevenue,
-                totalRevenue,
-                daysRemaining,
-                projectedTotalReturn,
-                projectedPerformanceFees,
-                projectedPrimeFees,
-                projectedTotalRevenue
+                currentBalance, cumulativeNetDeposits, sharePrice, grossReturn, netReturn,
+                allTimeAPY, rollingAPYs, totalPNL, totalDays, updateTime, history: sortedHistory,
+                performanceFees, realizedFeeDollars, unrealizedFeeDollars,
+                primeRealizedFeeDollars, primeUnrealizedFeeDollars, managementFeeDollars,
+                totalRealizedRevenue, totalUnrealizedRevenue, totalRevenue,
+                daysRemaining, projectedTotalReturn, projectedPerformanceFees,
+                projectedPrimeFees, projectedTotalRevenue
             };
         }
 
@@ -515,33 +580,22 @@
 
             return periods.map(period => {
                 const daysAvailable = Math.min(period.days, history.length);
-                if (daysAvailable < 1) {
-                    return { name: period.name, days: 0, return: 0, apy: 0 };
-                }
+                if (daysAvailable < 1) return { name: period.name, days: 0, return: 0, apy: 0 };
 
                 const startIndex = Math.max(0, history.length - daysAvailable);
                 const startPrice = history[startIndex].SharePrice;
-                const endPrice = currentSharePrice;
-
-                const periodReturn = ((endPrice - startPrice) / startPrice) * 100;
+                const periodReturn = ((currentSharePrice - startPrice) / startPrice) * 100;
                 const netPeriodReturn = periodReturn * (1 - FEE_CONFIG.totalFeeRate);
                 const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
 
-                return {
-                    name: period.name,
-                    days: daysAvailable,
-                    return: netPeriodReturn,
-                    apy: annualizedAPY
-                };
+                return { name: period.name, days: daysAvailable, return: netPeriodReturn, apy: annualizedAPY };
             });
         }
 
         function formatCurrency(value) {
             return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
+                style: 'currency', currency: 'USD',
+                minimumFractionDigits: 2, maximumFractionDigits: 2
             }).format(value);
         }
 
@@ -552,338 +606,388 @@
 
         function formatDate(dateStr) {
             return new Date(dateStr).toLocaleString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                timeZoneName: 'short'
+                month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
             });
         }
 
         function formatQuarterDate(date) {
             return date.toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric'
+                month: 'short', day: 'numeric', year: 'numeric'
             }) + ' 5pm ET';
         }
 
         function getDaysUntil(date) {
             const now = new Date();
-            const diff = date - now;
-            return Math.ceil(diff / (1000 * 60 * 60 * 24));
+            return Math.ceil((date - now) / (1000 * 60 * 60 * 24));
         }
 
         function renderDashboard() {
-            const metrics = calculateMetrics(currentData, historicalData);
+            const m = calculateMetrics(currentData, historicalData);
 
-            document.getElementById('updateTime').textContent = `Last Updated: ${formatDate(metrics.updateTime)}`;
-
-            const returnClass = metrics.grossReturn >= 0 ? 'positive' : 'negative';
-            const netReturnClass = metrics.netReturn >= 0 ? 'positive' : 'negative';
-            const pnlClass = metrics.totalPNL >= 0 ? 'positive' : 'negative';
-
-            const apyClass = metrics.allTimeAPY >= 0 ? 'positive' : 'negative';
+            document.getElementById('updateTime').textContent = `Last Updated: ${formatDate(m.updateTime)}`;
 
             document.getElementById('content').innerHTML = `
-                <!-- Primary Metrics -->
-                <div class="metrics-grid">
-                    <div class="metric-card primary">
-                        <div class="metric-label">Current Balance</div>
-                        <div class="metric-value">${formatCurrency(metrics.currentBalance)}</div>
-                        <div class="metric-subtext">Total Value (AUM)</div>
-                    </div>
-
-                    <div class="metric-card primary">
-                        <div class="metric-label">Share Price</div>
-                        <div class="metric-value">${metrics.sharePrice.toFixed(6)}</div>
-                        <div class="metric-subtext">Current NAV per Share</div>
-                    </div>
-
-                    <div class="metric-card ${netReturnClass === 'positive' ? 'positive' : ''}">
-                        <div class="metric-label">Net ROI</div>
-                        <div class="metric-value ${netReturnClass}">${formatPercent(metrics.netReturn)}</div>
-                        <div class="metric-subtext">After 30% fees (${metrics.totalDays} days)</div>
-                    </div>
-
-                    <div class="metric-card ${apyClass === 'positive' ? 'positive' : ''}">
-                        <div class="metric-label">Net APY (All Time)</div>
-                        <div class="metric-value ${apyClass}">${formatPercent(metrics.allTimeAPY)}</div>
-                        <div class="metric-subtext">Annualized, after fees</div>
-                    </div>
-                </div>
-
-                <h2 class="section-title">Rolling APY (Net of Fees)</h2>
-                <div class="metrics-grid">
-                    ${metrics.rollingAPYs.map(apy => `
-                        <div class="metric-card ${apy.apy >= 0 ? 'positive' : ''}">
-                            <div class="metric-label">${apy.name} APY</div>
-                            <div class="metric-value ${apy.apy >= 0 ? 'positive' : 'negative'}">${formatPercent(apy.apy)}</div>
-                            <div class="metric-subtext">${apy.days} days, ${formatPercent(apy.return)} return</div>
+                <!-- OVERVIEW TAB -->
+                <div class="tab-content active" id="tab-overview">
+                    <div class="metrics-grid">
+                        <div class="metric-card highlight">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">💰</span> Current Balance
+                                <span class="tooltip-text">Total value of all assets under management (AUM)</span>
+                            </div>
+                            <div class="metric-value">${formatCurrency(m.currentBalance)}</div>
+                            <div class="metric-subtext">Total AUM</div>
                         </div>
-                    `).join('')}
-                </div>
 
-                <h2 class="section-title">Profit & Loss</h2>
-                <div class="metrics-grid">
-                    <div class="metric-card ${pnlClass === 'positive' ? 'positive' : ''}">
-                        <div class="metric-label">Total PNL</div>
-                        <div class="metric-value ${pnlClass}">${formatCurrency(metrics.totalPNL)}</div>
-                        <div class="metric-subtext">Current Balance - Net Deposits</div>
+                        <div class="metric-card highlight">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">🪙</span> Share Price
+                                <span class="tooltip-text">Current net asset value (NAV) per share</span>
+                            </div>
+                            <div class="metric-value">${m.sharePrice.toFixed(6)}</div>
+                            <div class="metric-subtext">NAV per share</div>
+                        </div>
+
+                        <div class="metric-card highlight">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">📊</span> Net ROI
+                                <span class="tooltip-text">Total return on investment after all fees (30%)</span>
+                            </div>
+                            <div class="metric-value ${m.netReturn >= 0 ? 'realized' : ''}">${formatPercent(m.netReturn)}</div>
+                            <div class="metric-subtext">${m.totalDays} days</div>
+                        </div>
+
+                        <div class="metric-card highlight">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">📈</span> Net APY
+                                <span class="tooltip-text">Annualized percentage yield after fees</span>
+                            </div>
+                            <div class="metric-value ${m.allTimeAPY >= 0 ? 'realized' : ''}">${formatPercent(m.allTimeAPY)}</div>
+                            <div class="metric-subtext">All-time annualized</div>
+                        </div>
                     </div>
 
-                    <div class="metric-card primary">
-                        <div class="metric-label">Net Deposits</div>
-                        <div class="metric-value">${formatCurrency(metrics.cumulativeNetDeposits)}</div>
-                        <div class="metric-subtext">Total capital deposited</div>
+                    <div class="section-header">
+                        <span class="icon">⏱️</span>
+                        <h2>Rolling Performance</h2>
                     </div>
-                </div>
-
-                <!-- Historical Chart -->
-                <div class="chart-container">
-                    <h3 class="chart-title">Historical Performance</h3>
-                    <div class="chart-wrapper">
-                        <canvas id="historyChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Performance Fee Revenue -->
-                <h2 class="section-title">Performance Fee Revenue (20%)</h2>
-                <div class="metrics-grid">
-                    <div class="metric-card primary">
-                        <div class="metric-label">Realized Fees</div>
-                        <div class="metric-value positive">${formatCurrency(metrics.realizedFeeDollars)}</div>
-                        <div class="metric-subtext">${metrics.performanceFees.pastQuartersCount} quarters completed</div>
+                    <div class="metrics-grid">
+                        ${m.rollingAPYs.map(apy => `
+                            <div class="metric-card ${apy.apy >= 0 ? 'realized' : ''}">
+                                <div class="metric-label"><span class="icon">📉</span> ${apy.name} APY</div>
+                                <div class="metric-value ${apy.apy >= 0 ? 'realized' : ''}">${formatPercent(apy.apy)}</div>
+                                <div class="metric-subtext">${apy.days} days</div>
+                            </div>
+                        `).join('')}
                     </div>
 
-                    <div class="metric-card warning">
-                        <div class="metric-label">Unrealized Fees</div>
-                        <div class="metric-value" style="color: #fbbf24;">${formatCurrency(metrics.unrealizedFeeDollars)}</div>
-                        <div class="metric-subtext">Pending until quarter end</div>
+                    <div class="section-header">
+                        <span class="icon">💵</span>
+                        <h2>Revenue Summary</h2>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card realized">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">✅</span> Total Realized
+                                <span class="tooltip-text">Fees already collected and paid out</span>
+                            </div>
+                            <div class="metric-value realized">${formatCurrency(m.totalRealizedRevenue)}</div>
+                            <div class="metric-subtext">Already collected</div>
+                        </div>
+
+                        <div class="metric-card pending">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">⏳</span> Total Unrealized
+                                <span class="tooltip-text">Fees pending until next quarter end</span>
+                            </div>
+                            <div class="metric-value pending">${formatCurrency(m.totalUnrealizedRevenue)}</div>
+                            <div class="metric-subtext">Pending realization</div>
+                        </div>
+
+                        <div class="metric-card grand-total">
+                            <div class="metric-label"><span class="icon">🏆</span> Grand Total</div>
+                            <div class="metric-value grand">${formatCurrency(m.totalRevenue)}</div>
+                            <div class="metric-subtext">All fees combined</div>
+                        </div>
                     </div>
 
-                    <div class="metric-card positive">
-                        <div class="metric-label">Total Expected Fees</div>
-                        <div class="metric-value positive">${formatCurrency(metrics.realizedFeeDollars + metrics.unrealizedFeeDollars)}</div>
-                        <div class="metric-subtext">Realized + Unrealized</div>
-                    </div>
-
-                    <div class="metric-card">
-                        <div class="metric-label">Next Realization</div>
-                        <div class="metric-value" style="font-size: 1.2rem;">${formatQuarterDate(metrics.performanceFees.nextQuarterEnd)}</div>
-                        <div class="metric-subtext">${getDaysUntil(metrics.performanceFees.nextQuarterEnd)} days remaining</div>
-                    </div>
-                </div>
-
-                <!-- Prime Number Fee Revenue -->
-                <h2 class="section-title">Prime Number Fee Revenue (10%)</h2>
-                <div class="metrics-grid">
-                    <div class="metric-card" style="border-color: rgba(124, 58, 237, 0.3);">
-                        <div class="metric-label">Realized Fees</div>
-                        <div class="metric-value" style="color: #a78bfa;">${formatCurrency(metrics.primeRealizedFeeDollars)}</div>
-                        <div class="metric-subtext">${metrics.performanceFees.pastQuartersCount} quarters completed</div>
-                    </div>
-
-                    <div class="metric-card" style="border-color: rgba(124, 58, 237, 0.2);">
-                        <div class="metric-label">Unrealized Fees</div>
-                        <div class="metric-value" style="color: #c4b5fd;">${formatCurrency(metrics.primeUnrealizedFeeDollars)}</div>
-                        <div class="metric-subtext">Pending until quarter end</div>
-                    </div>
-
-                    <div class="metric-card" style="border-color: rgba(124, 58, 237, 0.3);">
-                        <div class="metric-label">Total Expected Fees</div>
-                        <div class="metric-value" style="color: #a78bfa;">${formatCurrency(metrics.primeRealizedFeeDollars + metrics.primeUnrealizedFeeDollars)}</div>
-                        <div class="metric-subtext">Realized + Unrealized</div>
-                    </div>
-                </div>
-
-                <!-- Management Fee Revenue -->
-                <h2 class="section-title">Management Fee Revenue (2%)</h2>
-                <div class="metrics-grid">
-                    <div class="metric-card" style="border-color: rgba(244, 114, 182, 0.3);">
-                        <div class="metric-label">Total Management Fees</div>
-                        <div class="metric-value" style="color: #f472b6;">${formatCurrency(metrics.managementFeeDollars)}</div>
-                        <div class="metric-subtext">Already collected on deposits</div>
-                    </div>
-
-                    <div class="metric-card" style="border-color: rgba(244, 114, 182, 0.2);">
-                        <div class="metric-label">Original Deposits</div>
-                        <div class="metric-value" style="color: #f9a8d4;">${formatCurrency(metrics.cumulativeNetDeposits + metrics.managementFeeDollars)}</div>
-                        <div class="metric-subtext">Before 2% fee deduction</div>
+                    <div class="charts-row">
+                        <div class="chart-card">
+                            <h3><span class="icon">🥧</span> Fee Breakdown</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="feeBreakdownChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3><span class="icon">📊</span> Realized vs Unrealized</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="realizedChart"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Total Revenue Summary -->
-                <h2 class="section-title">Total Revenue Summary</h2>
-                <div class="metrics-grid">
-                    <div class="metric-card primary">
-                        <div class="metric-label">Total Realized Revenue</div>
-                        <div class="metric-value positive">${formatCurrency(metrics.totalRealizedRevenue)}</div>
-                        <div class="metric-subtext">Performance + Prime + Management</div>
+                <!-- FEE REVENUE TAB -->
+                <div class="tab-content" id="tab-revenue">
+                    <div class="section-header">
+                        <span class="icon">💎</span>
+                        <h2>Performance Fee</h2>
+                        <span class="badge">20%</span>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card realized">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">✅</span> Realized
+                                <span class="tooltip-text">Performance fees collected at past quarter ends</span>
+                            </div>
+                            <div class="metric-value realized">${formatCurrency(m.realizedFeeDollars)}</div>
+                            <div class="metric-subtext">${m.performanceFees.pastQuartersCount} quarters</div>
+                        </div>
+
+                        <div class="metric-card pending">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">⏳</span> Unrealized
+                                <span class="tooltip-text">Pending fees from gains since last quarter</span>
+                            </div>
+                            <div class="metric-value pending">${formatCurrency(m.unrealizedFeeDollars)}</div>
+                            <div class="metric-subtext">Pending</div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-label"><span class="icon">📅</span> Next Realization</div>
+                            <div class="metric-value" style="font-size: 1.3rem;">${formatQuarterDate(m.performanceFees.nextQuarterEnd)}</div>
+                            <div class="metric-subtext">${getDaysUntil(m.performanceFees.nextQuarterEnd)} days</div>
+                        </div>
                     </div>
 
-                    <div class="metric-card warning">
-                        <div class="metric-label">Total Unrealized Revenue</div>
-                        <div class="metric-value" style="color: #fbbf24;">${formatCurrency(metrics.totalUnrealizedRevenue)}</div>
-                        <div class="metric-subtext">Pending quarter end</div>
+                    <div class="section-header">
+                        <span class="icon">🔮</span>
+                        <h2>Prime Number Fee</h2>
+                        <span class="badge">10%</span>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card prime">
+                            <div class="metric-label"><span class="icon">✅</span> Realized</div>
+                            <div class="metric-value prime">${formatCurrency(m.primeRealizedFeeDollars)}</div>
+                            <div class="metric-subtext">${m.performanceFees.pastQuartersCount} quarters</div>
+                        </div>
+
+                        <div class="metric-card prime">
+                            <div class="metric-label"><span class="icon">⏳</span> Unrealized</div>
+                            <div class="metric-value prime" style="opacity: 0.7;">${formatCurrency(m.primeUnrealizedFeeDollars)}</div>
+                            <div class="metric-subtext">Pending</div>
+                        </div>
+
+                        <div class="metric-card prime">
+                            <div class="metric-label"><span class="icon">📊</span> Total Expected</div>
+                            <div class="metric-value prime">${formatCurrency(m.primeRealizedFeeDollars + m.primeUnrealizedFeeDollars)}</div>
+                            <div class="metric-subtext">Combined</div>
+                        </div>
                     </div>
 
-                    <div class="metric-card" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(0, 212, 255, 0.2) 100%); border-color: rgba(34, 197, 94, 0.4);">
-                        <div class="metric-label">Grand Total Revenue</div>
-                        <div class="metric-value positive" style="font-size: 2rem;">${formatCurrency(metrics.totalRevenue)}</div>
-                        <div class="metric-subtext">All fees combined</div>
+                    <div class="section-header">
+                        <span class="icon">🏛️</span>
+                        <h2>Management Fee</h2>
+                        <span class="badge">2%</span>
+                    </div>
+                    <div class="metrics-grid two-col">
+                        <div class="metric-card management">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">✅</span> Collected
+                                <span class="tooltip-text">2% fee deducted from deposits before entering vault</span>
+                            </div>
+                            <div class="metric-value management">${formatCurrency(m.managementFeeDollars)}</div>
+                            <div class="metric-subtext">Already collected</div>
+                        </div>
+
+                        <div class="metric-card management">
+                            <div class="metric-label"><span class="icon">💵</span> Original Deposits</div>
+                            <div class="metric-value management" style="opacity: 0.7;">${formatCurrency(m.cumulativeNetDeposits + m.managementFeeDollars)}</div>
+                            <div class="metric-subtext">Before 2% deduction</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Projected End of Year Revenue -->
-                <h2 class="section-title">Projected End of Year Revenue</h2>
-                <div class="metrics-grid">
-                    <div class="metric-card" style="border-color: rgba(56, 189, 248, 0.3);">
-                        <div class="metric-label">Days Remaining</div>
-                        <div class="metric-value" style="color: #38bdf8;">${metrics.daysRemaining}</div>
-                        <div class="metric-subtext">Until Dec 31, ${new Date().getFullYear()}</div>
+                <!-- PROJECTIONS TAB -->
+                <div class="tab-content" id="tab-projections">
+                    <div class="section-header">
+                        <span class="icon">🔮</span>
+                        <h2>End of Year Projections</h2>
+                        <span class="badge">Dec 31, ${new Date().getFullYear()}</span>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card projected">
+                            <div class="metric-label"><span class="icon">📅</span> Days Remaining</div>
+                            <div class="metric-value projected">${m.daysRemaining}</div>
+                            <div class="metric-subtext">Until year end</div>
+                        </div>
+
+                        <div class="metric-card projected">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">📈</span> Projected APY
+                                <span class="tooltip-text">Expected annual return based on current performance</span>
+                            </div>
+                            <div class="metric-value projected">${formatPercent(m.projectedTotalReturn)}</div>
+                            <div class="metric-subtext">Based on all-time APY</div>
+                        </div>
+
+                        <div class="metric-card projected">
+                            <div class="metric-label"><span class="icon">💎</span> Projected Perf. Fee</div>
+                            <div class="metric-value realized">${formatCurrency(m.projectedPerformanceFees)}</div>
+                            <div class="metric-subtext">Your 20% share</div>
+                        </div>
                     </div>
 
-                    <div class="metric-card" style="border-color: rgba(56, 189, 248, 0.3);">
-                        <div class="metric-label">Projected APY</div>
-                        <div class="metric-value" style="color: #38bdf8;">${formatPercent(metrics.projectedTotalReturn)}</div>
-                        <div class="metric-subtext">Based on All-Time APY</div>
+                    <div class="metrics-grid">
+                        <div class="metric-card projected">
+                            <div class="metric-label"><span class="icon">🔮</span> Projected Prime Fee</div>
+                            <div class="metric-value prime">${formatCurrency(m.projectedPrimeFees)}</div>
+                            <div class="metric-subtext">10% share</div>
+                        </div>
+
+                        <div class="metric-card projected">
+                            <div class="metric-label"><span class="icon">🏛️</span> Management Fee</div>
+                            <div class="metric-value management">${formatCurrency(m.managementFeeDollars)}</div>
+                            <div class="metric-subtext">Already collected</div>
+                        </div>
+
+                        <div class="metric-card" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(34, 197, 94, 0.2) 100%); border-color: rgba(56, 189, 248, 0.5);">
+                            <div class="metric-label"><span class="icon">🎯</span> Total EOY Revenue</div>
+                            <div class="metric-value projected" style="font-size: 2rem;">${formatCurrency(m.projectedTotalRevenue)}</div>
+                            <div class="metric-subtext">All fees projected</div>
+                        </div>
                     </div>
 
-                    <div class="metric-card" style="border-color: rgba(34, 197, 94, 0.3);">
-                        <div class="metric-label">Projected Performance Fee</div>
-                        <div class="metric-value" style="color: #22c55e;">${formatCurrency(metrics.projectedPerformanceFees)}</div>
-                        <div class="metric-subtext">20% of projected gains</div>
-                    </div>
-
-                    <div class="metric-card" style="border-color: rgba(124, 58, 237, 0.3);">
-                        <div class="metric-label">Projected Prime Fee</div>
-                        <div class="metric-value" style="color: #a78bfa;">${formatCurrency(metrics.projectedPrimeFees)}</div>
-                        <div class="metric-subtext">10% of projected gains</div>
-                    </div>
-
-                    <div class="metric-card" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(34, 197, 94, 0.2) 100%); border-color: rgba(56, 189, 248, 0.4);">
-                        <div class="metric-label">Total Projected Revenue (EOY)</div>
-                        <div class="metric-value" style="color: #38bdf8; font-size: 2rem;">${formatCurrency(metrics.projectedTotalRevenue)}</div>
-                        <div class="metric-subtext">Performance + Prime + Management</div>
+                    <div class="chart-card" style="margin-top: 20px;">
+                        <h3><span class="icon">📊</span> Historical Performance</h3>
+                        <div class="chart-wrapper tall">
+                            <canvas id="historyChart"></canvas>
+                        </div>
                     </div>
                 </div>
             `;
 
-            // Render chart
-            renderChart(metrics.history);
+            // Setup tab navigation
+            setupTabs();
+
+            // Render charts
+            renderCharts(m);
         }
 
-        function renderChart(history) {
-            const ctx = document.getElementById('historyChart').getContext('2d');
-
-            const labels = history.map(h => {
-                const date = new Date(h.update_time_utc);
-                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        function setupTabs() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+                });
             });
+        }
 
-            const tvlData = history.map(h => h.tvl);
-            const sharePriceData = history.map(h => h.SharePrice);
-
-            if (chart) {
-                chart.destroy();
-            }
-
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'TVL ($)',
-                            data: tvlData,
-                            borderColor: '#00d4ff',
-                            backgroundColor: 'rgba(0, 212, 255, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            yAxisID: 'y'
-                        },
-                        {
-                            label: 'Share Price',
-                            data: sharePriceData,
-                            borderColor: '#7c3aed',
-                            backgroundColor: 'rgba(124, 58, 237, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            yAxisID: 'y1'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        mode: 'index',
-                        intersect: false,
+        function renderCharts(m) {
+            // Pie chart - Fee Breakdown
+            const pieCtx = document.getElementById('feeBreakdownChart')?.getContext('2d');
+            if (pieCtx) {
+                new Chart(pieCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Performance (20%)', 'Prime Number (10%)', 'Management (2%)'],
+                        datasets: [{
+                            data: [
+                                m.realizedFeeDollars + m.unrealizedFeeDollars,
+                                m.primeRealizedFeeDollars + m.primeUnrealizedFeeDollars,
+                                m.managementFeeDollars
+                            ],
+                            backgroundColor: ['#22c55e', '#a78bfa', '#f472b6'],
+                            borderWidth: 0
+                        }]
                     },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#8b8ba7'
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(26, 26, 62, 0.9)',
-                            titleColor: '#fff',
-                            bodyColor: '#8b8ba7',
-                            borderColor: 'rgba(255, 255, 255, 0.1)',
-                            borderWidth: 1,
-                            callbacks: {
-                                label: function(context) {
-                                    if (context.datasetIndex === 0) {
-                                        return `TVL: $${context.parsed.y.toLocaleString()}`;
-                                    }
-                                    return `Share Price: ${context.parsed.y.toFixed(6)}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.05)'
-                            },
-                            ticks: {
-                                color: '#6b6b8d'
-                            }
-                        },
-                        y: {
-                            type: 'linear',
-                            display: true,
-                            position: 'left',
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.05)'
-                            },
-                            ticks: {
-                                color: '#00d4ff',
-                                callback: function(value) {
-                                    return '$' + (value / 1000000).toFixed(2) + 'M';
-                                }
-                            }
-                        },
-                        y1: {
-                            type: 'linear',
-                            display: true,
-                            position: 'right',
-                            grid: {
-                                drawOnChartArea: false,
-                            },
-                            ticks: {
-                                color: '#7c3aed',
-                                callback: function(value) {
-                                    return value.toFixed(4);
-                                }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#8b8ba7', padding: 15 }
                             }
                         }
                     }
-                }
-            });
+                });
+            }
+
+            // Bar chart - Realized vs Unrealized
+            const barCtx = document.getElementById('realizedChart')?.getContext('2d');
+            if (barCtx) {
+                new Chart(barCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Performance', 'Prime Number', 'Management'],
+                        datasets: [
+                            {
+                                label: 'Realized',
+                                data: [m.realizedFeeDollars, m.primeRealizedFeeDollars, m.managementFeeDollars],
+                                backgroundColor: '#22c55e'
+                            },
+                            {
+                                label: 'Unrealized',
+                                data: [m.unrealizedFeeDollars, m.primeUnrealizedFeeDollars, 0],
+                                backgroundColor: '#fbbf24'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#8b8ba7' }
+                            }
+                        },
+                        scales: {
+                            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b6b8d' } },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: { color: '#6b6b8d', callback: v => '$' + (v/1000).toFixed(0) + 'k' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Line chart - Historical
+            const lineCtx = document.getElementById('historyChart')?.getContext('2d');
+            if (lineCtx && m.history) {
+                new Chart(lineCtx, {
+                    type: 'line',
+                    data: {
+                        labels: m.history.map(h => new Date(h.update_time_utc).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })),
+                        datasets: [{
+                            label: 'TVL ($)',
+                            data: m.history.map(h => h.tvl),
+                            borderColor: '#00d4ff',
+                            backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b6b8d' } },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: { color: '#00d4ff', callback: v => '$' + (v/1000000).toFixed(1) + 'M' }
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         // Auto-refresh every 1 minute
