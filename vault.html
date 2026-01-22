@@ -639,6 +639,15 @@
                             <div class="metric-subtext">Total AUM</div>
                         </div>
 
+                        <div class="metric-card realized">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">💵</span> Vault Earnings
+                                <span class="tooltip-text">Total profit/loss (Current Balance minus Net Deposits)</span>
+                            </div>
+                            <div class="metric-value ${m.totalPNL >= 0 ? 'realized' : ''}">${formatCurrency(m.totalPNL)}</div>
+                            <div class="metric-subtext">Total PNL</div>
+                        </div>
+
                         <div class="metric-card highlight">
                             <div class="metric-label has-tooltip">
                                 <span class="icon">🪙</span> Share Price
@@ -711,20 +720,6 @@
                         </div>
                     </div>
 
-                    <div class="charts-row">
-                        <div class="chart-card">
-                            <h3><span class="icon">🥧</span> Fee Breakdown</h3>
-                            <div class="chart-wrapper">
-                                <canvas id="feeBreakdownChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="chart-card">
-                            <h3><span class="icon">📊</span> Realized vs Unrealized</h3>
-                            <div class="chart-wrapper">
-                                <canvas id="realizedChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- FEE REVENUE TAB -->
