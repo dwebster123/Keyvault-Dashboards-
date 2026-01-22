@@ -445,6 +445,10 @@
             const realizedFeeDollars = (performanceFees.realizedFees / 100) * cumulativeNetDeposits;
             const unrealizedFeeDollars = (performanceFees.unrealizedFees / 100) * cumulativeNetDeposits;
 
+            // Calculate Prime Number fees (10% - same schedule as performance fees)
+            const primeRealizedFeeDollars = (performanceFees.realizedFees / 100) * cumulativeNetDeposits * (FEE_CONFIG.primeNumberFeeRate / FEE_CONFIG.performanceFeeRate);
+            const primeUnrealizedFeeDollars = (performanceFees.unrealizedFees / 100) * cumulativeNetDeposits * (FEE_CONFIG.primeNumberFeeRate / FEE_CONFIG.performanceFeeRate);
+
             return {
                 currentBalance,
                 cumulativeNetDeposits,
@@ -460,7 +464,9 @@
                 history: sortedHistory,
                 performanceFees,
                 realizedFeeDollars,
-                unrealizedFeeDollars
+                unrealizedFeeDollars,
+                primeRealizedFeeDollars,
+                primeUnrealizedFeeDollars
             };
         }
 
@@ -632,6 +638,28 @@
                         <div class="metric-label">Next Realization</div>
                         <div class="metric-value" style="font-size: 1.2rem;">${formatQuarterDate(metrics.performanceFees.nextQuarterEnd)}</div>
                         <div class="metric-subtext">${getDaysUntil(metrics.performanceFees.nextQuarterEnd)} days remaining</div>
+                    </div>
+                </div>
+
+                <!-- Prime Number Fee Revenue -->
+                <h2 class="section-title">Prime Number Fee Revenue (10%)</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card" style="border-color: rgba(124, 58, 237, 0.3);">
+                        <div class="metric-label">Realized Fees</div>
+                        <div class="metric-value" style="color: #a78bfa;">${formatCurrency(metrics.primeRealizedFeeDollars)}</div>
+                        <div class="metric-subtext">${metrics.performanceFees.pastQuartersCount} quarters completed</div>
+                    </div>
+
+                    <div class="metric-card" style="border-color: rgba(124, 58, 237, 0.2);">
+                        <div class="metric-label">Unrealized Fees</div>
+                        <div class="metric-value" style="color: #c4b5fd;">${formatCurrency(metrics.primeUnrealizedFeeDollars)}</div>
+                        <div class="metric-subtext">Pending until quarter end</div>
+                    </div>
+
+                    <div class="metric-card" style="border-color: rgba(124, 58, 237, 0.3);">
+                        <div class="metric-label">Total Expected Fees</div>
+                        <div class="metric-value" style="color: #a78bfa;">${formatCurrency(metrics.primeRealizedFeeDollars + metrics.primeUnrealizedFeeDollars)}</div>
+                        <div class="metric-subtext">Realized + Unrealized</div>
                     </div>
                 </div>
             `;
