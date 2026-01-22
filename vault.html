@@ -465,16 +465,14 @@
             const endOfYear = new Date(now.getFullYear(), 11, 31, 17, 0, 0); // Dec 31 5pm
             const daysRemaining = Math.max(0, Math.ceil((endOfYear - now) / (1000 * 60 * 60 * 24)));
 
-            // Calculate daily return rate based on performance so far
-            const dailyReturnRate = totalDays > 0 ? grossReturn / totalDays : 0;
+            // Use all-time APY for projection (already net of fees, so we use gross for fee calc)
+            const projectedTotalReturn = allTimeAPY; // Same as all-time APY
 
-            // Project share price at end of year
-            const projectedAdditionalReturn = dailyReturnRate * daysRemaining;
-            const projectedTotalReturn = grossReturn + projectedAdditionalReturn;
-
-            // Calculate projected fees at end of year (performance + prime on projected gains)
-            const projectedPerformanceFees = (projectedTotalReturn / 100) * FEE_CONFIG.performanceFeeRate * cumulativeNetDeposits;
-            const projectedPrimeFees = (projectedTotalReturn / 100) * FEE_CONFIG.primeNumberFeeRate * cumulativeNetDeposits;
+            // Calculate projected fees at end of year based on APY
+            // Convert APY back to gross return for fee calculation
+            const projectedGrossReturn = allTimeAPY / (1 - FEE_CONFIG.totalFeeRate);
+            const projectedPerformanceFees = (projectedGrossReturn / 100) * FEE_CONFIG.performanceFeeRate * cumulativeNetDeposits;
+            const projectedPrimeFees = (projectedGrossReturn / 100) * FEE_CONFIG.primeNumberFeeRate * cumulativeNetDeposits;
             const projectedTotalRevenue = projectedPerformanceFees + projectedPrimeFees + managementFeeDollars;
 
             return {
@@ -748,9 +746,9 @@
                     </div>
 
                     <div class="metric-card" style="border-color: rgba(56, 189, 248, 0.3);">
-                        <div class="metric-label">Projected Return</div>
+                        <div class="metric-label">Projected APY</div>
                         <div class="metric-value" style="color: #38bdf8;">${formatPercent(metrics.projectedTotalReturn)}</div>
-                        <div class="metric-subtext">If current pace continues</div>
+                        <div class="metric-subtext">Based on All-Time APY</div>
                     </div>
 
                     <div class="metric-card" style="border-color: rgba(34, 197, 94, 0.3);">
