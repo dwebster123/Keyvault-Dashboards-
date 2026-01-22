@@ -272,10 +272,108 @@
     <script>
         // Fee structure (20% performance fee + 10% Prime Number fee = 30% total)
         const FEE_CONFIG = {
-            performanceFeeRate: 0.20,          // 20% performance fee
+            performanceFeeRate: 0.20,          // 20% performance fee (your share)
             primeNumberFeeRate: 0.10,          // 10% prime number fee
             totalFeeRate: 0.30                 // 30% total fees on gains
         };
+
+        // Quarter end dates for fee realization (5pm ET on last day of quarter)
+        function getQuarterEndDates(year) {
+            return [
+                new Date(`${year}-03-31T17:00:00-05:00`), // Q1
+                new Date(`${year}-06-30T17:00:00-04:00`), // Q2 (EDT)
+                new Date(`${year}-09-30T17:00:00-04:00`), // Q3 (EDT)
+                new Date(`${year}-12-31T17:00:00-05:00`)  // Q4 (EST)
+            ];
+        }
+
+        // Get all past quarter ends since fund inception
+        function getPastQuarterEnds(inceptionDate) {
+            const quarters = [];
+            const now = new Date();
+            const startYear = new Date(inceptionDate).getFullYear();
+
+            for (let year = startYear; year <= now.getFullYear(); year++) {
+                const yearQuarters = getQuarterEndDates(year);
+                for (const qEnd of yearQuarters) {
+                    if (qEnd > new Date(inceptionDate) && qEnd < now) {
+                        quarters.push(qEnd);
+                    }
+                }
+            }
+            return quarters;
+        }
+
+        // Get next quarter end date
+        function getNextQuarterEnd() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const quarters = getQuarterEndDates(year);
+
+            for (const qEnd of quarters) {
+                if (qEnd > now) return qEnd;
+            }
+            // Next year Q1
+            return getQuarterEndDates(year + 1)[0];
+        }
+
+        // Find the share price at a specific date from history
+        function getSharePriceAtDate(history, targetDate) {
+            const target = new Date(targetDate);
+            let closest = history[0];
+            let minDiff = Infinity;
+
+            for (const h of history) {
+                const hDate = new Date(h.update_time_utc);
+                const diff = Math.abs(hDate - target);
+                if (diff < minDiff && hDate <= target) {
+                    minDiff = diff;
+                    closest = h;
+                }
+            }
+            return closest ? closest.SharePrice : null;
+        }
+
+        // Calculate realized and unrealized performance fees
+        function calculatePerformanceFees(history, currentSharePrice, inceptionDate) {
+            const initialPrice = history[0]?.SharePrice || 1;
+            const pastQuarters = getPastQuarterEnds(inceptionDate);
+
+            let realizedFees = 0;
+            let lastRealizedPrice = initialPrice;
+            let lastRealizationDate = null;
+
+            // Calculate realized fees from each past quarter
+            for (const qEnd of pastQuarters) {
+                const priceAtQuarter = getSharePriceAtDate(history, qEnd);
+                if (priceAtQuarter && priceAtQuarter > lastRealizedPrice) {
+                    // Gain since last realization
+                    const gainPercent = (priceAtQuarter - lastRealizedPrice) / lastRealizedPrice;
+                    realizedFees += gainPercent * FEE_CONFIG.performanceFeeRate * 100;
+                    lastRealizedPrice = priceAtQuarter;
+                    lastRealizationDate = qEnd;
+                }
+            }
+
+            // Calculate unrealized fees (gains since last quarter end)
+            let unrealizedFees = 0;
+            if (currentSharePrice > lastRealizedPrice) {
+                const unrealizedGainPercent = (currentSharePrice - lastRealizedPrice) / lastRealizedPrice;
+                unrealizedFees = unrealizedGainPercent * FEE_CONFIG.performanceFeeRate * 100;
+            }
+
+            // Calculate dollar amounts based on a reference (total PNL)
+            const totalGainPercent = (currentSharePrice - initialPrice) / initialPrice;
+
+            return {
+                realizedFees,           // As percentage of initial investment
+                unrealizedFees,         // As percentage of initial investment
+                totalFees: realizedFees + unrealizedFees,
+                lastRealizationDate,
+                nextQuarterEnd: getNextQuarterEnd(),
+                pastQuartersCount: pastQuarters.length
+            };
+        }
 
         const VAULT_ADDRESS = 'G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp';
 
@@ -339,6 +437,14 @@
             // Calculate rolling APYs
             const rollingAPYs = calculateRollingAPYs(sortedHistory, sharePrice);
 
+            // Calculate performance fees
+            const inceptionDate = sortedHistory[0]?.update_time_utc || new Date().toISOString();
+            const performanceFees = calculatePerformanceFees(sortedHistory, sharePrice, inceptionDate);
+
+            // Calculate dollar amounts for fees based on net deposits
+            const realizedFeeDollars = (performanceFees.realizedFees / 100) * cumulativeNetDeposits;
+            const unrealizedFeeDollars = (performanceFees.unrealizedFees / 100) * cumulativeNetDeposits;
+
             return {
                 currentBalance,
                 cumulativeNetDeposits,
@@ -351,7 +457,10 @@
                 totalPNL,
                 totalDays,
                 updateTime,
-                history: sortedHistory
+                history: sortedHistory,
+                performanceFees,
+                realizedFeeDollars,
+                unrealizedFeeDollars
             };
         }
 
@@ -409,6 +518,20 @@
                 minute: '2-digit',
                 timeZoneName: 'short'
             });
+        }
+
+        function formatQuarterDate(date) {
+            return date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            }) + ' 5pm ET';
+        }
+
+        function getDaysUntil(date) {
+            const now = new Date();
+            const diff = date - now;
+            return Math.ceil(diff / (1000 * 60 * 60 * 24));
         }
 
         function renderDashboard() {
@@ -484,42 +607,31 @@
                     </div>
                 </div>
 
-                <!-- Fee Structure Reference -->
-                <div class="two-col">
-                    <div class="fee-structure">
-                        <h3 class="chart-title">Fee Structure</h3>
-                        <div class="fee-row">
-                            <span class="fee-label">Performance Fee</span>
-                            <span class="fee-value">20.00%</span>
-                        </div>
-                        <div class="fee-row">
-                            <span class="fee-label">Prime Number Fee</span>
-                            <span class="fee-value">10.00%</span>
-                        </div>
-                        <div class="fee-row">
-                            <span class="fee-label">Total Fees on Gains</span>
-                            <span class="fee-value">30.00%</span>
-                        </div>
+                <!-- Performance Fee Revenue -->
+                <h2 class="section-title">Performance Fee Revenue (20%)</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card primary">
+                        <div class="metric-label">Realized Fees</div>
+                        <div class="metric-value positive">${formatCurrency(metrics.realizedFeeDollars)}</div>
+                        <div class="metric-subtext">${metrics.performanceFees.pastQuartersCount} quarters completed</div>
                     </div>
 
-                    <div class="fee-structure">
-                        <h3 class="chart-title">Vault Details</h3>
-                        <div class="fee-row">
-                            <span class="fee-label">Vault Address</span>
-                            <span class="fee-value" style="font-size: 0.7rem; font-family: monospace;">G3RT2w...gUZp</span>
-                        </div>
-                        <div class="fee-row">
-                            <span class="fee-label">Strategy</span>
-                            <span class="fee-value">KeyVault</span>
-                        </div>
-                        <div class="fee-row">
-                            <span class="fee-label">Data Points</span>
-                            <span class="fee-value">${metrics.history.length}</span>
-                        </div>
-                        <div class="fee-row">
-                            <span class="fee-label">Network</span>
-                            <span class="fee-value">Solana</span>
-                        </div>
+                    <div class="metric-card warning">
+                        <div class="metric-label">Unrealized Fees</div>
+                        <div class="metric-value" style="color: #fbbf24;">${formatCurrency(metrics.unrealizedFeeDollars)}</div>
+                        <div class="metric-subtext">Pending until quarter end</div>
+                    </div>
+
+                    <div class="metric-card positive">
+                        <div class="metric-label">Total Expected Fees</div>
+                        <div class="metric-value positive">${formatCurrency(metrics.realizedFeeDollars + metrics.unrealizedFeeDollars)}</div>
+                        <div class="metric-subtext">Realized + Unrealized</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-label">Next Realization</div>
+                        <div class="metric-value" style="font-size: 1.2rem;">${formatQuarterDate(metrics.performanceFees.nextQuarterEnd)}</div>
+                        <div class="metric-subtext">${getDaysUntil(metrics.performanceFees.nextQuarterEnd)} days remaining</div>
                     </div>
                 </div>
             `;
