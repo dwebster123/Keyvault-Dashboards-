@@ -460,6 +460,23 @@
             const totalUnrealizedRevenue = unrealizedFeeDollars + primeUnrealizedFeeDollars;
             const totalRevenue = totalRealizedRevenue + totalUnrealizedRevenue;
 
+            // Project to end of year calculations
+            const now = new Date();
+            const endOfYear = new Date(now.getFullYear(), 11, 31, 17, 0, 0); // Dec 31 5pm
+            const daysRemaining = Math.max(0, Math.ceil((endOfYear - now) / (1000 * 60 * 60 * 24)));
+
+            // Calculate daily return rate based on performance so far
+            const dailyReturnRate = totalDays > 0 ? grossReturn / totalDays : 0;
+
+            // Project share price at end of year
+            const projectedAdditionalReturn = dailyReturnRate * daysRemaining;
+            const projectedTotalReturn = grossReturn + projectedAdditionalReturn;
+
+            // Calculate projected fees at end of year (performance + prime on projected gains)
+            const projectedPerformanceFees = (projectedTotalReturn / 100) * FEE_CONFIG.performanceFeeRate * cumulativeNetDeposits;
+            const projectedPrimeFees = (projectedTotalReturn / 100) * FEE_CONFIG.primeNumberFeeRate * cumulativeNetDeposits;
+            const projectedTotalRevenue = projectedPerformanceFees + projectedPrimeFees + managementFeeDollars;
+
             return {
                 currentBalance,
                 cumulativeNetDeposits,
@@ -481,7 +498,12 @@
                 managementFeeDollars,
                 totalRealizedRevenue,
                 totalUnrealizedRevenue,
-                totalRevenue
+                totalRevenue,
+                daysRemaining,
+                projectedTotalReturn,
+                projectedPerformanceFees,
+                projectedPrimeFees,
+                projectedTotalRevenue
             };
         }
 
@@ -713,6 +735,40 @@
                         <div class="metric-label">Grand Total Revenue</div>
                         <div class="metric-value positive" style="font-size: 2rem;">${formatCurrency(metrics.totalRevenue)}</div>
                         <div class="metric-subtext">All fees combined</div>
+                    </div>
+                </div>
+
+                <!-- Projected End of Year Revenue -->
+                <h2 class="section-title">Projected End of Year Revenue</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card" style="border-color: rgba(56, 189, 248, 0.3);">
+                        <div class="metric-label">Days Remaining</div>
+                        <div class="metric-value" style="color: #38bdf8;">${metrics.daysRemaining}</div>
+                        <div class="metric-subtext">Until Dec 31, ${new Date().getFullYear()}</div>
+                    </div>
+
+                    <div class="metric-card" style="border-color: rgba(56, 189, 248, 0.3);">
+                        <div class="metric-label">Projected Return</div>
+                        <div class="metric-value" style="color: #38bdf8;">${formatPercent(metrics.projectedTotalReturn)}</div>
+                        <div class="metric-subtext">If current pace continues</div>
+                    </div>
+
+                    <div class="metric-card" style="border-color: rgba(34, 197, 94, 0.3);">
+                        <div class="metric-label">Projected Performance Fee</div>
+                        <div class="metric-value" style="color: #22c55e;">${formatCurrency(metrics.projectedPerformanceFees)}</div>
+                        <div class="metric-subtext">20% of projected gains</div>
+                    </div>
+
+                    <div class="metric-card" style="border-color: rgba(124, 58, 237, 0.3);">
+                        <div class="metric-label">Projected Prime Fee</div>
+                        <div class="metric-value" style="color: #a78bfa;">${formatCurrency(metrics.projectedPrimeFees)}</div>
+                        <div class="metric-subtext">10% of projected gains</div>
+                    </div>
+
+                    <div class="metric-card" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(34, 197, 94, 0.2) 100%); border-color: rgba(56, 189, 248, 0.4);">
+                        <div class="metric-label">Total Projected Revenue (EOY)</div>
+                        <div class="metric-value" style="color: #38bdf8; font-size: 2rem;">${formatCurrency(metrics.projectedTotalRevenue)}</div>
+                        <div class="metric-subtext">Performance + Prime + Management</div>
                     </div>
                 </div>
             `;
