@@ -502,8 +502,8 @@
         async function fetchData() {
             try {
                 const [currentResponse, historyResponse] = await Promise.all([
-                    fetch('https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1.json')),
-                    fetch('https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json'))
+                    fetch('https://corsproxy.io/?' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1.json')),
+                    fetch('https://corsproxy.io/?' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json'))
                 ]);
 
                 currentData = await currentResponse.json();
