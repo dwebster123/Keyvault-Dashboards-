@@ -336,6 +336,34 @@
                 <canvas id="apyChart"></canvas>
             </div>
         </div>
+
+        <!-- 2025 Year Performance Section -->
+        <h2 class="section-title">2025 Year Performance</h2>
+        <div class="metrics-grid" id="metrics2025Grid">
+            <!-- Populated by JS -->
+        </div>
+
+        <div class="two-col">
+            <!-- 2025 ROI Chart -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">2025 Cumulative ROI</h3>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="roi2025Chart"></canvas>
+                </div>
+            </div>
+
+            <!-- 2025 APY Chart -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">2025 APY Performance</h3>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="apy2025Chart"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1011,9 +1039,84 @@
             `).join('');
         }
 
+        // Render 2025 metrics
+        function render2025Metrics() {
+            const data2025 = historicalData.filter(d => d.date >= '2025-01-01' && d.date <= '2025-12-31');
+
+            if (data2025.length === 0) {
+                document.getElementById('metrics2025Grid').innerHTML = `
+                    <div class="metric-card">
+                        <div class="metric-label">No 2025 Data Available</div>
+                        <div class="metric-value">--</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const start2025 = data2025[0];
+            const end2025 = data2025[data2025.length - 1];
+            const days2025 = data2025.length;
+
+            // Calculate 2025 metrics
+            const grossReturn2025 = ((end2025.net - start2025.net) / start2025.net) * 100;
+            const netReturn2025 = grossReturn2025 * (1 - TOTAL_FEE_RATE);
+            const apy2025 = (netReturn2025 / days2025) * 365;
+
+            // Find best and worst days
+            let bestDay = data2025[0];
+            let worstDay = data2025[0];
+            data2025.forEach(d => {
+                if (d.pct1d > bestDay.pct1d) bestDay = d;
+                if (d.pct1d < worstDay.pct1d) worstDay = d;
+            });
+
+            document.getElementById('metrics2025Grid').innerHTML = `
+                <div class="metric-card highlight">
+                    <div class="metric-label">2025 ROI (Net)</div>
+                    <div class="metric-value ${netReturn2025 >= 0 ? 'positive' : 'negative'}">${formatPercent(netReturn2025)}</div>
+                </div>
+                <div class="metric-card highlight">
+                    <div class="metric-label">2025 APY</div>
+                    <div class="metric-value ${apy2025 >= 0 ? 'positive' : 'negative'}">${formatPercent(apy2025)}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Trading Days in 2025</div>
+                    <div class="metric-value">${days2025}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Start Date</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(start2025.date).toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">End Date</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(end2025.date).toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Best Day</div>
+                    <div class="metric-value positive" style="font-size: 1.1rem;">${formatPercent(bestDay.pct1d, 2)}</div>
+                    <div class="update-badge">${new Date(bestDay.date).toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Worst Day</div>
+                    <div class="metric-value negative" style="font-size: 1.1rem;">${formatPercent(worstDay.pct1d, 2)}</div>
+                    <div class="update-badge">${new Date(worstDay.date).toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Starting Share Price</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">$${start2025.net.toFixed(4)}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Ending Share Price</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">$${end2025.net.toFixed(4)}</div>
+                </div>
+            `;
+        }
+
         // Charts
         let roiChart = null;
         let apyChart = null;
+        let roi2025Chart = null;
+        let apy2025Chart = null;
 
         function renderROIChart(period = 'all') {
             const ctx = document.getElementById('roiChart').getContext('2d');
@@ -1198,6 +1301,138 @@
             });
         }
 
+        // 2025 specific charts
+        function render2025ROIChart() {
+            const data2025 = historicalData.filter(d => d.date >= '2025-01-01' && d.date <= '2025-12-31');
+
+            if (data2025.length === 0) {
+                return;
+            }
+
+            const ctx = document.getElementById('roi2025Chart').getContext('2d');
+            const start2025 = data2025[0];
+
+            // Calculate ROI from start of 2025
+            const roiData = data2025.map(d => {
+                const returnVal = ((d.net - start2025.net) / start2025.net) * 100;
+                return returnVal * (1 - TOTAL_FEE_RATE);
+            });
+
+            if (roi2025Chart) roi2025Chart.destroy();
+
+            roi2025Chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data2025.map(d => d.date),
+                    datasets: [{
+                        label: '2025 ROI',
+                        data: roiData,
+                        borderColor: '#22c55e',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => `ROI: ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 8 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#22c55e',
+                                callback: v => v.toFixed(0) + '%'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function render2025APYChart() {
+            const data2025 = historicalData.filter(d => d.date >= '2025-01-01' && d.date <= '2025-12-31');
+
+            if (data2025.length === 0) {
+                return;
+            }
+
+            const ctx = document.getElementById('apy2025Chart').getContext('2d');
+            const start2025 = data2025[0];
+
+            // Calculate APY for each day in 2025
+            const apyData = data2025.map((d, i) => {
+                if (i === 0) return 0;
+                const daysSince2025Start = i + 1;
+                const returnVal = ((d.net - start2025.net) / start2025.net) * 100;
+                const netReturn = returnVal * (1 - TOTAL_FEE_RATE);
+                return (netReturn / daysSince2025Start) * 365;
+            });
+
+            if (apy2025Chart) apy2025Chart.destroy();
+
+            apy2025Chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data2025.map(d => d.date),
+                    datasets: [{
+                        label: '2025 APY',
+                        data: apyData,
+                        borderColor: '#7c3aed',
+                        backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => `APY: ${ctx.parsed.y.toFixed(2)}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 8 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#7c3aed',
+                                callback: v => v.toFixed(0) + '%'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         // Tab handling
         function setupTabs() {
             document.getElementById('roiChartTabs').addEventListener('click', e => {
@@ -1293,6 +1528,9 @@
             renderMetrics();
             renderROIChart('all');
             renderAPYChart('all');
+            render2025Metrics();
+            render2025ROIChart();
+            render2025APYChart();
             setupTabs();
 
             // Fetch vault data
@@ -1305,6 +1543,9 @@
                 renderMetrics();
                 renderROIChart('all');
                 renderAPYChart('all');
+                render2025Metrics();
+                render2025ROIChart();
+                render2025APYChart();
             }, 5 * 60 * 1000);
         }
 
