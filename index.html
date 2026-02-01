@@ -307,7 +307,6 @@
                 <h3 class="chart-title">Cumulative ROI (Net of Fees)</h3>
                 <div class="tabs-container" id="roiChartTabs">
                     <div class="tab active" data-period="all">All Time</div>
-                    <div class="tab" data-period="ytd">YTD</div>
                     <div class="tab" data-period="365">1 Year</div>
                     <div class="tab" data-period="180">180 Days</div>
                     <div class="tab" data-period="90">90 Days</div>
@@ -324,7 +323,6 @@
                 <h3 class="chart-title">APY Performance (Annualized)</h3>
                 <div class="tabs-container" id="apyChartTabs">
                     <div class="tab active" data-period="all">All Time</div>
-                    <div class="tab" data-period="ytd">YTD</div>
                     <div class="tab" data-period="365">1 Year</div>
                     <div class="tab" data-period="180">180 Days</div>
                     <div class="tab" data-period="90">90 Days</div>
@@ -921,18 +919,8 @@
 
         function calculateRollingAPYs() {
             const latest = historicalData[historicalData.length - 1];
-            const currentYear = new Date().getFullYear();
-
-            // Calculate YTD data
-            const ytdData = historicalData.filter(d => d.date >= `${currentYear}-01-01`);
-            const ytdStart = ytdData.length > 0 ? ytdData[0] : latest;
-            const ytdDays = ytdData.length;
-            const ytdReturn = ytdDays > 0 ? ((latest.net - ytdStart.net) / ytdStart.net) * 100 : 0;
-            const ytdNetReturn = ytdReturn * (1 - TOTAL_FEE_RATE);
-            const ytdAPY = ytdDays > 0 ? (ytdNetReturn / ytdDays) * 365 : 0;
 
             const periods = [
-                { name: 'YTD', days: ytdDays, return: ytdNetReturn, apy: ytdAPY },
                 { name: '90D', days: 90 },
                 { name: '180D', days: 180 },
                 { name: '1Y', days: 365 },
@@ -940,11 +928,6 @@
             ];
 
             return periods.map(period => {
-                // If already calculated (YTD), return as-is
-                if (period.apy !== undefined) {
-                    return period;
-                }
-
                 // Calculate for day-based periods
                 const daysAvailable = Math.min(period.days, historicalData.length);
                 const startIndex = historicalData.length - daysAvailable;
@@ -1111,7 +1094,7 @@
 
             // Determine if this is a day-based or date-based period
             let periodType = period;
-            if (period !== 'all' && period !== 'ytd' && period !== '2025') {
+            if (period !== 'all') {
                 periodType = parseInt(period);
             }
 
@@ -1122,8 +1105,6 @@
             // Set chart label based on period type
             if (period === 'all') {
                 chartLabel = 'Cumulative ROI (All Time)';
-            } else if (period === 'ytd') {
-                chartLabel = 'Cumulative ROI (Year to Date)';
             } else {
                 chartLabel = `Cumulative ROI (Last ${periodType} Days)`;
             }
@@ -1199,7 +1180,7 @@
 
             // Determine if this is a day-based or date-based period
             let periodType = period;
-            if (period !== 'all' && period !== 'ytd' && period !== '2025') {
+            if (period !== 'all') {
                 periodType = parseInt(period);
             }
 
@@ -1210,8 +1191,6 @@
             // Set chart label based on period type
             if (period === 'all') {
                 chartLabel = 'Cumulative APY (All Time)';
-            } else if (period === 'ytd') {
-                chartLabel = 'Cumulative APY (Year to Date)';
             } else {
                 chartLabel = `Cumulative APY (Last ${periodType} Days)`;
             }
