@@ -308,7 +308,6 @@
                 <div class="tabs-container" id="roiChartTabs">
                     <div class="tab active" data-period="all">All Time</div>
                     <div class="tab" data-period="ytd">YTD</div>
-                    <div class="tab" data-period="2025">2025</div>
                     <div class="tab" data-period="365">1 Year</div>
                     <div class="tab" data-period="180">180 Days</div>
                     <div class="tab" data-period="90">90 Days</div>
@@ -326,7 +325,6 @@
                 <div class="tabs-container" id="apyChartTabs">
                     <div class="tab active" data-period="all">All Time</div>
                     <div class="tab" data-period="ytd">YTD</div>
-                    <div class="tab" data-period="2025">2025</div>
                     <div class="tab" data-period="365">1 Year</div>
                     <div class="tab" data-period="180">180 Days</div>
                     <div class="tab" data-period="90">90 Days</div>
@@ -933,18 +931,8 @@
             const ytdNetReturn = ytdReturn * (1 - TOTAL_FEE_RATE);
             const ytdAPY = ytdDays > 0 ? (ytdNetReturn / ytdDays) * 365 : 0;
 
-            // Calculate 2025 data
-            const data2025 = historicalData.filter(d => d.date >= '2025-01-01' && d.date <= '2025-12-31');
-            const start2025 = data2025.length > 0 ? data2025[0] : null;
-            const end2025 = data2025.length > 0 ? data2025[data2025.length - 1] : null;
-            const days2025 = data2025.length;
-            const return2025 = start2025 && end2025 ? ((end2025.net - start2025.net) / start2025.net) * 100 : 0;
-            const netReturn2025 = return2025 * (1 - TOTAL_FEE_RATE);
-            const apy2025 = days2025 > 0 ? (netReturn2025 / days2025) * 365 : 0;
-
             const periods = [
                 { name: 'YTD', days: ytdDays, return: ytdNetReturn, apy: ytdAPY },
-                { name: '2025', days: days2025, return: netReturn2025, apy: apy2025 },
                 { name: '90D', days: 90 },
                 { name: '180D', days: 180 },
                 { name: '1Y', days: 365 },
@@ -952,7 +940,7 @@
             ];
 
             return periods.map(period => {
-                // If already calculated (YTD, 2025), return as-is
+                // If already calculated (YTD), return as-is
                 if (period.apy !== undefined) {
                     return period;
                 }
@@ -1136,8 +1124,6 @@
                 chartLabel = 'Cumulative ROI (All Time)';
             } else if (period === 'ytd') {
                 chartLabel = 'Cumulative ROI (Year to Date)';
-            } else if (period === '2025') {
-                chartLabel = 'Cumulative ROI (2025)';
             } else {
                 chartLabel = `Cumulative ROI (Last ${periodType} Days)`;
             }
@@ -1226,8 +1212,6 @@
                 chartLabel = 'Cumulative APY (All Time)';
             } else if (period === 'ytd') {
                 chartLabel = 'Cumulative APY (Year to Date)';
-            } else if (period === '2025') {
-                chartLabel = 'Cumulative APY (2025)';
             } else {
                 chartLabel = `Cumulative APY (Last ${periodType} Days)`;
             }
