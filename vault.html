@@ -502,12 +502,14 @@
         async function fetchData() {
             try {
                 const [currentResponse, historyResponse] = await Promise.all([
-                    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1.json')),
-                    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json'))
+                    fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1.json')),
+                    fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json'))
                 ]);
 
-                currentData = await currentResponse.json();
-                historicalData = await historyResponse.json();
+                const currentWrapper = await currentResponse.json();
+                const historyWrapper = await historyResponse.json();
+                currentData = JSON.parse(currentWrapper.contents);
+                historicalData = JSON.parse(historyWrapper.contents);
 
                 renderDashboard();
             } catch (error) {
