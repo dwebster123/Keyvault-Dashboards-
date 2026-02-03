@@ -367,7 +367,7 @@
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1tCkeY0rYnBTacwrn4DFAASY89JpnWBo06X2x333u2YA/gviz/tq?tqx=out:csv&gid=0';
 
         // Live vault API for new fund data (using CORS proxy)
-        const VAULT_HISTORY_URL = 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json');
+        const VAULT_HISTORY_URL = 'https://corsproxy.io/?' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json');
 
         // Combined historical data (spreadsheet + live vault)
         let historicalData = [];
@@ -1419,8 +1419,8 @@
         async function fetchVaultData() {
             try {
                 const [currentResponse, historyResponse] = await Promise.all([
-                    fetch('https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1.json')),
-                    fetch('https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json'))
+                    fetch('https://corsproxy.io/?' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1.json')),
+                    fetch('https://corsproxy.io/?' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json'))
                 ]);
 
                 const currentData = await currentResponse.json();
