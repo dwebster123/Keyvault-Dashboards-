@@ -499,17 +499,64 @@
         let historicalData = null;
         let charts = {};
 
+        // CORS proxy configurations - tries each until one works
+        const CORS_PROXIES = [
+            { 
+                name: 'direct',
+                url: u => u, 
+                parse: r => r.json() 
+            },
+            { 
+                name: 'allorigins-raw',
+                url: u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`, 
+                parse: r => r.json() 
+            },
+            { 
+                name: 'allorigins-get',
+                url: u => `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`, 
+                parse: async r => JSON.parse((await r.json()).contents) 
+            },
+            { 
+                name: 'codetabs',
+                url: u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`, 
+                parse: r => r.json() 
+            },
+            { 
+                name: 'corsproxy-io',
+                url: u => `https://corsproxy.io/?${encodeURIComponent(u)}`, 
+                parse: r => r.json() 
+            },
+        ];
+
+        async function fetchWithFallback(url) {
+            for (const proxy of CORS_PROXIES) {
+                try {
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 8000);
+                    const response = await fetch(proxy.url(url), { signal: controller.signal });
+                    clearTimeout(timeout);
+                    if (response.ok) {
+                        const data = await proxy.parse(response);
+                        console.log(`✓ ${proxy.name} worked for ${url}`);
+                        return data;
+                    }
+                } catch (e) {
+                    console.log(`✗ ${proxy.name} failed: ${e.message}`);
+                    continue;
+                }
+            }
+            throw new Error('All CORS proxies failed');
+        }
+
         async function fetchData() {
             try {
-                const [currentResponse, historyResponse] = await Promise.all([
-                    fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1.json')),
-                    fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://app.primenumber.trade/data/PN_KV1_history.json'))
+                const [current, history] = await Promise.all([
+                    fetchWithFallback('https://app.primenumber.trade/data/PN_KV1.json'),
+                    fetchWithFallback('https://app.primenumber.trade/data/PN_KV1_history.json')
                 ]);
 
-                const currentWrapper = await currentResponse.json();
-                const historyWrapper = await historyResponse.json();
-                currentData = JSON.parse(currentWrapper.contents);
-                historicalData = JSON.parse(historyWrapper.contents);
+                currentData = current;
+                historicalData = history;
 
                 renderDashboard();
             } catch (error) {
