@@ -507,6 +507,11 @@
                 parse: r => r.json() 
             },
             { 
+                name: 'keyvault-worker',
+                url: u => `https://keyvault.deven-m-webster.workers.dev/?url=${encodeURIComponent(u)}`, 
+                parse: r => r.json() 
+            },
+            { 
                 name: 'allorigins-raw',
                 url: u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`, 
                 parse: r => r.json() 
