@@ -333,6 +333,24 @@
             </div>
         </div>
 
+        <!-- Pro Forma Comparison Section -->
+        <h2 class="section-title">Pro Forma Comparison: KeyVault vs 3x Jupiter JLP</h2>
+        <div class="info-box">
+            <strong>Note:</strong> The 3x Jupiter JLP data is <em>pro forma backtested performance</em> from Prime Number, not live trading results. 
+            KeyVault performance is actual live results. Past performance does not guarantee future results.
+        </div>
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Cumulative ROI Comparison (Nov 6, 2025 → Present)</h3>
+            </div>
+            <div class="chart-wrapper" style="height: 400px;">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </div>
+        <div class="metrics-grid" id="comparisonMetrics">
+            <!-- Populated by JS -->
+        </div>
+
         <!-- 2025 Year Performance Section -->
         <h2 class="section-title">2025 Year Performance</h2>
         <div class="metrics-grid" id="metrics2025Grid">
@@ -889,6 +907,100 @@
         const PRIME_NUMBER_FEE_RATE = 0.10;
         const TOTAL_FEE_RATE = PERFORMANCE_FEE_RATE + PRIME_NUMBER_FEE_RATE; // 30%
 
+        // Prime Number Pro Forma Data - 3x Jupiter JLP (backtested, NOT live results)
+        const primeProFormaData = [
+            {date: "2025-11-06", roi: 0.05898279960576413},
+            {date: "2025-11-07", roi: 0.1660754931213967},
+            {date: "2025-11-08", roi: 0.20823944064165384},
+            {date: "2025-11-09", roi: 0.2581063629295693},
+            {date: "2025-11-10", roi: 0.31614395549544694},
+            {date: "2025-11-11", roi: 0.36476883616022454},
+            {date: "2025-11-12", roi: 0.4070194166630293},
+            {date: "2025-11-13", roi: 0.5701196682153792},
+            {date: "2025-11-14", roi: 0.7346448232229756},
+            {date: "2025-11-15", roi: 0.8295049342232159},
+            {date: "2025-11-16", roi: 0.9110799951650682},
+            {date: "2025-11-17", roi: 1.1468880497402836},
+            {date: "2025-11-18", roi: 1.2789381880953798},
+            {date: "2025-11-19", roi: 1.3864231681433805},
+            {date: "2025-11-20", roi: 1.5089597594662574},
+            {date: "2025-11-21", roi: 1.8084112881291765},
+            {date: "2025-11-22", roi: 1.809188096481452},
+            {date: "2025-11-23", roi: 1.8807225844853708},
+            {date: "2025-11-24", roi: 1.9286723924783256},
+            {date: "2025-11-25", roi: 1.99888521708997},
+            {date: "2025-11-26", roi: 2.0402766586978758},
+            {date: "2025-11-27", roi: 2.110896448729818},
+            {date: "2025-11-28", roi: 2.132755183088863},
+            {date: "2025-11-29", roi: 2.1708419116722912},
+            {date: "2025-11-30", roi: 2.2398829188344958},
+            {date: "2025-12-01", roi: 2.3499965756716223},
+            {date: "2025-12-02", roi: 2.447457788738291},
+            {date: "2025-12-03", roi: 2.4810301543502487},
+            {date: "2025-12-04", roi: 2.5420107792696687},
+            {date: "2025-12-05", roi: 2.606215083937192},
+            {date: "2025-12-06", roi: 2.6436168180376223},
+            {date: "2025-12-07", roi: 2.6921761842273635},
+            {date: "2025-12-08", roi: 2.755547640599282},
+            {date: "2025-12-09", roi: 2.8074977878238716},
+            {date: "2025-12-10", roi: 2.9034641983224243},
+            {date: "2025-12-11", roi: 2.945219063108132},
+            {date: "2025-12-12", roi: 3.0239535764587395},
+            {date: "2025-12-13", roi: 3.060056440411851},
+            {date: "2025-12-14", roi: 3.114039775551741},
+            {date: "2025-12-15", roi: 3.1609341547045555},
+            {date: "2025-12-16", roi: 3.230307539679681},
+            {date: "2025-12-17", roi: 3.3709856531831237},
+            {date: "2025-12-18", roi: 3.510518028034062},
+            {date: "2025-12-19", roi: 3.5799038226218087},
+            {date: "2025-12-20", roi: 3.6526450884196726},
+            {date: "2025-12-21", roi: 3.702221469749948},
+            {date: "2025-12-22", roi: 3.781143707445177},
+            {date: "2025-12-23", roi: 3.81106305455313},
+            {date: "2025-12-24", roi: 3.8789320688342315},
+            {date: "2025-12-25", roi: 3.930322259495464},
+            {date: "2025-12-26", roi: 4.02483577288422},
+            {date: "2025-12-27", roi: 4.0668758518371},
+            {date: "2025-12-28", roi: 4.142066164431607},
+            {date: "2025-12-29", roi: 4.216272774510642},
+            {date: "2025-12-30", roi: 4.286434958736225},
+            {date: "2025-12-31", roi: 4.342649380371656},
+            {date: "2026-01-01", roi: 4.3896098361618705},
+            {date: "2026-01-02", roi: 4.457810773227028},
+            {date: "2026-01-03", roi: 4.537540750730981},
+            {date: "2026-01-04", roi: 4.531391205595133},
+            {date: "2026-01-05", roi: 4.670115287689825},
+            {date: "2026-01-06", roi: 4.800091165772613},
+            {date: "2026-01-07", roi: 4.902583878965844},
+            {date: "2026-01-08", roi: 4.982487965779431},
+            {date: "2026-01-09", roi: 5.0829925423957985},
+            {date: "2026-01-10", roi: 5.093126776147202},
+            {date: "2026-01-11", roi: 5.1752936950524315},
+            {date: "2026-01-12", roi: 5.255650765679679},
+            {date: "2026-01-13", roi: 5.373600018908876},
+            {date: "2026-01-14", roi: 5.458739534220675},
+            {date: "2026-01-15", roi: 5.530166530751416},
+            {date: "2026-01-16", roi: 5.556045760722339},
+            {date: "2026-01-17", roi: 5.619816105838529},
+            {date: "2026-01-18", roi: 5.635059801039942},
+            {date: "2026-01-19", roi: 5.7698401709508875},
+            {date: "2026-01-20", roi: 5.893013851827748},
+            {date: "2026-01-21", roi: 5.973898938517764},
+            {date: "2026-01-22", roi: 6.002533079496279},
+            {date: "2026-01-23", roi: 6.0405871489162655},
+            {date: "2026-01-24", roi: 6.023428984023232},
+            {date: "2026-01-25", roi: 6.115452052184524},
+            {date: "2026-01-26", roi: 6.125656574869783},
+            {date: "2026-01-27", roi: 6.1961963543095235},
+            {date: "2026-01-28", roi: 6.174161543434197},
+            {date: "2026-01-29", roi: 6.282578472377233},
+            {date: "2026-01-30", roi: 6.358496251383314},
+            {date: "2026-01-31", roi: 6.695535547957172},
+            {date: "2026-02-01", roi: 6.629214814675826},
+            {date: "2026-02-02", roi: 6.65315032964607},
+            {date: "2026-02-03", roi: 6.573638063379751}
+        ];
+
         // Calculate metrics
         function calculateMetrics() {
             const latest = historicalData[historicalData.length - 1];
@@ -1089,6 +1201,7 @@
         let apyChart = null;
         let roi2025Chart = null;
         let apy2025Chart = null;
+        let comparisonChart = null;
 
         function renderROIChart(period = 'all') {
             const ctx = document.getElementById('roiChart').getContext('2d');
@@ -1397,6 +1510,188 @@
             });
         }
 
+        // Comparison Chart - KeyVault vs Prime Number Pro Forma
+        function renderComparisonChart() {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            // Get KeyVault data starting from Nov 6, 2025 (when pro forma starts)
+            const comparisonStartDate = '2025-11-06';
+            const kvDataFiltered = historicalData.filter(d => d.date >= comparisonStartDate);
+            
+            if (kvDataFiltered.length === 0) {
+                console.warn('No KeyVault data available for comparison period');
+                return;
+            }
+            
+            // Get the KeyVault share price on Nov 6, 2025 as baseline
+            const kvBaseline = kvDataFiltered[0].net;
+            
+            // Build aligned datasets
+            const labels = [];
+            const kvRoiData = [];
+            const primeRoiData = [];
+            
+            // Create a map of pro forma data by date
+            const primeDataMap = {};
+            primeProFormaData.forEach(d => {
+                primeDataMap[d.date] = d.roi * 100; // Convert to percentage
+            });
+            
+            // Create a map of KeyVault data by date
+            const kvDataMap = {};
+            kvDataFiltered.forEach(d => {
+                const roi = ((d.net - kvBaseline) / kvBaseline) * 100;
+                kvDataMap[d.date] = roi * (1 - TOTAL_FEE_RATE); // Net of fees
+            });
+            
+            // Get all unique dates from both datasets
+            const allDates = new Set([
+                ...kvDataFiltered.map(d => d.date),
+                ...primeProFormaData.map(d => d.date)
+            ]);
+            
+            // Sort dates and build aligned arrays
+            const sortedDates = Array.from(allDates).sort();
+            
+            sortedDates.forEach(date => {
+                labels.push(date);
+                kvRoiData.push(kvDataMap[date] !== undefined ? kvDataMap[date] : null);
+                primeRoiData.push(primeDataMap[date] !== undefined ? primeDataMap[date] : null);
+            });
+            
+            if (comparisonChart) comparisonChart.destroy();
+            
+            comparisonChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'KeyVault (Actual, Net of Fees)',
+                            data: kvRoiData,
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 0,
+                            pointHoverRadius: 5,
+                            borderWidth: 2.5
+                        },
+                        {
+                            label: '3x Jupiter JLP (Pro Forma, Before Fees)',
+                            data: primeRoiData,
+                            borderColor: '#f472b6',
+                            backgroundColor: 'rgba(244, 114, 182, 0.1)',
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 0,
+                            pointHoverRadius: 5,
+                            borderWidth: 2,
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: '#8b8ba7',
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => {
+                                    if (ctx.parsed.y === null) return null;
+                                    return `${ctx.dataset.label}: ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 10 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#8b8ba7',
+                                callback: v => v.toFixed(0) + '%'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Cumulative ROI %',
+                                color: '#6b6b8d'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Render comparison metrics
+            renderComparisonMetrics(kvDataMap, primeDataMap);
+        }
+        
+        function renderComparisonMetrics(kvDataMap, primeDataMap) {
+            // Get latest values
+            const kvDates = Object.keys(kvDataMap).sort();
+            const primeDates = Object.keys(primeDataMap).sort();
+            
+            const latestKvDate = kvDates[kvDates.length - 1];
+            const latestPrimeDate = primeDates[primeDates.length - 1];
+            
+            const kvLatestRoi = kvDataMap[latestKvDate] || 0;
+            const primeLatestRoi = primeDataMap[latestPrimeDate] || 0;
+            
+            // Calculate period days
+            const startDate = new Date('2025-11-06');
+            const kvEndDate = new Date(latestKvDate);
+            const primeEndDate = new Date(latestPrimeDate);
+            
+            const kvDays = Math.floor((kvEndDate - startDate) / (1000 * 60 * 60 * 24));
+            const primeDays = Math.floor((primeEndDate - startDate) / (1000 * 60 * 60 * 24));
+            
+            // Annualized APY
+            const kvAPY = (kvLatestRoi / kvDays) * 365;
+            const primeAPY = (primeLatestRoi / primeDays) * 365;
+            
+            document.getElementById('comparisonMetrics').innerHTML = `
+                <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
+                    <div class="metric-label">KeyVault ROI (Actual)</div>
+                    <div class="metric-value positive">${formatPercent(kvLatestRoi)}</div>
+                    <div class="update-badge">Net of 30% fees • ${kvDays} days</div>
+                </div>
+                <div class="metric-card" style="border-color: rgba(244, 114, 182, 0.4);">
+                    <div class="metric-label">3x Jupiter JLP (Pro Forma)</div>
+                    <div class="metric-value" style="color: #f472b6;">${formatPercent(primeLatestRoi)}</div>
+                    <div class="update-badge">Before fees • ${primeDays} days</div>
+                </div>
+                <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
+                    <div class="metric-label">KeyVault APY (Actual)</div>
+                    <div class="metric-value positive">${formatPercent(kvAPY)}</div>
+                    <div class="update-badge">Annualized, net of fees</div>
+                </div>
+                <div class="metric-card" style="border-color: rgba(244, 114, 182, 0.4);">
+                    <div class="metric-label">3x Jupiter JLP APY (Pro Forma)</div>
+                    <div class="metric-value" style="color: #f472b6;">${formatPercent(primeAPY)}</div>
+                    <div class="update-badge">Annualized, before fees</div>
+                </div>
+            `;
+        }
+
         // Tab handling
         function setupTabs() {
             document.getElementById('roiChartTabs').addEventListener('click', e => {
@@ -1494,6 +1789,7 @@
             renderMetrics();
             renderROIChart('all');
             renderAPYChart('all');
+            renderComparisonChart();
             render2025Metrics();
             render2025ROIChart();
             render2025APYChart();
@@ -1509,6 +1805,7 @@
                 renderMetrics();
                 renderROIChart('all');
                 renderAPYChart('all');
+                renderComparisonChart();
                 render2025Metrics();
                 render2025ROIChart();
                 render2025APYChart();
