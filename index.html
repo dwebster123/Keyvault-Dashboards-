@@ -1534,7 +1534,7 @@
             // Create a map of pro forma data by date
             const primeDataMap = {};
             primeProFormaData.forEach(d => {
-                primeDataMap[d.date] = d.roi * 100; // Convert to percentage
+                primeDataMap[d.date] = d.roi; // Already in percentage form (6.57 = 6.57%)
             });
             
             // Create a map of KeyVault data by date
