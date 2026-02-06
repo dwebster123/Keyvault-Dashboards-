@@ -334,14 +334,14 @@
         </div>
 
         <!-- Pro Forma Comparison Section -->
-        <h2 class="section-title">Pro Forma Comparison: KeyVault vs 3x Jupiter JLP</h2>
+        <h2 class="section-title">Pro Forma Comparison: Current Strategy vs Cross-Platform JLP</h2>
         <div class="info-box">
-            <strong>Note:</strong> The 3x Jupiter JLP data is <em>pro forma backtested performance</em> from Prime Number, not live trading results. 
-            KeyVault performance is actual live results. Past performance does not guarantee future results.
+            <strong>Note:</strong> The KeyVault Pro Cross-Platform JLP Strategy data is <em>pro forma backtested performance</em>, not live trading results. 
+            KeyVault (Current) performance is actual live results. Both shown net of fees. Past performance does not guarantee future results.
         </div>
         <div class="chart-container">
             <div class="chart-header">
-                <h3 class="chart-title">Cumulative ROI Comparison (Nov 6, 2025 → Present)</h3>
+                <h3 class="chart-title">Cumulative ROI Comparison - Net of Fees (Nov 6, 2025 → Present)</h3>
             </div>
             <div class="chart-wrapper" style="height: 400px;">
                 <canvas id="comparisonChart"></canvas>
@@ -1531,10 +1531,10 @@
             const kvRoiData = [];
             const primeRoiData = [];
             
-            // Create a map of pro forma data by date
+            // Create a map of pro forma data by date (apply 30% fee to get net returns)
             const primeDataMap = {};
             primeProFormaData.forEach(d => {
-                primeDataMap[d.date] = d.roi; // Already in percentage form (6.57 = 6.57%)
+                primeDataMap[d.date] = d.roi * (1 - TOTAL_FEE_RATE); // Net of 30% fees
             });
             
             // Create a map of KeyVault data by date
@@ -1567,7 +1567,7 @@
                     labels: labels,
                     datasets: [
                         {
-                            label: 'KeyVault (Actual, Net of Fees)',
+                            label: 'KeyVault Current Strategy (Actual)',
                             data: kvRoiData,
                             borderColor: '#22c55e',
                             backgroundColor: 'rgba(34, 197, 94, 0.1)',
@@ -1578,7 +1578,7 @@
                             borderWidth: 2.5
                         },
                         {
-                            label: '3x Jupiter JLP (Pro Forma, Before Fees)',
+                            label: 'KeyVault Pro Cross-Platform JLP (Pro Forma)',
                             data: primeRoiData,
                             borderColor: '#f472b6',
                             backgroundColor: 'rgba(244, 114, 182, 0.1)',
@@ -1670,24 +1670,24 @@
             
             document.getElementById('comparisonMetrics').innerHTML = `
                 <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
-                    <div class="metric-label">KeyVault ROI (Actual)</div>
+                    <div class="metric-label">Current Strategy ROI (Actual)</div>
                     <div class="metric-value positive">${formatPercent(kvLatestRoi)}</div>
-                    <div class="update-badge">Net of 30% fees • ${kvDays} days</div>
+                    <div class="update-badge">Net of fees • ${kvDays} days</div>
                 </div>
                 <div class="metric-card" style="border-color: rgba(244, 114, 182, 0.4);">
-                    <div class="metric-label">3x Jupiter JLP (Pro Forma)</div>
+                    <div class="metric-label">Cross-Platform JLP ROI (Pro Forma)</div>
                     <div class="metric-value" style="color: #f472b6;">${formatPercent(primeLatestRoi)}</div>
-                    <div class="update-badge">Before fees • ${primeDays} days</div>
+                    <div class="update-badge">Net of fees • ${primeDays} days</div>
                 </div>
                 <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
-                    <div class="metric-label">KeyVault APY (Actual)</div>
+                    <div class="metric-label">Current Strategy APY (Actual)</div>
                     <div class="metric-value positive">${formatPercent(kvAPY)}</div>
                     <div class="update-badge">Annualized, net of fees</div>
                 </div>
                 <div class="metric-card" style="border-color: rgba(244, 114, 182, 0.4);">
-                    <div class="metric-label">3x Jupiter JLP APY (Pro Forma)</div>
+                    <div class="metric-label">Cross-Platform JLP APY (Pro Forma)</div>
                     <div class="metric-value" style="color: #f472b6;">${formatPercent(primeAPY)}</div>
-                    <div class="update-badge">Annualized, before fees</div>
+                    <div class="update-badge">Annualized, net of fees</div>
                 </div>
             `;
         }
