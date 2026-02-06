@@ -1570,24 +1570,25 @@
                             label: 'KeyVault Current Strategy (Actual)',
                             data: kvRoiData,
                             borderColor: '#22c55e',
-                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                            fill: false,
+                            backgroundColor: 'rgba(34, 197, 94, 0.15)',
+                            fill: true,
                             tension: 0.3,
                             pointRadius: 0,
                             pointHoverRadius: 5,
-                            borderWidth: 2.5
+                            borderWidth: 2.5,
+                            order: 2
                         },
                         {
                             label: 'KeyVault Pro Cross-Platform JLP (Pro Forma)',
                             data: primeRoiData,
                             borderColor: '#f472b6',
-                            backgroundColor: 'rgba(244, 114, 182, 0.1)',
-                            fill: false,
+                            backgroundColor: 'rgba(244, 114, 182, 0.08)',
+                            fill: true,
                             tension: 0.3,
                             pointRadius: 0,
                             pointHoverRadius: 5,
-                            borderWidth: 2,
-                            borderDash: [5, 5]
+                            borderWidth: 2.5,
+                            order: 1
                         }
                     ]
                 },
@@ -1646,38 +1647,45 @@
         }
         
         function renderComparisonMetrics(kvDataMap, primeDataMap) {
-            // Get latest values
+            // Get overlapping dates only for fair comparison
             const kvDates = Object.keys(kvDataMap).sort();
             const primeDates = Object.keys(primeDataMap).sort();
             
-            const latestKvDate = kvDates[kvDates.length - 1];
-            const latestPrimeDate = primeDates[primeDates.length - 1];
+            // Find the latest common date (where both have data)
+            const kvDateSet = new Set(kvDates);
+            const commonDates = primeDates.filter(d => kvDateSet.has(d)).sort();
             
-            const kvLatestRoi = kvDataMap[latestKvDate] || 0;
-            const primeLatestRoi = primeDataMap[latestPrimeDate] || 0;
+            if (commonDates.length === 0) {
+                document.getElementById('comparisonMetrics').innerHTML = '<div class="metric-card"><div class="metric-value">No overlapping data</div></div>';
+                return;
+            }
             
-            // Calculate period days
+            const latestCommonDate = commonDates[commonDates.length - 1];
             const startDate = new Date('2025-11-06');
-            const kvEndDate = new Date(latestKvDate);
-            const primeEndDate = new Date(latestPrimeDate);
+            const endDate = new Date(latestCommonDate);
+            const days = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
             
-            const kvDays = Math.floor((kvEndDate - startDate) / (1000 * 60 * 60 * 24));
-            const primeDays = Math.floor((primeEndDate - startDate) / (1000 * 60 * 60 * 24));
+            const kvRoi = kvDataMap[latestCommonDate] || 0;
+            const primeRoi = primeDataMap[latestCommonDate] || 0;
             
             // Annualized APY
-            const kvAPY = (kvLatestRoi / kvDays) * 365;
-            const primeAPY = (primeLatestRoi / primeDays) * 365;
+            const kvAPY = (kvRoi / days) * 365;
+            const primeAPY = (primeRoi / days) * 365;
+            
+            // Outperformance
+            const outperformance = primeRoi - kvRoi;
+            const outperformClass = outperformance >= 0 ? 'positive' : 'negative';
             
             document.getElementById('comparisonMetrics').innerHTML = `
                 <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
                     <div class="metric-label">Current Strategy ROI (Actual)</div>
-                    <div class="metric-value positive">${formatPercent(kvLatestRoi)}</div>
-                    <div class="update-badge">Net of fees • ${kvDays} days</div>
+                    <div class="metric-value positive">${formatPercent(kvRoi)}</div>
+                    <div class="update-badge">Net of fees • ${days} days</div>
                 </div>
                 <div class="metric-card" style="border-color: rgba(244, 114, 182, 0.4);">
                     <div class="metric-label">Cross-Platform JLP ROI (Pro Forma)</div>
-                    <div class="metric-value" style="color: #f472b6;">${formatPercent(primeLatestRoi)}</div>
-                    <div class="update-badge">Net of fees • ${primeDays} days</div>
+                    <div class="metric-value" style="color: #f472b6;">${formatPercent(primeRoi)}</div>
+                    <div class="update-badge">Net of fees • ${days} days</div>
                 </div>
                 <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
                     <div class="metric-label">Current Strategy APY (Actual)</div>
@@ -1688,6 +1696,16 @@
                     <div class="metric-label">Cross-Platform JLP APY (Pro Forma)</div>
                     <div class="metric-value" style="color: #f472b6;">${formatPercent(primeAPY)}</div>
                     <div class="update-badge">Annualized, net of fees</div>
+                </div>
+                <div class="metric-card" style="border-color: rgba(124, 58, 237, 0.4); grid-column: span 2;">
+                    <div class="metric-label">Pro Forma Outperformance</div>
+                    <div class="metric-value" style="color: #a78bfa;">${formatPercent(outperformance)}</div>
+                    <div class="update-badge">Additional return vs current strategy (same period)</div>
+                </div>
+                <div class="metric-card" style="grid-column: span 2;">
+                    <div class="metric-label">Comparison Period</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">Nov 6, 2025 → ${new Date(latestCommonDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}</div>
+                    <div class="update-badge">${days} days of overlapping data</div>
                 </div>
             `;
         }
