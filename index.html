@@ -222,6 +222,70 @@
             .chart-wrapper {
                 height: 280px;
             }
+            /* Mobile: Force single column for comparison metrics */
+            #comparisonMetrics {
+                grid-template-columns: 1fr !important;
+            }
+            #comparisonMetrics .metric-card {
+                grid-column: span 1 !important;
+            }
+            .info-box {
+                font-size: 0.75rem;
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+            .header img.logo {
+                height: 80px;
+            }
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            .section-title {
+                font-size: 1.1rem;
+            }
+            .metric-card {
+                padding: 16px;
+            }
+            .metric-label {
+                font-size: 0.65rem;
+            }
+            .metric-value {
+                font-size: 1.1rem;
+            }
+            .update-badge {
+                font-size: 0.6rem;
+            }
+            .chart-wrapper {
+                height: 220px;
+            }
+            .chart-title {
+                font-size: 0.9rem;
+            }
+            .tabs-container {
+                gap: 4px;
+            }
+            .tab {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            .apy-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .apy-card {
+                padding: 10px;
+            }
+            .apy-period {
+                font-size: 0.6rem;
+            }
+            .apy-value {
+                font-size: 1rem;
+            }
         }
 
         .info-box {
@@ -1606,7 +1670,11 @@
                             labels: {
                                 color: '#8b8ba7',
                                 usePointStyle: true,
-                                padding: 20
+                                padding: 15,
+                                font: {
+                                    size: window.innerWidth < 480 ? 10 : 12
+                                },
+                                boxWidth: window.innerWidth < 480 ? 8 : 12
                             }
                         },
                         tooltip: {
