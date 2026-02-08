@@ -108,8 +108,9 @@
                 </div>
             </div>
             <div class="chart-wrapper" id="fundingChartWrapper">
-                <div class="loading" id="fundingLoading">Loading Drift funding data (270 files)...</div>
+                <div class="loading" id="fundingLoading">Loading Drift funding data...</div>
                 <canvas id="fundingChart" style="display:none;"></canvas>
+                <div id="fundingDataInfo" style="text-align:center;color:#888;font-size:0.8rem;margin-top:6px;"></div>
             </div>
         </div>
 
@@ -382,73 +383,26 @@ let fundingData = {}; // { 'SOL-PERP': [{date, rate}, ...], ... }
 let fundingChart = null;
 let selectedFundingDays = 30;
 
-function driftUrl(market, date) {
-    const y = date.getFullYear();
-    const ds = date.toISOString().slice(0,10).replace(/-/g,'');
-    return `https://drift-historical-data-v2.s3.eu-west-1.amazonaws.com/program/dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH/market/${market}/fundingRateRecords/${y}/${ds}`;
-}
-
-function parseCSV(text) {
-    const lines = text.trim().split('\n');
-    if (lines.length < 2) return [];
-    const headers = lines[0].split(',');
-    const tsIdx = headers.indexOf('ts');
-    const frIdx = headers.indexOf('fundingRate');
-    if (tsIdx < 0 || frIdx < 0) return [];
-    return lines.slice(1).map(line => {
-        const cols = line.split(',');
-        return { ts: parseInt(cols[tsIdx]), rate: parseFloat(cols[frIdx]) };
-    }).filter(r => !isNaN(r.ts) && !isNaN(r.rate));
-}
-
-async function fetchDriftDay(market, date) {
-    const url = driftUrl(market, date);
-    try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(res.status);
-        const text = await res.text();
-        return parseCSV(text);
-    } catch {
-        try {
-            const proxyRes = await fetch(PROXY(url));
-            const json = await proxyRes.json();
-            return parseCSV(json.contents || '');
-        } catch { return []; }
-    }
-}
-
 async function loadDriftFunding() {
     document.getElementById('fundingLoading').style.display = '';
     document.getElementById('fundingChart').style.display = 'none';
-    const now = new Date();
-    const days = [];
-    for (let i = 0; i < 90; i++) {
-        const d = new Date(now);
-        d.setDate(d.getDate() - i);
-        days.push(d);
-    }
-
-    const allData = {};
-    DRIFT_MARKETS.forEach(m => allData[m] = []);
-
-    const fetches = [];
-    for (const market of DRIFT_MARKETS) {
-        for (const day of days) {
-            fetches.push(fetchDriftDay(market, day).then(records => {
-                if (records.length) {
-                    // Average all funding rates for the day into one point
-                    const avgRate = records.reduce((s, r) => s + r.rate, 0) / records.length;
-                    const annualized = avgRate * 24 * 365 * 100;
-                    allData[market].push({ date: new Date(day.toISOString().slice(0,10)), rate: annualized });
-                }
+    try {
+        const res = await fetch('./data/drift-funding-rates.json');
+        const json = await res.json();
+        const allData = {};
+        DRIFT_MARKETS.forEach(m => {
+            allData[m] = (json.markets[m] || []).map(d => ({
+                date: new Date(d.date),
+                rate: d.annualizedPct
             }));
-        }
+        });
+        fundingData = allData;
+        // Show data freshness
+        const info = document.getElementById('fundingDataInfo');
+        if (info) info.textContent = 'Data as of: ' + new Date(json.lastUpdated).toLocaleString();
+    } catch (e) {
+        console.error('Failed to load drift funding data:', e);
     }
-
-    await Promise.allSettled(fetches);
-    DRIFT_MARKETS.forEach(m => allData[m].sort((a, b) => a.date - b.date));
-    fundingData = allData;
-
     document.getElementById('fundingLoading').style.display = 'none';
     document.getElementById('fundingChart').style.display = '';
     updateFundingMetric();
@@ -544,7 +498,7 @@ document.getElementById('fundingTabs').addEventListener('click', e => {
 loadAll();
 loadDriftFunding();
 setInterval(loadAll, 60000);
-setInterval(loadDriftFunding, 3600000);
+// Drift data is pre-fetched static JSON, no need to auto-refresh
 </script>
 </body>
 </html>
