@@ -410,8 +410,10 @@ async function loadDriftFunding() {
 }
 
 function updateFundingMetric() {
-    const now = Date.now();
-    const sevenDaysAgo = now - 7 * 86400000;
+    let maxDate = 0;
+    DRIFT_MARKETS.forEach(m => (fundingData[m] || []).forEach(d => { if (d.date.getTime() > maxDate) maxDate = d.date.getTime(); }));
+    if (!maxDate) maxDate = Date.now();
+    const sevenDaysAgo = maxDate - 7 * 86400000;
     let sum = 0, count = 0;
     DRIFT_MARKETS.forEach(m => {
         (fundingData[m] || []).forEach(d => {
@@ -429,7 +431,11 @@ function updateFundingMetric() {
 }
 
 function renderFundingChart() {
-    const cutoff = selectedFundingDays > 0 ? Date.now() - selectedFundingDays * 86400000 : 0;
+    // Use max date in data as reference (Drift S3 data may lag behind current date)
+    let maxDate = 0;
+    DRIFT_MARKETS.forEach(m => (fundingData[m] || []).forEach(d => { if (d.date.getTime() > maxDate) maxDate = d.date.getTime(); }));
+    if (!maxDate) maxDate = Date.now();
+    const cutoff = selectedFundingDays > 0 ? maxDate - selectedFundingDays * 86400000 : 0;
     const datasets = DRIFT_MARKETS.map(m => ({
         label: m,
         data: (fundingData[m] || []).filter(d => d.date.getTime() >= cutoff).map(d => ({ x: d.date, y: d.rate })),
