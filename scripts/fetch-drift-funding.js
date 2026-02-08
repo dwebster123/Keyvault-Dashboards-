@@ -16,10 +16,8 @@ const MARKETS = [
 const API_BASE = 'https://data.api.drift.trade';
 const OUTPUT = path.join(__dirname, '..', 'data', 'drift-funding-rates.json');
 
-// Drift funding rates are in PRICE_PRECISION (1e6) format
-// fundingRate is per-period rate. Drift settles every hour.
-// Annualized = rate / 1e9 * 24 * 365 * 100
-const PRECISION = 1e9;
+// Drift funding rate formula: fundingRate / oraclePriceTwap = hourly rate (decimal)
+// Annualized % = hourlyRate * 24 * 365 * 100
 
 async function fetchFundingRates(marketIndex) {
   const url = `${API_BASE}/fundingRates?marketIndex=${marketIndex}`;
@@ -55,12 +53,15 @@ function processRecords(records) {
   for (const r of records) {
     const ts = parseInt(r.ts) * 1000; // Unix seconds to ms
     const date = new Date(ts).toISOString().slice(0, 10);
-    const rate = parseInt(r.fundingRate) / PRECISION;
+    const oracle = parseInt(r.oraclePriceTwap);
+    if (!oracle) continue; // skip bad records
+    // fundingRate is FUNDING_RATE_PRECISION (1e9), oraclePriceTwap is PRICE_PRECISION (1e6)
+    const hourlyRate = (parseInt(r.fundingRate) / 1e9) / (oracle / 1e6); // decimal hourly rate
     
     if (!dailyMap[date]) {
       dailyMap[date] = { sum: 0, count: 0 };
     }
-    dailyMap[date].sum += rate;
+    dailyMap[date].sum += hourlyRate;
     dailyMap[date].count++;
   }
   
