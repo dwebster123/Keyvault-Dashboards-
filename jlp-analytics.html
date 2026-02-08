@@ -94,6 +94,25 @@
             <div class="metric-card"><div class="metric-label">Vault Share Price</div><div class="metric-value">--</div></div>
         </div>
 
+        <!-- Chart: Drift Funding Rates -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <div>
+                    <h3 class="chart-title">Drift Funding Rates (Hedge Cost/Revenue)</h3>
+                    <div style="font-size:0.7rem;color:#6b6b8d;margin-top:4px;">Positive = shorts earn (good for hedge). Negative = shorts pay (hedge cost).</div>
+                </div>
+                <div class="tabs-container" id="fundingTabs">
+                    <div class="tab" data-days="7">7D</div>
+                    <div class="tab active" data-days="30">30D</div>
+                    <div class="tab" data-days="90">90D</div>
+                </div>
+            </div>
+            <div class="chart-wrapper" id="fundingChartWrapper">
+                <div class="loading" id="fundingLoading">Loading Drift funding data (270 files)...</div>
+                <canvas id="fundingChart" style="display:none;"></canvas>
+            </div>
+        </div>
+
         <!-- Chart 1: Fee Revenue -->
         <div class="chart-container">
             <div class="chart-header">
@@ -217,6 +236,11 @@ async function loadAll() {
                 <div class="metric-label">Vault Share Price</div>
                 <div class="metric-value">${vaultSharePrice ? '$' + vaultSharePrice.toFixed(4) : '--'}</div>
                 <div class="metric-sub">PN_KV1</div>
+            </div>
+            <div class="metric-card" id="fundingMetricCard">
+                <div class="metric-label">Avg Funding Rate (7D)</div>
+                <div class="metric-value" id="fundingMetricValue">--</div>
+                <div class="metric-sub">Annualized, 3-market avg</div>
             </div>
         `;
 
@@ -351,9 +375,176 @@ document.getElementById('feeTabs').addEventListener('click', e => {
     renderFeeChart();
 });
 
+// ============ DRIFT FUNDING RATES ============
+const DRIFT_MARKETS = ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'];
+const DRIFT_COLORS = { 'SOL-PERP': '#22c55e', 'BTC-PERP': '#f59e0b', 'ETH-PERP': '#3b82f6' };
+let fundingData = {}; // { 'SOL-PERP': [{date, rate}, ...], ... }
+let fundingChart = null;
+let selectedFundingDays = 30;
+
+function driftUrl(market, date) {
+    const y = date.getFullYear();
+    const ds = date.toISOString().slice(0,10).replace(/-/g,'');
+    return `https://drift-historical-data-v2.s3.eu-west-1.amazonaws.com/program/dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH/market/${market}/fundingRateRecords/${y}/${ds}`;
+}
+
+function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    if (lines.length < 2) return [];
+    const headers = lines[0].split(',');
+    const tsIdx = headers.indexOf('ts');
+    const frIdx = headers.indexOf('fundingRate');
+    if (tsIdx < 0 || frIdx < 0) return [];
+    return lines.slice(1).map(line => {
+        const cols = line.split(',');
+        return { ts: parseInt(cols[tsIdx]), rate: parseFloat(cols[frIdx]) };
+    }).filter(r => !isNaN(r.ts) && !isNaN(r.rate));
+}
+
+async function fetchDriftDay(market, date) {
+    const url = driftUrl(market, date);
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(res.status);
+        const text = await res.text();
+        return parseCSV(text);
+    } catch {
+        try {
+            const proxyRes = await fetch(PROXY(url));
+            const json = await proxyRes.json();
+            return parseCSV(json.contents || '');
+        } catch { return []; }
+    }
+}
+
+async function loadDriftFunding() {
+    document.getElementById('fundingLoading').style.display = '';
+    document.getElementById('fundingChart').style.display = 'none';
+    const now = new Date();
+    const days = [];
+    for (let i = 0; i < 90; i++) {
+        const d = new Date(now);
+        d.setDate(d.getDate() - i);
+        days.push(d);
+    }
+
+    const allData = {};
+    DRIFT_MARKETS.forEach(m => allData[m] = []);
+
+    const fetches = [];
+    for (const market of DRIFT_MARKETS) {
+        for (const day of days) {
+            fetches.push(fetchDriftDay(market, day).then(records => {
+                if (records.length) {
+                    // Average all funding rates for the day into one point
+                    const avgRate = records.reduce((s, r) => s + r.rate, 0) / records.length;
+                    const annualized = avgRate * 24 * 365 * 100;
+                    allData[market].push({ date: new Date(day.toISOString().slice(0,10)), rate: annualized });
+                }
+            }));
+        }
+    }
+
+    await Promise.allSettled(fetches);
+    DRIFT_MARKETS.forEach(m => allData[m].sort((a, b) => a.date - b.date));
+    fundingData = allData;
+
+    document.getElementById('fundingLoading').style.display = 'none';
+    document.getElementById('fundingChart').style.display = '';
+    updateFundingMetric();
+    renderFundingChart();
+}
+
+function updateFundingMetric() {
+    const now = Date.now();
+    const sevenDaysAgo = now - 7 * 86400000;
+    let sum = 0, count = 0;
+    DRIFT_MARKETS.forEach(m => {
+        (fundingData[m] || []).forEach(d => {
+            if (d.date.getTime() >= sevenDaysAgo) { sum += d.rate; count++; }
+        });
+    });
+    const avg = count ? sum / count : 0;
+    const el = document.getElementById('fundingMetricValue');
+    if (el) {
+        el.textContent = avg.toFixed(2) + '%';
+        el.className = 'metric-value ' + (avg >= 0 ? 'positive' : 'negative');
+    }
+    const card = document.getElementById('fundingMetricCard');
+    if (card) card.className = 'metric-card' + (avg >= 0 ? '' : ' highlight');
+}
+
+function renderFundingChart() {
+    const cutoff = selectedFundingDays > 0 ? Date.now() - selectedFundingDays * 86400000 : 0;
+    const datasets = DRIFT_MARKETS.map(m => ({
+        label: m,
+        data: (fundingData[m] || []).filter(d => d.date.getTime() >= cutoff).map(d => ({ x: d.date, y: d.rate })),
+        borderColor: DRIFT_COLORS[m],
+        backgroundColor: 'transparent',
+        pointRadius: 1.5,
+        borderWidth: 2,
+        tension: 0.3
+    }));
+
+    const cfg = {
+        type: 'line',
+        data: { datasets },
+        options: {
+            ...chartOpts({
+                y: {
+                    ...defaultScales.y,
+                    title: { display: true, text: 'Annualized Funding Rate (%)', color: chartColors.text },
+                    ticks: { color: chartColors.text, callback: v => v.toFixed(0) + '%' }
+                }
+            }),
+            plugins: {
+                ...chartOpts().plugins,
+                annotation: undefined
+            }
+        },
+        plugins: [{
+            id: 'fundingZeroLine',
+            beforeDraw(chart) {
+                const { ctx, chartArea: { left, right, top, bottom }, scales: { y } } = chart;
+                const zeroY = y.getPixelForValue(0);
+                if (zeroY >= top && zeroY <= bottom) {
+                    // Green above zero
+                    ctx.save();
+                    ctx.fillStyle = 'rgba(34,197,94,0.06)';
+                    ctx.fillRect(left, top, right - left, zeroY - top);
+                    // Red below zero
+                    ctx.fillStyle = 'rgba(239,68,68,0.06)';
+                    ctx.fillRect(left, zeroY, right - left, bottom - zeroY);
+                    // Dashed zero line
+                    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                    ctx.setLineDash([6, 4]);
+                    ctx.beginPath();
+                    ctx.moveTo(left, zeroY);
+                    ctx.lineTo(right, zeroY);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            }
+        }]
+    };
+
+    if (fundingChart) fundingChart.destroy();
+    fundingChart = new Chart(document.getElementById('fundingChart'), cfg);
+}
+
+document.getElementById('fundingTabs').addEventListener('click', e => {
+    if (!e.target.classList.contains('tab')) return;
+    document.querySelectorAll('#fundingTabs .tab').forEach(t => t.classList.remove('active'));
+    e.target.classList.add('active');
+    selectedFundingDays = parseInt(e.target.dataset.days);
+    renderFundingChart();
+});
+
 // Init + auto-refresh
 loadAll();
+loadDriftFunding();
 setInterval(loadAll, 60000);
+setInterval(loadDriftFunding, 3600000);
 </script>
 </body>
 </html>
