@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>KeyVault JLP Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d1f 100%);
+            min-height: 100vh; color: #ffffff; padding: 20px;
+        }
+        .header { text-align: center; margin-bottom: 30px; padding: 20px; }
+        .header img.logo { height: 120px; margin-bottom: 16px; filter: brightness(0) invert(1); }
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed, #f472b6);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 10px;
+        }
+        .header .subtitle { color: #8b8ba7; font-size: 1rem; }
+        .dashboard { max-width: 1400px; margin: 0 auto; }
+        .metrics-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px; margin-bottom: 30px;
+        }
+        .metric-card {
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+            border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.1);
+            text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .metric-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .metric-card.highlight {
+            background: linear-gradient(135deg, rgba(0,212,255,0.15) 0%, rgba(124,58,237,0.15) 100%);
+            border-color: rgba(0,212,255,0.3);
+        }
+        .metric-label { font-size: 0.75rem; color: #8b8ba7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .metric-value { font-size: 1.6rem; font-weight: 700; color: #ffffff; }
+        .metric-value.positive { color: #22c55e; }
+        .metric-value.negative { color: #ef4444; }
+        .metric-sub { font-size: 0.7rem; color: #6b6b8d; margin-top: 4px; }
+        .section-title { font-size: 1.3rem; margin: 30px 0 15px 0; color: #00d4ff; }
+        .tabs-container { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tab {
+            padding: 8px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; color: #8b8ba7; cursor: pointer; transition: all 0.2s ease; font-size: 0.85rem;
+        }
+        .tab:hover { background: rgba(255,255,255,0.1); color: #ffffff; }
+        .tab.active { background: linear-gradient(135deg, #00d4ff, #7c3aed); color: #ffffff; border-color: transparent; }
+        .chart-container {
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+            border-radius: 16px; padding: 24px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px;
+        }
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .chart-title { font-size: 1.1rem; color: #ffffff; }
+        .chart-wrapper { position: relative; height: 350px; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .metric-value { font-size: 1.3rem; }
+            .chart-wrapper { height: 280px; }
+        }
+        .live-indicator {
+            display: inline-block; width: 8px; height: 8px; background: #22c55e;
+            border-radius: 50%; margin-right: 6px; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .update-badge { font-size: 0.7rem; color: #6b6b8d; margin-top: 5px; }
+        .loading { text-align: center; padding: 40px; color: #8b8ba7; }
+        .back-link { display: inline-block; margin-bottom: 10px; color: #00d4ff; text-decoration: none; font-size: 0.9rem; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <a href="index.html" class="back-link">← Back to Main Dashboard</a>
+        <div class="header">
+            <img src="logo.png" alt="KeyVault" class="logo">
+            <h1>KeyVault JLP Analytics</h1>
+            <div class="subtitle">Jupiter Perpetual Exchange Fee & Performance Analytics</div>
+            <div class="update-badge"><span class="live-indicator"></span>Auto-refreshing · <span id="lastUpdate">Loading...</span></div>
+        </div>
+
+        <!-- Top Metrics -->
+        <div class="metrics-grid" id="topMetrics">
+            <div class="metric-card highlight"><div class="metric-label">JLP Price</div><div class="metric-value">--</div></div>
+            <div class="metric-card highlight"><div class="metric-label">24h Fees</div><div class="metric-value">--</div></div>
+            <div class="metric-card"><div class="metric-label">JLP APY (Est.)</div><div class="metric-value">--</div></div>
+            <div class="metric-card"><div class="metric-label">Vault Share Price</div><div class="metric-value">--</div></div>
+        </div>
+
+        <!-- Chart 1: Fee Revenue -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Jupiter Perps Fee Revenue</h3>
+                <div class="tabs-container" id="feeTabs">
+                    <div class="tab" data-days="7">7D</div>
+                    <div class="tab" data-days="30">30D</div>
+                    <div class="tab active" data-days="90">90D</div>
+                    <div class="tab" data-days="365">1Y</div>
+                    <div class="tab" data-days="0">ALL</div>
+                </div>
+            </div>
+            <div class="chart-wrapper"><canvas id="feeChart"></canvas></div>
+        </div>
+
+        <!-- Chart 2: JLP Price with MAs -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">JLP Price with Moving Averages</h3>
+            </div>
+            <div class="chart-wrapper"><canvas id="priceChart"></canvas></div>
+        </div>
+
+        <div class="two-col">
+            <!-- Chart 3: Vault vs JLP -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Vault Performance vs JLP</h3>
+                </div>
+                <div class="chart-wrapper"><canvas id="vaultChart"></canvas></div>
+            </div>
+
+            <!-- Chart 4: Weekly Fee Breakdown -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Weekly Fee Revenue & Cumulative</h3>
+                </div>
+                <div class="chart-wrapper"><canvas id="weeklyFeeChart"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+const PROXY = u => 'https://api.allorigins.win/get?url=' + encodeURIComponent(u);
+const DEFILLAMA_URL = 'https://api.llama.fi/summary/fees/jupiter-perpetual-exchange';
+const COINGECKO_URL = 'https://api.coingecko.com/api/v3/coins/jupiter-perpetuals-liquidity-provider-token/market_chart?vs_currency=usd&days=365';
+const VAULT_URL = 'https://app.primenumber.trade/data/PN_KV1.json';
+const VAULT_HIST_URL = 'https://app.primenumber.trade/data/PN_KV1_history.json';
+
+let feeData = [], cgPrices = [], vaultCurrent = null, vaultHistory = [];
+let feeChart, priceChart, vaultChart, weeklyFeeChart;
+let selectedFeeDays = 90;
+
+const chartColors = {
+    cyan: '#00d4ff', purple: '#7c3aed', pink: '#f472b6', green: '#22c55e',
+    orange: '#f59e0b', grid: 'rgba(255,255,255,0.06)', text: '#8b8ba7'
+};
+
+const defaultScales = {
+    x: { type: 'time', time: { tooltipFormat: 'MMM d, yyyy' }, grid: { color: chartColors.grid }, ticks: { color: chartColors.text, maxTicksLimit: 8 } },
+    y: { grid: { color: chartColors.grid }, ticks: { color: chartColors.text } }
+};
+
+function chartOpts(extra = {}) {
+    return {
+        responsive: true, maintainAspectRatio: false, interaction: { intersect: false, mode: 'index' },
+        plugins: { legend: { labels: { color: '#fff', usePointStyle: true, padding: 15 } }, tooltip: { backgroundColor: 'rgba(10,10,26,0.95)', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1 } },
+        scales: { ...defaultScales, ...extra }
+    };
+}
+
+// Fetch helpers
+async function fetchJSON(url, useProxy = false) {
+    const res = await fetch(useProxy ? PROXY(url) : url);
+    const data = await res.json();
+    return useProxy ? JSON.parse(data.contents) : data;
+}
+
+async function loadAll() {
+    try {
+        const [dlData, cgData, vc, vh] = await Promise.all([
+            fetchJSON(DEFILLAMA_URL),
+            fetchJSON(COINGECKO_URL),
+            fetchJSON(VAULT_URL, true),
+            fetchJSON(VAULT_HIST_URL, true)
+        ]);
+        feeData = (dlData.totalDataChart || []).map(([ts, val]) => ({ date: new Date(ts * 1000), value: val }));
+        cgPrices = (cgData.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
+        vaultCurrent = vc;
+        vaultHistory = (vh || []).map(d => ({ date: new Date(d.update_time_utc), sharePrice: d.SharePrice, tvl: d.tvl })).sort((a, b) => a.date - b.date);
+
+        // Top metrics
+        const jlpPrice = cgPrices.length ? cgPrices[cgPrices.length - 1].price : null;
+        const fees24h = dlData.total24h || 0;
+        const feesAll = dlData.totalAllTime || 0;
+        // Estimate APY: annualize recent daily fees / estimated pool TVL
+        const recentFees = feeData.slice(-7);
+        const avgDaily = recentFees.reduce((s, d) => s + d.value, 0) / recentFees.length;
+        // JLP pool gets ~75% of fees; estimate TVL from market cap
+        const estimatedTVL = cgData.market_caps && cgData.market_caps.length ? cgData.market_caps[cgData.market_caps.length - 1][1] : 1;
+        const estAPY = ((avgDaily * 0.75 * 365) / estimatedTVL) * 100;
+        const vaultSharePrice = vaultCurrent ? vaultCurrent.SharePrice : null;
+
+        document.getElementById('topMetrics').innerHTML = `
+            <div class="metric-card highlight">
+                <div class="metric-label">JLP Price</div>
+                <div class="metric-value">${jlpPrice ? '$' + jlpPrice.toFixed(2) : '--'}</div>
+                <div class="metric-sub">CoinGecko</div>
+            </div>
+            <div class="metric-card highlight">
+                <div class="metric-label">24h Fees Collected</div>
+                <div class="metric-value">$${(fees24h / 1e6).toFixed(2)}M</div>
+                <div class="metric-sub">All Time: $${(feesAll / 1e9).toFixed(2)}B</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">JLP APY (Est.)</div>
+                <div class="metric-value positive">${estAPY.toFixed(1)}%</div>
+                <div class="metric-sub">7d avg fees / TVL</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Vault Share Price</div>
+                <div class="metric-value">${vaultSharePrice ? '$' + vaultSharePrice.toFixed(4) : '--'}</div>
+                <div class="metric-sub">PN_KV1</div>
+            </div>
+        `;
+
+        document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+        renderFeeChart();
+        renderPriceChart();
+        renderVaultChart();
+        renderWeeklyFeeChart();
+    } catch (e) {
+        console.error('Load error:', e);
+    }
+}
+
+// Chart 1: Fee Revenue
+function renderFeeChart() {
+    const data = selectedFeeDays === 0 ? feeData : feeData.slice(-selectedFeeDays);
+    let cum = 0;
+    const cumData = data.map(d => { cum += d.value; return { x: d.date, y: cum }; });
+
+    const cfg = {
+        type: 'bar',
+        data: {
+            datasets: [
+                { label: 'Daily Fees ($)', data: data.map(d => ({ x: d.date, y: d.value })), backgroundColor: 'rgba(0,212,255,0.4)', borderColor: chartColors.cyan, borderWidth: 1, yAxisID: 'y', order: 2 },
+                { label: 'Cumulative ($)', data: cumData, type: 'line', borderColor: chartColors.purple, backgroundColor: 'transparent', pointRadius: 0, borderWidth: 2, yAxisID: 'y1', order: 1 }
+            ]
+        },
+        options: chartOpts({
+            y: { ...defaultScales.y, position: 'left', title: { display: true, text: 'Daily Fees ($)', color: chartColors.text }, ticks: { color: chartColors.text, callback: v => '$' + (v/1e6).toFixed(1) + 'M' } },
+            y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { color: chartColors.text, callback: v => '$' + (v/1e9).toFixed(1) + 'B' } }
+        })
+    };
+
+    if (feeChart) feeChart.destroy();
+    feeChart = new Chart(document.getElementById('feeChart'), cfg);
+}
+
+// Chart 2: JLP Price + MAs
+function renderPriceChart() {
+    const prices = cgPrices.map(d => ({ x: d.date, y: d.price }));
+    const ma = (n) => cgPrices.map((d, i) => {
+        if (i < n - 1) return null;
+        const avg = cgPrices.slice(i - n + 1, i + 1).reduce((s, p) => s + p.price, 0) / n;
+        return { x: d.date, y: avg };
+    }).filter(Boolean);
+
+    const cfg = {
+        type: 'line',
+        data: {
+            datasets: [
+                { label: 'JLP Price', data: prices, borderColor: chartColors.cyan, backgroundColor: 'rgba(0,212,255,0.1)', fill: true, pointRadius: 0, borderWidth: 2 },
+                { label: '7D MA', data: ma(7), borderColor: chartColors.orange, pointRadius: 0, borderWidth: 1.5, borderDash: [5, 3] },
+                { label: '30D MA', data: ma(30), borderColor: chartColors.pink, pointRadius: 0, borderWidth: 1.5, borderDash: [8, 4] }
+            ]
+        },
+        options: chartOpts({ y: { ...defaultScales.y, ticks: { color: chartColors.text, callback: v => '$' + v.toFixed(2) } } })
+    };
+
+    if (priceChart) priceChart.destroy();
+    priceChart = new Chart(document.getElementById('priceChart'), cfg);
+}
+
+// Chart 3: Vault vs JLP
+function renderVaultChart() {
+    if (!vaultHistory.length || !cgPrices.length) return;
+
+    // Normalize both to % change from start of vault history
+    const vStart = vaultHistory[0];
+    const vaultPcts = vaultHistory.map(d => ({ x: d.date, y: ((d.sharePrice / vStart.sharePrice) - 1) * 100 }));
+
+    // Find CG prices in vault date range
+    const vStartTime = vStart.date.getTime();
+    const cgInRange = cgPrices.filter(d => d.date.getTime() >= vStartTime);
+    const cgBase = cgInRange.length ? cgInRange[0].price : 1;
+    const cgPcts = cgInRange.map(d => ({ x: d.date, y: ((d.price / cgBase) - 1) * 100 }));
+
+    const cfg = {
+        type: 'line',
+        data: {
+            datasets: [
+                { label: 'Vault Share Price (%)', data: vaultPcts, borderColor: chartColors.green, pointRadius: 0, borderWidth: 2 },
+                { label: 'JLP Price (%)', data: cgPcts, borderColor: chartColors.cyan, pointRadius: 0, borderWidth: 2, borderDash: [5, 3] }
+            ]
+        },
+        options: chartOpts({ y: { ...defaultScales.y, ticks: { color: chartColors.text, callback: v => v.toFixed(1) + '%' } } })
+    };
+
+    if (vaultChart) vaultChart.destroy();
+    vaultChart = new Chart(document.getElementById('vaultChart'), cfg);
+}
+
+// Chart 4: Weekly fees + cumulative
+function renderWeeklyFeeChart() {
+    // Aggregate by week
+    const weeks = {};
+    feeData.forEach(d => {
+        const w = new Date(d.date);
+        w.setDate(w.getDate() - w.getDay()); // Start of week
+        const key = w.toISOString().split('T')[0];
+        weeks[key] = (weeks[key] || 0) + d.value;
+    });
+
+    const sorted = Object.entries(weeks).sort((a, b) => a[0].localeCompare(b[0]));
+    let cum = 0;
+    const weeklyBars = sorted.map(([k, v]) => ({ x: new Date(k), y: v }));
+    const cumLine = sorted.map(([k, v]) => { cum += v; return { x: new Date(k), y: cum }; });
+
+    const cfg = {
+        type: 'bar',
+        data: {
+            datasets: [
+                { label: 'Weekly Fees ($)', data: weeklyBars, backgroundColor: 'rgba(124,58,237,0.5)', borderColor: chartColors.purple, borderWidth: 1, yAxisID: 'y', order: 2 },
+                { label: 'Cumulative ($)', data: cumLine, type: 'line', borderColor: chartColors.green, pointRadius: 0, borderWidth: 2, yAxisID: 'y1', order: 1 }
+            ]
+        },
+        options: chartOpts({
+            y: { ...defaultScales.y, position: 'left', ticks: { color: chartColors.text, callback: v => '$' + (v/1e6).toFixed(0) + 'M' } },
+            y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { color: chartColors.text, callback: v => '$' + (v/1e9).toFixed(1) + 'B' } }
+        })
+    };
+
+    if (weeklyFeeChart) weeklyFeeChart.destroy();
+    weeklyFeeChart = new Chart(document.getElementById('weeklyFeeChart'), cfg);
+}
+
+// Tab handling
+document.getElementById('feeTabs').addEventListener('click', e => {
+    if (!e.target.classList.contains('tab')) return;
+    document.querySelectorAll('#feeTabs .tab').forEach(t => t.classList.remove('active'));
+    e.target.classList.add('active');
+    selectedFeeDays = parseInt(e.target.dataset.days);
+    renderFeeChart();
+});
+
+// Init + auto-refresh
+loadAll();
+setInterval(loadAll, 60000);
+</script>
+</body>
+</html>
