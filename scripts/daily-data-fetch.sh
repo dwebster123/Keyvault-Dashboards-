@@ -15,7 +15,11 @@ node scripts/fetch-drift-funding.js
 echo "Fetching JLP pool snapshot..."
 node scripts/fetch-jlp-snapshot.js
 
-# 3. Commit and push
+# 3. Fetch trader P&L snapshot
+echo "Fetching trader P&L snapshot..."
+node scripts/fetch-trader-pnl.js
+
+# 4. Commit and push
 git add data/
 git commit -m "data: daily update $(date +%Y-%m-%d)" 2>/dev/null
 git push origin main 2>/dev/null
