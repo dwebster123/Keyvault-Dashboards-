@@ -682,11 +682,11 @@ async function loadAll() {
         const [alliumFeesData, alliumPnlData, dlData, cgData, vc, vh, jlpInfo, solData, ethData, btcData, sheetData, onchainPnlData] = await Promise.all([
             fetch('./data/allium-fees.json?t=' + Date.now()).then(r => r.json()).catch(() => null),
             fetch('./data/allium-trader-pnl.json?t=' + Date.now()).then(r => r.json()).catch(() => null),
-            fetchJSON(DEFILLAMA_URL),
-            fetchJSON(COINGECKO_URL),
-            fetchJSON(VAULT_URL, true),
-            fetchJSON(VAULT_HIST_URL, true),
-            fetchJSON(JLP_INFO_URL),
+            fetchJSON(DEFILLAMA_URL).catch(() => null),
+            fetchJSON(COINGECKO_URL).catch(() => null),
+            fetchJSON(VAULT_URL, true).catch(() => null),
+            fetchJSON(VAULT_HIST_URL, true).catch(() => null),
+            fetchJSON(JLP_INFO_URL).catch(() => null),
             fetchJSON(CG_SOL_URL).catch(() => null),
             fetchJSON(CG_ETH_URL).catch(() => null),
             fetchJSON(CG_BTC_URL).catch(() => null),
@@ -1029,6 +1029,7 @@ function renderWeeklyRevenue() {
                 ]
             },
             options: chartOpts({
+                x: { type: 'category', ticks: { color: chartColors.text, maxRotation: 45 }, grid: { color: chartColors.grid } },
                 y: { ...defaultScales.y, position: 'left', title: { display: true, text: 'Weekly Net ($)', color: chartColors.text }, ticks: { color: chartColors.text, callback: v => fmt(v) } },
                 y1: { position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Cumulative ($)', color: chartColors.text }, ticks: { color: chartColors.text, callback: v => fmt(v) } }
             })
