@@ -138,6 +138,16 @@
         </div>
 
         <div class="two-col">
+            <!-- Chart: Hedge Efficiency -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Hedge Efficiency: Expected vs Actual Vault Return</h3>
+                    <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Compares what the vault SHOULD earn (fees - funding) vs what it ACTUALLY earns. Gap = leakage from trader P&L, rebalancing, slippage.</p>
+                </div>
+                <div class="chart-wrapper"><canvas id="hedgeEffChart"></canvas></div>
+                <div id="hedgeEffMetrics" style="padding:10px 15px;"></div>
+            </div>
+
             <!-- Chart: Trader P&L Impact on Pool -->
             <div class="chart-container">
                 <div class="chart-header">
@@ -300,6 +310,7 @@ async function loadAll() {
         // renderVaultChart(); // removed
         renderWeeklyFeeChart();
         renderPnlChart();
+        renderHedgeEfficiency();
         if (jlpInfo) renderTraderExposure(jlpInfo);
         renderRollingPnl();
         updateFundingMetric(); // re-apply after innerHTML rebuild
@@ -583,6 +594,156 @@ function renderTraderExposure(jlpInfo) {
             <span style="color:#8b8ba7;margin-left:10px;">Total open interest: $${((totalGuaranteed + totalShortSize)/1e6).toFixed(1)}M</span>
         </div>
     `;
+}
+
+let hedgeEffChart = null;
+
+function renderHedgeEfficiency() {
+    if (!vaultHistory.length || !feeData.length) return;
+
+    // Build daily fee map
+    const feeMap = {};
+    feeData.forEach(d => { feeMap[d.date.toISOString().slice(0, 10)] = d.value; });
+
+    // We need: for each day in vault history
+    // 1. Expected return = (fee yield * vault pool share) - funding cost
+    // 2. Actual return = vault share price change
+    const poolTvl = 1196914062; // current, will use as approximation
+    const vaultTvl = vaultHistory.length ? vaultHistory[vaultHistory.length - 1].tvl || 3956000 : 3956000;
+    const poolShare = vaultTvl / poolTvl;
+
+    // Weighted funding rate as daily cost (on 66% of TVL)
+    // Use the funding data if available, otherwise estimate
+    let avgFundingAnnual = -0.20; // default estimate
+    if (fundingData['SOL-PERP'] && fundingData['SOL-PERP'].length) {
+        // Use the weighted average from HEDGE_WEIGHTS
+        const lastRates = {};
+        ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => {
+            const d = fundingData[m] || [];
+            if (d.length) lastRates[m] = d.reduce((s, r) => s + r.rate, 0) / d.length;
+        });
+        avgFundingAnnual = (
+            (lastRates['SOL-PERP'] || 0) * (HEDGE_WEIGHTS['SOL-PERP'] || 0) +
+            (lastRates['BTC-PERP'] || 0) * (HEDGE_WEIGHTS['BTC-PERP'] || 0) +
+            (lastRates['ETH-PERP'] || 0) * (HEDGE_WEIGHTS['ETH-PERP'] || 0)
+        ) / 100; // convert from % to decimal
+    }
+
+    const results = [];
+    let cumExpected = 0, cumActual = 0;
+
+    for (let i = 1; i < vaultHistory.length; i++) {
+        const prev = vaultHistory[i - 1];
+        const curr = vaultHistory[i];
+        const dateKey = curr.date.toISOString().slice(0, 10);
+
+        // Actual daily return
+        const actualReturn = (curr.sharePrice / prev.sharePrice - 1);
+
+        // Expected: fee income - funding cost (as % of vault)
+        const dailyFees = (feeMap[dateKey] || 0) * 0.75; // 75% to pool
+        const feeYieldPct = (dailyFees * poolShare) / (prev.tvl || vaultTvl);
+        const fundingCostPct = avgFundingAnnual * 0.66 / 365; // daily, on 66% of vault
+
+        const expectedReturn = feeYieldPct + fundingCostPct; // funding is negative so this subtracts
+
+        cumExpected += expectedReturn;
+        cumActual += actualReturn;
+
+        results.push({
+            date: curr.date,
+            expected: expectedReturn * 100,
+            actual: actualReturn * 100,
+            cumExpected: cumExpected * 100,
+            cumActual: cumActual * 100,
+            capture: expectedReturn !== 0 ? (actualReturn / expectedReturn * 100) : 0
+        });
+    }
+
+    // Chart: cumulative expected vs actual
+    const cfg = {
+        type: 'line',
+        data: {
+            datasets: [
+                {
+                    label: 'Expected Cumulative (Fees - Funding)',
+                    data: results.map(d => ({ x: d.date, y: d.cumExpected })),
+                    borderColor: chartColors.cyan,
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    borderDash: [5, 3]
+                },
+                {
+                    label: 'Actual Vault Return',
+                    data: results.map(d => ({ x: d.date, y: d.cumActual })),
+                    borderColor: chartColors.green,
+                    borderWidth: 2.5,
+                    pointRadius: 2
+                },
+                {
+                    label: 'Daily Capture Rate (%)',
+                    data: results.map(d => ({ x: d.date, y: Math.max(-200, Math.min(200, d.capture)) })),
+                    borderColor: chartColors.orange,
+                    backgroundColor: 'rgba(245,158,11,0.1)',
+                    borderWidth: 1,
+                    pointRadius: 1.5,
+                    yAxisID: 'y2',
+                    hidden: true
+                }
+            ]
+        },
+        options: {
+            ...chartOpts({
+                y: {
+                    ...defaultScales.y,
+                    position: 'left',
+                    title: { display: true, text: 'Cumulative Return (%)', color: chartColors.text },
+                    ticks: { color: chartColors.text, callback: v => v.toFixed(2) + '%' }
+                },
+                y2: {
+                    ...defaultScales.y,
+                    position: 'right',
+                    grid: { display: false },
+                    title: { display: true, text: 'Capture Rate (%)', color: chartColors.text },
+                    ticks: { color: chartColors.text, callback: v => v.toFixed(0) + '%' }
+                }
+            })
+        }
+    };
+
+    if (hedgeEffChart) hedgeEffChart.destroy();
+    hedgeEffChart = new Chart(document.getElementById('hedgeEffChart'), cfg);
+
+    // Summary metrics
+    const totalExpected = cumExpected * 100;
+    const totalActual = cumActual * 100;
+    const captureRate = totalExpected !== 0 ? (totalActual / totalExpected * 100) : 0;
+    const leakage = totalExpected - totalActual;
+    const leakageUsd = leakage / 100 * vaultTvl;
+
+    const el = document.getElementById('hedgeEffMetrics');
+    if (el) {
+        el.innerHTML = `
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <div style="flex:1;min-width:120px;text-align:center;padding:10px;border-radius:8px;background:rgba(0,212,255,0.06);">
+                    <div style="color:#8b8ba7;font-size:0.7rem;">Expected Return</div>
+                    <div style="color:${chartColors.cyan};font-weight:bold;font-size:1.1rem;">+${totalExpected.toFixed(2)}%</div>
+                </div>
+                <div style="flex:1;min-width:120px;text-align:center;padding:10px;border-radius:8px;background:rgba(34,197,94,0.06);">
+                    <div style="color:#8b8ba7;font-size:0.7rem;">Actual Return</div>
+                    <div style="color:${chartColors.green};font-weight:bold;font-size:1.1rem;">+${totalActual.toFixed(2)}%</div>
+                </div>
+                <div style="flex:1;min-width:120px;text-align:center;padding:10px;border-radius:8px;background:rgba(245,158,11,0.06);">
+                    <div style="color:#8b8ba7;font-size:0.7rem;">Capture Rate</div>
+                    <div style="color:${chartColors.orange};font-weight:bold;font-size:1.1rem;">${captureRate.toFixed(1)}%</div>
+                </div>
+                <div style="flex:1;min-width:120px;text-align:center;padding:10px;border-radius:8px;background:rgba(239,68,68,0.06);">
+                    <div style="color:#8b8ba7;font-size:0.7rem;">Leakage</div>
+                    <div style="color:#ef4444;font-weight:bold;font-size:1.1rem;">${leakage.toFixed(2)}% ($${(leakageUsd/1000).toFixed(1)}K)</div>
+                </div>
+            </div>
+        `;
+    }
 }
 
 function renderRollingPnl() {
