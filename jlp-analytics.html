@@ -94,6 +94,15 @@
             <div class="metric-card"><div class="metric-label">Vault Share Price</div><div class="metric-value">--</div></div>
         </div>
 
+        <!-- Last 7 Days Revenue Breakdown -->
+        <div class="chart-container" id="weeklyRevenueSection" style="display:none;">
+            <div class="chart-header">
+                <h3 class="chart-title">💰 Last 7 Days — Revenue Breakdown</h3>
+                <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Concrete dollar amounts showing how fees flow to investors.</p>
+            </div>
+            <div id="weeklyRevenueContent" style="padding:10px 15px;"></div>
+        </div>
+
         <!-- Chart: Drift Funding Rates -->
         <div class="chart-container">
             <div class="chart-header">
@@ -384,6 +393,7 @@ async function loadAll() {
         renderWeeklyFeeChart();
         renderPnlChart();
         renderHedgeEfficiency();
+        renderWeeklyRevenue();
         if (jlpInfo) renderTraderExposure(jlpInfo);
         renderRollingPnl();
         updateFundingMetric(); // re-apply after innerHTML rebuild
@@ -862,6 +872,95 @@ function renderHedgeEfficiency() {
             </div>
         `;
     }
+}
+
+function renderWeeklyRevenue() {
+    if (!feeData.length || !vaultHistory.length) return;
+    const section = document.getElementById('weeklyRevenueSection');
+    const el = document.getElementById('weeklyRevenueContent');
+    if (!section || !el) return;
+
+    // Get last 7 days of fee data
+    const now = new Date();
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000);
+    const last7Fees = feeData.filter(d => d.date >= sevenDaysAgo);
+    const totalGrossFees = last7Fees.reduce((s, d) => s + d.value, 0);
+    const feesToJLP = totalGrossFees * 0.75;
+
+    // JLP pool AUM
+    const jlpAUM = jlpPoolPrice ? jlpPoolPrice * 320000000 : 1200000000;
+
+    // Vault's share of JLP pool
+    const vaultTvl = vaultHistory[vaultHistory.length - 1]?.tvl || 3956000;
+    const vaultShareOfPool = vaultTvl / jlpAUM;
+
+    // Expected fee revenue to our vault
+    const expectedFeeRevenue = feesToJLP * vaultShareOfPool;
+
+    // Actual vault return from share price change over last 7 days
+    const recentVault = vaultHistory.filter(d => d.date >= sevenDaysAgo);
+    let actualVaultReturn = 0;
+    let actualVaultDollar = 0;
+    if (recentVault.length >= 2) {
+        const startPrice = recentVault[0].sharePrice;
+        const endPrice = recentVault[recentVault.length - 1].sharePrice;
+        actualVaultReturn = (endPrice / startPrice - 1);
+        // Net return in dollars (share price is NET of fees)
+        actualVaultDollar = actualVaultReturn * vaultTvl;
+    }
+
+    // Gross vault dollar return = net / 0.70
+    const grossVaultDollar = actualVaultDollar / 0.70;
+    const feesCharged = grossVaultDollar - actualVaultDollar;
+
+    // Trader P&L impact = expected fees - gross vault return
+    const traderPnlImpact = expectedFeeRevenue - grossVaultDollar;
+
+    const fmt = (v) => {
+        const abs = Math.abs(v);
+        if (abs >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M';
+        if (abs >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'K';
+        return '$' + v.toFixed(0);
+    };
+    const fmtSign = (v) => (v >= 0 ? '+' : '') + fmt(v);
+    const color = (v) => v >= 0 ? '#22c55e' : '#ef4444';
+
+    section.style.display = '';
+    el.innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:0.9rem;">
+            <div style="display:flex;justify-content:space-between;padding:12px 16px;background:rgba(0,212,255,0.08);border-radius:8px;">
+                <span style="color:#8b8ba7;">① Gross Protocol Fees (7D)</span>
+                <span style="color:${chartColors.cyan};font-weight:bold;">${fmt(totalGrossFees)}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:12px 16px;background:rgba(0,212,255,0.05);border-radius:8px;">
+                <span style="color:#8b8ba7;">② To JLP Pool (75%)</span>
+                <span style="color:${chartColors.cyan};font-weight:bold;">${fmt(feesToJLP)}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:12px 16px;background:rgba(124,58,237,0.08);border-radius:8px;">
+                <span style="color:#8b8ba7;">③ Our Vault's Share (${(vaultShareOfPool * 100).toFixed(3)}% of pool)</span>
+                <span style="color:${chartColors.purple};font-weight:bold;">${fmt(expectedFeeRevenue)}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:12px 16px;background:rgba(239,68,68,0.08);border-radius:8px;">
+                <span style="color:#8b8ba7;">④ Trader P&L Impact</span>
+                <span style="color:${color(traderPnlImpact * -1)};font-weight:bold;">${fmtSign(-traderPnlImpact)}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:12px 16px;background:rgba(245,158,11,0.08);border-radius:8px;">
+                <span style="color:#8b8ba7;">⑤ Gross Vault Return</span>
+                <span style="color:${color(grossVaultDollar)};font-weight:bold;">${fmtSign(grossVaultDollar)}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:12px 16px;background:rgba(245,158,11,0.05);border-radius:8px;">
+                <span style="color:#8b8ba7;">⑥ Performance Fees (30%)</span>
+                <span style="color:#ef4444;font-weight:bold;">-${fmt(Math.abs(feesCharged))}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:14px 16px;background:rgba(34,197,94,0.12);border-radius:8px;border:1px solid rgba(34,197,94,0.3);">
+                <span style="color:#fff;font-weight:600;">⑦ Net to Investors (7D)</span>
+                <span style="color:${color(actualVaultDollar)};font-weight:bold;font-size:1.1rem;">${fmtSign(actualVaultDollar)}</span>
+            </div>
+        </div>
+        <div style="color:#555;font-size:0.65rem;margin-top:8px;text-align:center;">
+            Vault TVL: ${fmt(vaultTvl)} · JLP Pool: ${fmt(jlpAUM)} · Vault = ${(vaultShareOfPool * 100).toFixed(3)}% of pool
+        </div>
+    `;
 }
 
 function renderRollingPnl() {
