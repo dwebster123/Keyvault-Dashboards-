@@ -360,6 +360,11 @@ async function loadAll() {
                 <div class="metric-value positive">${estAPY.toFixed(1)}%</div>
                 <div class="metric-sub">Gross fee yield (7d avg)${jlpAPY_official ? ' · Jup: ' + jlpAPY_official.toFixed(1) + '% net' : ''}</div>
             </div>
+            <div class="metric-card highlight">
+                <div class="metric-label">Net to Investors (Est.)</div>
+                <div class="metric-value positive">${jlpAPY_official ? (jlpAPY_official * 0.70).toFixed(1) + '%' : '--'}</div>
+                <div class="metric-sub">Jupiter net APY × 70% (after 30% perf fees)</div>
+            </div>
             <div class="metric-card">
                 <div class="metric-label">Vault Share Price</div>
                 <div class="metric-value">${vaultSharePrice ? '$' + vaultSharePrice.toFixed(4) : '--'}</div>
