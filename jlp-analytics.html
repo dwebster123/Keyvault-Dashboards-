@@ -755,7 +755,15 @@ function renderHedgeEfficiency() {
                     borderDash: [5, 3]
                 },
                 {
-                    label: 'Actual Vault Return',
+                    label: 'Gross Vault Return (before 30% fees)',
+                    data: results.map(d => ({ x: d.date, y: d.cumActual / 0.70 })),
+                    borderColor: chartColors.purple,
+                    borderWidth: 2,
+                    pointRadius: 1,
+                    borderDash: [3, 2]
+                },
+                {
+                    label: 'Net Investor Return (after fees)',
                     data: results.map(d => ({ x: d.date, y: d.cumActual })),
                     borderColor: chartColors.green,
                     borderWidth: 2.5,
@@ -799,10 +807,14 @@ function renderHedgeEfficiency() {
     const totalExpPct = cumExpected * 100;
     const totalActPct = cumActual * 100;
     const expApy = totalExpPct * 365 / days;
-    const actApy = totalActPct * 365 / days;
-    const captureRate = totalExpPct !== 0 ? (totalActPct / totalExpPct * 100) : 0;
-    const leakagePct = totalExpPct - totalActPct;
-    const leakageApy = leakagePct * 365 / days;
+
+    // Share price is NET of fees (10% Prime + 20% KeyVault = 30% perf fee)
+    // Gross vault return = net / 0.70
+    const netApy = totalActPct * 365 / days;
+    const grossApy = netApy / 0.70;
+    const feeDrag = grossApy - netApy; // what fees take
+    const captureRate = totalExpPct !== 0 ? ((totalActPct / 0.70) / totalExpPct * 100) : 0;
+    const traderPnlApy = expApy - grossApy; // gap = trader P&L + basis + slippage
     const vaultTvl = vaultHistory[vaultHistory.length - 1]?.tvl || 3956000;
 
     const el = document.getElementById('hedgeEffMetrics');
@@ -810,28 +822,33 @@ function renderHedgeEfficiency() {
         el.innerHTML = `
             <div style="display:flex;gap:12px;flex-wrap:wrap;">
                 <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(0,212,255,0.06);">
-                    <div style="color:#8b8ba7;font-size:0.7rem;">Expected APY</div>
+                    <div style="color:#8b8ba7;font-size:0.7rem;">Gross Fee Yield</div>
                     <div style="color:${chartColors.cyan};font-weight:bold;font-size:1.1rem;">${expApy.toFixed(1)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">Gross fees − Funding (upper bound)</div>
-                </div>
-                <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(34,197,94,0.06);">
-                    <div style="color:#8b8ba7;font-size:0.7rem;">Actual Vault APY</div>
-                    <div style="color:${chartColors.green};font-weight:bold;font-size:1.1rem;">${actApy.toFixed(1)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">${days} days</div>
-                </div>
-                <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(245,158,11,0.06);">
-                    <div style="color:#8b8ba7;font-size:0.7rem;">Capture Rate</div>
-                    <div style="color:${chartColors.orange};font-weight:bold;font-size:1.1rem;">${captureRate.toFixed(0)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">Actual ÷ Expected</div>
+                    <div style="color:#555;font-size:0.6rem;">DefiLlama fees − Funding</div>
                 </div>
                 <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(239,68,68,0.06);">
-                    <div style="color:#8b8ba7;font-size:0.7rem;">Leakage APY</div>
-                    <div style="color:#ef4444;font-weight:bold;font-size:1.1rem;">${leakageApy.toFixed(1)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">Trader PnL + Slippage + Basis</div>
+                    <div style="color:#8b8ba7;font-size:0.7rem;">Trader P&L Drag</div>
+                    <div style="color:#ef4444;font-weight:bold;font-size:1.1rem;">${traderPnlApy > 0 ? '-' : '+'}${Math.abs(traderPnlApy).toFixed(1)}%</div>
+                    <div style="color:#555;font-size:0.6rem;">When traders win, pool pays</div>
+                </div>
+                <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(124,58,237,0.06);">
+                    <div style="color:#8b8ba7;font-size:0.7rem;">Gross Vault APY</div>
+                    <div style="color:${chartColors.purple};font-weight:bold;font-size:1.1rem;">${grossApy.toFixed(1)}%</div>
+                    <div style="color:#555;font-size:0.6rem;">Before fees (${days} days)</div>
+                </div>
+                <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(245,158,11,0.06);">
+                    <div style="color:#8b8ba7;font-size:0.7rem;">Performance Fees</div>
+                    <div style="color:${chartColors.orange};font-weight:bold;font-size:1.1rem;">-${feeDrag.toFixed(1)}%</div>
+                    <div style="color:#555;font-size:0.6rem;">10% Prime + 20% KeyVault</div>
+                </div>
+                <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(34,197,94,0.06);">
+                    <div style="color:#8b8ba7;font-size:0.7rem;">Net Investor APY</div>
+                    <div style="color:${chartColors.green};font-weight:bold;font-size:1.1rem;">${netApy.toFixed(1)}%</div>
+                    <div style="color:#555;font-size:0.6rem;">What investors earn</div>
                 </div>
             </div>
             <div style="color:#555;font-size:0.65rem;margin-top:8px;text-align:center;">
-                Expected = GROSS fee yield − funding cost. This is an upper bound — the gap between Expected and Actual is primarily trader P&L impact (when traders win, they take from the pool). Fee data may lag 1-2 days (DefiLlama).
+                Flow: Gross Fees (${expApy.toFixed(0)}%) → Trader P&L takes ${Math.abs(traderPnlApy).toFixed(0)}% → Vault earns ${grossApy.toFixed(0)}% gross → Fees take ${feeDrag.toFixed(0)}% → Investor nets ${netApy.toFixed(0)}%
             </div>
         `;
     }
