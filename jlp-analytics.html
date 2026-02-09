@@ -1010,15 +1010,34 @@ function renderFundingChart() {
     DRIFT_MARKETS.forEach(m => (fundingData[m] || []).forEach(d => { if (d.date.getTime() > maxDate) maxDate = d.date.getTime(); }));
     if (!maxDate) maxDate = Date.now();
     const cutoff = selectedFundingDays > 0 ? maxDate - selectedFundingDays * 86400000 : 0;
-    const datasets = DRIFT_MARKETS.map(m => ({
-        label: m,
-        data: (fundingData[m] || []).filter(d => d.date.getTime() >= cutoff).map(d => ({ x: d.date, y: d.rate })),
-        borderColor: DRIFT_COLORS[m],
-        backgroundColor: 'transparent',
+
+    // Build weighted funding rate (single line)
+    const dateMap = {}; // dateStr -> { 'SOL-PERP': rate, ... }
+    DRIFT_MARKETS.forEach(m => {
+        (fundingData[m] || []).filter(d => d.date.getTime() >= cutoff).forEach(d => {
+            const key = d.date.toISOString().slice(0, 10);
+            if (!dateMap[key]) dateMap[key] = { date: d.date };
+            dateMap[key][m] = d.rate;
+        });
+    });
+    const weightedData = Object.values(dateMap)
+        .filter(d => DRIFT_MARKETS.every(m => d[m] !== undefined))
+        .map(d => ({
+            x: d.date,
+            y: DRIFT_MARKETS.reduce((sum, m) => sum + (d[m] || 0) * (HEDGE_WEIGHTS[m] || 0), 0)
+        }))
+        .sort((a, b) => a.x - b.x);
+
+    const datasets = [{
+        label: 'Weighted Funding Rate',
+        data: weightedData,
+        borderColor: '#22c55e',
+        backgroundColor: 'rgba(34,197,94,0.1)',
+        fill: true,
         pointRadius: 1.5,
         borderWidth: 2,
         tension: 0.3
-    }));
+    }];
 
     const cfg = {
         type: 'line',
