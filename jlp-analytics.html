@@ -239,9 +239,9 @@ async function loadAll() {
                 <div class="metric-sub">PN_KV1</div>
             </div>
             <div class="metric-card" id="fundingMetricCard">
-                <div class="metric-label">Avg Funding Rate (7D)</div>
+                <div class="metric-label">Wtd Avg Funding Rate (7D)</div>
                 <div class="metric-value" id="fundingMetricValue">--</div>
-                <div class="metric-sub">Annualized, 3-market avg</div>
+                <div class="metric-sub">Weighted by JLP pool %</div>
             </div>
         `;
 
@@ -379,6 +379,9 @@ document.getElementById('feeTabs').addEventListener('click', e => {
 // ============ DRIFT FUNDING RATES ============
 const DRIFT_MARKETS = ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'];
 const DRIFT_COLORS = { 'SOL-PERP': '#22c55e', 'BTC-PERP': '#f59e0b', 'ETH-PERP': '#3b82f6' };
+// JLP pool target weights for hedge-relevant assets (SOL 44%, BTC 11%, ETH 10% of total pool)
+// Normalized to hedge portion only: SOL 67.7%, BTC 16.9%, ETH 15.4%
+const HEDGE_WEIGHTS = { 'SOL-PERP': 0.677, 'BTC-PERP': 0.169, 'ETH-PERP': 0.154 };
 let fundingData = {}; // { 'SOL-PERP': [{date, rate}, ...], ... }
 let fundingChart = null;
 let selectedFundingDays = 30;
@@ -414,13 +417,17 @@ function updateFundingMetric() {
     DRIFT_MARKETS.forEach(m => (fundingData[m] || []).forEach(d => { if (d.date.getTime() > maxDate) maxDate = d.date.getTime(); }));
     if (!maxDate) maxDate = Date.now();
     const sevenDaysAgo = maxDate - 7 * 86400000;
-    let sum = 0, count = 0;
+    // Weighted average by JLP pool composition
+    const marketAvgs = {};
     DRIFT_MARKETS.forEach(m => {
+        let sum = 0, count = 0;
         (fundingData[m] || []).forEach(d => {
             if (d.date.getTime() >= sevenDaysAgo) { sum += d.rate; count++; }
         });
+        marketAvgs[m] = count ? sum / count : 0;
     });
-    const avg = count ? sum / count : 0;
+    let avg = 0;
+    DRIFT_MARKETS.forEach(m => { avg += marketAvgs[m] * (HEDGE_WEIGHTS[m] || 0); });
     const el = document.getElementById('fundingMetricValue');
     if (el) {
         el.textContent = avg.toFixed(2) + '%';
