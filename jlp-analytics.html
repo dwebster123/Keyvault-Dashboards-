@@ -516,13 +516,16 @@ function renderWaterfall() {
             actualLabel = 'N/A';
         }
 
-        // 6. Capture Rate
+        // 5b. Expected Net AFTER perf fees (30% total: 10% Prime + 20% KeyVault)
+        const expectedNetAfterFees = expectedNet * 0.70;
+
+        // 6. Capture Rate — compare actual (net) vs expected (net)
         let captureRate = null;
-        if (actualReturn !== null && expectedNet > 0) {
-            captureRate = (actualReturn / expectedNet) * 100;
+        if (actualReturn !== null && expectedNetAfterFees > 0) {
+            captureRate = (actualReturn / expectedNetAfterFees) * 100;
         }
 
-        results[tf.label] = { grossFeeYield, leakageYield, hedgeCostYield, expectedNet, actualReturn, captureRate, actualLabel, feeDays, pnlDays, fundingCount };
+        results[tf.label] = { grossFeeYield, leakageYield, hedgeCostYield, expectedNet, expectedNetAfterFees, actualReturn, captureRate, actualLabel, feeDays, pnlDays, fundingCount };
     });
 
     // Build table HTML
@@ -564,11 +567,22 @@ function renderWaterfall() {
             }).join('')}
         </tr>
         <tr class="total-row">
-            <td>= Expected Net Yield<span class="wf-sub">Fees − leakage + funding</span></td>
+            <td>= Expected Gross Yield<span class="wf-sub">Fees − leakage + funding (before perf fees)</span></td>
             ${cols.map(c => fmtPct(results[c].expectedNet, results[c].expectedNet >= 0 ? 'wf-positive' : 'wf-negative')).join('')}
         </tr>
         <tr>
-            <td>Actual Vault Return<span class="wf-sub">Share price APY (net of 30% perf fees)</span></td>
+            <td>− Performance Fees (30%)<span class="wf-sub">10% Prime Number + 20% KeyVault</span></td>
+            ${cols.map(c => {
+                const fee = results[c].expectedNet * 0.30;
+                return `<td class="wf-negative">-${Math.abs(fee).toFixed(2)}%</td>`;
+            }).join('')}
+        </tr>
+        <tr class="total-row">
+            <td>= Expected Net to Investors<span class="wf-sub">After all fees</span></td>
+            ${cols.map(c => fmtPct(results[c].expectedNetAfterFees, results[c].expectedNetAfterFees >= 0 ? 'wf-positive' : 'wf-negative')).join('')}
+        </tr>
+        <tr>
+            <td>Actual Vault Return<span class="wf-sub">Share price APY (net of all fees)</span></td>
             ${cols.map(c => {
                 const r = results[c];
                 if (r.actualReturn === null) return `<td class="wf-neutral">N/A<span class="wf-sub">${r.actualLabel || 'insufficient data'}</span></td>`;
