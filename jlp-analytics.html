@@ -250,6 +250,7 @@ async function loadAll() {
         renderPriceChart();
         renderVaultChart();
         renderWeeklyFeeChart();
+        updateFundingMetric(); // re-apply after innerHTML rebuild
     } catch (e) {
         console.error('Load error:', e);
     }
@@ -510,7 +511,7 @@ document.getElementById('fundingTabs').addEventListener('click', e => {
 // Init + auto-refresh
 loadAll();
 loadDriftFunding();
-setInterval(loadAll, 60000);
+setInterval(() => { loadAll(); loadDriftFunding(); }, 60000);
 // Drift data is pre-fetched static JSON, no need to auto-refresh
 </script>
 </body>
