@@ -14,16 +14,65 @@
             background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d1f 100%);
             min-height: 100vh; color: #ffffff; padding: 20px;
         }
-        .header { text-align: center; margin-bottom: 30px; padding: 20px; }
-        .header img.logo { height: 120px; margin-bottom: 16px; filter: brightness(0) invert(1); }
+        .header { text-align: center; margin-bottom: 20px; padding: 15px; }
+        .header img.logo { height: 100px; margin-bottom: 12px; filter: brightness(0) invert(1); }
         .header h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             background: linear-gradient(90deg, #00d4ff, #7c3aed, #f472b6);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .header .subtitle { color: #8b8ba7; font-size: 1rem; }
         .dashboard { max-width: 1400px; margin: 0 auto; }
+
+        /* Slim top metrics */
+        .slim-metrics {
+            display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+            margin-bottom: 24px; padding: 12px 0;
+        }
+        .slim-metric {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; padding: 12px 20px; text-align: center; min-width: 150px;
+        }
+        .slim-metric .sm-label { font-size: 0.65rem; color: #8b8ba7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .slim-metric .sm-value { font-size: 1.3rem; font-weight: 700; color: #fff; }
+        .slim-metric .sm-sub { font-size: 0.6rem; color: #6b6b8d; margin-top: 2px; }
+
+        /* Waterfall Table */
+        .waterfall-section {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 16px; padding: 28px; margin-bottom: 28px;
+        }
+        .waterfall-section h2 {
+            font-size: 1.5rem; margin-bottom: 16px; text-align: center;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .waterfall-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .waterfall-table th { padding: 12px 16px; text-align: right; color: #8b8ba7; font-size: 0.75rem; text-transform: uppercase; border-bottom: 2px solid rgba(255,255,255,0.1); }
+        .waterfall-table th:first-child { text-align: left; }
+        .waterfall-table td { padding: 14px 16px; text-align: right; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .waterfall-table td:first-child { text-align: left; color: #ccc; font-weight: 600; }
+        .waterfall-table tr.total-row { border-top: 2px solid rgba(0,212,255,0.3); }
+        .waterfall-table tr.capture-row td { font-weight: bold; font-size: 1.1rem; }
+        .wf-positive { color: #22c55e; }
+        .wf-negative { color: #ef4444; }
+        .wf-neutral { color: #8b8ba7; }
+        .wf-great { color: #22c55e; font-weight: bold; }
+        .wf-ok { color: #eab308; }
+        .wf-poor { color: #ef4444; }
+        .wf-sub { display: block; font-size: 0.65rem; color: #6b6b8d; margin-top: 2px; }
+
+        /* Waterfall chart tabs */
+        .wf-tabs { display: flex; gap: 6px; justify-content: center; margin-bottom: 12px; }
+        .wf-tab {
+            padding: 6px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; color: #8b8ba7; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
+        }
+        .wf-tab:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .wf-tab.active { background: linear-gradient(135deg, #00d4ff, #7c3aed); color: #fff; border-color: transparent; }
+
+        /* Original styles kept */
         .metrics-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px; margin-bottom: 30px;
@@ -64,6 +113,8 @@
             .header h1 { font-size: 1.8rem; }
             .metric-value { font-size: 1.3rem; }
             .chart-wrapper { height: 280px; }
+            .waterfall-table { font-size: 0.85rem; }
+            .waterfall-table td, .waterfall-table th { padding: 8px 6px; }
         }
         .live-indicator {
             display: inline-block; width: 8px; height: 8px; background: #22c55e;
@@ -74,6 +125,21 @@
         .loading { text-align: center; padding: 40px; color: #8b8ba7; }
         .back-link { display: inline-block; margin-bottom: 10px; color: #00d4ff; text-decoration: none; font-size: 0.9rem; }
         .back-link:hover { text-decoration: underline; }
+
+        /* Collapsible details sections */
+        details.detail-section {
+            margin-bottom: 24px;
+        }
+        details.detail-section > summary {
+            cursor: pointer; font-size: 1.2rem; color: #00d4ff; padding: 12px 16px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px; list-style: none; user-select: none;
+        }
+        details.detail-section > summary::-webkit-details-marker { display: none; }
+        details.detail-section > summary::before { content: '▸ '; }
+        details.detail-section[open] > summary::before { content: '▾ '; }
+        details.detail-section[open] > summary { border-radius: 12px 12px 0 0; margin-bottom: 0; }
+        details.detail-section > .detail-content { padding-top: 16px; }
     </style>
 </head>
 <body>
@@ -86,192 +152,165 @@
             <div class="update-badge"><span class="live-indicator"></span>Auto-refreshing · <span id="lastUpdate">Loading...</span></div>
         </div>
 
-        <!-- Top Metrics -->
-        <div class="metrics-grid" id="topMetrics">
-            <div class="metric-card highlight"><div class="metric-label">JLP Price</div><div class="metric-value">--</div></div>
-            <div class="metric-card highlight"><div class="metric-label">24h Fees</div><div class="metric-value">--</div></div>
-            <div class="metric-card"><div class="metric-label">JLP APY (Est.)</div><div class="metric-value">--</div></div>
-            <div class="metric-card"><div class="metric-label">Vault Share Price</div><div class="metric-value">--</div></div>
+        <!-- 1. Slim Top Metrics -->
+        <div class="slim-metrics" id="slimMetrics">
+            <div class="slim-metric"><div class="sm-label">JLP Price</div><div class="sm-value" id="sm-jlp">--</div></div>
+            <div class="slim-metric"><div class="sm-label">24h Fees</div><div class="sm-value" id="sm-fees">--</div></div>
+            <div class="slim-metric"><div class="sm-label">Vault Share Price</div><div class="sm-value" id="sm-share">--</div></div>
+            <div class="slim-metric"><div class="sm-label">Vault TVL</div><div class="sm-value" id="sm-tvl">--</div></div>
         </div>
 
-        <!-- Vault Performance by Timeframe -->
-        <h2 class="section-title">📊 Vault Performance by Timeframe</h2>
-        <div class="metrics-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-            <div class="metric-card highlight">
-                <div class="metric-label">7D Performance</div>
-                <div class="metric-value positive">~11.6% APY</div>
-                <div class="metric-sub">KV1 actual · Share 1.004→1.012</div>
-                <div class="metric-sub">86 trades · $3.4M volume</div>
-            </div>
-            <div class="metric-card highlight">
-                <div class="metric-label">30D Performance</div>
-                <div class="metric-value positive">2.50% APY</div>
-                <div class="metric-sub">KV1 actual (36d)</div>
-                <div class="metric-sub">400 trades · $15.6M volume</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">90D Performance</div>
-                <div class="metric-value positive">8.98% APY</div>
-                <div class="metric-sub">Public vault proxy ℹ️</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">180D Performance</div>
-                <div class="metric-value positive">15.61% APY</div>
-                <div class="metric-sub">Public vault proxy ℹ️</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">365D Performance</div>
-                <div class="metric-value positive">16.91% APY</div>
-                <div class="metric-sub">Public vault proxy ℹ️</div>
-            </div>
+        <!-- 2. YIELD WATERFALL TABLE -->
+        <div class="waterfall-section">
+            <h2>🎯 Yield Waterfall</h2>
+            <div id="waterfallTable"><div class="loading">Calculating yield waterfall...</div></div>
         </div>
 
-        <!-- Hedge Activity Chart -->
+        <!-- 3. Waterfall Bar Chart -->
         <div class="chart-container">
             <div class="chart-header">
-                <div>
-                    <h3 class="chart-title">🔄 Hedge Activity (Drift Perp Trades)</h3>
-                    <div style="font-size:0.7rem;color:#6b6b8d;margin-top:4px;">Daily trade count and volume from KV1 hedge operations</div>
+                <h3 class="chart-title">Yield Waterfall Breakdown</h3>
+                <div class="wf-tabs" id="wfChartTabs">
+                    <div class="wf-tab" data-days="7">7D</div>
+                    <div class="wf-tab active" data-days="30">30D</div>
+                    <div class="wf-tab" data-days="90">90D</div>
                 </div>
             </div>
-            <div class="chart-wrapper"><canvas id="hedgeActivityChart"></canvas></div>
+            <div class="chart-wrapper"><canvas id="waterfallChart"></canvas></div>
         </div>
 
-        <!-- Market Breakdown -->
-        <h2 class="section-title">🏦 Market Breakdown (Long vs Short)</h2>
-        <div class="two-col">
-            <div class="chart-container">
-                <h3 class="chart-title" style="margin-bottom:16px;">7D Breakdown</h3>
-                <div style="display:grid;gap:12px;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(153,69,255,0.1);border-radius:8px;border-left:3px solid #9945FF;">
-                        <span style="font-weight:600;color:#9945FF;">SOL</span>
-                        <span style="font-size:0.85rem;color:#ccc;">27L ($1.2M) · 12S ($599k)</span>
+        <!-- 4. Supporting Details (collapsible) -->
+
+        <!-- Fee Revenue Details -->
+        <details class="detail-section">
+            <summary>📊 Fee Revenue Details</summary>
+            <div class="detail-content">
+                <div class="chart-container" style="margin-bottom:0;">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Jupiter Perps Fee Revenue <span id="feeSourceBadge" style="font-size:0.65rem;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 8px;border-radius:4px;margin-left:8px;">⛓️ On-chain</span></h3>
+                        <div class="tabs-container" id="feeTabs">
+                            <div class="tab" data-days="7">7D</div>
+                            <div class="tab" data-days="30">30D</div>
+                            <div class="tab active" data-days="90">90D</div>
+                            <div class="tab" data-days="365">1Y</div>
+                            <div class="tab" data-days="0">ALL</div>
+                        </div>
                     </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(247,147,26,0.1);border-radius:8px;border-left:3px solid #F7931A;">
-                        <span style="font-weight:600;color:#F7931A;">BTC</span>
-                        <span style="font-size:0.85rem;color:#ccc;">6L ($312k) · 28S ($516k)</span>
+                    <div class="chart-wrapper"><canvas id="feeChart"></canvas></div>
+                </div>
+            </div>
+        </details>
+
+        <!-- Trader P&L & Leakage -->
+        <details class="detail-section">
+            <summary>📉 Trader P&L & Leakage</summary>
+            <div class="detail-content">
+                <div class="two-col">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Hedge Efficiency: Expected vs Actual Vault Return</h3>
+                            <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Compares what the vault SHOULD earn vs what it ACTUALLY earns.</p>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="hedgeEffChart"></canvas></div>
+                        <div id="hedgeEffMetrics" style="padding:10px 15px;"></div>
                     </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(98,126,234,0.1);border-radius:8px;border-left:3px solid #627EEA;">
-                        <span style="font-weight:600;color:#627EEA;">ETH</span>
-                        <span style="font-size:0.85rem;color:#ccc;">4L ($38k) · 9S ($744k)</span>
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Pool Leakage — Trader P&L <span style="font-size:0.65rem;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 8px;border-radius:4px;margin-left:8px;">⛓️ On-chain (Allium)</span></h3>
+                            <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Green = traders lost (pool gained). Red = traders won (pool paid out).</p>
+                        </div>
+                        <div class="tabs-container" id="pnlTabs">
+                            <button class="tab" onclick="selectedPnlDays=7;renderPnlChart();this.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">7D</button>
+                            <button class="tab active" onclick="selectedPnlDays=30;renderPnlChart();this.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">30D</button>
+                            <button class="tab" onclick="selectedPnlDays=90;renderPnlChart();this.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">90D</button>
+                        </div>
+                        <div class="chart-wrapper"><canvas id="pnlChart"></canvas></div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Trader Exposure & Rolling P&L</h3>
+                            <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Real-time open positions + derived rolling trader P&L.</p>
+                        </div>
+                        <div id="traderExposure" style="padding:15px;"><div style="color:#888;">Loading trader exposure...</div></div>
+                        <div id="rollingPnl" style="padding:0 15px 15px;"><div style="color:#888;">Loading rolling P&L...</div></div>
                     </div>
                 </div>
             </div>
-            <div class="chart-container">
-                <h3 class="chart-title" style="margin-bottom:16px;">30D Breakdown</h3>
-                <div style="display:grid;gap:12px;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(153,69,255,0.1);border-radius:8px;border-left:3px solid #9945FF;">
-                        <span style="font-weight:600;color:#9945FF;">SOL</span>
-                        <span style="font-size:0.85rem;color:#ccc;">111L ($6.1M) · 111S ($4.1M)</span>
+        </details>
+
+        <!-- Hedge Activity & Funding Rates -->
+        <details class="detail-section">
+            <summary>🔄 Hedge Activity & Funding Rates</summary>
+            <div class="detail-content">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div>
+                            <h3 class="chart-title">🔄 Hedge Activity (Drift Perp Trades)</h3>
+                            <div style="font-size:0.7rem;color:#6b6b8d;margin-top:4px;">Daily trade count and volume from KV1 hedge operations</div>
+                        </div>
                     </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(247,147,26,0.1);border-radius:8px;border-left:3px solid #F7931A;">
-                        <span style="font-weight:600;color:#F7931A;">BTC</span>
-                        <span style="font-size:0.85rem;color:#ccc;">48L ($1.9M) · 66S ($1.3M)</span>
+                    <div class="chart-wrapper"><canvas id="hedgeActivityChart"></canvas></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div>
+                            <h3 class="chart-title">Drift Funding Rates (Hedge Cost/Revenue)</h3>
+                            <div style="font-size:0.7rem;color:#6b6b8d;margin-top:4px;">Positive = shorts earn (good for hedge). Negative = shorts pay (hedge cost).</div>
+                        </div>
+                        <div class="tabs-container" id="fundingTabs">
+                            <div class="tab" data-days="7">7D</div>
+                            <div class="tab active" data-days="30">30D</div>
+                            <div class="tab" data-days="90">90D</div>
+                        </div>
                     </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(98,126,234,0.1);border-radius:8px;border-left:3px solid #627EEA;">
-                        <span style="font-weight:600;color:#627EEA;">ETH</span>
-                        <span style="font-size:0.85rem;color:#ccc;">40L ($1.2M) · 24S ($1.0M)</span>
+                    <div class="chart-wrapper" id="fundingChartWrapper">
+                        <div class="loading" id="fundingLoading">Loading Drift funding data...</div>
+                        <canvas id="fundingChart" style="display:none;"></canvas>
+                        <div id="fundingDataInfo" style="text-align:center;color:#888;font-size:0.8rem;margin-top:6px;"></div>
                     </div>
                 </div>
             </div>
-        </div>
+        </details>
 
-        <!-- Weekly Revenue Breakdown (Historical) -->
-        <div class="chart-container" id="weeklyRevenueSection" style="display:none;">
-            <div class="chart-header">
-                <h3 class="chart-title">💰 Weekly Revenue Breakdown (Since Inception)</h3>
-                <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Concrete dollar amounts showing how fees flow to investors — every week since vault launch.</p>
-            </div>
-            <div id="weeklyRevenueSummary" style="padding:10px 15px;"></div>
-            <div class="chart-wrapper"><canvas id="weeklyRevenueChart"></canvas></div>
-            <div id="weeklyRevenueTable" style="padding:10px 15px;max-height:400px;overflow-y:auto;"></div>
-        </div>
-
-        <!-- Chart: Drift Funding Rates -->
-        <div class="chart-container">
-            <div class="chart-header">
-                <div>
-                    <h3 class="chart-title">Drift Funding Rates (Hedge Cost/Revenue)</h3>
-                    <div style="font-size:0.7rem;color:#6b6b8d;margin-top:4px;">Positive = shorts earn (good for hedge). Negative = shorts pay (hedge cost).</div>
+        <!-- Weekly Revenue Breakdown -->
+        <details class="detail-section">
+            <summary>💰 Weekly Revenue Breakdown</summary>
+            <div class="detail-content">
+                <div class="chart-container" id="weeklyRevenueSection" style="display:none;margin-bottom:0;">
+                    <div class="chart-header">
+                        <h3 class="chart-title">💰 Weekly Revenue Breakdown (Since Inception)</h3>
+                        <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Concrete dollar amounts showing how fees flow to investors.</p>
+                    </div>
+                    <div id="weeklyRevenueSummary" style="padding:10px 15px;"></div>
+                    <div class="chart-wrapper"><canvas id="weeklyRevenueChart"></canvas></div>
+                    <div id="weeklyRevenueTable" style="padding:10px 15px;max-height:400px;overflow-y:auto;"></div>
                 </div>
-                <div class="tabs-container" id="fundingTabs">
-                    <div class="tab" data-days="7">7D</div>
-                    <div class="tab active" data-days="30">30D</div>
-                    <div class="tab" data-days="90">90D</div>
-                </div>
-            </div>
-            <div class="chart-wrapper" id="fundingChartWrapper">
-                <div class="loading" id="fundingLoading">Loading Drift funding data...</div>
-                <canvas id="fundingChart" style="display:none;"></canvas>
-                <div id="fundingDataInfo" style="text-align:center;color:#888;font-size:0.8rem;margin-top:6px;"></div>
-            </div>
-        </div>
-
-        <!-- Chart 1: Fee Revenue -->
-        <div class="chart-container">
-            <div class="chart-header">
-                <h3 class="chart-title">Jupiter Perps Fee Revenue <span id="feeSourceBadge" style="font-size:0.65rem;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 8px;border-radius:4px;margin-left:8px;">⛓️ On-chain</span></h3>
-                <div class="tabs-container" id="feeTabs">
-                    <div class="tab" data-days="7">7D</div>
-                    <div class="tab" data-days="30">30D</div>
-                    <div class="tab active" data-days="90">90D</div>
-                    <div class="tab" data-days="365">1Y</div>
-                    <div class="tab" data-days="0">ALL</div>
+                <div class="two-col">
+                    <div class="chart-container">
+                        <div class="chart-header"><h3 class="chart-title">Weekly Fee Revenue & Cumulative</h3></div>
+                        <div class="chart-wrapper"><canvas id="weeklyFeeChart"></canvas></div>
+                    </div>
+                    <div class="chart-container">
+                        <h3 class="chart-title" style="margin-bottom:16px;">Market Breakdown (7D)</h3>
+                        <div style="display:grid;gap:12px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(153,69,255,0.1);border-radius:8px;border-left:3px solid #9945FF;">
+                                <span style="font-weight:600;color:#9945FF;">SOL</span>
+                                <span style="font-size:0.85rem;color:#ccc;">27L ($1.2M) · 12S ($599k)</span>
+                            </div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(247,147,26,0.1);border-radius:8px;border-left:3px solid #F7931A;">
+                                <span style="font-weight:600;color:#F7931A;">BTC</span>
+                                <span style="font-size:0.85rem;color:#ccc;">6L ($312k) · 28S ($516k)</span>
+                            </div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(98,126,234,0.1);border-radius:8px;border-left:3px solid #627EEA;">
+                                <span style="font-weight:600;color:#627EEA;">ETH</span>
+                                <span style="font-size:0.85rem;color:#ccc;">4L ($38k) · 9S ($744k)</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="chart-wrapper"><canvas id="feeChart"></canvas></div>
-        </div>
+        </details>
 
-        <!-- Chart 2: JLP Price with MAs -->
-        <!-- JLP Market Price vs Pool NAV — removed: no historical NAV source yet. Daily snapshots started 2026-02-09, will restore when we have enough data. -->
-
-        <div class="two-col">
-            <!-- Chart: Hedge Efficiency -->
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3 class="chart-title">Hedge Efficiency: Expected vs Actual Vault Return</h3>
-                    <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Compares what the vault SHOULD earn (fees - funding) vs what it ACTUALLY earns. Gap = leakage from trader P&L, rebalancing, slippage.</p>
-                </div>
-                <div class="chart-wrapper"><canvas id="hedgeEffChart"></canvas></div>
-                <div id="hedgeEffMetrics" style="padding:10px 15px;"></div>
-            </div>
-
-            <!-- Chart: Leakage (Trader P&L + Other) on Pool -->
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3 class="chart-title">Pool Leakage — Trader P&L <span style="font-size:0.65rem;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 8px;border-radius:4px;margin-left:8px;">⛓️ On-chain (Allium)</span></h3>
-                    <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Green = traders lost (pool gained). Red = traders won (pool paid out). Sourced from on-chain settlement events.</p>
-                </div>
-                <div class="tabs-container" id="pnlTabs">
-                    <button class="tab" onclick="selectedPnlDays=7;renderPnlChart();this.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">7D</button>
-                    <button class="tab active" onclick="selectedPnlDays=30;renderPnlChart();this.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">30D</button>
-                    <button class="tab" onclick="selectedPnlDays=90;renderPnlChart();this.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">90D</button>
-                </div>
-                <div class="chart-wrapper"><canvas id="pnlChart"></canvas></div>
-            </div>
-
-            <!-- Real-time Trader Exposure + Rolling P&L -->
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3 class="chart-title">Trader Exposure & Rolling P&L</h3>
-                    <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Real-time open positions + derived rolling trader P&L (positive = traders won, negative = pool won).</p>
-                </div>
-                <div id="traderExposure" style="padding:15px;">
-                    <div style="color:#888;">Loading trader exposure...</div>
-                </div>
-                <div id="rollingPnl" style="padding:0 15px 15px;">
-                    <div style="color:#888;">Loading rolling P&L...</div>
-                </div>
-            </div>
-
-            <!-- Chart 4: Weekly Fee Breakdown -->
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3 class="chart-title">Weekly Fee Revenue & Cumulative</h3>
-                </div>
-                <div class="chart-wrapper"><canvas id="weeklyFeeChart"></canvas></div>
-            </div>
-        </div>
         <!-- Attribution -->
         <div style="text-align:center;padding:20px;color:#555;font-size:0.7rem;">
             On-chain data powered by <a href="https://allium.so" target="_blank" style="color:#00d4ff;text-decoration:none;">Allium</a> · Prices from CoinGecko · Vault NAV from Google Sheets
@@ -292,7 +331,8 @@ const CG_BTC_URL = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?
 
 let feeData = [], cgPrices = [], vaultCurrent = null, vaultHistory = [];
 let solPrices = [], ethPrices = [], btcPrices = [];
-let jlpPoolPrice = null; // NAV from Jupiter API
+let jlpPoolPrice = null;
+let jlpAUM = 1200000000;
 let feeChart, priceChart, vaultChart, weeklyFeeChart;
 let selectedFeeDays = 90;
 
@@ -314,7 +354,6 @@ function chartOpts(extra = {}) {
     };
 }
 
-// Fetch helpers
 async function fetchJSON(url, useProxy = false) {
     const res = await fetch(useProxy ? PROXY(url) : url);
     const data = await res.json();
@@ -339,47 +378,295 @@ async function fetchSpreadsheetData() {
                 }
             }
         }
-        console.log('Spreadsheet: ' + data.length + ' entries');
         return data;
-    } catch (e) {
-        console.error('Spreadsheet fetch failed:', e);
-        return [];
-    }
+    } catch (e) { return []; }
 }
 
 function combineVaultHistory(spreadsheetData, liveData) {
     if (!spreadsheetData.length) return liveData;
     if (!liveData.length) return spreadsheetData;
-
-    // Find where live data starts after spreadsheet ends
     const sheetEnd = spreadsheetData[spreadsheetData.length - 1];
     const sheetEndDate = sheetEnd.date.toISOString().slice(0, 10);
-
-    // Live data that comes after spreadsheet
     const newLive = liveData.filter(d => d.date.toISOString().slice(0, 10) > sheetEndDate);
     if (!newLive.length) return spreadsheetData;
-
-    // Scale live data to match spreadsheet's ending price (vault migration adjustment)
     const liveBaseline = newLive[0].sharePrice;
     const sheetEndPrice = sheetEnd.sharePrice;
     const combined = [...spreadsheetData];
-
     for (const v of newLive) {
-        combined.push({
-            date: v.date,
-            sharePrice: sheetEndPrice * (v.sharePrice / liveBaseline),
-            tvl: v.tvl,
-            source: 'live'
-        });
+        combined.push({ date: v.date, sharePrice: sheetEndPrice * (v.sharePrice / liveBaseline), tvl: v.tvl, source: 'live' });
     }
-
-    console.log(`Combined: ${spreadsheetData.length} spreadsheet + ${newLive.length} live = ${combined.length} total`);
     return combined;
 }
 
+// ============ WATERFALL TABLE ============
+let waterfallChartInstance = null;
+let selectedWfDays = 30;
+
+function renderWaterfall() {
+    const el = document.getElementById('waterfallTable');
+    if (!feeData.length) { el.innerHTML = '<div class="loading">Waiting for data...</div>'; return; }
+
+    const now = new Date();
+    const timeframes = [
+        { label: '7D', days: 7 },
+        { label: '30D', days: 30 },
+        { label: '90D', days: 90 },
+        { label: '180D', days: 180 },
+        { label: '1Y', days: 365 }
+    ];
+
+    // Build fee map
+    const feeMap = {};
+    feeData.forEach(d => { feeMap[d.date.toISOString().slice(0, 10)] = d.value; });
+
+    // Build on-chain PnL map
+    const pnlData = window._onchainPnl || {};
+
+    // Build funding map (date -> weighted annualized %)
+    const fundingByDate = {};
+    if (fundingData['SOL-PERP'] && fundingData['SOL-PERP'].length) {
+        const marketDateMap = {};
+        ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => {
+            marketDateMap[m] = {};
+            (fundingData[m] || []).forEach(d => { marketDateMap[m][d.date.toISOString().slice(0, 10)] = d.rate; });
+        });
+        const allDates = new Set();
+        ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => Object.keys(marketDateMap[m]).forEach(d => allDates.add(d)));
+        allDates.forEach(date => {
+            let weighted = 0;
+            ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => {
+                weighted += (marketDateMap[m][date] || 0) * (HEDGE_WEIGHTS[m] || 0);
+            });
+            fundingByDate[date] = weighted; // annualized %
+        });
+    }
+
+    // Vault history date map
+    const vhByDate = {};
+    vaultHistory.forEach(v => { vhByDate[v.date.toISOString().slice(0, 10)] = v; });
+    const vhSorted = [...vaultHistory].sort((a, b) => a.date - b.date);
+
+    const results = {};
+
+    timeframes.forEach(tf => {
+        const cutoffDate = new Date(now.getTime() - tf.days * 86400000);
+        const cutoffStr = cutoffDate.toISOString().slice(0, 10);
+
+        // 1. Gross Fee Yield
+        let totalFees = 0, feeDays = 0;
+        feeData.forEach(d => {
+            if (d.date.toISOString().slice(0, 10) >= cutoffStr) { totalFees += d.value; feeDays++; }
+        });
+        const feesToJLP = totalFees * 0.75;
+        const grossFeeYield = feeDays > 0 ? (feesToJLP / jlpAUM) * (365 / feeDays) * 100 : 0;
+
+        // 2. Trader P&L (Leakage)
+        let totalTraderPnl = 0, pnlDays = 0;
+        Object.entries(pnlData).forEach(([date, d]) => {
+            if (date >= cutoffStr) { totalTraderPnl += d.trader_pnl; pnlDays++; }
+        });
+        // Trader P&L as % of AUM, annualized. Positive trader_pnl = traders won = pool lost
+        const leakageYield = pnlDays > 0 ? (totalTraderPnl / jlpAUM) * (365 / pnlDays) * 100 : 0;
+
+        // 3. Hedge Cost (Funding)
+        let fundingSum = 0, fundingCount = 0;
+        Object.entries(fundingByDate).forEach(([date, rate]) => {
+            if (date >= cutoffStr) { fundingSum += rate; fundingCount++; }
+        });
+        // Average annualized funding rate * hedge portion (68% of pool is volatile assets being hedged)
+        const avgFunding = fundingCount > 0 ? fundingSum / fundingCount : 0;
+        // Negative funding = shorts pay = hedge cost. We show hedge cost as a negative drag.
+        // avgFunding is annualized %. If negative, shorts pay (cost). If positive, shorts earn (revenue).
+        // For the waterfall: hedge cost = -avgFunding * 0.68 (negative funding is a cost)
+        const hedgeCostYield = avgFunding * 0.68; // positive = revenue, negative = cost
+
+        // 4. Expected Net Yield
+        const expectedNet = grossFeeYield - Math.abs(leakageYield) + hedgeCostYield;
+
+        // 5. Actual Vault Return
+        let actualReturn = null;
+        let actualLabel = '';
+        // Find vault data points closest to cutoff and now
+        const vaultEnd = vhSorted.length ? vhSorted[vhSorted.length - 1] : null;
+        let vaultStart = null;
+        for (const v of vhSorted) {
+            if (v.date >= cutoffDate) { vaultStart = v; break; }
+        }
+        const vaultDays = vaultStart && vaultEnd ? (vaultEnd.date - vaultStart.date) / 86400000 : 0;
+        if (vaultStart && vaultEnd && vaultDays >= Math.min(tf.days * 0.5, 5)) {
+            const periodReturn = vaultEnd.sharePrice / vaultStart.sharePrice - 1;
+            actualReturn = (Math.pow(1 + periodReturn, 365 / vaultDays) - 1) * 100;
+            actualLabel = vaultDays < tf.days * 0.8 ? `${Math.round(vaultDays)}d actual` : '';
+        } else if (tf.days > 60) {
+            actualLabel = 'N/A';
+        }
+
+        // 6. Capture Rate
+        let captureRate = null;
+        if (actualReturn !== null && expectedNet > 0) {
+            captureRate = (actualReturn / expectedNet) * 100;
+        }
+
+        results[tf.label] = { grossFeeYield, leakageYield, hedgeCostYield, expectedNet, actualReturn, captureRate, actualLabel, feeDays, pnlDays, fundingCount };
+    });
+
+    // Build table HTML
+    const cols = timeframes.map(tf => tf.label);
+    const fmtPct = (v, cls) => {
+        if (v === null || v === undefined) return `<td class="wf-neutral">N/A</td>`;
+        const sign = v >= 0 ? '+' : '';
+        return `<td class="${cls}">${sign}${v.toFixed(2)}%</td>`;
+    };
+
+    const captureClass = (v) => {
+        if (v === null) return 'wf-neutral';
+        if (v > 90) return 'wf-great';
+        if (v > 70) return 'wf-ok';
+        return 'wf-poor';
+    };
+
+    let html = `<table class="waterfall-table">
+        <thead><tr><th>Metric</th>${cols.map(c => `<th>${c}</th>`).join('')}</tr></thead>
+        <tbody>
+        <tr>
+            <td>Gross Fee Yield<span class="wf-sub">75% of protocol fees → JLP, annualized</span></td>
+            ${cols.map(c => fmtPct(results[c].grossFeeYield, 'wf-positive')).join('')}
+        </tr>
+        <tr>
+            <td>− Trader P&L (Leakage)<span class="wf-sub">On-chain settlement · traders win = pool loses</span></td>
+            ${cols.map(c => {
+                const v = results[c].leakageYield;
+                const cls = v > 0 ? 'wf-negative' : 'wf-positive';
+                return `<td class="${cls}">${v > 0 ? '-' : '+'}${Math.abs(v).toFixed(2)}%</td>`;
+            }).join('')}
+        </tr>
+        <tr>
+            <td>− Hedge Cost (Funding)<span class="wf-sub">Drift weighted funding · negative = cost to shorts</span></td>
+            ${cols.map(c => {
+                const v = results[c].hedgeCostYield;
+                const cls = v >= 0 ? 'wf-positive' : 'wf-negative';
+                return `<td class="${cls}">${v >= 0 ? '+' : ''}${v.toFixed(2)}%${results[c].fundingCount === 0 ? '<span class="wf-sub">no data</span>' : ''}</td>`;
+            }).join('')}
+        </tr>
+        <tr class="total-row">
+            <td>= Expected Net Yield<span class="wf-sub">Fees − leakage + funding</span></td>
+            ${cols.map(c => fmtPct(results[c].expectedNet, results[c].expectedNet >= 0 ? 'wf-positive' : 'wf-negative')).join('')}
+        </tr>
+        <tr>
+            <td>Actual Vault Return<span class="wf-sub">Share price APY (net of 30% perf fees)</span></td>
+            ${cols.map(c => {
+                const r = results[c];
+                if (r.actualReturn === null) return `<td class="wf-neutral">N/A<span class="wf-sub">${r.actualLabel || 'insufficient data'}</span></td>`;
+                return `<td class="${r.actualReturn >= 0 ? 'wf-positive' : 'wf-negative'}">${r.actualReturn >= 0 ? '+' : ''}${r.actualReturn.toFixed(2)}%${r.actualLabel ? `<span class="wf-sub">${r.actualLabel}</span>` : ''}</td>`;
+            }).join('')}
+        </tr>
+        <tr class="capture-row">
+            <td>Capture Rate<span class="wf-sub">Actual ÷ Expected</span></td>
+            ${cols.map(c => {
+                const cr = results[c].captureRate;
+                if (cr === null) return `<td class="wf-neutral">—</td>`;
+                return `<td class="${captureClass(cr)}">${cr.toFixed(0)}%</td>`;
+            }).join('')}
+        </tr>
+        </tbody></table>`;
+
+    el.innerHTML = html;
+
+    // Store results for chart
+    window._wfResults = results;
+    renderWaterfallChart();
+}
+
+function renderWaterfallChart() {
+    const results = window._wfResults;
+    if (!results) return;
+
+    const dayMap = { 7: '7D', 30: '30D', 90: '90D' };
+    const key = dayMap[selectedWfDays] || '30D';
+    const r = results[key];
+    if (!r) return;
+
+    const labels = ['Gross Fees', '− Trader P&L', '− Hedge Cost', 'Expected Net', 'Actual Return'];
+    const values = [
+        r.grossFeeYield,
+        -Math.abs(r.leakageYield) * (r.leakageYield > 0 ? 1 : -1),
+        r.hedgeCostYield < 0 ? r.hedgeCostYield : -r.hedgeCostYield,
+        r.expectedNet,
+        r.actualReturn !== null ? r.actualReturn : 0
+    ];
+    // For waterfall: trader P&L leakage shown as negative, hedge cost shown as negative
+    const traderDrag = r.leakageYield > 0 ? -r.leakageYield : Math.abs(r.leakageYield);
+    const hedgeDrag = r.hedgeCostYield;
+
+    const data = [r.grossFeeYield, traderDrag, hedgeDrag, r.expectedNet, r.actualReturn !== null ? r.actualReturn : 0];
+    const colors = [
+        'rgba(34,197,94,0.8)',    // green - gross fees
+        'rgba(239,68,68,0.8)',    // red - trader pnl drag
+        r.hedgeCostYield >= 0 ? 'rgba(34,197,94,0.6)' : 'rgba(239,68,68,0.6)', // hedge
+        'rgba(0,212,255,0.4)',    // cyan outline - expected
+        r.actualReturn !== null && r.actualReturn >= 0 ? 'rgba(0,212,255,0.8)' : 'rgba(239,68,68,0.8)' // actual
+    ];
+    const borders = [
+        '#22c55e', '#ef4444',
+        r.hedgeCostYield >= 0 ? '#22c55e' : '#ef4444',
+        '#00d4ff', r.actualReturn !== null && r.actualReturn >= 0 ? '#00d4ff' : '#ef4444'
+    ];
+
+    const cfg = {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                data,
+                backgroundColor: colors,
+                borderColor: borders,
+                borderWidth: 2,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(10,10,26,0.95)',
+                    callbacks: { label: ctx => (ctx.raw >= 0 ? '+' : '') + ctx.raw.toFixed(2) + '% APY' }
+                }
+            },
+            scales: {
+                x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b8ba7' } },
+                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b8ba7', callback: v => v.toFixed(0) + '%' } }
+            }
+        },
+        plugins: [{
+            id: 'zeroLine',
+            beforeDraw(chart) {
+                const { ctx, chartArea: { left, right }, scales: { y } } = chart;
+                const zeroY = y.getPixelForValue(0);
+                ctx.save();
+                ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath(); ctx.moveTo(left, zeroY); ctx.lineTo(right, zeroY); ctx.stroke();
+                ctx.restore();
+            }
+        }]
+    };
+
+    if (waterfallChartInstance) waterfallChartInstance.destroy();
+    waterfallChartInstance = new Chart(document.getElementById('waterfallChart'), cfg);
+}
+
+document.getElementById('wfChartTabs').addEventListener('click', e => {
+    if (!e.target.classList.contains('wf-tab')) return;
+    document.querySelectorAll('#wfChartTabs .wf-tab').forEach(t => t.classList.remove('active'));
+    e.target.classList.add('active');
+    selectedWfDays = parseInt(e.target.dataset.days);
+    renderWaterfallChart();
+});
+
+// ============ MAIN LOAD ============
 async function loadAll() {
     try {
-        // Load Allium on-chain data first (primary source), DefiLlama as fallback
         const [alliumFeesData, alliumPnlData, dlData, cgData, vc, vh, jlpInfo, solData, ethData, btcData, sheetData, onchainPnlData] = await Promise.all([
             fetch('./data/allium-fees.json?t=' + Date.now()).then(r => r.json()).catch(() => null),
             fetch('./data/allium-trader-pnl.json?t=' + Date.now()).then(r => r.json()).catch(() => null),
@@ -394,19 +681,15 @@ async function loadAll() {
             fetchSpreadsheetData(),
             fetch('./data/trader-pnl-onchain.json?t=' + Date.now()).then(r => r.json()).catch(() => [])
         ]);
-        // Store on-chain trader P&L globally
+
         window._onchainPnl = {};
         (onchainPnlData || []).forEach(d => { window._onchainPnl[d.date] = d; });
-        // Store Allium trader P&L separately (90d granular)
         window._alliumPnl = {};
         (alliumPnlData || []).forEach(d => { window._alliumPnl[d.date] = d; });
 
-        // Use Allium fees as primary, DefiLlama as fallback
         window._feeSource = 'defillama';
         if (alliumFeesData && alliumFeesData.length > 0) {
-            // Allium has on-chain fees — use as primary
             feeData = alliumFeesData.map(d => ({ date: new Date(d.date + 'T00:00:00Z'), value: d.total_fees, position_fees: d.position_fees, swap_fees: d.swap_fees, source: 'allium' }));
-            // Prepend DefiLlama data for dates before Allium coverage
             if (dlData && dlData.totalDataChart) {
                 const alliumStart = alliumFeesData[0].date;
                 const olderData = (dlData.totalDataChart || [])
@@ -415,11 +698,10 @@ async function loadAll() {
                 feeData = [...olderData, ...feeData];
             }
             window._feeSource = 'allium';
-            console.log('Fee data: Allium on-chain (' + alliumFeesData.length + ' days) + DefiLlama backfill');
         } else if (dlData && dlData.totalDataChart) {
             feeData = (dlData.totalDataChart || []).map(([ts, val]) => ({ date: new Date(ts * 1000), value: val, source: 'defillama' }));
-            console.log('Fee data: DefiLlama fallback');
         }
+
         cgPrices = (cgData.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         solPrices = (solData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         ethPrices = (ethData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
@@ -428,82 +710,28 @@ async function loadAll() {
         const liveHistory = (vh || []).map(d => ({ date: new Date(d.update_time_utc), sharePrice: d.SharePrice, tvl: d.tvl })).sort((a, b) => a.date - b.date);
         vaultHistory = combineVaultHistory(sheetData, liveHistory);
 
-        // JLP pool NAV price from Jupiter API
         if (jlpInfo && jlpInfo.jlpPriceUsd) {
             jlpPoolPrice = parseInt(jlpInfo.jlpPriceUsd) / 1e6;
         }
+        if (jlpInfo) {
+            jlpAUM = parseInt(jlpInfo.aumUsd) / 1e6;
+        }
 
-        // Top metrics
+        // Slim top metrics
         const jlpPrice = cgPrices.length ? cgPrices[cgPrices.length - 1].price : null;
-        // Use Allium for 24h fees if available, DefiLlama as fallback
         const fees24h = (alliumFeesData && alliumFeesData.length > 0)
             ? alliumFeesData[alliumFeesData.length - 1].total_fees
             : (dlData ? dlData.total24h || 0 : 0);
-        const feesAll = (dlData ? dlData.totalAllTime || 0 : 0);
-        const feeSourceLabel = window._feeSource === 'allium' ? 'On-chain (Allium)' : 'DefiLlama';
-        // Calculate REAL-TIME fee APY from recent DefiLlama data + Jupiter AUM
-        const jlpAPY_official = jlpInfo ? parseFloat(jlpInfo.jlpApyPct) : null;
-        const recentFees = feeData.slice(-7);
-        const avgDaily = recentFees.reduce((s, d) => s + d.value, 0) / recentFees.length;
-        const jlpAUM = jlpInfo ? parseInt(jlpInfo.aumUsd) / 1e6 : 1200000000;
-        // Real-time fee APY = (avg daily fees * 75% to JLP * 365) / AUM
-        // This is GROSS fee yield — does NOT subtract trader P&L impact
-        const grossFeeAPY = (avgDaily * 0.75 * 365) / jlpAUM * 100;
-        // Jupiter's official APY is NET (includes trader P&L drag) but LAGGING
-        const estAPY = grossFeeAPY;
         const vaultSharePrice = vaultCurrent ? vaultCurrent.SharePrice : null;
-        const delta = (jlpPrice && jlpPoolPrice) ? ((jlpPrice - jlpPoolPrice) / jlpPoolPrice * 100) : null;
+        const vaultTvl = vaultHistory.length ? (vaultHistory[vaultHistory.length - 1].tvl || null) : null;
 
-        document.getElementById('topMetrics').innerHTML = `
-            <div class="metric-card highlight">
-                <div class="metric-label">JLP Market Price</div>
-                <div class="metric-value">${jlpPrice ? '$' + jlpPrice.toFixed(4) : '--'}</div>
-                <div class="metric-sub">CoinGecko</div>
-            </div>
-            <div class="metric-card highlight">
-                <div class="metric-label">JLP Pool Price (NAV)</div>
-                <div class="metric-value">${jlpPoolPrice ? '$' + jlpPoolPrice.toFixed(4) : '--'}</div>
-                <div class="metric-sub">Jupiter Perps API</div>
-            </div>
-            <div class="metric-card ${delta !== null ? (Math.abs(delta) > 0.5 ? 'highlight' : '') : ''}">
-                <div class="metric-label">Market vs NAV Delta</div>
-                <div class="metric-value ${delta !== null ? (delta >= 0 ? 'positive' : 'negative') : ''}">${delta !== null ? (delta >= 0 ? '+' : '') + delta.toFixed(3) + '%' : '--'}</div>
-                <div class="metric-sub">Premium / Discount</div>
-            </div>
-            <div class="metric-card highlight">
-                <div class="metric-label">24h Gross Fees</div>
-                <div class="metric-value">${fees24h >= 1e6 ? '$' + (fees24h / 1e6).toFixed(2) + 'M' : '$' + (fees24h / 1e3).toFixed(0) + 'K'}</div>
-                <div class="metric-sub">Source: ${feeSourceLabel}${feesAll ? ' · All Time: $' + (feesAll / 1e9).toFixed(2) + 'B' : ''}</div>
-            </div>
-            <div class="metric-card highlight">
-                <div class="metric-label">24h Fees to JLP (75%)</div>
-                <div class="metric-value positive">${(fees24h * 0.75) >= 1e6 ? '$' + (fees24h * 0.75 / 1e6).toFixed(2) + 'M' : '$' + (fees24h * 0.75 / 1e3).toFixed(0) + 'K'}</div>
-                <div class="metric-sub">JLP pool's share of protocol fees</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">JLP APY</div>
-                <div class="metric-value positive">${estAPY.toFixed(1)}%</div>
-                <div class="metric-sub">Gross fee yield (7d avg)${jlpAPY_official ? ' · Jup: ' + jlpAPY_official.toFixed(1) + '% net' : ''}</div>
-            </div>
-            <div class="metric-card highlight">
-                <div class="metric-label">Net to Investors (Est.)</div>
-                <div class="metric-value positive">${jlpAPY_official ? (jlpAPY_official * 0.70).toFixed(1) + '%' : '--'}</div>
-                <div class="metric-sub">Jupiter net APY × 70% (after 30% perf fees)</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Vault Share Price</div>
-                <div class="metric-value">${vaultSharePrice ? '$' + vaultSharePrice.toFixed(4) : '--'}</div>
-                <div class="metric-sub">PN_KV1</div>
-            </div>
-            <div class="metric-card" id="fundingMetricCard">
-                <div class="metric-label">Wtd Avg Funding Rate (7D)</div>
-                <div class="metric-value" id="fundingMetricValue">--</div>
-                <div class="metric-sub">Weighted by JLP pool %</div>
-            </div>
-        `;
+        document.getElementById('sm-jlp').textContent = jlpPrice ? '$' + jlpPrice.toFixed(4) : '--';
+        document.getElementById('sm-fees').textContent = fees24h >= 1e6 ? '$' + (fees24h / 1e6).toFixed(2) + 'M' : '$' + (fees24h / 1e3).toFixed(0) + 'K';
+        document.getElementById('sm-share').textContent = vaultSharePrice ? '$' + vaultSharePrice.toFixed(4) : '--';
+        document.getElementById('sm-tvl').textContent = vaultTvl ? '$' + (vaultTvl / 1e6).toFixed(2) + 'M' : '--';
 
         document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
-        // Update fee source badge
+
         const feeBadge = document.getElementById('feeSourceBadge');
         if (feeBadge) {
             if (window._feeSource === 'allium') {
@@ -514,27 +742,28 @@ async function loadAll() {
                 feeBadge.style.color = '#f59e0b';
             }
         }
+
+        renderWaterfall();
         renderFeeChart();
         renderPriceChart();
-        // renderVaultChart(); // removed
         renderWeeklyFeeChart();
         renderPnlChart();
         renderHedgeEfficiency();
         renderWeeklyRevenue();
         if (jlpInfo) renderTraderExposure(jlpInfo);
         renderRollingPnl();
-        updateFundingMetric(); // re-apply after innerHTML rebuild
+        updateFundingMetric();
     } catch (e) {
         console.error('Load error:', e);
     }
 }
 
-// Chart 1: Fee Revenue
+// ============ EXISTING RENDER FUNCTIONS ============
+
 function renderFeeChart() {
     const data = selectedFeeDays === 0 ? feeData : feeData.slice(-selectedFeeDays);
     let cum = 0;
     const cumData = data.map(d => { cum += d.value; return { x: d.date, y: cum }; });
-
     const cfg = {
         type: 'bar',
         data: {
@@ -548,215 +777,72 @@ function renderFeeChart() {
             y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { color: chartColors.text, callback: v => '$' + (v/1e9).toFixed(1) + 'B' } }
         })
     };
-
     if (feeChart) feeChart.destroy();
     feeChart = new Chart(document.getElementById('feeChart'), cfg);
 }
 
-// Chart 2: JLP Price + MAs
-function renderPriceChart() {
-    const prices = cgPrices.map(d => ({ x: d.date, y: d.price }));
-    const ma = (n) => cgPrices.map((d, i) => {
-        if (i < n - 1) return null;
-        const avg = cgPrices.slice(i - n + 1, i + 1).reduce((s, p) => s + p.price, 0) / n;
-        return { x: d.date, y: avg };
-    }).filter(Boolean);
+// No-op to avoid errors (chart was removed)
+function renderPriceChart() {}
 
-    const datasets = [
-        { label: 'Market Price', data: prices, borderColor: chartColors.cyan, backgroundColor: 'rgba(0,212,255,0.1)', fill: true, pointRadius: 0, borderWidth: 2 },
-        { label: '7D MA', data: ma(7), borderColor: chartColors.orange, pointRadius: 0, borderWidth: 1.5, borderDash: [5, 3] },
-        { label: '30D MA', data: ma(30), borderColor: chartColors.pink, pointRadius: 0, borderWidth: 1.5, borderDash: [8, 4] }
-    ];
-
-    // Add current NAV as horizontal reference line across the chart
-    if (jlpPoolPrice && prices.length) {
-        datasets.push({
-            label: 'Current NAV ($' + jlpPoolPrice.toFixed(4) + ')',
-            data: [{ x: prices[0].x, y: jlpPoolPrice }, { x: prices[prices.length - 1].x, y: jlpPoolPrice }],
-            borderColor: '#22c55e',
-            pointRadius: 0,
-            borderWidth: 2,
-            borderDash: [3, 3]
-        });
-    }
-
-    const cfg = {
-        type: 'line',
-        data: { datasets },
-        options: chartOpts({ y: { ...defaultScales.y, ticks: { color: chartColors.text, callback: v => '$' + v.toFixed(2) } } })
-    };
-
-    if (priceChart) priceChart.destroy();
-    priceChart = new Chart(document.getElementById('priceChart'), cfg);
-}
-
-// Chart 3: Vault vs JLP
-function renderVaultChart() {
-    if (!vaultHistory.length || !cgPrices.length) return;
-
-    // Normalize both to % change from start of vault history
-    const vStart = vaultHistory[0];
-    const vaultPcts = vaultHistory.map(d => ({ x: d.date, y: ((d.sharePrice / vStart.sharePrice) - 1) * 100 }));
-
-    // Find CG prices in vault date range
-    const vStartTime = vStart.date.getTime();
-    const cgInRange = cgPrices.filter(d => d.date.getTime() >= vStartTime);
-    const cgBase = cgInRange.length ? cgInRange[0].price : 1;
-    const cgPcts = cgInRange.map(d => ({ x: d.date, y: ((d.price / cgBase) - 1) * 100 }));
-
-    const cfg = {
-        type: 'line',
-        data: {
-            datasets: [
-                { label: 'Vault Share Price (%)', data: vaultPcts, borderColor: chartColors.green, pointRadius: 0, borderWidth: 2 },
-                { label: 'JLP Price (%)', data: cgPcts, borderColor: chartColors.cyan, pointRadius: 0, borderWidth: 2, borderDash: [5, 3] }
-            ]
-        },
-        options: chartOpts({ y: { ...defaultScales.y, ticks: { color: chartColors.text, callback: v => v.toFixed(1) + '%' } } })
-    };
-
-    if (vaultChart) vaultChart.destroy();
-    vaultChart = new Chart(document.getElementById('vaultChart'), cfg);
-}
-
-// Chart 4: Weekly fees + cumulative
-// Trader P&L derivation
-// JLP daily return = fee yield + asset return - trader PnL (from pool perspective)
-// So: trader PnL = fee yield + asset return - JLP return (positive = traders won, pool lost)
 let pnlChart = null;
 let selectedPnlDays = 30;
 
 function deriveDailyTraderPnl() {
     if (!cgPrices.length || !feeData.length) return [];
-
-    // Build daily maps for all price series
-    const buildMap = (arr) => {
-        const m = {};
-        arr.forEach(d => { m[d.date.toISOString().slice(0, 10)] = d.price; });
-        return m;
-    };
+    const buildMap = (arr) => { const m = {}; arr.forEach(d => { m[d.date.toISOString().slice(0, 10)] = d.price; }); return m; };
     const feeMap = {};
     feeData.forEach(d => { feeMap[d.date.toISOString().slice(0, 10)] = d.value; });
-
     const jlpMap = buildMap(cgPrices);
     const solMap = buildMap(solPrices);
     const ethMap = buildMap(ethPrices);
     const btcMap = buildMap(btcPrices);
-
-    // JLP pool target weights: SOL 47%, ETH 8%, BTC 13%, stables 32%
-    // Stables don't change price, so basket return = weighted sum of volatile asset returns
-    const W_SOL = 0.47, W_ETH = 0.08, W_BTC = 0.13, W_STABLE = 0.32;
-
+    const W_SOL = 0.47, W_ETH = 0.08, W_BTC = 0.13;
     const dates = Object.keys(jlpMap).sort();
     const results = [];
-
     for (let i = 1; i < dates.length; i++) {
-        const today = dates[i];
-        const yesterday = dates[i - 1];
-
+        const today = dates[i], yesterday = dates[i - 1];
         const jlp0 = jlpMap[yesterday], jlp1 = jlpMap[today];
         const sol0 = solMap[yesterday], sol1 = solMap[today];
         const eth0 = ethMap[yesterday], eth1 = ethMap[today];
         const btc0 = btcMap[yesterday], btc1 = btcMap[today];
-
         if (!jlp0 || !jlp1 || !sol0 || !sol1 || !eth0 || !eth1 || !btc0 || !btc1) continue;
-
         const jlpReturn = (jlp1 - jlp0) / jlp0;
-        const solReturn = (sol1 - sol0) / sol0;
-        const ethReturn = (eth1 - eth0) / eth0;
-        const btcReturn = (btc1 - btc0) / btc0;
-
-        // Basket return = weighted asset price change (stables contribute 0%)
-        const basketReturn = W_SOL * solReturn + W_ETH * ethReturn + W_BTC * btcReturn;
-
-        // Fee yield as % of pool
-        const poolValue = jlp0 * 320000000; // approximate supply
-        const dailyFees = (feeMap[today] || 0) * 0.75; // 75% to pool
+        const basketReturn = W_SOL * ((sol1 - sol0) / sol0) + W_ETH * ((eth1 - eth0) / eth0) + W_BTC * ((btc1 - btc0) / btc0);
+        const poolValue = jlp0 * 320000000;
+        const dailyFees = (feeMap[today] || 0) * 0.75;
         const feeYield = poolValue > 0 ? dailyFees / poolValue : 0;
-
-        // JLP return = basket return + fee yield - trader PnL (from pool's perspective)
-        // So: trader PnL = basket return + fee yield - JLP return
-        // Positive = traders won (pool lost), Negative = traders lost (pool won)
         const impliedTraderPnl = basketReturn + feeYield - jlpReturn;
-        const impliedTraderPnlUsd = impliedTraderPnl * poolValue;
-
-        results.push({
-            date: new Date(today),
-            pnlPct: impliedTraderPnl * 100,
-            pnlUsd: impliedTraderPnlUsd
-        });
+        results.push({ date: new Date(today), pnlPct: impliedTraderPnl * 100, pnlUsd: impliedTraderPnl * poolValue });
     }
     return results;
 }
 
 function renderPnlChart() {
-    // Prefer on-chain data from Allium, fall back to derived estimates
     let allPnl;
     const onchainEntries = Object.values(window._onchainPnl || {});
     if (onchainEntries.length > 0) {
-        allPnl = onchainEntries
-            .map(d => ({ date: new Date(d.date + 'T00:00:00Z'), pnlUsd: d.trader_pnl, pnlPct: 0 }))
-            .sort((a, b) => a.date - b.date);
+        allPnl = onchainEntries.map(d => ({ date: new Date(d.date + 'T00:00:00Z'), pnlUsd: d.trader_pnl, pnlPct: 0 })).sort((a, b) => a.date - b.date);
     } else {
         allPnl = deriveDailyTraderPnl();
     }
     const cutoff = selectedPnlDays > 0 ? allPnl.length - selectedPnlDays : 0;
     const data = allPnl.slice(Math.max(0, cutoff));
-
     let cumUsd = 0;
-    const barData = data.map(d => ({
-        x: d.date,
-        y: d.pnlUsd,
-        backgroundColor: d.pnlUsd > 0 ? 'rgba(239,68,68,0.7)' : 'rgba(34,197,94,0.7)',
-        borderColor: d.pnlUsd > 0 ? '#ef4444' : '#22c55e'
-    }));
-    const cumData = data.map(d => {
-        cumUsd += d.pnlUsd;
-        return { x: d.date, y: cumUsd };
-    });
-
+    const barData = data.map(d => ({ x: d.date, y: d.pnlUsd, backgroundColor: d.pnlUsd > 0 ? 'rgba(239,68,68,0.7)' : 'rgba(34,197,94,0.7)', borderColor: d.pnlUsd > 0 ? '#ef4444' : '#22c55e' }));
+    const cumData = data.map(d => { cumUsd += d.pnlUsd; return { x: d.date, y: cumUsd }; });
     const cfg = {
         type: 'bar',
         data: {
             datasets: [
-                {
-                    label: 'Daily Trader P&L ($)',
-                    data: barData.map(d => ({ x: d.x, y: d.y })),
-                    backgroundColor: barData.map(d => d.backgroundColor),
-                    borderColor: barData.map(d => d.borderColor),
-                    borderWidth: 1,
-                    yAxisID: 'y'
-                },
-                {
-                    label: 'Cumulative Trader P&L ($)',
-                    data: cumData,
-                    type: 'line',
-                    borderColor: chartColors.purple,
-                    pointRadius: 0,
-                    borderWidth: 2,
-                    yAxisID: 'y2'
-                }
+                { label: 'Daily Trader P&L ($)', data: barData.map(d => ({ x: d.x, y: d.y })), backgroundColor: barData.map(d => d.backgroundColor), borderColor: barData.map(d => d.borderColor), borderWidth: 1, yAxisID: 'y' },
+                { label: 'Cumulative Trader P&L ($)', data: cumData, type: 'line', borderColor: chartColors.purple, pointRadius: 0, borderWidth: 2, yAxisID: 'y2' }
             ]
         },
-        options: {
-            ...chartOpts({
-                y: {
-                    ...defaultScales.y,
-                    position: 'left',
-                    title: { display: true, text: 'Daily P&L ($)', color: chartColors.text },
-                    ticks: { color: chartColors.text, callback: v => (v >= 0 ? '+$' : '-$') + Math.abs(v / 1e6).toFixed(1) + 'M' }
-                },
-                y2: {
-                    ...defaultScales.y,
-                    position: 'right',
-                    grid: { display: false },
-                    title: { display: true, text: 'Cumulative ($)', color: chartColors.text },
-                    ticks: { color: chartColors.text, callback: v => (v >= 0 ? '+$' : '-$') + Math.abs(v / 1e6).toFixed(1) + 'M' }
-                }
-            })
-        }
+        options: chartOpts({
+            y: { ...defaultScales.y, position: 'left', title: { display: true, text: 'Daily P&L ($)', color: chartColors.text }, ticks: { color: chartColors.text, callback: v => (v >= 0 ? '+$' : '-$') + Math.abs(v / 1e6).toFixed(1) + 'M' } },
+            y2: { ...defaultScales.y, position: 'right', grid: { display: false }, title: { display: true, text: 'Cumulative ($)', color: chartColors.text }, ticks: { color: chartColors.text, callback: v => (v >= 0 ? '+$' : '-$') + Math.abs(v / 1e6).toFixed(1) + 'M' } }
+        })
     };
-
     if (pnlChart) pnlChart.destroy();
     pnlChart = new Chart(document.getElementById('pnlChart'), cfg);
 }
@@ -765,10 +851,8 @@ function renderTraderExposure(jlpInfo) {
     if (!jlpInfo) return;
     const el = document.getElementById('traderExposure');
     if (!el) return;
-
     const custodies = (jlpInfo.custodies || []).filter(c => ['SOL', 'ETH', 'WBTC'].includes(c.symbol));
     let totalShortSize = 0, totalShortPnl = 0, totalGuaranteed = 0;
-
     const rows = custodies.map(c => {
         const shortSize = parseInt(c.globalShortSizes || 0) / 1e6;
         const shortPnl = parseInt(c.shortPnlDelta || 0) / 1e6;
@@ -777,236 +861,82 @@ function renderTraderExposure(jlpInfo) {
         totalShortSize += shortSize;
         totalShortPnl += hasProfit ? shortPnl : -shortPnl;
         totalGuaranteed += guaranteed;
-
         const pnlColor = hasProfit ? '#ef4444' : '#22c55e';
         const pnlSign = hasProfit ? '+' : '-';
-        return `<tr>
-            <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">${c.symbol}</td>
-            <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">$${(guaranteed/1e3).toFixed(0)}K</td>
-            <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">$${(shortSize/1e3).toFixed(0)}K</td>
-            <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);color:${pnlColor}">${pnlSign}$${(shortPnl/1e3).toFixed(0)}K</td>
-        </tr>`;
+        return `<tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">${c.symbol}</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">$${(guaranteed/1e3).toFixed(0)}K</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">$${(shortSize/1e3).toFixed(0)}K</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);color:${pnlColor}">${pnlSign}$${(shortPnl/1e3).toFixed(0)}K</td></tr>`;
     }).join('');
-
     const totalPnlColor = totalShortPnl > 0 ? '#ef4444' : '#22c55e';
     const totalPnlLabel = totalShortPnl > 0 ? 'Traders winning (pool paying)' : 'Traders losing (pool earning)';
-
-    el.innerHTML = `
-        <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
-            <thead><tr style="color:#8b8ba7;">
-                <th style="padding:8px;text-align:left">Asset</th>
-                <th style="padding:8px;text-align:left">Long Exposure</th>
-                <th style="padding:8px;text-align:left">Short Size</th>
-                <th style="padding:8px;text-align:left">Short Unreal. P&L</th>
-            </tr></thead>
-            <tbody>${rows}
-                <tr style="font-weight:bold;border-top:2px solid rgba(255,255,255,0.15)">
-                    <td style="padding:8px">Total</td>
-                    <td style="padding:8px">$${(totalGuaranteed/1e6).toFixed(1)}M</td>
-                    <td style="padding:8px">$${(totalShortSize/1e6).toFixed(1)}M</td>
-                    <td style="padding:8px;color:${totalPnlColor}">${totalShortPnl > 0 ? '+' : '-'}$${(Math.abs(totalShortPnl)/1e3).toFixed(0)}K</td>
-                </tr>
-            </tbody>
-        </table>
-        <div style="margin-top:10px;padding:10px;border-radius:8px;background:rgba(255,255,255,0.03);font-size:0.85rem;">
-            <span style="color:${totalPnlColor};font-weight:bold;">${totalPnlLabel}</span>
-            <span style="color:#8b8ba7;margin-left:10px;">Total open interest: $${((totalGuaranteed + totalShortSize)/1e6).toFixed(1)}M</span>
-        </div>
-    `;
+    el.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:0.9rem;"><thead><tr style="color:#8b8ba7;"><th style="padding:8px;text-align:left">Asset</th><th style="padding:8px;text-align:left">Long Exposure</th><th style="padding:8px;text-align:left">Short Size</th><th style="padding:8px;text-align:left">Short Unreal. P&L</th></tr></thead><tbody>${rows}<tr style="font-weight:bold;border-top:2px solid rgba(255,255,255,0.15)"><td style="padding:8px">Total</td><td style="padding:8px">$${(totalGuaranteed/1e6).toFixed(1)}M</td><td style="padding:8px">$${(totalShortSize/1e6).toFixed(1)}M</td><td style="padding:8px;color:${totalPnlColor}">${totalShortPnl > 0 ? '+' : '-'}$${(Math.abs(totalShortPnl)/1e3).toFixed(0)}K</td></tr></tbody></table><div style="margin-top:10px;padding:10px;border-radius:8px;background:rgba(255,255,255,0.03);font-size:0.85rem;"><span style="color:${totalPnlColor};font-weight:bold;">${totalPnlLabel}</span><span style="color:#8b8ba7;margin-left:10px;">Total open interest: $${((totalGuaranteed + totalShortSize)/1e6).toFixed(1)}M</span></div>`;
 }
 
 let hedgeEffChart = null;
 
 function renderHedgeEfficiency() {
     if (!vaultHistory.length || !feeData.length) return;
-
-    // Build daily fee map
     const feeMap = {};
     feeData.forEach(d => { feeMap[d.date.toISOString().slice(0, 10)] = d.value; });
-
-    // Compute daily funding rate from Drift data (use actual per-day rates, not average)
-    const fundingByDate = {}; // date -> weighted daily rate (decimal)
+    const fundingByDate = {};
     if (fundingData['SOL-PERP'] && fundingData['SOL-PERP'].length) {
-        // Build per-market date maps
         const marketDateMap = {};
-        ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => {
-            marketDateMap[m] = {};
-            (fundingData[m] || []).forEach(d => {
-                marketDateMap[m][d.date.toISOString().slice(0, 10)] = d.rate; // annualized %
-            });
-        });
-        // For each date, compute weighted daily rate
+        ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => { marketDateMap[m] = {}; (fundingData[m] || []).forEach(d => { marketDateMap[m][d.date.toISOString().slice(0, 10)] = d.rate; }); });
         const allDates = new Set();
-        ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => {
-            Object.keys(marketDateMap[m]).forEach(d => allDates.add(d));
-        });
+        ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => Object.keys(marketDateMap[m]).forEach(d => allDates.add(d)));
         allDates.forEach(date => {
             let weighted = 0;
-            ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => {
-                weighted += (marketDateMap[m][date] || 0) * (HEDGE_WEIGHTS[m] || 0);
-            });
-            // Convert from annualized % to daily decimal, scaled by hedge portion (~68% of pool is volatile)
+            ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => { weighted += (marketDateMap[m][date] || 0) * (HEDGE_WEIGHTS[m] || 0); });
             fundingByDate[date] = (weighted / 100) * 0.68 / 365;
         });
     }
-
-    // Fallback average funding if no per-day data available
     let avgFundingDaily = -0.20 * 0.68 / 365;
-
-    // Use 7-day rolling averages for smoother expected line
     const results = [];
     let cumExpected = 0, cumActual = 0;
     const dailyExpected = [], dailyActual = [];
-
     for (let i = 1; i < vaultHistory.length; i++) {
-        const prev = vaultHistory[i - 1];
-        const curr = vaultHistory[i];
+        const prev = vaultHistory[i - 1], curr = vaultHistory[i];
         const dateKey = curr.date.toISOString().slice(0, 10);
-
         const actualReturn = (curr.sharePrice / prev.sharePrice - 1);
-
-        // Fee yield: daily fees * 75% (JLP share) / pool AUM
-        // This is the GROSS fee yield — what JLP earns before trader P&L impact
-        const jlpAUM = jlpPoolPrice ? jlpPoolPrice * 320000000 : 1200000000;
+        const localAUM = jlpPoolPrice ? jlpPoolPrice * 320000000 : 1200000000;
         const dailyFees = (feeMap[dateKey] || 0) * 0.75;
-        const feeYieldPct = dailyFees > 0 ? dailyFees / jlpAUM : 0;
-
-        // Funding cost for that specific day (or fallback to average)
+        const feeYieldPct = dailyFees > 0 ? dailyFees / localAUM : 0;
         const fundingDailyPct = fundingByDate[dateKey] || avgFundingDaily;
-
-        // Expected = gross fee yield + funding (funding is negative when shorts pay)
-        // NOTE: This is an UPPER BOUND — doesn't subtract trader P&L impact,
-        // which is unknowable without historical NAV data.
         const expectedReturn = feeYieldPct + fundingDailyPct;
-
-        dailyExpected.push(expectedReturn);
-        dailyActual.push(actualReturn);
-        cumExpected += expectedReturn;
-        cumActual += actualReturn;
-
-        // 7-day rolling capture (smoother than daily)
-        const window = Math.min(7, dailyExpected.length);
-        const rollExp = dailyExpected.slice(-window).reduce((s, v) => s + v, 0);
-        const rollAct = dailyActual.slice(-window).reduce((s, v) => s + v, 0);
+        dailyExpected.push(expectedReturn); dailyActual.push(actualReturn);
+        cumExpected += expectedReturn; cumActual += actualReturn;
+        const w = Math.min(7, dailyExpected.length);
+        const rollExp = dailyExpected.slice(-w).reduce((s, v) => s + v, 0);
+        const rollAct = dailyActual.slice(-w).reduce((s, v) => s + v, 0);
         const rollCapture = rollExp !== 0 ? (rollAct / rollExp * 100) : 0;
-
-        results.push({
-            date: curr.date,
-            cumExpected: cumExpected * 100,
-            cumActual: cumActual * 100,
-            rollCapture: Math.max(-200, Math.min(300, rollCapture))
-        });
+        results.push({ date: curr.date, cumExpected: cumExpected * 100, cumActual: cumActual * 100, rollCapture: Math.max(-200, Math.min(300, rollCapture)) });
     }
-
     const cfg = {
         type: 'line',
         data: {
             datasets: [
-                {
-                    label: 'Expected Cumulative (Fees - Funding)',
-                    data: results.map(d => ({ x: d.date, y: d.cumExpected })),
-                    borderColor: chartColors.cyan,
-                    borderWidth: 2,
-                    pointRadius: 2,
-                    borderDash: [5, 3]
-                },
-                {
-                    label: 'Gross Vault Return (before 30% fees)',
-                    data: results.map(d => ({ x: d.date, y: d.cumActual / 0.70 })),
-                    borderColor: chartColors.purple,
-                    borderWidth: 2,
-                    pointRadius: 1,
-                    borderDash: [3, 2]
-                },
-                {
-                    label: 'Net Investor Return (after fees)',
-                    data: results.map(d => ({ x: d.date, y: d.cumActual })),
-                    borderColor: chartColors.green,
-                    borderWidth: 2.5,
-                    pointRadius: 2
-                },
-                {
-                    label: '7D Rolling Capture Rate (%)',
-                    data: results.map(d => ({ x: d.date, y: d.rollCapture })),
-                    borderColor: chartColors.orange,
-                    borderWidth: 1.5,
-                    pointRadius: 1,
-                    yAxisID: 'y2',
-                    hidden: true
-                }
+                { label: 'Expected Cumulative (Fees - Funding)', data: results.map(d => ({ x: d.date, y: d.cumExpected })), borderColor: chartColors.cyan, borderWidth: 2, pointRadius: 2, borderDash: [5, 3] },
+                { label: 'Gross Vault Return (before 30% fees)', data: results.map(d => ({ x: d.date, y: d.cumActual / 0.70 })), borderColor: chartColors.purple, borderWidth: 2, pointRadius: 1, borderDash: [3, 2] },
+                { label: 'Net Investor Return (after fees)', data: results.map(d => ({ x: d.date, y: d.cumActual })), borderColor: chartColors.green, borderWidth: 2.5, pointRadius: 2 },
+                { label: '7D Rolling Capture Rate (%)', data: results.map(d => ({ x: d.date, y: d.rollCapture })), borderColor: chartColors.orange, borderWidth: 1.5, pointRadius: 1, yAxisID: 'y2', hidden: true }
             ]
         },
-        options: {
-            ...chartOpts({
-                y: {
-                    ...defaultScales.y,
-                    position: 'left',
-                    title: { display: true, text: 'Cumulative Return (%)', color: chartColors.text },
-                    ticks: { color: chartColors.text, callback: v => v.toFixed(2) + '%' }
-                },
-                y2: {
-                    ...defaultScales.y,
-                    position: 'right',
-                    grid: { display: false },
-                    title: { display: true, text: '7D Capture Rate (%)', color: chartColors.text },
-                    ticks: { color: chartColors.text, callback: v => v.toFixed(0) + '%' }
-                }
-            })
-        }
+        options: chartOpts({
+            y: { ...defaultScales.y, position: 'left', title: { display: true, text: 'Cumulative Return (%)', color: chartColors.text }, ticks: { color: chartColors.text, callback: v => v.toFixed(2) + '%' } },
+            y2: { ...defaultScales.y, position: 'right', grid: { display: false }, title: { display: true, text: '7D Capture Rate (%)', color: chartColors.text }, ticks: { color: chartColors.text, callback: v => v.toFixed(0) + '%' } }
+        })
     };
-
     if (hedgeEffChart) hedgeEffChart.destroy();
     hedgeEffChart = new Chart(document.getElementById('hedgeEffChart'), cfg);
 
-    // Summary metrics — use annualized rates for clearer comparison
     const days = results.length || 1;
-    const totalExpPct = cumExpected * 100;
-    const totalActPct = cumActual * 100;
+    const totalExpPct = cumExpected * 100, totalActPct = cumActual * 100;
     const expApy = totalExpPct * 365 / days;
-
-    // Share price is NET of fees (10% Prime + 20% KeyVault = 30% perf fee)
-    // Gross vault return = net / 0.70
     const netApy = totalActPct * 365 / days;
     const grossApy = netApy / 0.70;
-    const feeDrag = grossApy - netApy; // what fees take
-    const captureRate = totalExpPct !== 0 ? ((totalActPct / 0.70) / totalExpPct * 100) : 0;
-    const traderPnlApy = expApy - grossApy; // gap = trader P&L + basis + slippage
-    const vaultTvl = vaultHistory[vaultHistory.length - 1]?.tvl || 3956000;
-
+    const feeDrag = grossApy - netApy;
+    const traderPnlApy = expApy - grossApy;
     const el = document.getElementById('hedgeEffMetrics');
     if (el) {
-        el.innerHTML = `
-            <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(0,212,255,0.06);">
-                    <div style="color:#8b8ba7;font-size:0.7rem;">Gross Fee Yield</div>
-                    <div style="color:${chartColors.cyan};font-weight:bold;font-size:1.1rem;">${expApy.toFixed(1)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">DefiLlama fees − Funding</div>
-                </div>
-                <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(239,68,68,0.06);">
-                    <div style="color:#8b8ba7;font-size:0.7rem;">Leakage (Trader P&L + Other)</div>
-                    <div style="color:#ef4444;font-weight:bold;font-size:1.1rem;">${traderPnlApy > 0 ? '-' : '+'}${Math.abs(traderPnlApy).toFixed(1)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">⛓️ On-chain settlement data</div>
-                </div>
-                <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(124,58,237,0.06);">
-                    <div style="color:#8b8ba7;font-size:0.7rem;">Gross Vault APY</div>
-                    <div style="color:${chartColors.purple};font-weight:bold;font-size:1.1rem;">${grossApy.toFixed(1)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">Before fees (${days} days)</div>
-                </div>
-                <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(245,158,11,0.06);">
-                    <div style="color:#8b8ba7;font-size:0.7rem;">Performance Fees</div>
-                    <div style="color:${chartColors.orange};font-weight:bold;font-size:1.1rem;">-${feeDrag.toFixed(1)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">10% Prime + 20% KeyVault</div>
-                </div>
-                <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(34,197,94,0.06);">
-                    <div style="color:#8b8ba7;font-size:0.7rem;">Net Investor APY</div>
-                    <div style="color:${chartColors.green};font-weight:bold;font-size:1.1rem;">${netApy.toFixed(1)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">What investors earn</div>
-                </div>
-            </div>
-            <div style="color:#555;font-size:0.65rem;margin-top:8px;text-align:center;">
-                Flow: Gross Fees (${expApy.toFixed(0)}%) → Leakage takes ${Math.abs(traderPnlApy).toFixed(0)}% → Vault earns ${grossApy.toFixed(0)}% gross → Fees take ${feeDrag.toFixed(0)}% → Investor nets ${netApy.toFixed(0)}%
-            </div>
-        `;
+        el.innerHTML = `<div style="display:flex;gap:12px;flex-wrap:wrap;"><div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(0,212,255,0.06);"><div style="color:#8b8ba7;font-size:0.7rem;">Gross Fee Yield</div><div style="color:${chartColors.cyan};font-weight:bold;font-size:1.1rem;">${expApy.toFixed(1)}%</div></div><div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(239,68,68,0.06);"><div style="color:#8b8ba7;font-size:0.7rem;">Leakage</div><div style="color:#ef4444;font-weight:bold;font-size:1.1rem;">${traderPnlApy > 0 ? '-' : '+'}${Math.abs(traderPnlApy).toFixed(1)}%</div></div><div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(124,58,237,0.06);"><div style="color:#8b8ba7;font-size:0.7rem;">Gross Vault APY</div><div style="color:${chartColors.purple};font-weight:bold;font-size:1.1rem;">${grossApy.toFixed(1)}%</div></div><div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(245,158,11,0.06);"><div style="color:#8b8ba7;font-size:0.7rem;">Perf Fees</div><div style="color:${chartColors.orange};font-weight:bold;font-size:1.1rem;">-${feeDrag.toFixed(1)}%</div></div><div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(34,197,94,0.06);"><div style="color:#8b8ba7;font-size:0.7rem;">Net Investor APY</div><div style="color:${chartColors.green};font-weight:bold;font-size:1.1rem;">${netApy.toFixed(1)}%</div></div></div>`;
     }
 }
 
@@ -1019,140 +949,62 @@ function renderWeeklyRevenue() {
     const tableEl = document.getElementById('weeklyRevenueTable');
     if (!section) return;
 
-    const fmt = (v) => {
-        const abs = Math.abs(v);
-        if (abs >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M';
-        if (abs >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'K';
-        return '$' + v.toFixed(0);
-    };
+    const fmt = (v) => { const abs = Math.abs(v); if (abs >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M'; if (abs >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'K'; return '$' + v.toFixed(0); };
     const fmtSign = (v) => (v >= 0 ? '+' : '-') + fmt(Math.abs(v));
     const color = (v) => v >= 0 ? '#22c55e' : '#ef4444';
 
-    // Build fee lookup by date
     const feeMap = {};
     feeData.forEach(d => { feeMap[d.date.toISOString().slice(0, 10)] = d.value; });
-
-    // JLP pool AUM (approximate with 320M supply)
-    const jlpAUM = jlpPoolPrice ? jlpPoolPrice * 320000000 : 1200000000;
-
-    // Find vault inception date
+    const localAUM = jlpPoolPrice ? jlpPoolPrice * 320000000 : 1200000000;
     const vaultStart = vaultHistory[0].date;
     const now = new Date();
-
-    // Build weekly buckets from inception to now
     const weeks = [];
     let weekStart = new Date(vaultStart);
-    // Align to Monday
     const dayOfWeek = weekStart.getDay();
     const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
     weekStart = new Date(weekStart.getTime() + mondayOffset * 86400000);
-
     while (weekStart < now) {
         const weekEnd = new Date(Math.min(weekStart.getTime() + 7 * 86400000, now.getTime()));
         weeks.push({ start: new Date(weekStart), end: new Date(weekEnd) });
         weekStart = new Date(weekStart.getTime() + 7 * 86400000);
     }
 
-    // For each week, calculate the revenue breakdown
     let cumNetInvestor = 0;
     const weeklyData = weeks.map(w => {
-        // Gross fees for the week
         let grossFees = 0;
-        for (let d = new Date(w.start); d < w.end; d = new Date(d.getTime() + 86400000)) {
-            const key = d.toISOString().slice(0, 10);
-            grossFees += feeMap[key] || 0;
-        }
+        for (let d = new Date(w.start); d < w.end; d = new Date(d.getTime() + 86400000)) { grossFees += feeMap[d.toISOString().slice(0, 10)] || 0; }
         const feesToJLP = grossFees * 0.75;
-
-        // Find vault share prices at week start and end
-        const vStart = vaultHistory.reduce((best, v) => {
-            if (v.date <= w.start && (!best || v.date > best.date)) return v;
-            return best;
-        }, null) || vaultHistory[0];
-        const vEnd = vaultHistory.reduce((best, v) => {
-            if (v.date <= w.end && (!best || v.date > best.date)) return v;
-            return best;
-        }, null) || vaultHistory[vaultHistory.length - 1];
-
-        // Vault TVL (use end-of-week or latest available)
+        const vStart = vaultHistory.reduce((best, v) => (v.date <= w.start && (!best || v.date > best.date)) ? v : best, null) || vaultHistory[0];
+        const vEnd = vaultHistory.reduce((best, v) => (v.date <= w.end && (!best || v.date > best.date)) ? v : best, null) || vaultHistory[vaultHistory.length - 1];
         const tvl = vEnd.tvl || 3956000;
-        const vaultShareOfPool = tvl / jlpAUM;
-
-        // Expected fee revenue to vault
+        const vaultShareOfPool = tvl / localAUM;
         const expectedFeeRev = feesToJLP * vaultShareOfPool;
-
-        // On-chain trader P&L for this week (concrete from Allium)
-        let onchainTraderPnl = 0;
-        let hasOnchainData = false;
+        let onchainTraderPnl = 0, hasOnchainData = false;
         for (let d = new Date(w.start); d < w.end; d = new Date(d.getTime() + 86400000)) {
             const key = d.toISOString().slice(0, 10);
-            if (window._onchainPnl && window._onchainPnl[key]) {
-                onchainTraderPnl += window._onchainPnl[key].trader_pnl;
-                hasOnchainData = true;
-            }
+            if (window._onchainPnl && window._onchainPnl[key]) { onchainTraderPnl += window._onchainPnl[key].trader_pnl; hasOnchainData = true; }
         }
-        // Vault's share of trader P&L (proportional to pool share)
         const vaultTraderPnl = onchainTraderPnl * vaultShareOfPool;
-
-        // Actual vault return from share price (net of fees)
         const netReturn = vEnd.sharePrice && vStart.sharePrice ? (vEnd.sharePrice / vStart.sharePrice - 1) : 0;
         const netDollar = netReturn * tvl;
         const grossDollar = netDollar / 0.70;
         const perfFees = grossDollar - netDollar;
-        // Use on-chain trader P&L if available, otherwise derive
         const traderPnl = hasOnchainData ? -vaultTraderPnl : (expectedFeeRev - grossDollar);
-
         cumNetInvestor += netDollar;
-
-        return {
-            weekLabel: w.start.toISOString().slice(5, 10) + ' → ' + w.end.toISOString().slice(5, 10),
-            start: w.start,
-            grossFees, feesToJLP, expectedFeeRev,
-            traderPnl, grossDollar, perfFees, netDollar, cumNetInvestor,
-            tvl, vaultShareOfPool
-        };
+        return { weekLabel: w.start.toISOString().slice(5, 10) + ' → ' + w.end.toISOString().slice(5, 10), start: w.start, grossFees, feesToJLP, expectedFeeRev, traderPnl, grossDollar, perfFees, netDollar, cumNetInvestor, tvl, vaultShareOfPool };
     }).filter(w => w.grossFees > 0 || Math.abs(w.netDollar) > 0);
 
-    // Totals
     const totGross = weeklyData.reduce((s, w) => s + w.grossFees, 0);
-    const totJLP = weeklyData.reduce((s, w) => s + w.feesToJLP, 0);
     const totExpected = weeklyData.reduce((s, w) => s + w.expectedFeeRev, 0);
     const totTrader = weeklyData.reduce((s, w) => s + w.traderPnl, 0);
-    const totGrossVault = weeklyData.reduce((s, w) => s + w.grossDollar, 0);
-    const totFees = weeklyData.reduce((s, w) => s + w.perfFees, 0);
     const totNet = weeklyData.reduce((s, w) => s + w.netDollar, 0);
 
     section.style.display = 'block';
 
-    // Summary cards
     if (summaryEl) {
-        summaryEl.innerHTML = `
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-                <div style="flex:1;min-width:120px;text-align:center;padding:12px;border-radius:8px;background:rgba(0,212,255,0.08);">
-                    <div style="color:#8b8ba7;font-size:0.65rem;text-transform:uppercase;">Total Gross Fees</div>
-                    <div style="color:${chartColors.cyan};font-weight:bold;font-size:1.2rem;">${fmt(totGross)}</div>
-                    <div style="color:#555;font-size:0.6rem;">${weeklyData.length} weeks</div>
-                </div>
-                <div style="flex:1;min-width:120px;text-align:center;padding:12px;border-radius:8px;background:rgba(124,58,237,0.08);">
-                    <div style="color:#8b8ba7;font-size:0.65rem;text-transform:uppercase;">Expected to Vault</div>
-                    <div style="color:${chartColors.purple};font-weight:bold;font-size:1.2rem;">${fmt(totExpected)}</div>
-                    <div style="color:#555;font-size:0.6rem;">Fees × 75% × pool share</div>
-                </div>
-                <div style="flex:1;min-width:120px;text-align:center;padding:12px;border-radius:8px;background:rgba(239,68,68,0.08);">
-                    <div style="color:#8b8ba7;font-size:0.65rem;text-transform:uppercase;">Trader P&L ⛓️</div>
-                    <div style="color:${color(-totTrader)};font-weight:bold;font-size:1.2rem;">${fmtSign(-totTrader)}</div>
-                    <div style="color:#555;font-size:0.6rem;">On-chain settlement data (Allium)</div>
-                </div>
-                <div style="flex:1;min-width:120px;text-align:center;padding:12px;border-radius:8px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);">
-                    <div style="color:#8b8ba7;font-size:0.65rem;text-transform:uppercase;">Net to Investors</div>
-                    <div style="color:${color(totNet)};font-weight:bold;font-size:1.2rem;">${fmtSign(totNet)}</div>
-                    <div style="color:#555;font-size:0.6rem;">After 30% perf fees</div>
-                </div>
-            </div>
-        `;
+        summaryEl.innerHTML = `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;"><div style="flex:1;min-width:120px;text-align:center;padding:12px;border-radius:8px;background:rgba(0,212,255,0.08);"><div style="color:#8b8ba7;font-size:0.65rem;text-transform:uppercase;">Total Gross Fees</div><div style="color:${chartColors.cyan};font-weight:bold;font-size:1.2rem;">${fmt(totGross)}</div></div><div style="flex:1;min-width:120px;text-align:center;padding:12px;border-radius:8px;background:rgba(124,58,237,0.08);"><div style="color:#8b8ba7;font-size:0.65rem;text-transform:uppercase;">Expected to Vault</div><div style="color:${chartColors.purple};font-weight:bold;font-size:1.2rem;">${fmt(totExpected)}</div></div><div style="flex:1;min-width:120px;text-align:center;padding:12px;border-radius:8px;background:rgba(239,68,68,0.08);"><div style="color:#8b8ba7;font-size:0.65rem;text-transform:uppercase;">Trader P&L ⛓️</div><div style="color:${color(-totTrader)};font-weight:bold;font-size:1.2rem;">${fmtSign(-totTrader)}</div></div><div style="flex:1;min-width:120px;text-align:center;padding:12px;border-radius:8px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);"><div style="color:#8b8ba7;font-size:0.65rem;text-transform:uppercase;">Net to Investors</div><div style="color:${color(totNet)};font-weight:bold;font-size:1.2rem;">${fmtSign(totNet)}</div></div></div>`;
     }
 
-    // Chart — weekly net to investors + cumulative
     const chartCanvas = document.getElementById('weeklyRevenueChart');
     if (chartCanvas) {
         const cfg = {
@@ -1160,26 +1012,8 @@ function renderWeeklyRevenue() {
             data: {
                 labels: weeklyData.map(w => w.weekLabel),
                 datasets: [
-                    {
-                        label: 'Net to Investors',
-                        data: weeklyData.map(w => w.netDollar),
-                        backgroundColor: weeklyData.map(w => w.netDollar >= 0 ? 'rgba(34,197,94,0.6)' : 'rgba(239,68,68,0.6)'),
-                        borderColor: weeklyData.map(w => w.netDollar >= 0 ? '#22c55e' : '#ef4444'),
-                        borderWidth: 1,
-                        yAxisID: 'y',
-                        order: 2
-                    },
-                    {
-                        label: 'Cumulative Net',
-                        data: weeklyData.map(w => w.cumNetInvestor),
-                        type: 'line',
-                        borderColor: chartColors.purple,
-                        backgroundColor: 'transparent',
-                        pointRadius: 0,
-                        borderWidth: 2,
-                        yAxisID: 'y1',
-                        order: 1
-                    }
+                    { label: 'Net to Investors', data: weeklyData.map(w => w.netDollar), backgroundColor: weeklyData.map(w => w.netDollar >= 0 ? 'rgba(34,197,94,0.6)' : 'rgba(239,68,68,0.6)'), borderColor: weeklyData.map(w => w.netDollar >= 0 ? '#22c55e' : '#ef4444'), borderWidth: 1, yAxisID: 'y', order: 2 },
+                    { label: 'Cumulative Net', data: weeklyData.map(w => w.cumNetInvestor), type: 'line', borderColor: chartColors.purple, backgroundColor: 'transparent', pointRadius: 0, borderWidth: 2, yAxisID: 'y1', order: 1 }
                 ]
             },
             options: chartOpts({
@@ -1188,109 +1022,49 @@ function renderWeeklyRevenue() {
             })
         };
         if (weeklyRevenueChart) weeklyRevenueChart.destroy();
-        // Force layout recalc before rendering (canvas may have been hidden)
         chartCanvas.parentElement.style.height = '350px';
         chartCanvas.style.display = 'block';
         weeklyRevenueChart = new Chart(chartCanvas, cfg);
         setTimeout(() => weeklyRevenueChart.resize(), 100);
     }
 
-    // Table — scrollable, most recent first
     if (tableEl) {
-        const rows = [...weeklyData].reverse().map(w => `
-            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                <td style="padding:6px 8px;color:#8b8ba7;font-size:0.75rem;white-space:nowrap;">${w.weekLabel}</td>
-                <td style="padding:6px 8px;color:${chartColors.cyan};text-align:right;font-size:0.75rem;">${fmt(w.grossFees)}</td>
-                <td style="padding:6px 8px;color:${chartColors.purple};text-align:right;font-size:0.75rem;">${fmt(w.expectedFeeRev)}</td>
-                <td style="padding:6px 8px;color:${color(-w.traderPnl)};text-align:right;font-size:0.75rem;">${fmtSign(-w.traderPnl)}</td>
-                <td style="padding:6px 8px;color:${color(w.grossDollar)};text-align:right;font-size:0.75rem;">${fmtSign(w.grossDollar)}</td>
-                <td style="padding:6px 8px;color:#ef4444;text-align:right;font-size:0.75rem;">-${fmt(Math.abs(w.perfFees))}</td>
-                <td style="padding:6px 8px;color:${color(w.netDollar)};text-align:right;font-weight:bold;font-size:0.75rem;">${fmtSign(w.netDollar)}</td>
-            </tr>
-        `).join('');
-
-        tableEl.innerHTML = `
-            <table style="width:100%;border-collapse:collapse;">
-                <thead>
-                    <tr style="border-bottom:2px solid rgba(255,255,255,0.1);">
-                        <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:left;">Week</th>
-                        <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Gross Fees</th>
-                        <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Expected</th>
-                        <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Trader P&L ⛓️</th>
-                        <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Gross Vault</th>
-                        <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Perf Fees</th>
-                        <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Net</th>
-                    </tr>
-                </thead>
-                <tbody>${rows}</tbody>
-            </table>
-        `;
+        const rows = [...weeklyData].reverse().map(w => `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:6px 8px;color:#8b8ba7;font-size:0.75rem;white-space:nowrap;">${w.weekLabel}</td><td style="padding:6px 8px;color:${chartColors.cyan};text-align:right;font-size:0.75rem;">${fmt(w.grossFees)}</td><td style="padding:6px 8px;color:${chartColors.purple};text-align:right;font-size:0.75rem;">${fmt(w.expectedFeeRev)}</td><td style="padding:6px 8px;color:${color(-w.traderPnl)};text-align:right;font-size:0.75rem;">${fmtSign(-w.traderPnl)}</td><td style="padding:6px 8px;color:${color(w.grossDollar)};text-align:right;font-size:0.75rem;">${fmtSign(w.grossDollar)}</td><td style="padding:6px 8px;color:#ef4444;text-align:right;font-size:0.75rem;">-${fmt(Math.abs(w.perfFees))}</td><td style="padding:6px 8px;color:${color(w.netDollar)};text-align:right;font-weight:bold;font-size:0.75rem;">${fmtSign(w.netDollar)}</td></tr>`).join('');
+        tableEl.innerHTML = `<table style="width:100%;border-collapse:collapse;"><thead><tr style="border-bottom:2px solid rgba(255,255,255,0.1);"><th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:left;">Week</th><th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Gross Fees</th><th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Expected</th><th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Trader P&L ⛓️</th><th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Gross Vault</th><th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Perf Fees</th><th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Net</th></tr></thead><tbody>${rows}</tbody></table>`;
     }
 }
 
 function renderRollingPnl() {
-    // Prefer on-chain data
     const onchainEntries = Object.values(window._onchainPnl || {});
-    let allPnl;
-    let sourceLabel = 'Derived';
+    let allPnl, sourceLabel = 'Derived';
     if (onchainEntries.length > 0) {
-        allPnl = onchainEntries
-            .map(d => ({ date: new Date(d.date + 'T00:00:00Z'), pnlUsd: d.trader_pnl }))
-            .sort((a, b) => a.date - b.date);
+        allPnl = onchainEntries.map(d => ({ date: new Date(d.date + 'T00:00:00Z'), pnlUsd: d.trader_pnl })).sort((a, b) => a.date - b.date);
         sourceLabel = 'On-chain (Allium)';
-    } else {
-        allPnl = deriveDailyTraderPnl();
-    }
+    } else { allPnl = deriveDailyTraderPnl(); }
     if (!allPnl.length) return;
     const el = document.getElementById('rollingPnl');
     if (!el) return;
-
-    const periods = [
-        { label: '24H', days: 1 },
-        { label: '7D', days: 7 },
-        { label: '30D', days: 30 },
-        { label: '90D', days: 90 },
-        { label: '180D', days: 180 },
-        { label: 'ALL', days: allPnl.length }
-    ];
-
+    const periods = [{ label: '24H', days: 1 }, { label: '7D', days: 7 }, { label: '30D', days: 30 }, { label: '90D', days: 90 }, { label: '180D', days: 180 }, { label: 'ALL', days: allPnl.length }];
     const cards = periods.map(p => {
         const slice = allPnl.slice(-p.days);
         const total = slice.reduce((s, d) => s + d.pnlUsd, 0);
-        const color = total > 0 ? '#ef4444' : '#22c55e';
+        const c = total > 0 ? '#ef4444' : '#22c55e';
         const sign = total > 0 ? '+' : '';
         const label = total > 0 ? 'Traders won' : 'Pool won';
         const abs = Math.abs(total);
         const display = abs >= 1e9 ? (abs / 1e9).toFixed(2) + 'B' : abs >= 1e6 ? (abs / 1e6).toFixed(1) + 'M' : (abs / 1e3).toFixed(0) + 'K';
-        return `<div style="flex:1;min-width:80px;text-align:center;padding:10px;border-radius:8px;background:rgba(255,255,255,0.03);">
-            <div style="color:#8b8ba7;font-size:0.7rem;margin-bottom:4px;">${p.label}</div>
-            <div style="color:${color};font-weight:bold;font-size:1rem;">${sign}$${display}</div>
-            <div style="color:#666;font-size:0.65rem;margin-top:2px;">${label}</div>
-        </div>`;
+        return `<div style="flex:1;min-width:80px;text-align:center;padding:10px;border-radius:8px;background:rgba(255,255,255,0.03);"><div style="color:#8b8ba7;font-size:0.7rem;margin-bottom:4px;">${p.label}</div><div style="color:${c};font-weight:bold;font-size:1rem;">${sign}$${display}</div><div style="color:#666;font-size:0.65rem;margin-top:2px;">${label}</div></div>`;
     }).join('');
-
-    el.innerHTML = `
-        <div style="font-size:0.8rem;color:#8b8ba7;margin-bottom:8px;font-weight:600;">Rolling Trader P&L <span style="font-size:0.65rem;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 6px;border-radius:4px;margin-left:6px;">⛓️ ${sourceLabel}</span></div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">${cards}</div>
-        <div style="color:#555;font-size:0.65rem;margin-top:6px;">Positive (red) = traders profited, pool paid out. Negative (green) = traders lost, pool gained.</div>
-    `;
+    el.innerHTML = `<div style="font-size:0.8rem;color:#8b8ba7;margin-bottom:8px;font-weight:600;">Rolling Trader P&L <span style="font-size:0.65rem;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 6px;border-radius:4px;margin-left:6px;">⛓️ ${sourceLabel}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;">${cards}</div>`;
 }
 
 function renderWeeklyFeeChart() {
-    // Aggregate by week
     const weeks = {};
-    feeData.forEach(d => {
-        const w = new Date(d.date);
-        w.setDate(w.getDate() - w.getDay()); // Start of week
-        const key = w.toISOString().split('T')[0];
-        weeks[key] = (weeks[key] || 0) + d.value;
-    });
-
+    feeData.forEach(d => { const w = new Date(d.date); w.setDate(w.getDate() - w.getDay()); const key = w.toISOString().split('T')[0]; weeks[key] = (weeks[key] || 0) + d.value; });
     const sorted = Object.entries(weeks).sort((a, b) => a[0].localeCompare(b[0]));
     let cum = 0;
     const weeklyBars = sorted.map(([k, v]) => ({ x: new Date(k), y: v }));
     const cumLine = sorted.map(([k, v]) => { cum += v; return { x: new Date(k), y: cum }; });
-
     const cfg = {
         type: 'bar',
         data: {
@@ -1304,7 +1078,6 @@ function renderWeeklyFeeChart() {
             y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { color: chartColors.text, callback: v => '$' + (v/1e9).toFixed(1) + 'B' } }
         })
     };
-
     if (weeklyFeeChart) weeklyFeeChart.destroy();
     weeklyFeeChart = new Chart(document.getElementById('weeklyFeeChart'), cfg);
 }
@@ -1321,10 +1094,8 @@ document.getElementById('feeTabs').addEventListener('click', e => {
 // ============ DRIFT FUNDING RATES ============
 const DRIFT_MARKETS = ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'];
 const DRIFT_COLORS = { 'SOL-PERP': '#22c55e', 'BTC-PERP': '#f59e0b', 'ETH-PERP': '#3b82f6' };
-// JLP pool target weights for hedge-relevant assets (SOL 47%, BTC 13%, ETH 8% of total pool)
-// Normalized to hedge portion only (68% volatile): SOL 69.1%, BTC 19.1%, ETH 11.8%
 const HEDGE_WEIGHTS = { 'SOL-PERP': 0.691, 'BTC-PERP': 0.191, 'ETH-PERP': 0.118 };
-let fundingData = {}; // { 'SOL-PERP': [{date, rate}, ...], ... }
+let fundingData = {};
 let fundingChart = null;
 let selectedFundingDays = 30;
 
@@ -1336,58 +1107,36 @@ async function loadDriftFunding() {
         const json = await res.json();
         const allData = {};
         DRIFT_MARKETS.forEach(m => {
-            allData[m] = (json.markets[m] || []).map(d => ({
-                date: new Date(d.date),
-                rate: d.annualizedPct
-            }));
+            allData[m] = (json.markets[m] || []).map(d => ({ date: new Date(d.date), rate: d.annualizedPct }));
         });
         fundingData = allData;
-        // Show data freshness
         const info = document.getElementById('fundingDataInfo');
         if (info) info.textContent = 'Data as of: ' + new Date(json.lastUpdated).toLocaleString();
-    } catch (e) {
-        console.error('Failed to load drift funding data:', e);
-    }
+    } catch (e) { console.error('Failed to load drift funding data:', e); }
     document.getElementById('fundingLoading').style.display = 'none';
     document.getElementById('fundingChart').style.display = '';
     updateFundingMetric();
     renderFundingChart();
+    renderWaterfall(); // re-render waterfall with funding data
 }
 
 function updateFundingMetric() {
     let maxDate = 0;
     DRIFT_MARKETS.forEach(m => (fundingData[m] || []).forEach(d => { if (d.date.getTime() > maxDate) maxDate = d.date.getTime(); }));
-    if (!maxDate) maxDate = Date.now();
+    if (!maxDate) return;
     const sevenDaysAgo = maxDate - 7 * 86400000;
-    // Weighted average by JLP pool composition
     const marketAvgs = {};
-    DRIFT_MARKETS.forEach(m => {
-        let sum = 0, count = 0;
-        (fundingData[m] || []).forEach(d => {
-            if (d.date.getTime() >= sevenDaysAgo) { sum += d.rate; count++; }
-        });
-        marketAvgs[m] = count ? sum / count : 0;
-    });
+    DRIFT_MARKETS.forEach(m => { let sum = 0, count = 0; (fundingData[m] || []).forEach(d => { if (d.date.getTime() >= sevenDaysAgo) { sum += d.rate; count++; } }); marketAvgs[m] = count ? sum / count : 0; });
     let avg = 0;
     DRIFT_MARKETS.forEach(m => { avg += marketAvgs[m] * (HEDGE_WEIGHTS[m] || 0); });
-    const el = document.getElementById('fundingMetricValue');
-    if (el) {
-        el.textContent = avg.toFixed(2) + '%';
-        el.className = 'metric-value ' + (avg >= 0 ? 'positive' : 'negative');
-    }
-    const card = document.getElementById('fundingMetricCard');
-    if (card) card.className = 'metric-card' + (avg >= 0 ? '' : ' highlight');
 }
 
 function renderFundingChart() {
-    // Use max date in data as reference (Drift S3 data may lag behind current date)
     let maxDate = 0;
     DRIFT_MARKETS.forEach(m => (fundingData[m] || []).forEach(d => { if (d.date.getTime() > maxDate) maxDate = d.date.getTime(); }));
     if (!maxDate) maxDate = Date.now();
     const cutoff = selectedFundingDays > 0 ? maxDate - selectedFundingDays * 86400000 : 0;
-
-    // Build weighted funding rate (single line)
-    const dateMap = {}; // dateStr -> { 'SOL-PERP': rate, ... }
+    const dateMap = {};
     DRIFT_MARKETS.forEach(m => {
         (fundingData[m] || []).filter(d => d.date.getTime() >= cutoff).forEach(d => {
             const key = d.date.toISOString().slice(0, 10);
@@ -1397,65 +1146,29 @@ function renderFundingChart() {
     });
     const weightedData = Object.values(dateMap)
         .filter(d => DRIFT_MARKETS.every(m => d[m] !== undefined))
-        .map(d => ({
-            x: d.date,
-            y: DRIFT_MARKETS.reduce((sum, m) => sum + (d[m] || 0) * (HEDGE_WEIGHTS[m] || 0), 0)
-        }))
+        .map(d => ({ x: d.date, y: DRIFT_MARKETS.reduce((sum, m) => sum + (d[m] || 0) * (HEDGE_WEIGHTS[m] || 0), 0) }))
         .sort((a, b) => a.x - b.x);
-
-    const datasets = [{
-        label: 'Weighted Funding Rate',
-        data: weightedData,
-        borderColor: '#22c55e',
-        backgroundColor: 'rgba(34,197,94,0.1)',
-        fill: true,
-        pointRadius: 1.5,
-        borderWidth: 2,
-        tension: 0.3
-    }];
 
     const cfg = {
         type: 'line',
-        data: { datasets },
-        options: {
-            ...chartOpts({
-                y: {
-                    ...defaultScales.y,
-                    title: { display: true, text: 'Annualized Funding Rate (%)', color: chartColors.text },
-                    ticks: { color: chartColors.text, callback: v => v.toFixed(0) + '%' }
-                }
-            }),
-            plugins: {
-                ...chartOpts().plugins,
-                annotation: undefined
-            }
-        },
+        data: { datasets: [{ label: 'Weighted Funding Rate', data: weightedData, borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)', fill: true, pointRadius: 1.5, borderWidth: 2, tension: 0.3 }] },
+        options: chartOpts({ y: { ...defaultScales.y, title: { display: true, text: 'Annualized Funding Rate (%)', color: chartColors.text }, ticks: { color: chartColors.text, callback: v => v.toFixed(0) + '%' } } }),
         plugins: [{
             id: 'fundingZeroLine',
             beforeDraw(chart) {
                 const { ctx, chartArea: { left, right, top, bottom }, scales: { y } } = chart;
                 const zeroY = y.getPixelForValue(0);
                 if (zeroY >= top && zeroY <= bottom) {
-                    // Green above zero
                     ctx.save();
-                    ctx.fillStyle = 'rgba(34,197,94,0.06)';
-                    ctx.fillRect(left, top, right - left, zeroY - top);
-                    // Red below zero
-                    ctx.fillStyle = 'rgba(239,68,68,0.06)';
-                    ctx.fillRect(left, zeroY, right - left, bottom - zeroY);
-                    // Dashed zero line
-                    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-                    ctx.setLineDash([6, 4]);
-                    ctx.beginPath();
-                    ctx.moveTo(left, zeroY);
-                    ctx.lineTo(right, zeroY);
-                    ctx.stroke();
+                    ctx.fillStyle = 'rgba(34,197,94,0.06)'; ctx.fillRect(left, top, right - left, zeroY - top);
+                    ctx.fillStyle = 'rgba(239,68,68,0.06)'; ctx.fillRect(left, zeroY, right - left, bottom - zeroY);
+                    ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.setLineDash([6, 4]);
+                    ctx.beginPath(); ctx.moveTo(left, zeroY); ctx.lineTo(right, zeroY); ctx.stroke();
                     ctx.restore();
                 }
             }
         }]
     };
-
     if (fundingChart) fundingChart.destroy();
     fundingChart = new Chart(document.getElementById('fundingChart'), cfg);
 }
@@ -1472,7 +1185,6 @@ document.getElementById('fundingTabs').addEventListener('click', e => {
 loadAll();
 loadDriftFunding();
 setInterval(() => { loadAll(); loadDriftFunding(); }, 60000);
-// Drift data is pre-fetched static JSON, no need to auto-refresh
 
 // Hedge Activity Chart
 (function() {
@@ -1492,8 +1204,7 @@ setInterval(() => { loadAll(); loadDriftFunding(); }, 60000);
     ];
     const ctx = document.getElementById('hedgeActivityChart').getContext('2d');
     const grad = ctx.createLinearGradient(0,0,0,350);
-    grad.addColorStop(0,'rgba(0,212,255,0.7)');
-    grad.addColorStop(1,'rgba(124,58,237,0.3)');
+    grad.addColorStop(0,'rgba(0,212,255,0.7)'); grad.addColorStop(1,'rgba(124,58,237,0.3)');
     new Chart(ctx, {
         type:'bar',
         data:{
