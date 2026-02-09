@@ -346,9 +346,14 @@ async function loadAll() {
                 <div class="metric-sub">Premium / Discount</div>
             </div>
             <div class="metric-card highlight">
-                <div class="metric-label">24h Fees Collected</div>
+                <div class="metric-label">24h Gross Fees</div>
                 <div class="metric-value">$${(fees24h / 1e6).toFixed(2)}M</div>
                 <div class="metric-sub">All Time: $${(feesAll / 1e9).toFixed(2)}B</div>
+            </div>
+            <div class="metric-card highlight">
+                <div class="metric-label">24h Fees to JLP (75%)</div>
+                <div class="metric-value positive">$${(fees24h * 0.75 / 1e6).toFixed(2)}M</div>
+                <div class="metric-sub">JLP pool's share of protocol fees</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">JLP APY</div>
