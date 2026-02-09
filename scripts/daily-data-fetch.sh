@@ -19,7 +19,11 @@ node scripts/fetch-jlp-snapshot.js
 echo "Fetching trader P&L snapshot..."
 node scripts/fetch-trader-pnl.js
 
-# 4. Commit and push
+# 4. Fetch Allium on-chain data (fees + trader P&L)
+echo "Fetching Allium on-chain data..."
+node scripts/fetch-allium-data.js
+
+# 5. Commit and push
 git add data/
 git commit -m "data: daily update $(date +%Y-%m-%d)" 2>/dev/null
 git push origin main 2>/dev/null

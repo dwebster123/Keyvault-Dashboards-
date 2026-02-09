@@ -210,7 +210,7 @@
         <!-- Chart 1: Fee Revenue -->
         <div class="chart-container">
             <div class="chart-header">
-                <h3 class="chart-title">Jupiter Perps Fee Revenue</h3>
+                <h3 class="chart-title">Jupiter Perps Fee Revenue <span id="feeSourceBadge" style="font-size:0.65rem;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 8px;border-radius:4px;margin-left:8px;">⛓️ On-chain</span></h3>
                 <div class="tabs-container" id="feeTabs">
                     <div class="tab" data-days="7">7D</div>
                     <div class="tab" data-days="30">30D</div>
@@ -244,8 +244,8 @@
             <!-- Chart: Leakage (Trader P&L + Other) on Pool -->
             <div class="chart-container">
                 <div class="chart-header">
-                    <h3 class="chart-title">Pool Leakage — Trader P&L + Rebalancing + Slippage (Derived)</h3>
-                    <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Green = traders lost (pool gained). Red = traders won (pool paid out). Derived from JLP price change minus fees minus asset price change.</p>
+                    <h3 class="chart-title">Pool Leakage — Trader P&L <span style="font-size:0.65rem;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 8px;border-radius:4px;margin-left:8px;">⛓️ On-chain (Allium)</span></h3>
+                    <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Green = traders lost (pool gained). Red = traders won (pool paid out). Sourced from on-chain settlement events.</p>
                 </div>
                 <div class="tabs-container" id="pnlTabs">
                     <button class="tab" onclick="selectedPnlDays=7;renderPnlChart();this.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">7D</button>
@@ -276,6 +276,10 @@
                 </div>
                 <div class="chart-wrapper"><canvas id="weeklyFeeChart"></canvas></div>
             </div>
+        </div>
+        <!-- Attribution -->
+        <div style="text-align:center;padding:20px;color:#555;font-size:0.7rem;">
+            On-chain data powered by <a href="https://allium.so" target="_blank" style="color:#00d4ff;text-decoration:none;">Allium</a> · Prices from CoinGecko · Vault NAV from Google Sheets
         </div>
     </div>
 
@@ -380,8 +384,11 @@ function combineVaultHistory(spreadsheetData, liveData) {
 
 async function loadAll() {
     try {
-        const [dlData, cgData, vc, vh, jlpInfo, solData, ethData, btcData, sheetData, onchainPnlData] = await Promise.all([
-            fetchJSON(DEFILLAMA_URL),
+        // Load Allium on-chain data first (primary source), DefiLlama as fallback
+        const [alliumFeesData, alliumPnlData, dlData, cgData, vc, vh, jlpInfo, solData, ethData, btcData, sheetData, onchainPnlData] = await Promise.all([
+            fetch('./data/allium-fees.json?t=' + Date.now()).then(r => r.json()).catch(() => null),
+            fetch('./data/allium-trader-pnl.json?t=' + Date.now()).then(r => r.json()).catch(() => null),
+            fetchJSON(DEFILLAMA_URL).catch(() => null),
             fetchJSON(COINGECKO_URL),
             fetchJSON(VAULT_URL, true),
             fetchJSON(VAULT_HIST_URL, true),
@@ -395,7 +402,29 @@ async function loadAll() {
         // Store on-chain trader P&L globally
         window._onchainPnl = {};
         (onchainPnlData || []).forEach(d => { window._onchainPnl[d.date] = d; });
-        feeData = (dlData.totalDataChart || []).map(([ts, val]) => ({ date: new Date(ts * 1000), value: val }));
+        // Store Allium trader P&L separately (90d granular)
+        window._alliumPnl = {};
+        (alliumPnlData || []).forEach(d => { window._alliumPnl[d.date] = d; });
+
+        // Use Allium fees as primary, DefiLlama as fallback
+        window._feeSource = 'defillama';
+        if (alliumFeesData && alliumFeesData.length > 0) {
+            // Allium has on-chain fees — use as primary
+            feeData = alliumFeesData.map(d => ({ date: new Date(d.date + 'T00:00:00Z'), value: d.total_fees, position_fees: d.position_fees, swap_fees: d.swap_fees, source: 'allium' }));
+            // Prepend DefiLlama data for dates before Allium coverage
+            if (dlData && dlData.totalDataChart) {
+                const alliumStart = alliumFeesData[0].date;
+                const olderData = (dlData.totalDataChart || [])
+                    .filter(([ts]) => new Date(ts * 1000).toISOString().slice(0,10) < alliumStart)
+                    .map(([ts, val]) => ({ date: new Date(ts * 1000), value: val, source: 'defillama' }));
+                feeData = [...olderData, ...feeData];
+            }
+            window._feeSource = 'allium';
+            console.log('Fee data: Allium on-chain (' + alliumFeesData.length + ' days) + DefiLlama backfill');
+        } else if (dlData && dlData.totalDataChart) {
+            feeData = (dlData.totalDataChart || []).map(([ts, val]) => ({ date: new Date(ts * 1000), value: val, source: 'defillama' }));
+            console.log('Fee data: DefiLlama fallback');
+        }
         cgPrices = (cgData.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         solPrices = (solData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         ethPrices = (ethData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
@@ -411,8 +440,12 @@ async function loadAll() {
 
         // Top metrics
         const jlpPrice = cgPrices.length ? cgPrices[cgPrices.length - 1].price : null;
-        const fees24h = dlData.total24h || 0;
-        const feesAll = dlData.totalAllTime || 0;
+        // Use Allium for 24h fees if available, DefiLlama as fallback
+        const fees24h = (alliumFeesData && alliumFeesData.length > 0)
+            ? alliumFeesData[alliumFeesData.length - 1].total_fees
+            : (dlData ? dlData.total24h || 0 : 0);
+        const feesAll = (dlData ? dlData.totalAllTime || 0 : 0);
+        const feeSourceLabel = window._feeSource === 'allium' ? 'On-chain (Allium)' : 'DefiLlama';
         // Calculate REAL-TIME fee APY from recent DefiLlama data + Jupiter AUM
         const jlpAPY_official = jlpInfo ? parseFloat(jlpInfo.jlpApyPct) : null;
         const recentFees = feeData.slice(-7);
@@ -444,12 +477,12 @@ async function loadAll() {
             </div>
             <div class="metric-card highlight">
                 <div class="metric-label">24h Gross Fees</div>
-                <div class="metric-value">$${(fees24h / 1e6).toFixed(2)}M</div>
-                <div class="metric-sub">All Time: $${(feesAll / 1e9).toFixed(2)}B</div>
+                <div class="metric-value">${fees24h >= 1e6 ? '$' + (fees24h / 1e6).toFixed(2) + 'M' : '$' + (fees24h / 1e3).toFixed(0) + 'K'}</div>
+                <div class="metric-sub">Source: ${feeSourceLabel}${feesAll ? ' · All Time: $' + (feesAll / 1e9).toFixed(2) + 'B' : ''}</div>
             </div>
             <div class="metric-card highlight">
                 <div class="metric-label">24h Fees to JLP (75%)</div>
-                <div class="metric-value positive">$${(fees24h * 0.75 / 1e6).toFixed(2)}M</div>
+                <div class="metric-value positive">${(fees24h * 0.75) >= 1e6 ? '$' + (fees24h * 0.75 / 1e6).toFixed(2) + 'M' : '$' + (fees24h * 0.75 / 1e3).toFixed(0) + 'K'}</div>
                 <div class="metric-sub">JLP pool's share of protocol fees</div>
             </div>
             <div class="metric-card">
@@ -475,6 +508,17 @@ async function loadAll() {
         `;
 
         document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+        // Update fee source badge
+        const feeBadge = document.getElementById('feeSourceBadge');
+        if (feeBadge) {
+            if (window._feeSource === 'allium') {
+                feeBadge.textContent = '⛓️ On-chain (Allium)';
+                feeBadge.style.color = '#22c55e';
+            } else {
+                feeBadge.textContent = '📊 DefiLlama (fallback)';
+                feeBadge.style.color = '#f59e0b';
+            }
+        }
         renderFeeChart();
         renderPriceChart();
         // renderVaultChart(); // removed
@@ -651,7 +695,16 @@ function deriveDailyTraderPnl() {
 }
 
 function renderPnlChart() {
-    const allPnl = deriveDailyTraderPnl();
+    // Prefer on-chain data from Allium, fall back to derived estimates
+    let allPnl;
+    const onchainEntries = Object.values(window._onchainPnl || {});
+    if (onchainEntries.length > 0) {
+        allPnl = onchainEntries
+            .map(d => ({ date: new Date(d.date + 'T00:00:00Z'), pnlUsd: d.trader_pnl, pnlPct: 0 }))
+            .sort((a, b) => a.date - b.date);
+    } else {
+        allPnl = deriveDailyTraderPnl();
+    }
     const cutoff = selectedPnlDays > 0 ? allPnl.length - selectedPnlDays : 0;
     const data = allPnl.slice(Math.max(0, cutoff));
 
@@ -937,7 +990,7 @@ function renderHedgeEfficiency() {
                 <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(239,68,68,0.06);">
                     <div style="color:#8b8ba7;font-size:0.7rem;">Leakage (Trader P&L + Other)</div>
                     <div style="color:#ef4444;font-weight:bold;font-size:1.1rem;">${traderPnlApy > 0 ? '-' : '+'}${Math.abs(traderPnlApy).toFixed(1)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">Trader P&L, rebalancing, slippage, pool pays</div>
+                    <div style="color:#555;font-size:0.6rem;">⛓️ On-chain settlement data</div>
                 </div>
                 <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(124,58,237,0.06);">
                     <div style="color:#8b8ba7;font-size:0.7rem;">Gross Vault APY</div>
@@ -1177,7 +1230,18 @@ function renderWeeklyRevenue() {
 }
 
 function renderRollingPnl() {
-    const allPnl = deriveDailyTraderPnl();
+    // Prefer on-chain data
+    const onchainEntries = Object.values(window._onchainPnl || {});
+    let allPnl;
+    let sourceLabel = 'Derived';
+    if (onchainEntries.length > 0) {
+        allPnl = onchainEntries
+            .map(d => ({ date: new Date(d.date + 'T00:00:00Z'), pnlUsd: d.trader_pnl }))
+            .sort((a, b) => a.date - b.date);
+        sourceLabel = 'On-chain (Allium)';
+    } else {
+        allPnl = deriveDailyTraderPnl();
+    }
     if (!allPnl.length) return;
     const el = document.getElementById('rollingPnl');
     if (!el) return;
@@ -1207,7 +1271,7 @@ function renderRollingPnl() {
     }).join('');
 
     el.innerHTML = `
-        <div style="font-size:0.8rem;color:#8b8ba7;margin-bottom:8px;font-weight:600;">Rolling Trader P&L (Derived)</div>
+        <div style="font-size:0.8rem;color:#8b8ba7;margin-bottom:8px;font-weight:600;">Rolling Trader P&L <span style="font-size:0.65rem;color:#22c55e;background:rgba(34,197,94,0.1);padding:2px 6px;border-radius:4px;margin-left:6px;">⛓️ ${sourceLabel}</span></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">${cards}</div>
         <div style="color:#555;font-size:0.65rem;margin-top:6px;">Positive (red) = traders profited, pool paid out. Negative (green) = traders lost, pool gained.</div>
     `;

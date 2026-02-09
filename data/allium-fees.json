@@ -1,0 +1,730 @@
+[
+  {
+    "date": "2025-11-11",
+    "total_fees": 73714.6458266935,
+    "position_fees": 72432.316712,
+    "swap_fees": 1282.3291146935,
+    "close_count": 1849,
+    "total_txns": 4782
+  },
+  {
+    "date": "2025-11-12",
+    "total_fees": 519474.9075601233,
+    "position_fees": 501700.820329,
+    "swap_fees": 17774.0872311233,
+    "close_count": 11943,
+    "total_txns": 30622
+  },
+  {
+    "date": "2025-11-13",
+    "total_fees": 1051944.9902833218,
+    "position_fees": 999604.390301,
+    "swap_fees": 52340.5999823218,
+    "close_count": 20006,
+    "total_txns": 51194
+  },
+  {
+    "date": "2025-11-14",
+    "total_fees": 872362.2659162143,
+    "position_fees": 779448.463198,
+    "swap_fees": 92913.8027182144,
+    "close_count": 20798,
+    "total_txns": 51774
+  },
+  {
+    "date": "2025-11-15",
+    "total_fees": 279438.7907171155,
+    "position_fees": 247543.859172,
+    "swap_fees": 31894.9315451155,
+    "close_count": 8134,
+    "total_txns": 20317
+  },
+  {
+    "date": "2025-11-16",
+    "total_fees": 394524.3977638507,
+    "position_fees": 349515.937696,
+    "swap_fees": 45008.4600678507,
+    "close_count": 11410,
+    "total_txns": 29862
+  },
+  {
+    "date": "2025-11-17",
+    "total_fees": 803664.4602520732,
+    "position_fees": 659230.560177,
+    "swap_fees": 144433.9000750732,
+    "close_count": 15846,
+    "total_txns": 41935
+  },
+  {
+    "date": "2025-11-18",
+    "total_fees": 671803.2487834129,
+    "position_fees": 498884.016477,
+    "swap_fees": 172919.2323064128,
+    "close_count": 14942,
+    "total_txns": 37422
+  },
+  {
+    "date": "2025-11-19",
+    "total_fees": 496253.16303244897,
+    "position_fees": 458575.649408,
+    "swap_fees": 37677.513624449,
+    "close_count": 15395,
+    "total_txns": 41539
+  },
+  {
+    "date": "2025-11-20",
+    "total_fees": 902574.2488058881,
+    "position_fees": 634747.560669,
+    "swap_fees": 267826.6881368881,
+    "close_count": 20038,
+    "total_txns": 53401
+  },
+  {
+    "date": "2025-11-21",
+    "total_fees": 1136990.7300413314,
+    "position_fees": 879948.220429,
+    "swap_fees": 257042.5096123314,
+    "close_count": 25429,
+    "total_txns": 69039
+  },
+  {
+    "date": "2025-11-22",
+    "total_fees": 242333.97899594958,
+    "position_fees": 237165.476871,
+    "swap_fees": 5168.5021249496,
+    "close_count": 8810,
+    "total_txns": 21634
+  },
+  {
+    "date": "2025-11-23",
+    "total_fees": 363745.2956032578,
+    "position_fees": 348458.316216,
+    "swap_fees": 15286.9793872578,
+    "close_count": 10860,
+    "total_txns": 25665
+  },
+  {
+    "date": "2025-11-24",
+    "total_fees": 411290.5268009511,
+    "position_fees": 381287.48849,
+    "swap_fees": 30003.0383109511,
+    "close_count": 14591,
+    "total_txns": 34610
+  },
+  {
+    "date": "2025-11-25",
+    "total_fees": 463679.63452175836,
+    "position_fees": 451360.886371,
+    "swap_fees": 12318.7481507584,
+    "close_count": 12261,
+    "total_txns": 28460
+  },
+  {
+    "date": "2025-11-26",
+    "total_fees": 418668.3541426256,
+    "position_fees": 352350.226034,
+    "swap_fees": 66318.1281086256,
+    "close_count": 12473,
+    "total_txns": 30492
+  },
+  {
+    "date": "2025-11-27",
+    "total_fees": 241467.5123008661,
+    "position_fees": 231143.474923,
+    "swap_fees": 10324.0373778661,
+    "close_count": 8037,
+    "total_txns": 19143
+  },
+  {
+    "date": "2025-11-28",
+    "total_fees": 312622.7509811198,
+    "position_fees": 301862.898657,
+    "swap_fees": 10759.8523241198,
+    "close_count": 10577,
+    "total_txns": 25577
+  },
+  {
+    "date": "2025-11-29",
+    "total_fees": 125457.4908994407,
+    "position_fees": 119622.403429,
+    "swap_fees": 5835.0874704407,
+    "close_count": 4934,
+    "total_txns": 12353
+  },
+  {
+    "date": "2025-11-30",
+    "total_fees": 229245.9281763448,
+    "position_fees": 169806.15458,
+    "swap_fees": 59439.7735963448,
+    "close_count": 7360,
+    "total_txns": 17224
+  },
+  {
+    "date": "2025-12-01",
+    "total_fees": 530009.8383880674,
+    "position_fees": 484575.714528,
+    "swap_fees": 45434.1238600674,
+    "close_count": 15995,
+    "total_txns": 40153
+  },
+  {
+    "date": "2025-12-02",
+    "total_fees": 470167.4928776752,
+    "position_fees": 403150.206797,
+    "swap_fees": 67017.2860806752,
+    "close_count": 14520,
+    "total_txns": 33570
+  },
+  {
+    "date": "2025-12-03",
+    "total_fees": 454177.7909733886,
+    "position_fees": 439945.917227,
+    "swap_fees": 14231.8737463886,
+    "close_count": 13715,
+    "total_txns": 32830
+  },
+  {
+    "date": "2025-12-04",
+    "total_fees": 348921.0218001354,
+    "position_fees": 339074.707099,
+    "swap_fees": 9846.3147011354,
+    "close_count": 11894,
+    "total_txns": 28686
+  },
+  {
+    "date": "2025-12-05",
+    "total_fees": 345531.3660414852,
+    "position_fees": 331867.529988,
+    "swap_fees": 13663.8360534852,
+    "close_count": 11431,
+    "total_txns": 28600
+  },
+  {
+    "date": "2025-12-06",
+    "total_fees": 113197.1182374715,
+    "position_fees": 108182.80626,
+    "swap_fees": 5014.3119774715,
+    "close_count": 4976,
+    "total_txns": 12646
+  },
+  {
+    "date": "2025-12-07",
+    "total_fees": 353118.3707270573,
+    "position_fees": 322201.924826,
+    "swap_fees": 30916.4459010573,
+    "close_count": 11158,
+    "total_txns": 25773
+  },
+  {
+    "date": "2025-12-08",
+    "total_fees": 311566.0410646629,
+    "position_fees": 298760.69529,
+    "swap_fees": 12805.3457746629,
+    "close_count": 10639,
+    "total_txns": 25228
+  },
+  {
+    "date": "2025-12-09",
+    "total_fees": 409221.145286326,
+    "position_fees": 394254.12467,
+    "swap_fees": 14967.020616326,
+    "close_count": 14027,
+    "total_txns": 32369
+  },
+  {
+    "date": "2025-12-10",
+    "total_fees": 416106.2874473969,
+    "position_fees": 377064.311587,
+    "swap_fees": 39041.9758603969,
+    "close_count": 13623,
+    "total_txns": 31473
+  },
+  {
+    "date": "2025-12-11",
+    "total_fees": 410008.3609831549,
+    "position_fees": 389089.715494,
+    "swap_fees": 20918.6454891549,
+    "close_count": 13253,
+    "total_txns": 32730
+  },
+  {
+    "date": "2025-12-12",
+    "total_fees": 296975.0615703086,
+    "position_fees": 283589.124242,
+    "swap_fees": 13385.9373283086,
+    "close_count": 10729,
+    "total_txns": 26879
+  },
+  {
+    "date": "2025-12-13",
+    "total_fees": 94036.25517088971,
+    "position_fees": 89882.14195,
+    "swap_fees": 4154.1132208897,
+    "close_count": 4396,
+    "total_txns": 10573
+  },
+  {
+    "date": "2025-12-14",
+    "total_fees": 207193.5994099644,
+    "position_fees": 158222.31369,
+    "swap_fees": 48971.2857199644,
+    "close_count": 6037,
+    "total_txns": 16565
+  },
+  {
+    "date": "2025-12-15",
+    "total_fees": 450346.8727612131,
+    "position_fees": 421056.4258,
+    "swap_fees": 29290.4469612131,
+    "close_count": 13529,
+    "total_txns": 38419
+  },
+  {
+    "date": "2025-12-16",
+    "total_fees": 406346.09805294237,
+    "position_fees": 383062.273373,
+    "swap_fees": 23283.8246799424,
+    "close_count": 9669,
+    "total_txns": 28815
+  },
+  {
+    "date": "2025-12-17",
+    "total_fees": 475575.02430392086,
+    "position_fees": 437050.662729,
+    "swap_fees": 38524.3615749209,
+    "close_count": 14587,
+    "total_txns": 40504
+  },
+  {
+    "date": "2025-12-18",
+    "total_fees": 477014.36142985715,
+    "position_fees": 449312.618407,
+    "swap_fees": 27701.7430228572,
+    "close_count": 16997,
+    "total_txns": 43438
+  },
+  {
+    "date": "2025-12-19",
+    "total_fees": 377959.5453935189,
+    "position_fees": 358615.72826,
+    "swap_fees": 19343.8171335189,
+    "close_count": 13649,
+    "total_txns": 35885
+  },
+  {
+    "date": "2025-12-20",
+    "total_fees": 95101.7183587178,
+    "position_fees": 92668.368853,
+    "swap_fees": 2433.3495057178,
+    "close_count": 3645,
+    "total_txns": 10218
+  },
+  {
+    "date": "2025-12-21",
+    "total_fees": 175805.5594019307,
+    "position_fees": 160426.183116,
+    "swap_fees": 15379.3762859307,
+    "close_count": 5925,
+    "total_txns": 15759
+  },
+  {
+    "date": "2025-12-22",
+    "total_fees": 268847.70346836856,
+    "position_fees": 250177.658863,
+    "swap_fees": 18670.0446053686,
+    "close_count": 9490,
+    "total_txns": 27313
+  },
+  {
+    "date": "2025-12-23",
+    "total_fees": 212597.09378662021,
+    "position_fees": 192574.002841,
+    "swap_fees": 20023.0909456202,
+    "close_count": 8167,
+    "total_txns": 24837
+  },
+  {
+    "date": "2025-12-24",
+    "total_fees": 206988.37142779652,
+    "position_fees": 199772.209318,
+    "swap_fees": 7216.1621097965,
+    "close_count": 6406,
+    "total_txns": 18147
+  },
+  {
+    "date": "2025-12-25",
+    "total_fees": 143468.6215060092,
+    "position_fees": 133241.667942,
+    "swap_fees": 10226.9535640092,
+    "close_count": 5405,
+    "total_txns": 15029
+  },
+  {
+    "date": "2025-12-26",
+    "total_fees": 221240.2488682955,
+    "position_fees": 205406.460838,
+    "swap_fees": 15833.7880302955,
+    "close_count": 8429,
+    "total_txns": 23668
+  },
+  {
+    "date": "2025-12-27",
+    "total_fees": 109450.33512544849,
+    "position_fees": 106144.042024,
+    "swap_fees": 3306.2931014485,
+    "close_count": 4135,
+    "total_txns": 13506
+  },
+  {
+    "date": "2025-12-28",
+    "total_fees": 105214.00976968459,
+    "position_fees": 100896.294241,
+    "swap_fees": 4317.7155286846,
+    "close_count": 5053,
+    "total_txns": 14730
+  },
+  {
+    "date": "2025-12-29",
+    "total_fees": 293293.78446825256,
+    "position_fees": 273114.121627,
+    "swap_fees": 20179.6628412526,
+    "close_count": 10576,
+    "total_txns": 26093
+  },
+  {
+    "date": "2025-12-30",
+    "total_fees": 172343.0225755754,
+    "position_fees": 163180.244878,
+    "swap_fees": 9162.7776975754,
+    "close_count": 7230,
+    "total_txns": 17430
+  },
+  {
+    "date": "2025-12-31",
+    "total_fees": 192874.4577559049,
+    "position_fees": 150812.267943,
+    "swap_fees": 42062.1898129049,
+    "close_count": 6210,
+    "total_txns": 16049
+  },
+  {
+    "date": "2026-01-01",
+    "total_fees": 97623.4067320429,
+    "position_fees": 93344.522879,
+    "swap_fees": 4278.8838530429,
+    "close_count": 4130,
+    "total_txns": 10468
+  },
+  {
+    "date": "2026-01-02",
+    "total_fees": 315694.0970331249,
+    "position_fees": 300122.718766,
+    "swap_fees": 15571.3782671249,
+    "close_count": 11514,
+    "total_txns": 28493
+  },
+  {
+    "date": "2026-01-03",
+    "total_fees": 155501.96398933948,
+    "position_fees": 149157.061379,
+    "swap_fees": 6344.9026103395,
+    "close_count": 6391,
+    "total_txns": 15472
+  },
+  {
+    "date": "2026-01-04",
+    "total_fees": 234292.3851544284,
+    "position_fees": 226956.742432,
+    "swap_fees": 7335.6427224284,
+    "close_count": 7119,
+    "total_txns": 17527
+  },
+  {
+    "date": "2026-01-05",
+    "total_fees": 710001.751823359,
+    "position_fees": 692395.738996,
+    "swap_fees": 17606.012827359,
+    "close_count": 14239,
+    "total_txns": 32669
+  },
+  {
+    "date": "2026-01-06",
+    "total_fees": 937744.9815509996,
+    "position_fees": 917039.772601,
+    "swap_fees": 20705.2089499995,
+    "close_count": 13305,
+    "total_txns": 32875
+  },
+  {
+    "date": "2026-01-07",
+    "total_fees": 339696.9717338993,
+    "position_fees": 328152.862343,
+    "swap_fees": 11544.1093908993,
+    "close_count": 9015,
+    "total_txns": 24650
+  },
+  {
+    "date": "2026-01-08",
+    "total_fees": 514990.71663315874,
+    "position_fees": 503014.438894,
+    "swap_fees": 11976.2777391587,
+    "close_count": 11857,
+    "total_txns": 29893
+  },
+  {
+    "date": "2026-01-09",
+    "total_fees": 406746.6579013007,
+    "position_fees": 373197.933387,
+    "swap_fees": 33548.7245143007,
+    "close_count": 10107,
+    "total_txns": 27404
+  },
+  {
+    "date": "2026-01-10",
+    "total_fees": 73651.9394696958,
+    "position_fees": 70371.138105,
+    "swap_fees": 3280.8013646958,
+    "close_count": 2872,
+    "total_txns": 7681
+  },
+  {
+    "date": "2026-01-11",
+    "total_fees": 210312.7621248758,
+    "position_fees": 203160.559137,
+    "swap_fees": 7152.2029878758,
+    "close_count": 6345,
+    "total_txns": 15746
+  },
+  {
+    "date": "2026-01-12",
+    "total_fees": 417891.1071388962,
+    "position_fees": 403291.599261,
+    "swap_fees": 14599.5078778962,
+    "close_count": 12601,
+    "total_txns": 32219
+  },
+  {
+    "date": "2026-01-13",
+    "total_fees": 494448.9098755408,
+    "position_fees": 455708.698297,
+    "swap_fees": 38740.2115785408,
+    "close_count": 13170,
+    "total_txns": 32018
+  },
+  {
+    "date": "2026-01-14",
+    "total_fees": 389557.6753538967,
+    "position_fees": 377211.22534,
+    "swap_fees": 12346.4500138967,
+    "close_count": 11022,
+    "total_txns": 28208
+  },
+  {
+    "date": "2026-01-15",
+    "total_fees": 414663.53821750166,
+    "position_fees": 399266.835713,
+    "swap_fees": 15396.7025045017,
+    "close_count": 9674,
+    "total_txns": 27143
+  },
+  {
+    "date": "2026-01-16",
+    "total_fees": 219572.85316956518,
+    "position_fees": 210132.095472,
+    "swap_fees": 9440.7576975652,
+    "close_count": 7376,
+    "total_txns": 18332
+  },
+  {
+    "date": "2026-01-17",
+    "total_fees": 112490.0131575775,
+    "position_fees": 109560.720713,
+    "swap_fees": 2929.2924445775,
+    "close_count": 3034,
+    "total_txns": 7972
+  },
+  {
+    "date": "2026-01-18",
+    "total_fees": 215061.7047806273,
+    "position_fees": 208701.689419,
+    "swap_fees": 6360.0153616273,
+    "close_count": 5968,
+    "total_txns": 16507
+  },
+  {
+    "date": "2026-01-19",
+    "total_fees": 442851.001150524,
+    "position_fees": 300026.781345,
+    "swap_fees": 142824.219805524,
+    "close_count": 8032,
+    "total_txns": 21583
+  },
+  {
+    "date": "2026-01-20",
+    "total_fees": 560547.0905285053,
+    "position_fees": 518445.220579,
+    "swap_fees": 42101.8699495053,
+    "close_count": 10415,
+    "total_txns": 27847
+  },
+  {
+    "date": "2026-01-21",
+    "total_fees": 374990.159262248,
+    "position_fees": 355498.008122,
+    "swap_fees": 19492.151140248,
+    "close_count": 11446,
+    "total_txns": 27939
+  },
+  {
+    "date": "2026-01-22",
+    "total_fees": 202578.09306778503,
+    "position_fees": 195323.693709,
+    "swap_fees": 7254.399358785,
+    "close_count": 6062,
+    "total_txns": 15961
+  },
+  {
+    "date": "2026-01-23",
+    "total_fees": 241791.5208066283,
+    "position_fees": 233728.666067,
+    "swap_fees": 8062.8547396283,
+    "close_count": 7511,
+    "total_txns": 19425
+  },
+  {
+    "date": "2026-01-24",
+    "total_fees": 53158.611997743195,
+    "position_fees": 51057.74984,
+    "swap_fees": 2100.8621577432,
+    "close_count": 2262,
+    "total_txns": 5905
+  },
+  {
+    "date": "2026-01-25",
+    "total_fees": 382969.0817253124,
+    "position_fees": 279435.884018,
+    "swap_fees": 103533.1977073124,
+    "close_count": 9553,
+    "total_txns": 26655
+  },
+  {
+    "date": "2026-01-26",
+    "total_fees": 225319.03208508238,
+    "position_fees": 215163.303249,
+    "swap_fees": 10155.7288360824,
+    "close_count": 8904,
+    "total_txns": 19849
+  },
+  {
+    "date": "2026-01-27",
+    "total_fees": 215016.0675968523,
+    "position_fees": 210063.013817,
+    "swap_fees": 4953.0537798523,
+    "close_count": 7691,
+    "total_txns": 17921
+  },
+  {
+    "date": "2026-01-28",
+    "total_fees": 213552.2993921108,
+    "position_fees": 205441.699525,
+    "swap_fees": 8110.5998671108,
+    "close_count": 6295,
+    "total_txns": 15244
+  },
+  {
+    "date": "2026-01-29",
+    "total_fees": 533005.4634640143,
+    "position_fees": 476705.962858,
+    "swap_fees": 56299.5006060143,
+    "close_count": 13027,
+    "total_txns": 35661
+  },
+  {
+    "date": "2026-01-30",
+    "total_fees": 561426.2970191375,
+    "position_fees": 464135.422338,
+    "swap_fees": 97290.8746811375,
+    "close_count": 14306,
+    "total_txns": 34560
+  },
+  {
+    "date": "2026-01-31",
+    "total_fees": 1273500.7781709481,
+    "position_fees": 542344.271046,
+    "swap_fees": 731156.5071249482,
+    "close_count": 22463,
+    "total_txns": 58083
+  },
+  {
+    "date": "2026-02-01",
+    "total_fees": 530198.1564771213,
+    "position_fees": 396937.380173,
+    "swap_fees": 133260.7763041213,
+    "close_count": 13613,
+    "total_txns": 34731
+  },
+  {
+    "date": "2026-02-02",
+    "total_fees": 537559.8002452226,
+    "position_fees": 330347.629546,
+    "swap_fees": 207212.1706992227,
+    "close_count": 15232,
+    "total_txns": 38622
+  },
+  {
+    "date": "2026-02-03",
+    "total_fees": 437347.0221913382,
+    "position_fees": 355883.624012,
+    "swap_fees": 81463.3981793382,
+    "close_count": 15781,
+    "total_txns": 40912
+  },
+  {
+    "date": "2026-02-04",
+    "total_fees": 635804.7200533127,
+    "position_fees": 551977.81009,
+    "swap_fees": 83826.9099633127,
+    "close_count": 20119,
+    "total_txns": 49890
+  },
+  {
+    "date": "2026-02-05",
+    "total_fees": 1002519.5605600162,
+    "position_fees": 758851.058733,
+    "swap_fees": 243668.5018270162,
+    "close_count": 33520,
+    "total_txns": 84070
+  },
+  {
+    "date": "2026-02-06",
+    "total_fees": 1962151.899650222,
+    "position_fees": 668080.138049,
+    "swap_fees": 1294071.761601222,
+    "close_count": 29945,
+    "total_txns": 71876
+  },
+  {
+    "date": "2026-02-07",
+    "total_fees": 519491.797754508,
+    "position_fees": 237397.446955,
+    "swap_fees": 282094.350799508,
+    "close_count": 12530,
+    "total_txns": 30211
+  },
+  {
+    "date": "2026-02-08",
+    "total_fees": 202933.61235887842,
+    "position_fees": 192923.399364,
+    "swap_fees": 10010.2129948784,
+    "close_count": 9345,
+    "total_txns": 21553
+  },
+  {
+    "date": "2026-02-09",
+    "total_fees": 221063.885730571,
+    "position_fees": 203384.257821,
+    "swap_fees": 17679.627909571,
+    "close_count": 9779,
+    "total_txns": 22951
+  }
+]
