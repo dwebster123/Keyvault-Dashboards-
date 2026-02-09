@@ -390,7 +390,7 @@ async function loadDriftFunding() {
     document.getElementById('fundingLoading').style.display = '';
     document.getElementById('fundingChart').style.display = 'none';
     try {
-        const res = await fetch('./data/drift-funding-rates.json');
+        const res = await fetch('./data/drift-funding-rates.json?t=' + Date.now());
         const json = await res.json();
         const allData = {};
         DRIFT_MARKETS.forEach(m => {
