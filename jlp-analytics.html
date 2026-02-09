@@ -183,8 +183,12 @@ const COINGECKO_URL = 'https://api.coingecko.com/api/v3/coins/jupiter-perpetuals
 const VAULT_URL = 'https://app.primenumber.trade/data/PN_KV1.json';
 const VAULT_HIST_URL = 'https://app.primenumber.trade/data/PN_KV1_history.json';
 const JLP_INFO_URL = 'https://perps-api.jup.ag/v2/jlp-info';
+const CG_SOL_URL = 'https://api.coingecko.com/api/v3/coins/solana/market_chart?vs_currency=usd&days=365';
+const CG_ETH_URL = 'https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=365';
+const CG_BTC_URL = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365';
 
 let feeData = [], cgPrices = [], vaultCurrent = null, vaultHistory = [];
+let solPrices = [], ethPrices = [], btcPrices = [];
 let jlpPoolPrice = null; // NAV from Jupiter API
 let feeChart, priceChart, vaultChart, weeklyFeeChart;
 let selectedFeeDays = 90;
@@ -216,15 +220,21 @@ async function fetchJSON(url, useProxy = false) {
 
 async function loadAll() {
     try {
-        const [dlData, cgData, vc, vh, jlpInfo] = await Promise.all([
+        const [dlData, cgData, vc, vh, jlpInfo, solData, ethData, btcData] = await Promise.all([
             fetchJSON(DEFILLAMA_URL),
             fetchJSON(COINGECKO_URL),
             fetchJSON(VAULT_URL, true),
             fetchJSON(VAULT_HIST_URL, true),
-            fetchJSON(JLP_INFO_URL).catch(() => null)
+            fetchJSON(JLP_INFO_URL).catch(() => null),
+            fetchJSON(CG_SOL_URL).catch(() => null),
+            fetchJSON(CG_ETH_URL).catch(() => null),
+            fetchJSON(CG_BTC_URL).catch(() => null)
         ]);
         feeData = (dlData.totalDataChart || []).map(([ts, val]) => ({ date: new Date(ts * 1000), value: val }));
         cgPrices = (cgData.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
+        solPrices = (solData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
+        ethPrices = (ethData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
+        btcPrices = (btcData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         vaultCurrent = vc;
         vaultHistory = (vh || []).map(d => ({ date: new Date(d.update_time_utc), sharePrice: d.SharePrice, tvl: d.tvl })).sort((a, b) => a.date - b.date);
 
@@ -398,43 +408,55 @@ let selectedPnlDays = 30;
 function deriveDailyTraderPnl() {
     if (!cgPrices.length || !feeData.length) return [];
 
-    // Build daily fee map
+    // Build daily maps for all price series
+    const buildMap = (arr) => {
+        const m = {};
+        arr.forEach(d => { m[d.date.toISOString().slice(0, 10)] = d.price; });
+        return m;
+    };
     const feeMap = {};
-    feeData.forEach(d => {
-        const key = d.date.toISOString().slice(0, 10);
-        feeMap[key] = d.value;
-    });
+    feeData.forEach(d => { feeMap[d.date.toISOString().slice(0, 10)] = d.value; });
 
-    // Build daily JLP price map from CoinGecko
-    const priceMap = {};
-    cgPrices.forEach(d => {
-        const key = d.date.toISOString().slice(0, 10);
-        priceMap[key] = d.price;
-    });
+    const jlpMap = buildMap(cgPrices);
+    const solMap = buildMap(solPrices);
+    const ethMap = buildMap(ethPrices);
+    const btcMap = buildMap(btcPrices);
 
-    const dates = Object.keys(priceMap).sort();
+    // JLP pool weights (volatile portion): SOL 45%, ETH 8%, BTC 13%, stables 34%
+    // Stables don't change price, so basket return = weighted sum of volatile asset returns
+    const W_SOL = 0.45, W_ETH = 0.08, W_BTC = 0.13, W_STABLE = 0.34;
+
+    const dates = Object.keys(jlpMap).sort();
     const results = [];
 
     for (let i = 1; i < dates.length; i++) {
         const today = dates[i];
         const yesterday = dates[i - 1];
-        const p0 = priceMap[yesterday];
-        const p1 = priceMap[today];
-        if (!p0 || !p1) continue;
 
-        const jlpReturn = (p1 - p0) / p0; // JLP daily return (includes fees + asset change - trader PnL)
+        const jlp0 = jlpMap[yesterday], jlp1 = jlpMap[today];
+        const sol0 = solMap[yesterday], sol1 = solMap[today];
+        const eth0 = ethMap[yesterday], eth1 = ethMap[today];
+        const btc0 = btcMap[yesterday], btc1 = btcMap[today];
 
-        // Daily fees as % of pool (75% of fees go to pool)
-        // Use AUM estimate from market cap: price * supply (~320M)
-        const poolValue = p0 * 320000000;
-        const dailyFees = (feeMap[today] || 0) * 0.75; // 75% goes to JLP
+        if (!jlp0 || !jlp1 || !sol0 || !sol1 || !eth0 || !eth1 || !btc0 || !btc1) continue;
+
+        const jlpReturn = (jlp1 - jlp0) / jlp0;
+        const solReturn = (sol1 - sol0) / sol0;
+        const ethReturn = (eth1 - eth0) / eth0;
+        const btcReturn = (btc1 - btc0) / btc0;
+
+        // Basket return = weighted asset price change (stables contribute 0%)
+        const basketReturn = W_SOL * solReturn + W_ETH * ethReturn + W_BTC * btcReturn;
+
+        // Fee yield as % of pool
+        const poolValue = jlp0 * 320000000; // approximate supply
+        const dailyFees = (feeMap[today] || 0) * 0.75; // 75% to pool
         const feeYield = poolValue > 0 ? dailyFees / poolValue : 0;
 
-        // Implied trader PnL = fees earned + asset change - actual JLP change
-        // Since JLP contains ~65% volatile assets, approximate asset return from JLP minus fee component
-        // Simplified: traderPnl ≈ feeYield - jlpReturn (as % of pool)
-        // When positive = traders won (bad for pool), negative = traders lost (good for pool)
-        const impliedTraderPnl = feeYield - jlpReturn;
+        // JLP return = basket return + fee yield - trader PnL (from pool's perspective)
+        // So: trader PnL = basket return + fee yield - JLP return
+        // Positive = traders won (pool lost), Negative = traders lost (pool won)
+        const impliedTraderPnl = basketReturn + feeYield - jlpReturn;
         const impliedTraderPnlUsd = impliedTraderPnl * poolValue;
 
         results.push({
