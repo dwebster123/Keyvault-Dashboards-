@@ -495,8 +495,9 @@ function renderWaterfall() {
         const hedgeCostYield = avgFunding * 0.68;
 
         // 4. Expected Net Yield
-        // Gross fees - leakage (if positive/traders won) + leakage (if negative/traders lost) + hedge funding
-        const expectedNet = grossFeeYield - leakageYield + hedgeCostYield;
+        // For a HEDGED vault: trader P&L is neutralized by the hedge (that's the point).
+        // Expected = fees - hedge cost. Trader P&L shown separately as context only.
+        const expectedNet = grossFeeYield + hedgeCostYield;
 
         // 5. Actual Vault Return
         let actualReturn = null;
@@ -551,14 +552,6 @@ function renderWaterfall() {
             ${cols.map(c => fmtPct(results[c].grossFeeYield, 'wf-positive')).join('')}
         </tr>
         <tr>
-            <td>− Trader P&L (Leakage)<span class="wf-sub">On-chain settlement · traders win = pool loses</span></td>
-            ${cols.map(c => {
-                const v = results[c].leakageYield;
-                const cls = v > 0 ? 'wf-negative' : 'wf-positive';
-                return `<td class="${cls}">${v > 0 ? '-' : '+'}${Math.abs(v).toFixed(2)}%</td>`;
-            }).join('')}
-        </tr>
-        <tr>
             <td>− Hedge Cost (Funding)<span class="wf-sub">Drift weighted funding · negative = cost to shorts</span></td>
             ${cols.map(c => {
                 const v = results[c].hedgeCostYield;
@@ -567,7 +560,7 @@ function renderWaterfall() {
             }).join('')}
         </tr>
         <tr class="total-row">
-            <td>= Expected Gross Yield<span class="wf-sub">Fees − leakage + funding (before perf fees)</span></td>
+            <td>= Expected Gross Yield<span class="wf-sub">Fees + funding (hedge neutralizes trader P&L)</span></td>
             ${cols.map(c => fmtPct(results[c].expectedNet, results[c].expectedNet >= 0 ? 'wf-positive' : 'wf-negative')).join('')}
         </tr>
         <tr>
@@ -597,6 +590,14 @@ function renderWaterfall() {
                 return `<td class="${captureClass(cr)}">${cr.toFixed(0)}%</td>`;
             }).join('')}
         </tr>
+        <tr style="border-top:2px solid rgba(255,255,255,0.08);">
+            <td style="color:#6b6b8d;">ℹ️ Trader P&L (hedged out)<span class="wf-sub">On-chain settlement · neutralized by Drift shorts</span></td>
+            ${cols.map(c => {
+                const v = results[c].leakageYield;
+                const cls = v > 0 ? 'wf-negative' : 'wf-positive';
+                return `<td style="color:#6b6b8d;">${v > 0 ? '+' : ''}${v.toFixed(2)}%</td>`;
+            }).join('')}
+        </tr>
         </tbody></table>`;
 
     el.innerHTML = html;
@@ -615,25 +616,24 @@ function renderWaterfallChart() {
     const r = results[key];
     if (!r) return;
 
-    const labels = ['Gross Fees', 'Trader P&L Impact', 'Hedge Funding', 'Expected Net', 'Actual Return'];
-    // leakageYield: positive = traders won (bad for pool), negative = traders lost (good for pool)
-    // In the chart: show the IMPACT on pool, so negate it. Traders won +50% → pool impact -50%
-    const traderImpact = -r.leakageYield;
-    // hedgeCostYield: positive = we earn (good), negative = we pay (bad). Show as-is.
+    const labels = ['Gross Fees', 'Hedge Funding', 'Expected Gross', 'Perf Fees (30%)', 'Expected Net', 'Actual Return'];
     const hedgeImpact = r.hedgeCostYield;
+    const perfFee = -r.expectedNet * 0.30;
 
-    const data = [r.grossFeeYield, traderImpact, hedgeImpact, r.expectedNet, r.actualReturn !== null ? r.actualReturn : 0];
+    const data = [r.grossFeeYield, hedgeImpact, r.expectedNet, perfFee, r.expectedNetAfterFees, r.actualReturn !== null ? r.actualReturn : 0];
     const colors = [
-        'rgba(34,197,94,0.8)',    // green - gross fees (always positive)
-        traderImpact >= 0 ? 'rgba(34,197,94,0.6)' : 'rgba(239,68,68,0.8)', // green if pool gained, red if pool lost
-        hedgeImpact >= 0 ? 'rgba(34,197,94,0.6)' : 'rgba(239,68,68,0.6)', // green if earning, red if paying
-        'rgba(0,212,255,0.4)',    // cyan - expected
-        r.actualReturn !== null && r.actualReturn >= 0 ? 'rgba(0,212,255,0.8)' : 'rgba(239,68,68,0.8)' // actual
+        'rgba(34,197,94,0.8)',    // green - gross fees
+        hedgeImpact >= 0 ? 'rgba(34,197,94,0.6)' : 'rgba(239,68,68,0.6)', // hedge
+        'rgba(0,212,255,0.3)',    // cyan - expected gross
+        'rgba(239,68,68,0.5)',    // red - perf fees
+        'rgba(0,212,255,0.5)',    // cyan - expected net
+        r.actualReturn !== null && r.actualReturn >= 0 ? 'rgba(0,212,255,0.8)' : 'rgba(239,68,68,0.8)'
     ];
     const borders = [
         '#22c55e',
-        traderImpact >= 0 ? '#22c55e' : '#ef4444',
         hedgeImpact >= 0 ? '#22c55e' : '#ef4444',
+        '#00d4ff',
+        '#ef4444',
         '#00d4ff',
         r.actualReturn !== null && r.actualReturn >= 0 ? '#00d4ff' : '#ef4444'
     ];
