@@ -132,7 +132,7 @@
         <!-- Chart 2: JLP Price with MAs -->
         <div class="chart-container">
             <div class="chart-header">
-                <h3 class="chart-title">JLP Price with Moving Averages</h3>
+                <h3 class="chart-title">JLP Market Price vs Pool NAV</h3>
             </div>
             <div class="chart-wrapper"><canvas id="priceChart"></canvas></div>
         </div>
@@ -162,8 +162,10 @@ const DEFILLAMA_URL = 'https://api.llama.fi/summary/fees/jupiter-perpetual-excha
 const COINGECKO_URL = 'https://api.coingecko.com/api/v3/coins/jupiter-perpetuals-liquidity-provider-token/market_chart?vs_currency=usd&days=365';
 const VAULT_URL = 'https://app.primenumber.trade/data/PN_KV1.json';
 const VAULT_HIST_URL = 'https://app.primenumber.trade/data/PN_KV1_history.json';
+const JLP_INFO_URL = 'https://perps-api.jup.ag/v2/jlp-info';
 
 let feeData = [], cgPrices = [], vaultCurrent = null, vaultHistory = [];
+let jlpPoolPrice = null; // NAV from Jupiter API
 let feeChart, priceChart, vaultChart, weeklyFeeChart;
 let selectedFeeDays = 90;
 
@@ -194,34 +196,51 @@ async function fetchJSON(url, useProxy = false) {
 
 async function loadAll() {
     try {
-        const [dlData, cgData, vc, vh] = await Promise.all([
+        const [dlData, cgData, vc, vh, jlpInfo] = await Promise.all([
             fetchJSON(DEFILLAMA_URL),
             fetchJSON(COINGECKO_URL),
             fetchJSON(VAULT_URL, true),
-            fetchJSON(VAULT_HIST_URL, true)
+            fetchJSON(VAULT_HIST_URL, true),
+            fetchJSON(JLP_INFO_URL).catch(() => null)
         ]);
         feeData = (dlData.totalDataChart || []).map(([ts, val]) => ({ date: new Date(ts * 1000), value: val }));
         cgPrices = (cgData.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         vaultCurrent = vc;
         vaultHistory = (vh || []).map(d => ({ date: new Date(d.update_time_utc), sharePrice: d.SharePrice, tvl: d.tvl })).sort((a, b) => a.date - b.date);
 
+        // JLP pool NAV price from Jupiter API
+        if (jlpInfo && jlpInfo.jlpPriceUsd) {
+            jlpPoolPrice = parseInt(jlpInfo.jlpPriceUsd) / 1e6;
+        }
+
         // Top metrics
         const jlpPrice = cgPrices.length ? cgPrices[cgPrices.length - 1].price : null;
         const fees24h = dlData.total24h || 0;
         const feesAll = dlData.totalAllTime || 0;
-        // Estimate APY: annualize recent daily fees / estimated pool TVL
+        // Use Jupiter's own APY if available, otherwise estimate
+        const jlpAPY = jlpInfo ? parseFloat(jlpInfo.jlpApyPct) : null;
         const recentFees = feeData.slice(-7);
         const avgDaily = recentFees.reduce((s, d) => s + d.value, 0) / recentFees.length;
-        // JLP pool gets ~75% of fees; estimate TVL from market cap
         const estimatedTVL = cgData.market_caps && cgData.market_caps.length ? cgData.market_caps[cgData.market_caps.length - 1][1] : 1;
-        const estAPY = ((avgDaily * 0.75 * 365) / estimatedTVL) * 100;
+        const estAPY = jlpAPY || ((avgDaily * 0.75 * 365) / estimatedTVL) * 100;
         const vaultSharePrice = vaultCurrent ? vaultCurrent.SharePrice : null;
+        const delta = (jlpPrice && jlpPoolPrice) ? ((jlpPrice - jlpPoolPrice) / jlpPoolPrice * 100) : null;
 
         document.getElementById('topMetrics').innerHTML = `
             <div class="metric-card highlight">
-                <div class="metric-label">JLP Price</div>
-                <div class="metric-value">${jlpPrice ? '$' + jlpPrice.toFixed(2) : '--'}</div>
+                <div class="metric-label">JLP Market Price</div>
+                <div class="metric-value">${jlpPrice ? '$' + jlpPrice.toFixed(4) : '--'}</div>
                 <div class="metric-sub">CoinGecko</div>
+            </div>
+            <div class="metric-card highlight">
+                <div class="metric-label">JLP Pool Price (NAV)</div>
+                <div class="metric-value">${jlpPoolPrice ? '$' + jlpPoolPrice.toFixed(4) : '--'}</div>
+                <div class="metric-sub">Jupiter Perps API</div>
+            </div>
+            <div class="metric-card ${delta !== null ? (Math.abs(delta) > 0.5 ? 'highlight' : '') : ''}">
+                <div class="metric-label">Market vs NAV Delta</div>
+                <div class="metric-value ${delta !== null ? (delta >= 0 ? 'positive' : 'negative') : ''}">${delta !== null ? (delta >= 0 ? '+' : '') + delta.toFixed(3) + '%' : '--'}</div>
+                <div class="metric-sub">Premium / Discount</div>
             </div>
             <div class="metric-card highlight">
                 <div class="metric-label">24h Fees Collected</div>
@@ -229,9 +248,9 @@ async function loadAll() {
                 <div class="metric-sub">All Time: $${(feesAll / 1e9).toFixed(2)}B</div>
             </div>
             <div class="metric-card">
-                <div class="metric-label">JLP APY (Est.)</div>
+                <div class="metric-label">JLP APY</div>
                 <div class="metric-value positive">${estAPY.toFixed(1)}%</div>
-                <div class="metric-sub">7d avg fees / TVL</div>
+                <div class="metric-sub">${jlpAPY ? 'Jupiter official' : '7d avg fees / TVL'}</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">Vault Share Price</div>
@@ -289,15 +308,27 @@ function renderPriceChart() {
         return { x: d.date, y: avg };
     }).filter(Boolean);
 
+    const datasets = [
+        { label: 'Market Price', data: prices, borderColor: chartColors.cyan, backgroundColor: 'rgba(0,212,255,0.1)', fill: true, pointRadius: 0, borderWidth: 2 },
+        { label: '7D MA', data: ma(7), borderColor: chartColors.orange, pointRadius: 0, borderWidth: 1.5, borderDash: [5, 3] },
+        { label: '30D MA', data: ma(30), borderColor: chartColors.pink, pointRadius: 0, borderWidth: 1.5, borderDash: [8, 4] }
+    ];
+
+    // Add current NAV as horizontal reference line across the chart
+    if (jlpPoolPrice && prices.length) {
+        datasets.push({
+            label: 'Current NAV ($' + jlpPoolPrice.toFixed(4) + ')',
+            data: [{ x: prices[0].x, y: jlpPoolPrice }, { x: prices[prices.length - 1].x, y: jlpPoolPrice }],
+            borderColor: '#22c55e',
+            pointRadius: 0,
+            borderWidth: 2,
+            borderDash: [3, 3]
+        });
+    }
+
     const cfg = {
         type: 'line',
-        data: {
-            datasets: [
-                { label: 'JLP Price', data: prices, borderColor: chartColors.cyan, backgroundColor: 'rgba(0,212,255,0.1)', fill: true, pointRadius: 0, borderWidth: 2 },
-                { label: '7D MA', data: ma(7), borderColor: chartColors.orange, pointRadius: 0, borderWidth: 1.5, borderDash: [5, 3] },
-                { label: '30D MA', data: ma(30), borderColor: chartColors.pink, pointRadius: 0, borderWidth: 1.5, borderDash: [8, 4] }
-            ]
-        },
+        data: { datasets },
         options: chartOpts({ y: { ...defaultScales.y, ticks: { color: chartColors.text, callback: v => '$' + v.toFixed(2) } } })
     };
 
