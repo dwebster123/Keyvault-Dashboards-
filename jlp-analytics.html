@@ -298,7 +298,7 @@ function combineVaultHistory(spreadsheetData, liveData) {
 
 async function loadAll() {
     try {
-        const [dlData, cgData, vc, vh, jlpInfo, solData, ethData, btcData, sheetData] = await Promise.all([
+        const [dlData, cgData, vc, vh, jlpInfo, solData, ethData, btcData, sheetData, onchainPnlData] = await Promise.all([
             fetchJSON(DEFILLAMA_URL),
             fetchJSON(COINGECKO_URL),
             fetchJSON(VAULT_URL, true),
@@ -307,8 +307,12 @@ async function loadAll() {
             fetchJSON(CG_SOL_URL).catch(() => null),
             fetchJSON(CG_ETH_URL).catch(() => null),
             fetchJSON(CG_BTC_URL).catch(() => null),
-            fetchSpreadsheetData()
+            fetchSpreadsheetData(),
+            fetch('./data/trader-pnl-onchain.json?t=' + Date.now()).then(r => r.json()).catch(() => [])
         ]);
+        // Store on-chain trader P&L globally
+        window._onchainPnl = {};
+        (onchainPnlData || []).forEach(d => { window._onchainPnl[d.date] = d; });
         feeData = (dlData.totalDataChart || []).map(([ts, val]) => ({ date: new Date(ts * 1000), value: val }));
         cgPrices = (cgData.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         solPrices = (solData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
@@ -947,12 +951,26 @@ function renderWeeklyRevenue() {
         // Expected fee revenue to vault
         const expectedFeeRev = feesToJLP * vaultShareOfPool;
 
+        // On-chain trader P&L for this week (concrete from Allium)
+        let onchainTraderPnl = 0;
+        let hasOnchainData = false;
+        for (let d = new Date(w.start); d < w.end; d = new Date(d.getTime() + 86400000)) {
+            const key = d.toISOString().slice(0, 10);
+            if (window._onchainPnl && window._onchainPnl[key]) {
+                onchainTraderPnl += window._onchainPnl[key].trader_pnl;
+                hasOnchainData = true;
+            }
+        }
+        // Vault's share of trader P&L (proportional to pool share)
+        const vaultTraderPnl = onchainTraderPnl * vaultShareOfPool;
+
         // Actual vault return from share price (net of fees)
         const netReturn = vEnd.sharePrice && vStart.sharePrice ? (vEnd.sharePrice / vStart.sharePrice - 1) : 0;
         const netDollar = netReturn * tvl;
         const grossDollar = netDollar / 0.70;
         const perfFees = grossDollar - netDollar;
-        const traderPnl = expectedFeeRev - grossDollar;
+        // Use on-chain trader P&L if available, otherwise derive
+        const traderPnl = hasOnchainData ? -vaultTraderPnl : (expectedFeeRev - grossDollar);
 
         cumNetInvestor += netDollar;
 
@@ -991,9 +1009,9 @@ function renderWeeklyRevenue() {
                     <div style="color:#555;font-size:0.6rem;">Fees × 75% × pool share</div>
                 </div>
                 <div style="flex:1;min-width:120px;text-align:center;padding:12px;border-radius:8px;background:rgba(239,68,68,0.08);">
-                    <div style="color:#8b8ba7;font-size:0.65rem;text-transform:uppercase;">Leakage (Trader P&L + Other)</div>
+                    <div style="color:#8b8ba7;font-size:0.65rem;text-transform:uppercase;">Trader P&L ⛓️</div>
                     <div style="color:${color(-totTrader)};font-weight:bold;font-size:1.2rem;">${fmtSign(-totTrader)}</div>
-                    <div style="color:#555;font-size:0.6rem;">Trader P&L, rebalancing, slippage</div>
+                    <div style="color:#555;font-size:0.6rem;">On-chain settlement data (Allium)</div>
                 </div>
                 <div style="flex:1;min-width:120px;text-align:center;padding:12px;border-radius:8px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);">
                     <div style="color:#8b8ba7;font-size:0.65rem;text-transform:uppercase;">Net to Investors</div>
@@ -1064,7 +1082,7 @@ function renderWeeklyRevenue() {
                         <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:left;">Week</th>
                         <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Gross Fees</th>
                         <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Expected</th>
-                        <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Leakage*</th>
+                        <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Trader P&L ⛓️</th>
                         <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Gross Vault</th>
                         <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Perf Fees</th>
                         <th style="padding:8px;color:#8b8ba7;font-size:0.65rem;text-align:right;">Net</th>
