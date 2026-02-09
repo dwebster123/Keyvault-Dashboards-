@@ -138,13 +138,7 @@
         </div>
 
         <div class="two-col">
-            <!-- Chart 3: Vault vs JLP -->
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3 class="chart-title">Vault Performance vs JLP</h3>
-                </div>
-                <div class="chart-wrapper"><canvas id="vaultChart"></canvas></div>
-            </div>
+<!-- Vault vs JLP chart removed -->
 
             <!-- Chart 4: Weekly Fee Breakdown -->
             <div class="chart-container">
@@ -267,7 +261,7 @@ async function loadAll() {
         document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
         renderFeeChart();
         renderPriceChart();
-        renderVaultChart();
+        // renderVaultChart(); // removed
         renderWeeklyFeeChart();
         updateFundingMetric(); // re-apply after innerHTML rebuild
     } catch (e) {
