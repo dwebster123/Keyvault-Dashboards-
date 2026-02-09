@@ -1127,7 +1127,7 @@ function renderWeeklyRevenue() {
     const totFees = weeklyData.reduce((s, w) => s + w.perfFees, 0);
     const totNet = weeklyData.reduce((s, w) => s + w.netDollar, 0);
 
-    section.style.display = '';
+    section.style.display = 'block';
 
     // Summary cards
     if (summaryEl) {
@@ -1193,7 +1193,11 @@ function renderWeeklyRevenue() {
             })
         };
         if (weeklyRevenueChart) weeklyRevenueChart.destroy();
+        // Force layout recalc before rendering (canvas may have been hidden)
+        chartCanvas.parentElement.style.height = '350px';
+        chartCanvas.style.display = 'block';
         weeklyRevenueChart = new Chart(chartCanvas, cfg);
+        setTimeout(() => weeklyRevenueChart.resize(), 100);
     }
 
     // Table — scrollable, most recent first
