@@ -192,6 +192,7 @@ const DEFILLAMA_URL = 'https://api.llama.fi/summary/fees/jupiter-perpetual-excha
 const COINGECKO_URL = 'https://api.coingecko.com/api/v3/coins/jupiter-perpetuals-liquidity-provider-token/market_chart?vs_currency=usd&days=365';
 const VAULT_URL = 'https://app.primenumber.trade/data/PN_KV1.json';
 const VAULT_HIST_URL = 'https://app.primenumber.trade/data/PN_KV1_history.json';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1tCkeY0rYnBTacwrn4DFAASY89JpnWBo06X2x333u2YA/gviz/tq?tqx=out:csv&gid=0';
 const JLP_INFO_URL = 'https://perps-api.jup.ag/v2/jlp-info';
 const CG_SOL_URL = 'https://api.coingecko.com/api/v3/coins/solana/market_chart?vs_currency=usd&days=365';
 const CG_ETH_URL = 'https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=365';
@@ -228,9 +229,65 @@ async function fetchJSON(url, useProxy = false) {
     return useProxy ? JSON.parse(data.contents) : data;
 }
 
+async function fetchSpreadsheetData() {
+    try {
+        const res = await fetch(SHEET_URL);
+        const csv = await res.text();
+        const lines = csv.trim().split('\n');
+        const data = [];
+        let lastDate = null;
+        for (const line of lines) {
+            const cols = line.split(',').map(c => c.replace(/"/g, '').trim());
+            if (cols[4] && (cols[4].includes('2025') || cols[4].includes('2026'))) {
+                lastDate = cols[4];
+            } else if (cols[1] && lastDate) {
+                const price = parseFloat(cols[1]);
+                if (!isNaN(price) && price > 0) {
+                    data.push({ date: new Date(lastDate + 'T00:00:00Z'), sharePrice: price, tvl: null, source: 'spreadsheet' });
+                }
+            }
+        }
+        console.log('Spreadsheet: ' + data.length + ' entries');
+        return data;
+    } catch (e) {
+        console.error('Spreadsheet fetch failed:', e);
+        return [];
+    }
+}
+
+function combineVaultHistory(spreadsheetData, liveData) {
+    if (!spreadsheetData.length) return liveData;
+    if (!liveData.length) return spreadsheetData;
+
+    // Find where live data starts after spreadsheet ends
+    const sheetEnd = spreadsheetData[spreadsheetData.length - 1];
+    const sheetEndDate = sheetEnd.date.toISOString().slice(0, 10);
+
+    // Live data that comes after spreadsheet
+    const newLive = liveData.filter(d => d.date.toISOString().slice(0, 10) > sheetEndDate);
+    if (!newLive.length) return spreadsheetData;
+
+    // Scale live data to match spreadsheet's ending price (vault migration adjustment)
+    const liveBaseline = newLive[0].sharePrice;
+    const sheetEndPrice = sheetEnd.sharePrice;
+    const combined = [...spreadsheetData];
+
+    for (const v of newLive) {
+        combined.push({
+            date: v.date,
+            sharePrice: sheetEndPrice * (v.sharePrice / liveBaseline),
+            tvl: v.tvl,
+            source: 'live'
+        });
+    }
+
+    console.log(`Combined: ${spreadsheetData.length} spreadsheet + ${newLive.length} live = ${combined.length} total`);
+    return combined;
+}
+
 async function loadAll() {
     try {
-        const [dlData, cgData, vc, vh, jlpInfo, solData, ethData, btcData] = await Promise.all([
+        const [dlData, cgData, vc, vh, jlpInfo, solData, ethData, btcData, sheetData] = await Promise.all([
             fetchJSON(DEFILLAMA_URL),
             fetchJSON(COINGECKO_URL),
             fetchJSON(VAULT_URL, true),
@@ -238,7 +295,8 @@ async function loadAll() {
             fetchJSON(JLP_INFO_URL).catch(() => null),
             fetchJSON(CG_SOL_URL).catch(() => null),
             fetchJSON(CG_ETH_URL).catch(() => null),
-            fetchJSON(CG_BTC_URL).catch(() => null)
+            fetchJSON(CG_BTC_URL).catch(() => null),
+            fetchSpreadsheetData()
         ]);
         feeData = (dlData.totalDataChart || []).map(([ts, val]) => ({ date: new Date(ts * 1000), value: val }));
         cgPrices = (cgData.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
@@ -246,7 +304,8 @@ async function loadAll() {
         ethPrices = (ethData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         btcPrices = (btcData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         vaultCurrent = vc;
-        vaultHistory = (vh || []).map(d => ({ date: new Date(d.update_time_utc), sharePrice: d.SharePrice, tvl: d.tvl })).sort((a, b) => a.date - b.date);
+        const liveHistory = (vh || []).map(d => ({ date: new Date(d.update_time_utc), sharePrice: d.SharePrice, tvl: d.tvl })).sort((a, b) => a.date - b.date);
+        vaultHistory = combineVaultHistory(sheetData, liveHistory);
 
         // JLP pool NAV price from Jupiter API
         if (jlpInfo && jlpInfo.jlpPriceUsd) {
