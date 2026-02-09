@@ -355,9 +355,21 @@ function chartOpts(extra = {}) {
 }
 
 async function fetchJSON(url, useProxy = false) {
-    const res = await fetch(useProxy ? PROXY(url) : url);
-    const data = await res.json();
-    return useProxy ? JSON.parse(data.contents) : data;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000); // 10s timeout
+    try {
+        const res = await fetch(useProxy ? PROXY(url) : url, { signal: controller.signal });
+        clearTimeout(timeout);
+        const data = await res.json();
+        if (useProxy) {
+            try { return JSON.parse(data.contents); } catch { return null; }
+        }
+        return data;
+    } catch (e) {
+        clearTimeout(timeout);
+        console.warn('fetchJSON failed:', url, e.message);
+        return null;
+    }
 }
 
 async function fetchSpreadsheetData() {
@@ -589,30 +601,27 @@ function renderWaterfallChart() {
     const r = results[key];
     if (!r) return;
 
-    const labels = ['Gross Fees', '− Trader P&L', '− Hedge Cost', 'Expected Net', 'Actual Return'];
-    const values = [
-        r.grossFeeYield,
-        -Math.abs(r.leakageYield) * (r.leakageYield > 0 ? 1 : -1),
-        r.hedgeCostYield < 0 ? r.hedgeCostYield : -r.hedgeCostYield,
-        r.expectedNet,
-        r.actualReturn !== null ? r.actualReturn : 0
-    ];
-    // For waterfall: trader P&L leakage shown as negative, hedge cost shown as negative
-    const traderDrag = r.leakageYield > 0 ? -r.leakageYield : Math.abs(r.leakageYield);
-    const hedgeDrag = r.hedgeCostYield;
+    const labels = ['Gross Fees', 'Trader P&L Impact', 'Hedge Funding', 'Expected Net', 'Actual Return'];
+    // leakageYield: positive = traders won (bad for pool), negative = traders lost (good for pool)
+    // In the chart: show the IMPACT on pool, so negate it. Traders won +50% → pool impact -50%
+    const traderImpact = -r.leakageYield;
+    // hedgeCostYield: positive = we earn (good), negative = we pay (bad). Show as-is.
+    const hedgeImpact = r.hedgeCostYield;
 
-    const data = [r.grossFeeYield, traderDrag, hedgeDrag, r.expectedNet, r.actualReturn !== null ? r.actualReturn : 0];
+    const data = [r.grossFeeYield, traderImpact, hedgeImpact, r.expectedNet, r.actualReturn !== null ? r.actualReturn : 0];
     const colors = [
-        'rgba(34,197,94,0.8)',    // green - gross fees
-        'rgba(239,68,68,0.8)',    // red - trader pnl drag
-        r.hedgeCostYield >= 0 ? 'rgba(34,197,94,0.6)' : 'rgba(239,68,68,0.6)', // hedge
-        'rgba(0,212,255,0.4)',    // cyan outline - expected
+        'rgba(34,197,94,0.8)',    // green - gross fees (always positive)
+        traderImpact >= 0 ? 'rgba(34,197,94,0.6)' : 'rgba(239,68,68,0.8)', // green if pool gained, red if pool lost
+        hedgeImpact >= 0 ? 'rgba(34,197,94,0.6)' : 'rgba(239,68,68,0.6)', // green if earning, red if paying
+        'rgba(0,212,255,0.4)',    // cyan - expected
         r.actualReturn !== null && r.actualReturn >= 0 ? 'rgba(0,212,255,0.8)' : 'rgba(239,68,68,0.8)' // actual
     ];
     const borders = [
-        '#22c55e', '#ef4444',
-        r.hedgeCostYield >= 0 ? '#22c55e' : '#ef4444',
-        '#00d4ff', r.actualReturn !== null && r.actualReturn >= 0 ? '#00d4ff' : '#ef4444'
+        '#22c55e',
+        traderImpact >= 0 ? '#22c55e' : '#ef4444',
+        hedgeImpact >= 0 ? '#22c55e' : '#ef4444',
+        '#00d4ff',
+        r.actualReturn !== null && r.actualReturn >= 0 ? '#00d4ff' : '#ef4444'
     ];
 
     const cfg = {
@@ -673,11 +682,11 @@ async function loadAll() {
         const [alliumFeesData, alliumPnlData, dlData, cgData, vc, vh, jlpInfo, solData, ethData, btcData, sheetData, onchainPnlData] = await Promise.all([
             fetch('./data/allium-fees.json?t=' + Date.now()).then(r => r.json()).catch(() => null),
             fetch('./data/allium-trader-pnl.json?t=' + Date.now()).then(r => r.json()).catch(() => null),
-            fetchJSON(DEFILLAMA_URL).catch(() => null),
+            fetchJSON(DEFILLAMA_URL),
             fetchJSON(COINGECKO_URL),
             fetchJSON(VAULT_URL, true),
             fetchJSON(VAULT_HIST_URL, true),
-            fetchJSON(JLP_INFO_URL).catch(() => null),
+            fetchJSON(JLP_INFO_URL),
             fetchJSON(CG_SOL_URL).catch(() => null),
             fetchJSON(CG_ETH_URL).catch(() => null),
             fetchJSON(CG_BTC_URL).catch(() => null),
@@ -705,18 +714,18 @@ async function loadAll() {
             feeData = (dlData.totalDataChart || []).map(([ts, val]) => ({ date: new Date(ts * 1000), value: val, source: 'defillama' }));
         }
 
-        cgPrices = (cgData.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
-        solPrices = (solData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
-        ethPrices = (ethData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
-        btcPrices = (btcData?.prices || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
+        cgPrices = ((cgData && cgData.prices) || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
+        solPrices = ((solData && solData.prices) || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
+        ethPrices = ((ethData && ethData.prices) || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
+        btcPrices = ((btcData && btcData.prices) || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         vaultCurrent = vc;
-        const liveHistory = (vh || []).map(d => ({ date: new Date(d.update_time_utc), sharePrice: d.SharePrice, tvl: d.tvl })).sort((a, b) => a.date - b.date);
+        const liveHistory = ((vh && Array.isArray(vh)) ? vh : []).map(d => ({ date: new Date(d.update_time_utc), sharePrice: d.SharePrice, tvl: d.tvl })).sort((a, b) => a.date - b.date);
         vaultHistory = combineVaultHistory(sheetData, liveHistory);
 
         if (jlpInfo && jlpInfo.jlpPriceUsd) {
             jlpPoolPrice = parseInt(jlpInfo.jlpPriceUsd) / 1e6;
         }
-        if (jlpInfo) {
+        if (jlpInfo && jlpInfo.aumUsd) {
             jlpAUM = parseInt(jlpInfo.aumUsd) / 1e6;
         }
 
@@ -1189,8 +1198,12 @@ loadAll();
 loadDriftFunding();
 setInterval(() => { loadAll(); loadDriftFunding(); }, 60000);
 
-// Hedge Activity Chart
-(function() {
+// Hedge Activity Chart — deferred until details section is opened
+let hedgeActivityRendered = false;
+function renderHedgeActivity() {
+    if (hedgeActivityRendered) return;
+    hedgeActivityRendered = true;
+    (function() {
     const dailyData = [
         {date:'2026-01-06',trades:63,volume:1200000},{date:'2026-01-07',trades:35,volume:1300000},
         {date:'2026-01-08',trades:2,volume:157000},{date:'2026-01-12',trades:18,volume:387000},
@@ -1229,6 +1242,15 @@ setInterval(() => { loadAll(); loadDriftFunding(); }, 60000);
         }
     });
 })();
+}
+// Listen for the hedge details section to open
+document.querySelectorAll('details.detail-section').forEach(d => {
+    d.addEventListener('toggle', () => {
+        if (d.open && d.querySelector('#hedgeActivityChart')) {
+            setTimeout(renderHedgeActivity, 50);
+        }
+    });
+});
 </script>
 </body>
 </html>
