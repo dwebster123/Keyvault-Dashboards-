@@ -257,12 +257,16 @@ async function loadAll() {
         const jlpPrice = cgPrices.length ? cgPrices[cgPrices.length - 1].price : null;
         const fees24h = dlData.total24h || 0;
         const feesAll = dlData.totalAllTime || 0;
-        // Use Jupiter's own APY if available, otherwise estimate
-        const jlpAPY = jlpInfo ? parseFloat(jlpInfo.jlpApyPct) : null;
+        // Calculate REAL-TIME fee APY from recent DefiLlama data + Jupiter AUM
+        const jlpAPY_official = jlpInfo ? parseFloat(jlpInfo.jlpApyPct) : null;
         const recentFees = feeData.slice(-7);
         const avgDaily = recentFees.reduce((s, d) => s + d.value, 0) / recentFees.length;
-        const estimatedTVL = cgData.market_caps && cgData.market_caps.length ? cgData.market_caps[cgData.market_caps.length - 1][1] : 1;
-        const estAPY = jlpAPY || ((avgDaily * 0.75 * 365) / estimatedTVL) * 100;
+        const jlpAUM = jlpInfo ? parseInt(jlpInfo.aumUsd) / 1e6 : 1200000000;
+        // Real-time fee APY = (avg daily fees * 75% to JLP * 365) / AUM
+        // This is GROSS fee yield — does NOT subtract trader P&L impact
+        const grossFeeAPY = (avgDaily * 0.75 * 365) / jlpAUM * 100;
+        // Jupiter's official APY is NET (includes trader P&L drag) but LAGGING
+        const estAPY = grossFeeAPY;
         const vaultSharePrice = vaultCurrent ? vaultCurrent.SharePrice : null;
         const delta = (jlpPrice && jlpPoolPrice) ? ((jlpPrice - jlpPoolPrice) / jlpPoolPrice * 100) : null;
 
@@ -290,7 +294,7 @@ async function loadAll() {
             <div class="metric-card">
                 <div class="metric-label">JLP APY</div>
                 <div class="metric-value positive">${estAPY.toFixed(1)}%</div>
-                <div class="metric-sub">${jlpAPY ? 'Jupiter official' : '7d avg fees / TVL'}</div>
+                <div class="metric-sub">Gross fee yield (7d avg)${jlpAPY_official ? ' · Jup: ' + jlpAPY_official.toFixed(1) + '% net' : ''}</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">Vault Share Price</div>
@@ -433,9 +437,9 @@ function deriveDailyTraderPnl() {
     const ethMap = buildMap(ethPrices);
     const btcMap = buildMap(btcPrices);
 
-    // JLP pool weights (volatile portion): SOL 45%, ETH 8%, BTC 13%, stables 34%
+    // JLP pool target weights: SOL 47%, ETH 8%, BTC 13%, stables 32%
     // Stables don't change price, so basket return = weighted sum of volatile asset returns
-    const W_SOL = 0.45, W_ETH = 0.08, W_BTC = 0.13, W_STABLE = 0.34;
+    const W_SOL = 0.47, W_ETH = 0.08, W_BTC = 0.13, W_STABLE = 0.32;
 
     const dates = Object.keys(jlpMap).sort();
     const results = [];
@@ -605,21 +609,34 @@ function renderHedgeEfficiency() {
     const feeMap = {};
     feeData.forEach(d => { feeMap[d.date.toISOString().slice(0, 10)] = d.value; });
 
-    // Weighted funding rate (daily, as decimal, on hedge portion)
-    let avgFundingAnnual = -0.20;
+    // Compute daily funding rate from Drift data (use actual per-day rates, not average)
+    const fundingByDate = {}; // date -> weighted daily rate (decimal)
     if (fundingData['SOL-PERP'] && fundingData['SOL-PERP'].length) {
-        const lastRates = {};
+        // Build per-market date maps
+        const marketDateMap = {};
         ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => {
-            const d = fundingData[m] || [];
-            if (d.length) lastRates[m] = d.reduce((s, r) => s + r.rate, 0) / d.length;
+            marketDateMap[m] = {};
+            (fundingData[m] || []).forEach(d => {
+                marketDateMap[m][d.date.toISOString().slice(0, 10)] = d.rate; // annualized %
+            });
         });
-        avgFundingAnnual = (
-            (lastRates['SOL-PERP'] || 0) * (HEDGE_WEIGHTS['SOL-PERP'] || 0) +
-            (lastRates['BTC-PERP'] || 0) * (HEDGE_WEIGHTS['BTC-PERP'] || 0) +
-            (lastRates['ETH-PERP'] || 0) * (HEDGE_WEIGHTS['ETH-PERP'] || 0)
-        ) / 100;
+        // For each date, compute weighted daily rate
+        const allDates = new Set();
+        ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => {
+            Object.keys(marketDateMap[m]).forEach(d => allDates.add(d));
+        });
+        allDates.forEach(date => {
+            let weighted = 0;
+            ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'].forEach(m => {
+                weighted += (marketDateMap[m][date] || 0) * (HEDGE_WEIGHTS[m] || 0);
+            });
+            // Convert from annualized % to daily decimal, scaled by hedge portion (~68% of pool is volatile)
+            fundingByDate[date] = (weighted / 100) * 0.68 / 365;
+        });
     }
-    const fundingDailyPct = avgFundingAnnual * 0.66 / 365;
+
+    // Fallback average funding if no per-day data available
+    let avgFundingDaily = -0.20 * 0.68 / 365;
 
     // Use 7-day rolling averages for smoother expected line
     const results = [];
@@ -633,14 +650,18 @@ function renderHedgeEfficiency() {
 
         const actualReturn = (curr.sharePrice / prev.sharePrice - 1);
 
-        // Use each day's actual TVL for pool share calc
-        const vTvl = prev.tvl || 3956000;
-        // Approximate pool TVL from JLP market cap (varies daily, use ~1.2B as baseline)
-        const pTvl = 1200000000;
-        const poolShare = vTvl / pTvl;
-
+        // Fee yield: daily fees * 75% (JLP share) / pool AUM
+        // This is the GROSS fee yield — what JLP earns before trader P&L impact
+        const jlpAUM = jlpPoolPrice ? jlpPoolPrice * 320000000 : 1200000000;
         const dailyFees = (feeMap[dateKey] || 0) * 0.75;
-        const feeYieldPct = dailyFees > 0 ? (dailyFees * poolShare) / vTvl : 0;
+        const feeYieldPct = dailyFees > 0 ? dailyFees / jlpAUM : 0;
+
+        // Funding cost for that specific day (or fallback to average)
+        const fundingDailyPct = fundingByDate[dateKey] || avgFundingDaily;
+
+        // Expected = gross fee yield + funding (funding is negative when shorts pay)
+        // NOTE: This is an UPPER BOUND — doesn't subtract trader P&L impact,
+        // which is unknowable without historical NAV data.
         const expectedReturn = feeYieldPct + fundingDailyPct;
 
         dailyExpected.push(expectedReturn);
@@ -732,7 +753,7 @@ function renderHedgeEfficiency() {
                 <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(0,212,255,0.06);">
                     <div style="color:#8b8ba7;font-size:0.7rem;">Expected APY</div>
                     <div style="color:${chartColors.cyan};font-weight:bold;font-size:1.1rem;">${expApy.toFixed(1)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">Fees − Funding</div>
+                    <div style="color:#555;font-size:0.6rem;">Gross fees − Funding (upper bound)</div>
                 </div>
                 <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(34,197,94,0.06);">
                     <div style="color:#8b8ba7;font-size:0.7rem;">Actual Vault APY</div>
@@ -747,11 +768,11 @@ function renderHedgeEfficiency() {
                 <div style="flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:rgba(239,68,68,0.06);">
                     <div style="color:#8b8ba7;font-size:0.7rem;">Leakage APY</div>
                     <div style="color:#ef4444;font-weight:bold;font-size:1.1rem;">${leakageApy.toFixed(1)}%</div>
-                    <div style="color:#555;font-size:0.6rem;">Trader PnL + Slippage</div>
+                    <div style="color:#555;font-size:0.6rem;">Trader PnL + Slippage + Basis</div>
                 </div>
             </div>
             <div style="color:#555;font-size:0.65rem;margin-top:8px;text-align:center;">
-                Expected = fee share − funding cost only. Leakage includes trader P&L impact, hedge rebalancing, basis risk. Fee data may lag 1-2 days (DefiLlama).
+                Expected = GROSS fee yield − funding cost. This is an upper bound — the gap between Expected and Actual is primarily trader P&L impact (when traders win, they take from the pool). Fee data may lag 1-2 days (DefiLlama).
             </div>
         `;
     }
@@ -839,9 +860,9 @@ document.getElementById('feeTabs').addEventListener('click', e => {
 // ============ DRIFT FUNDING RATES ============
 const DRIFT_MARKETS = ['SOL-PERP', 'BTC-PERP', 'ETH-PERP'];
 const DRIFT_COLORS = { 'SOL-PERP': '#22c55e', 'BTC-PERP': '#f59e0b', 'ETH-PERP': '#3b82f6' };
-// JLP pool target weights for hedge-relevant assets (SOL 44%, BTC 11%, ETH 10% of total pool)
-// Normalized to hedge portion only: SOL 67.7%, BTC 16.9%, ETH 15.4%
-const HEDGE_WEIGHTS = { 'SOL-PERP': 0.677, 'BTC-PERP': 0.169, 'ETH-PERP': 0.154 };
+// JLP pool target weights for hedge-relevant assets (SOL 47%, BTC 13%, ETH 8% of total pool)
+// Normalized to hedge portion only (68% volatile): SOL 69.1%, BTC 19.1%, ETH 11.8%
+const HEDGE_WEIGHTS = { 'SOL-PERP': 0.691, 'BTC-PERP': 0.191, 'ETH-PERP': 0.118 };
 let fundingData = {}; // { 'SOL-PERP': [{date, rate}, ...], ... }
 let fundingChart = null;
 let selectedFundingDays = 30;
