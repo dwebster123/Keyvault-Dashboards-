@@ -465,23 +465,26 @@ function renderWaterfall() {
         Object.entries(pnlData).forEach(([date, d]) => {
             if (date >= cutoffStr) { totalTraderPnl += d.trader_pnl; pnlDays++; }
         });
-        // Trader P&L as % of AUM, annualized. Positive trader_pnl = traders won = pool lost
-        const leakageYield = pnlDays > 0 ? (totalTraderPnl / jlpAUM) * (365 / pnlDays) * 100 : 0;
+        // Trader P&L as % of AUM, annualized.
+        // Positive trader_pnl = traders won = pool LOST (leakage)
+        // Negative trader_pnl = traders lost = pool GAINED (anti-leakage)
+        const traderPnlYield = pnlDays > 0 ? (totalTraderPnl / jlpAUM) * (365 / pnlDays) * 100 : 0;
+        // For display: leakageYield is the DRAG on pool. Positive = bad for pool.
+        const leakageYield = traderPnlYield; // positive = traders won (drag), negative = traders lost (boost)
 
         // 3. Hedge Cost (Funding)
         let fundingSum = 0, fundingCount = 0;
         Object.entries(fundingByDate).forEach(([date, rate]) => {
             if (date >= cutoffStr) { fundingSum += rate; fundingCount++; }
         });
-        // Average annualized funding rate * hedge portion (68% of pool is volatile assets being hedged)
         const avgFunding = fundingCount > 0 ? fundingSum / fundingCount : 0;
-        // Negative funding = shorts pay = hedge cost. We show hedge cost as a negative drag.
-        // avgFunding is annualized %. If negative, shorts pay (cost). If positive, shorts earn (revenue).
-        // For the waterfall: hedge cost = -avgFunding * 0.68 (negative funding is a cost)
-        const hedgeCostYield = avgFunding * 0.68; // positive = revenue, negative = cost
+        // For shorts (our hedges): positive funding rate = longs pay shorts = we EARN
+        // Negative funding rate = shorts pay longs = we PAY (cost)
+        const hedgeCostYield = avgFunding * 0.68;
 
         // 4. Expected Net Yield
-        const expectedNet = grossFeeYield - Math.abs(leakageYield) + hedgeCostYield;
+        // Gross fees - leakage (if positive/traders won) + leakage (if negative/traders lost) + hedge funding
+        const expectedNet = grossFeeYield - leakageYield + hedgeCostYield;
 
         // 5. Actual Vault Return
         let actualReturn = null;
