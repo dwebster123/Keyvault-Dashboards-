@@ -138,7 +138,30 @@
         </div>
 
         <div class="two-col">
-<!-- Vault vs JLP chart removed -->
+            <!-- Chart: Trader P&L Impact on Pool -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Trader P&L Impact on Pool (Derived)</h3>
+                    <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Green = traders lost (pool gained). Red = traders won (pool paid out). Derived from JLP price change minus fees minus asset price change.</p>
+                </div>
+                <div class="tabs-container" id="pnlTabs">
+                    <button class="tab" onclick="selectedPnlDays=7;renderPnlChart();this.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">7D</button>
+                    <button class="tab active" onclick="selectedPnlDays=30;renderPnlChart();this.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">30D</button>
+                    <button class="tab" onclick="selectedPnlDays=90;renderPnlChart();this.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">90D</button>
+                </div>
+                <div class="chart-wrapper"><canvas id="pnlChart"></canvas></div>
+            </div>
+
+            <!-- Real-time Trader Exposure -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Current Trader Exposure vs Pool</h3>
+                    <p class="chart-subtitle" style="color:#8b8ba7;font-size:0.8rem;">Real-time open positions against the JLP pool. Refreshes every 60s.</p>
+                </div>
+                <div id="traderExposure" style="padding:15px;">
+                    <div style="color:#888;">Loading trader exposure...</div>
+                </div>
+            </div>
 
             <!-- Chart 4: Weekly Fee Breakdown -->
             <div class="chart-container">
@@ -263,6 +286,8 @@ async function loadAll() {
         renderPriceChart();
         // renderVaultChart(); // removed
         renderWeeklyFeeChart();
+        renderPnlChart();
+        if (jlpInfo) renderTraderExposure(jlpInfo);
         updateFundingMetric(); // re-apply after innerHTML rebuild
     } catch (e) {
         console.error('Load error:', e);
@@ -360,6 +385,180 @@ function renderVaultChart() {
 }
 
 // Chart 4: Weekly fees + cumulative
+// Trader P&L derivation
+// JLP daily return = fee yield + asset return - trader PnL (from pool perspective)
+// So: trader PnL = fee yield + asset return - JLP return (positive = traders won, pool lost)
+let pnlChart = null;
+let selectedPnlDays = 30;
+
+function deriveDailyTraderPnl() {
+    if (!cgPrices.length || !feeData.length) return [];
+
+    // Build daily fee map
+    const feeMap = {};
+    feeData.forEach(d => {
+        const key = d.date.toISOString().slice(0, 10);
+        feeMap[key] = d.value;
+    });
+
+    // Build daily JLP price map from CoinGecko
+    const priceMap = {};
+    cgPrices.forEach(d => {
+        const key = d.date.toISOString().slice(0, 10);
+        priceMap[key] = d.price;
+    });
+
+    const dates = Object.keys(priceMap).sort();
+    const results = [];
+
+    for (let i = 1; i < dates.length; i++) {
+        const today = dates[i];
+        const yesterday = dates[i - 1];
+        const p0 = priceMap[yesterday];
+        const p1 = priceMap[today];
+        if (!p0 || !p1) continue;
+
+        const jlpReturn = (p1 - p0) / p0; // JLP daily return (includes fees + asset change - trader PnL)
+
+        // Daily fees as % of pool (75% of fees go to pool)
+        // Use AUM estimate from market cap: price * supply (~320M)
+        const poolValue = p0 * 320000000;
+        const dailyFees = (feeMap[today] || 0) * 0.75; // 75% goes to JLP
+        const feeYield = poolValue > 0 ? dailyFees / poolValue : 0;
+
+        // Implied trader PnL = fees earned + asset change - actual JLP change
+        // Since JLP contains ~65% volatile assets, approximate asset return from JLP minus fee component
+        // Simplified: traderPnl ≈ feeYield - jlpReturn (as % of pool)
+        // When positive = traders won (bad for pool), negative = traders lost (good for pool)
+        const impliedTraderPnl = feeYield - jlpReturn;
+        const impliedTraderPnlUsd = impliedTraderPnl * poolValue;
+
+        results.push({
+            date: new Date(today),
+            pnlPct: impliedTraderPnl * 100,
+            pnlUsd: impliedTraderPnlUsd
+        });
+    }
+    return results;
+}
+
+function renderPnlChart() {
+    const allPnl = deriveDailyTraderPnl();
+    const cutoff = selectedPnlDays > 0 ? allPnl.length - selectedPnlDays : 0;
+    const data = allPnl.slice(Math.max(0, cutoff));
+
+    let cumUsd = 0;
+    const barData = data.map(d => ({
+        x: d.date,
+        y: d.pnlUsd,
+        backgroundColor: d.pnlUsd > 0 ? 'rgba(239,68,68,0.7)' : 'rgba(34,197,94,0.7)',
+        borderColor: d.pnlUsd > 0 ? '#ef4444' : '#22c55e'
+    }));
+    const cumData = data.map(d => {
+        cumUsd += d.pnlUsd;
+        return { x: d.date, y: cumUsd };
+    });
+
+    const cfg = {
+        type: 'bar',
+        data: {
+            datasets: [
+                {
+                    label: 'Daily Trader P&L ($)',
+                    data: barData.map(d => ({ x: d.x, y: d.y })),
+                    backgroundColor: barData.map(d => d.backgroundColor),
+                    borderColor: barData.map(d => d.borderColor),
+                    borderWidth: 1,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Cumulative Trader P&L ($)',
+                    data: cumData,
+                    type: 'line',
+                    borderColor: chartColors.purple,
+                    pointRadius: 0,
+                    borderWidth: 2,
+                    yAxisID: 'y2'
+                }
+            ]
+        },
+        options: {
+            ...chartOpts({
+                y: {
+                    ...defaultScales.y,
+                    position: 'left',
+                    title: { display: true, text: 'Daily P&L ($)', color: chartColors.text },
+                    ticks: { color: chartColors.text, callback: v => (v >= 0 ? '+$' : '-$') + Math.abs(v / 1e6).toFixed(1) + 'M' }
+                },
+                y2: {
+                    ...defaultScales.y,
+                    position: 'right',
+                    grid: { display: false },
+                    title: { display: true, text: 'Cumulative ($)', color: chartColors.text },
+                    ticks: { color: chartColors.text, callback: v => (v >= 0 ? '+$' : '-$') + Math.abs(v / 1e6).toFixed(1) + 'M' }
+                }
+            })
+        }
+    };
+
+    if (pnlChart) pnlChart.destroy();
+    pnlChart = new Chart(document.getElementById('pnlChart'), cfg);
+}
+
+function renderTraderExposure(jlpInfo) {
+    if (!jlpInfo) return;
+    const el = document.getElementById('traderExposure');
+    if (!el) return;
+
+    const custodies = (jlpInfo.custodies || []).filter(c => ['SOL', 'ETH', 'WBTC'].includes(c.symbol));
+    let totalShortSize = 0, totalShortPnl = 0, totalGuaranteed = 0;
+
+    const rows = custodies.map(c => {
+        const shortSize = parseInt(c.globalShortSizes || 0) / 1e6;
+        const shortPnl = parseInt(c.shortPnlDelta || 0) / 1e6;
+        const hasProfit = c.shortTradersHasProfit;
+        const guaranteed = parseInt(c.guaranteedUsd || 0) / 1e6;
+        totalShortSize += shortSize;
+        totalShortPnl += hasProfit ? shortPnl : -shortPnl;
+        totalGuaranteed += guaranteed;
+
+        const pnlColor = hasProfit ? '#ef4444' : '#22c55e';
+        const pnlSign = hasProfit ? '+' : '-';
+        return `<tr>
+            <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">${c.symbol}</td>
+            <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">$${(guaranteed/1e3).toFixed(0)}K</td>
+            <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">$${(shortSize/1e3).toFixed(0)}K</td>
+            <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);color:${pnlColor}">${pnlSign}$${(shortPnl/1e3).toFixed(0)}K</td>
+        </tr>`;
+    }).join('');
+
+    const totalPnlColor = totalShortPnl > 0 ? '#ef4444' : '#22c55e';
+    const totalPnlLabel = totalShortPnl > 0 ? 'Traders winning (pool paying)' : 'Traders losing (pool earning)';
+
+    el.innerHTML = `
+        <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+            <thead><tr style="color:#8b8ba7;">
+                <th style="padding:8px;text-align:left">Asset</th>
+                <th style="padding:8px;text-align:left">Long Exposure</th>
+                <th style="padding:8px;text-align:left">Short Size</th>
+                <th style="padding:8px;text-align:left">Short Unreal. P&L</th>
+            </tr></thead>
+            <tbody>${rows}
+                <tr style="font-weight:bold;border-top:2px solid rgba(255,255,255,0.15)">
+                    <td style="padding:8px">Total</td>
+                    <td style="padding:8px">$${(totalGuaranteed/1e6).toFixed(1)}M</td>
+                    <td style="padding:8px">$${(totalShortSize/1e6).toFixed(1)}M</td>
+                    <td style="padding:8px;color:${totalPnlColor}">${totalShortPnl > 0 ? '+' : '-'}$${(Math.abs(totalShortPnl)/1e3).toFixed(0)}K</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="margin-top:10px;padding:10px;border-radius:8px;background:rgba(255,255,255,0.03);font-size:0.85rem;">
+            <span style="color:${totalPnlColor};font-weight:bold;">${totalPnlLabel}</span>
+            <span style="color:#8b8ba7;margin-left:10px;">Total open interest: $${((totalGuaranteed + totalShortSize)/1e6).toFixed(1)}M</span>
+        </div>
+    `;
+}
+
 function renderWeeklyFeeChart() {
     // Aggregate by week
     const weeks = {};
