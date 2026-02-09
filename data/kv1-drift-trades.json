@@ -1,0 +1,4502 @@
+[
+  {
+    "block_timestamp": "2026-02-02T09:24:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 71011355,
+    "price": 76937458687,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-03T20:34:23",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 740980000000,
+    "price": 100684563,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-04T15:21:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 85880000000,
+    "price": 92937500,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-02-04T15:21:02",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 358044444788,
+    "price": 92946240,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-04T15:21:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 32220000000,
+    "price": 92926200,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-02-02T04:24:52",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 394000000,
+    "price": 76124880000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-02T03:31:15",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 794550000000,
+    "price": 96764836,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-05T18:32:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 150087168439,
+    "price": 81597040,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-03T19:10:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 509240000000,
+    "price": 98195500,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-04T11:04:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 96390000000,
+    "price": 95885276,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-06T01:08:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 7103758,
+    "price": 64230782444,
+    "user_acct": "5xGR2exTiLsq4EXn1Nbt1pLD9SdZFF4p41DxLovN3Qse"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:36:24",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 353620463394,
+    "price": 80620920,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-02T04:24:52",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 9900000,
+    "price": 76115466144,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-06T01:07:49",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 609420000000,
+    "price": 76144491,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-02T09:24:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 71011355,
+    "price": 76937458687,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-03T15:15:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 200940000000,
+    "price": 100460781,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-03T15:15:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 3937000000,
+    "price": 2255143213,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-02-02T06:03:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1014450425702,
+    "price": 97298037,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-02-05T11:30:08",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 56203716420,
+    "price": 2070591970,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-02-06T13:05:56",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 57505401696,
+    "price": 1927173737,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:36:25",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 7068249,
+    "price": 64626272193,
+    "user_acct": "5xGR2exTiLsq4EXn1Nbt1pLD9SdZFF4p41DxLovN3Qse"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:38:08",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 114879575,
+    "price": 64581180000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T00:48:46",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 574845252889,
+    "price": 74503980,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-06T00:48:47",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 575280000000,
+    "price": 74429600,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-06T00:50:36",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 792551046,
+    "price": 1868977835,
+    "user_acct": "5sqvrTL85pj3XWN2wmBZNSNE9kmgrNxG9dFzkvbMTeGm"
+  },
+  {
+    "block_timestamp": "2026-02-02T06:03:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 513780000000,
+    "price": 97312340,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-05T11:29:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 68300000,
+    "price": 69905111387,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-02T06:03:44",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 57600000,
+    "price": 75213325599,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-03T15:15:04",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 1183591698,
+    "price": 77090667243,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-02-05T11:29:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 1347182707,
+    "price": 69900811753,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-02-05T18:29:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 2017000935,
+    "price": 1932808530,
+    "user_acct": "5sqvrTL85pj3XWN2wmBZNSNE9kmgrNxG9dFzkvbMTeGm"
+  },
+  {
+    "block_timestamp": "2026-02-06T00:48:46",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 311700000,
+    "price": 62557357412,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-02T09:25:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1648007269,
+    "price": 2252408865,
+    "user_acct": "5sqvrTL85pj3XWN2wmBZNSNE9kmgrNxG9dFzkvbMTeGm"
+  },
+  {
+    "block_timestamp": "2026-02-02T04:24:49",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1011415034536,
+    "price": 100567633,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:38:58",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 13829125187,
+    "price": 1905892000,
+    "user_acct": "AAoLWsf12mUP7ZUSGxom5heKiJeB1TkWjdzJCiSAoYwi"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:24:56",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 185234844,
+    "price": 65395520000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-05T18:32:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 175811633265,
+    "price": 81593040,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-05T18:29:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 201700000,
+    "price": 65539695326,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-04T15:21:09",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 436740000000,
+    "price": 93038913,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-05T20:52:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 54800000,
+    "price": 62784565852,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:24:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 83667296,
+    "price": 65413261839,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:25:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 336617404,
+    "price": 65416660000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:38:58",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 87738000000,
+    "price": 1906095634,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:39:49",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 456800000,
+    "price": 65658400000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:26:02",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 175939931,
+    "price": 65299413989,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-06T13:05:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 161200000,
+    "price": 66656075318,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-02-02T09:23:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 79062180975,
+    "price": 101952700,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-05T11:29:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1075872145604,
+    "price": 88733299,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:41:02",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 281795944,
+    "price": 64940960000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T16:56:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 77848615,
+    "price": 69801385658,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-02T09:26:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 13149100265,
+    "price": 2258876000,
+    "user_acct": "AAoLWsf12mUP7ZUSGxom5heKiJeB1TkWjdzJCiSAoYwi"
+  },
+  {
+    "block_timestamp": "2026-02-05T15:13:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 153990772984,
+    "price": 86183519,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:36:17",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 60836999651,
+    "price": 1912758125,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-02-03T15:15:04",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 497750000000,
+    "price": 100447920,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-04T11:04:32",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 908644544167,
+    "price": 95933754,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-02-06T01:07:49",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 657080000000,
+    "price": 76103320,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:32:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 177557482,
+    "price": 65612480000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:43:27",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1176683158056,
+    "price": 77845342,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:36:24",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 307796883204,
+    "price": 80612920,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:29:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 183821479,
+    "price": 65462220000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-05T20:52:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 149382974805,
+    "price": 77786216,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-02T09:24:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 948723765328,
+    "price": 102031579,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-02-04T11:04:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 96390000000,
+    "price": 95885276,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-04T11:04:33",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 65035533,
+    "price": 75911100000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-05T15:13:48",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 4221000000,
+    "price": 1999218549,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-02-06T05:35:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 1609507784,
+    "price": 65611692869,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:48:31",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 100480146813,
+    "price": 1916974218,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-02-05T20:52:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 5020252060140,
+    "price": 77774897,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-02-04T11:04:32",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 7440000000,
+    "price": 2242010805,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:53:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 213720637069,
+    "price": 76522045,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-06T05:53:58",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 266740793,
+    "price": 66462042299,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T16:15:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1467056358913,
+    "price": 84892625,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-02-06T00:48:46",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 96480000000,
+    "price": 74491300,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-06T01:09:42",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 294487297,
+    "price": 64374340000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T01:10:52",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 24000000,
+    "price": 0,
+    "user_acct": "Cv1KcdkPSA9xKfYWfP92QCcHh8Tpbnmn8fzHD7jYMNMN"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:53:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 210426827,
+    "price": 64713260000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:53:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 910723462125,
+    "price": 76511562,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-02-02T09:23:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 490500000000,
+    "price": 101938780,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-06T13:05:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 731563636190,
+    "price": 82016105,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-02-05T11:29:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 563450000000,
+    "price": 88746300,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-03T19:10:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 365870000000,
+    "price": 98214516,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-06T00:50:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 6577838386,
+    "price": 1869360000,
+    "user_acct": "AAoLWsf12mUP7ZUSGxom5heKiJeB1TkWjdzJCiSAoYwi"
+  },
+  {
+    "block_timestamp": "2026-02-03T20:34:20",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 394100000,
+    "price": 76113160000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T07:48:56",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 160000000000,
+    "price": 79851469,
+    "user_acct": "9bNoMtehA74whcdZRy59DJBFSgspnNoxAdYoYpTfca6n"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:32:13",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 580048354,
+    "price": 65634070541,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:53:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 213720637069,
+    "price": 76522045,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:36:25",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 291702025,
+    "price": 64622220000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:37:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 63231610,
+    "price": 64761620000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:39:49",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 741100000,
+    "price": 65657543998,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:29:58",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 267994636,
+    "price": 65510040000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:58:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 1727768704,
+    "price": 64816088839,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-02-06T02:36:25",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 172500000,
+    "price": 64607240000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-02-06T22:35:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 510330000000,
+    "price": 89060503,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-05T20:52:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 19510000000,
+    "price": 77791765,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-05T20:52:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 149382974805,
+    "price": 77786216,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-05T20:52:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 642250000000,
+    "price": 77822060,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-06T19:52:44",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 406925885524,
+    "price": 87083008,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-06T09:26:02",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 175939931,
+    "price": 65299413989,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-02-06T10:15:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 184229573278,
+    "price": 80920340,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-06T10:14:29",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 34100000,
+    "price": 65645677481,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-28T22:47:13",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 47740000000,
+    "price": 125664800,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:37:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 49300000000,
+    "price": 121620300,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:42:22",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1145094360386,
+    "price": 121759299,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:39:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 493730852500,
+    "price": 121523700,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:37:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1025955948750,
+    "price": 121608234,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-29T04:10:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 507090000000,
+    "price": 122636703,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-31T08:16:40",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 15954011286,
+    "price": 116282416,
+    "user_acct": "FACgD9ZzCDjvqY8cVrywJxKU7Cfi1k773nf94WoLdyBv"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:25:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 60941499948,
+    "price": 114053200,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-29T23:03:15",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 306836900,
+    "price": 84419820000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-01-29T23:02:55",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 925908851,
+    "price": 84456282684,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:40:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 49320000000,
+    "price": 121541300,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:39:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 493730852500,
+    "price": 121523700,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-01-28T23:18:31",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 668970000000,
+    "price": 125417710,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:37:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 10000000000,
+    "price": 121608800,
+    "user_acct": "8RBN8RZvqzGFK8QJyJC3LUpg2vEmkfooG4ajLmn6yke"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:37:33",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 554150613460,
+    "price": 121590080,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:37:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 65830250062,
+    "price": 121609700,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:25:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 50531890932,
+    "price": 114130200,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:40:02",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 10000000000,
+    "price": 121526600,
+    "user_acct": "8RBN8RZvqzGFK8QJyJC3LUpg2vEmkfooG4ajLmn6yke"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:40:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 47781320602,
+    "price": 121546700,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-28T23:18:31",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 668970000000,
+    "price": 125417710,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-28T22:42:25",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 47760000000,
+    "price": 125588500,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-31T14:46:21",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 30200000,
+    "price": 81124034884,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-29T23:00:42",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 275570000000,
+    "price": 117393220,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:23:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 20000000000,
+    "price": 114118287,
+    "user_acct": "9bNoMtehA74whcdZRy59DJBFSgspnNoxAdYoYpTfca6n"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:25:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 60941499948,
+    "price": 114053200,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:24:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 52560000000,
+    "price": 114049700,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:23:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1000000000000,
+    "price": 114119793,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-31T08:16:40",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 46630947436,
+    "price": 116276704,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-31T08:17:21",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 15977148363,
+    "price": 116114425,
+    "user_acct": "FACgD9ZzCDjvqY8cVrywJxKU7Cfi1k773nf94WoLdyBv"
+  },
+  {
+    "block_timestamp": "2026-01-31T08:15:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1685000000,
+    "price": 2667520000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-31T08:16:40",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 46630947436,
+    "price": 116276704,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:39:06",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 493730852500,
+    "price": 121523700,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:38:06",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 969105761490,
+    "price": 121624746,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:40:46",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 486082351560,
+    "price": 121557240,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:25:31",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 16273396624,
+    "price": 114069961,
+    "user_acct": "FACgD9ZzCDjvqY8cVrywJxKU7Cfi1k773nf94WoLdyBv"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:23:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1000000000000,
+    "price": 114119793,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-31T08:17:21",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 277720000000,
+    "price": 116107893,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-29T04:07:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 500000000,
+    "price": 2949253910,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:38:49",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 49320000000,
+    "price": 121586500,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:38:02",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 574384833667,
+    "price": 121593260,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-31T08:15:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1686000000,
+    "price": 2666350000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:40:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 493637424956,
+    "price": 121546700,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-01-29T23:00:42",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 425900000000,
+    "price": 117393220,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-29T23:02:55",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1700000000,
+    "price": 2817928151,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-29T14:59:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1353482392361,
+    "price": 120248351,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-31T14:46:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 40000000000,
+    "price": 108902426,
+    "user_acct": "9bNoMtehA74whcdZRy59DJBFSgspnNoxAdYoYpTfca6n"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:37:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 10000000000,
+    "price": 121608800,
+    "user_acct": "8RBN8RZvqzGFK8QJyJC3LUpg2vEmkfooG4ajLmn6yke"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:40:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 36266396154,
+    "price": 121482040,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:37:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 20000000000,
+    "price": 121608700,
+    "user_acct": "8RBN8RZvqzGFK8QJyJC3LUpg2vEmkfooG4ajLmn6yke"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:40:00",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 441623828210,
+    "price": 121506940,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-28T22:44:39",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 47740000000,
+    "price": 125626800,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-28T22:42:27",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 924989249,
+    "price": 89059941239,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-26T23:47:21",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 1482555173,
+    "price": 88442002518,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-26T23:47:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 453229021415,
+    "price": 124245820,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-31T17:19:47",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 12383000000,
+    "price": 2422002000,
+    "user_acct": "AAoLWsf12mUP7ZUSGxom5heKiJeB1TkWjdzJCiSAoYwi"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:25:32",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 438360000000,
+    "price": 114063300,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:40:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 47781320602,
+    "price": 121546700,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:38:06",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 104235146229,
+    "price": 121624800,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-29T01:01:22",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 41309617582,
+    "price": 125099410,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-29T05:27:15",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 9194321259,
+    "price": 2957022000,
+    "user_acct": "AAoLWsf12mUP7ZUSGxom5heKiJeB1TkWjdzJCiSAoYwi"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:22:54",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 526325946641,
+    "price": 113997800,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-02-01T12:11:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 147346422123,
+    "price": 104539600,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-01T12:11:55",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 270111065134,
+    "price": 104550800,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-31T13:54:17",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 2600000000000,
+    "price": 113743700,
+    "user_acct": "X5f4WpDXNHp5svKcsLZSeFrhSvtRN5kQuKdnd5HsZLE"
+  },
+  {
+    "block_timestamp": "2026-01-29T01:02:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 42204206290,
+    "price": 3005503659,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-01-29T14:58:57",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 893298189,
+    "price": 86911905607,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:25:33",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 52540000000,
+    "price": 114057500,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:25:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 60941499948,
+    "price": 114053200,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:23:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 52530000000,
+    "price": 114121300,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:42:17",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 733310395331,
+    "price": 121737040,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:40:02",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 10000000000,
+    "price": 121524100,
+    "user_acct": "8RBN8RZvqzGFK8QJyJC3LUpg2vEmkfooG4ajLmn6yke"
+  },
+  {
+    "block_timestamp": "2026-01-29T01:00:43",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 47990000000,
+    "price": 125020900,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-29T01:02:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 9983000000,
+    "price": 3005096000,
+    "user_acct": "AAoLWsf12mUP7ZUSGxom5heKiJeB1TkWjdzJCiSAoYwi"
+  },
+  {
+    "block_timestamp": "2026-01-29T01:01:55",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 479890000000,
+    "price": 125031640,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-29T01:02:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 308609661,
+    "price": 88967900000,
+    "user_acct": "aeohMrn3HFU9FknMK1F3djAAhVrauzek61sT5csqyNm"
+  },
+  {
+    "block_timestamp": "2026-01-29T01:01:58",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 47990000000,
+    "price": 125028900,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-29T01:00:04",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 48000000000,
+    "price": 124992800,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-29T05:27:15",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 1103784497,
+    "price": 88117098426,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-02-01T05:14:27",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 56240501855,
+    "price": 104995015,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-26T01:37:33",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1075097411407,
+    "price": 121622289,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:27:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 52570000000,
+    "price": 114059700,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-30T03:25:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 850657002997,
+    "price": 114129261,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-29T14:59:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 498950000000,
+    "price": 120249000,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-01T05:14:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 49013094527,
+    "price": 104991983,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-01T05:14:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 476180000000,
+    "price": 105004640,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-01T05:14:28",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 571455620327,
+    "price": 104995030,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-02-01T05:11:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 61700000,
+    "price": 78758751050,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-31T17:19:47",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 23496092,
+    "price": 79011374847,
+    "user_acct": "5xGR2exTiLsq4EXn1Nbt1pLD9SdZFF4p41DxLovN3Qse"
+  },
+  {
+    "block_timestamp": "2026-02-01T12:12:49",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 49854611255,
+    "price": 104553600,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-01T12:12:50",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 62284131908,
+    "price": 104538000,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-02-01T12:11:23",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 573813449422,
+    "price": 104563600,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-02-01T12:11:00",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 10000000000,
+    "price": 104531100,
+    "user_acct": "8RBN8RZvqzGFK8QJyJC3LUpg2vEmkfooG4ajLmn6yke"
+  },
+  {
+    "block_timestamp": "2026-02-01T12:12:49",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 53758832166,
+    "price": 104553600,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-31T17:19:47",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 17847111965,
+    "price": 103841956,
+    "user_acct": "FACgD9ZzCDjvqY8cVrywJxKU7Cfi1k773nf94WoLdyBv"
+  },
+  {
+    "block_timestamp": "2026-01-31T17:19:55",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 2452509799536,
+    "price": 103618886,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-02-01T12:11:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 825497671346,
+    "price": 104538210,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-02-01T12:11:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 478320000000,
+    "price": 104536880,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-02-01T12:11:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 52395980937,
+    "price": 104539600,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-31T14:46:17",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 769170000000,
+    "price": 108934571,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-29T01:01:22",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 41309617582,
+    "price": 125099410,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:24:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 9150000000,
+    "price": 133470284,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:59:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1404000000,
+    "price": 3202940000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:53:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1403000000,
+    "price": 3204900000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:27:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 291472672,
+    "price": 92553521000,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:27:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 291472672,
+    "price": 92553521000,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:04:58",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 55260000000,
+    "price": 133853904,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-19T00:16:19",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 86700000,
+    "price": 92265700000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:13:00",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 2934000000,
+    "price": 3204665474,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:33:02",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 857499575,
+    "price": 92515702180,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-20T07:58:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 819307292594,
+    "price": 130400385,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:48:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 393273739001,
+    "price": 133771300,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:43:57",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 908234193,
+    "price": 92560554922,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:58:59",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1404000000,
+    "price": 3202140000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:40:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1401000000,
+    "price": 3209440000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T07:39:54",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 693470000000,
+    "price": 133269772,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:40:40",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 36713965085,
+    "price": 3209839639,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:52:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1402000000,
+    "price": 3206110000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:05:25",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 7810000000,
+    "price": 133828693,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:38:19",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 464000000,
+    "price": 3202665680,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:04:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1661304799,
+    "price": 3205075685,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:28:10",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 1024469344,
+    "price": 92577550405,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-20T08:00:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 163400000,
+    "price": 91083733414,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-20T08:03:21",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 87800000,
+    "price": 91028000000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T16:31:12",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 740315138361,
+    "price": 133595500,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-19T00:16:19",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 108400000,
+    "price": 92290800000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:37:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88900000,
+    "price": 89976400000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:26:30",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 46100000000,
+    "price": 130122400,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-20T08:00:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 7116000000,
+    "price": 3119790478,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-20T07:58:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 76896459,
+    "price": 91122510530,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-20T07:58:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 4311384311,
+    "price": 130411537,
+    "user_acct": "FACgD9ZzCDjvqY8cVrywJxKU7Cfi1k773nf94WoLdyBv"
+  },
+  {
+    "block_timestamp": "2026-01-19T00:16:14",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 975844441615,
+    "price": 132918370,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:54:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 111100000,
+    "price": 90026800000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:50:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88800000,
+    "price": 90024700000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-21T16:39:19",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 4413323256,
+    "price": 127359236,
+    "user_acct": "FACgD9ZzCDjvqY8cVrywJxKU7Cfi1k773nf94WoLdyBv"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:52:12",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1403000000,
+    "price": 3204650000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:32:14",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 32067404259,
+    "price": 3207171627,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:24:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1403000000,
+    "price": 3203850000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:15:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 40570000000,
+    "price": 133730155,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:57:10",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88900000,
+    "price": 89963700000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-20T22:37:32",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 402520379263,
+    "price": 125532140,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-20T22:37:32",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 866898018484,
+    "price": 125489470,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-22T07:27:43",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 935574171740,
+    "price": 129885052,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:26:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 591578418795,
+    "price": 130088500,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:52:28",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 4963070557,
+    "price": 3206970974,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:53:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 4459000000,
+    "price": 3205247252,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-19T00:16:48",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 86500000,
+    "price": 92429200000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T00:16:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 86600000,
+    "price": 92300300000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T00:16:28",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 86700000,
+    "price": 92325300000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:34:04",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 10140000000,
+    "price": 133675441,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:40:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1401000000,
+    "price": 3209810000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-22T07:30:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 450900000,
+    "price": 0,
+    "user_acct": "8WDu1g3Tnw6xPszMQa2d2aeoA2bEfZW9i6nKmHV8RjE"
+  },
+  {
+    "block_timestamp": "2026-01-22T07:26:52",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 35072128836,
+    "price": 3003961723,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-01-22T05:05:36",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88900000,
+    "price": 89990800000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:30:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88900000,
+    "price": 89915000000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:48:00",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 2637570961,
+    "price": 3206314386,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:05:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 44800000000,
+    "price": 133838400,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-22T05:31:53",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88900000,
+    "price": 89949900000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-22T05:48:02",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 56649834,
+    "price": 89954978064,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-25T19:57:31",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 883270000000,
+    "price": 117461330,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:28:36",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 35034017277,
+    "price": 3014307441,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:54:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88800000,
+    "price": 90026000000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-22T05:21:17",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88900000,
+    "price": 89960300000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-25T16:07:09",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1548000000,
+    "price": 2904880000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:00:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 419106627513,
+    "price": 133777480,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:51:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 30840000000,
+    "price": 133815958,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-19T00:16:29",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 108300000,
+    "price": 92327200000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T00:16:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 4125000000,
+    "price": 3217654468,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:59:46",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88900000,
+    "price": 89983000000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:29:33",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 390044169945,
+    "price": 133673580,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:05:00",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 3752000000,
+    "price": 3204278536,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:13:00",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 420808023037,
+    "price": 134018500,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:53:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1403000000,
+    "price": 3205180000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-25T16:07:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 64093479592,
+    "price": 122946315,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-25T16:07:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1486000000,
+    "price": 2904728567,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-25T16:07:04",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1256327793770,
+    "price": 122870324,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-25T16:07:14",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 841981402,
+    "price": 87891918978,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:52:12",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88900000,
+    "price": 90001600000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-22T05:48:02",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 56649834,
+    "price": 89954978064,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-21T16:39:19",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 34708387062,
+    "price": 2922268470,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:05:21",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 7810000000,
+    "price": 133859837,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:05:21",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 32123730167,
+    "price": 3208396693,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:26:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 46100000000,
+    "price": 130112500,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:41:13",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 964824532,
+    "price": 92570920166,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-21T16:39:20",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 370535715804,
+    "price": 127378141,
+    "user_acct": "DEScPHEgTPtvfVJhwSHnJhxV2hz6sPQ98gpY25WDT8wS"
+  },
+  {
+    "block_timestamp": "2026-01-21T16:39:20",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 428780090279,
+    "price": 127384300,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-20T07:58:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 514840000000,
+    "price": 130401001,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-25T19:57:31",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1497451919631,
+    "price": 117465900,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-22T07:20:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 10435000000,
+    "price": 3005320639,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-19T07:39:54",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 837608883782,
+    "price": 133231300,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:21:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 21950000000,
+    "price": 134056089,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:21:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 21950000000,
+    "price": 134055993,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-01-19T03:21:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1494000000,
+    "price": 3206685198,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-20T22:37:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 1025621452,
+    "price": 88365366643,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-22T07:27:24",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 433198265449,
+    "price": 129887780,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-19T04:24:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 9150000000,
+    "price": 133469984,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-19T02:50:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1385189526853,
+    "price": 133800534,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-25T19:57:31",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 886623107,
+    "price": 86378517697,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:57:17",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88900000,
+    "price": 89946700000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-22T04:31:19",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88900000,
+    "price": 89926200000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-22T05:01:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 111100000,
+    "price": 89994600000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-12T08:43:28",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88400000,
+    "price": 90371700000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-12T15:15:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 291387462400,
+    "price": 140198620,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-13T02:32:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 390370000000,
+    "price": 138572363,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-13T02:49:06",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 87800000,
+    "price": 91049200000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T02:49:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 87800000,
+    "price": 91026300000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T06:42:00",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 831259757255,
+    "price": 140337208,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-13T13:42:30",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 926002083,
+    "price": 92075896735,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-14T07:48:39",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 55260000000,
+    "price": 144628700,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-14T07:47:29",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 1215924716,
+    "price": 95072806200,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-13T04:21:58",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 87400000,
+    "price": 91404100000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-12T08:42:08",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 644270996033,
+    "price": 139893320,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-13T04:22:09",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1443000000,
+    "price": 3118560000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T17:57:25",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 15810000000,
+    "price": 142722673,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-12T08:43:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 54900000,
+    "price": 90381354237,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-13T04:22:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1443000000,
+    "price": 3115910000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T04:20:04",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 43270000000,
+    "price": 138580000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-12T06:25:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 557121411162,
+    "price": 142495080,
+    "user_acct": "8e3h67zqL6NbitJSvZWJuMwhX2hbZJBJEqcbmHZeUcTX"
+  },
+  {
+    "block_timestamp": "2026-01-13T02:26:36",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1267917486025,
+    "price": 138694817,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-13T04:00:30",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 87600000,
+    "price": 91304100000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T02:53:13",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 1015330395,
+    "price": 91051068208,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-12T06:25:54",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1582000000,
+    "price": 3152168260,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-12T15:16:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88000000,
+    "price": 90875100000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-12T15:16:14",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 111490000000,
+    "price": 140427532,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-12T08:43:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88400000,
+    "price": 90379600000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T02:48:59",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 716777632919,
+    "price": 138297528,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-13T04:01:23",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1444000000,
+    "price": 3115020000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T04:11:28",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 87500000,
+    "price": 91307200000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T04:00:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1445000000,
+    "price": 3113450000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-14T07:48:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 705934704083,
+    "price": 144621088,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-14T07:47:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1385000000,
+    "price": 3332340119,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 762384626944,
+    "price": 144303680,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-12T08:42:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88400000,
+    "price": 90399200000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-12T08:43:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 110500000,
+    "price": 90379200000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-12T15:20:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 1,
+    "base_amt": 879227545,
+    "price": 91260584587,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-13T04:22:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 825068450,
+    "price": 91420129995,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-13T17:57:24",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 284248852206,
+    "price": 142747740,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:13:42",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1430000000,
+    "price": 0,
+    "user_acct": "DyzeBPTJxpvjVtKGaoKF25CGS245zJQ2HjoLxBBtHRdg"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 10000000000,
+    "price": 144235900,
+    "user_acct": "8RBN8RZvqzGFK8QJyJC3LUpg2vEmkfooG4ajLmn6yke"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 526477438298,
+    "price": 144227690,
+    "user_acct": "DEScPHEgTPtvfVJhwSHnJhxV2hz6sPQ98gpY25WDT8wS"
+  },
+  {
+    "block_timestamp": "2026-01-13T17:57:22",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1664000000,
+    "price": 3179489423,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1162608266029,
+    "price": 144236392,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:02:46",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 21412034872,
+    "price": 144110601,
+    "user_acct": "DEScPHEgTPtvfVJhwSHnJhxV2hz6sPQ98gpY25WDT8wS"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 127193326463,
+    "price": 144217200,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-13T13:42:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 27809297251,
+    "price": 142299980,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:09:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 54347293,
+    "price": 96264903341,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:15:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 656738152576,
+    "price": 144357836,
+    "user_acct": "DEScPHEgTPtvfVJhwSHnJhxV2hz6sPQ98gpY25WDT8wS"
+  },
+  {
+    "block_timestamp": "2026-01-12T08:42:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88300000,
+    "price": 90451000000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T23:29:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 787876749,
+    "price": 95267529189,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 732766515979,
+    "price": 144220265,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-16T01:23:53",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 28810000000,
+    "price": 142042300,
+    "user_acct": "8RBN8RZvqzGFK8QJyJC3LUpg2vEmkfooG4ajLmn6yke"
+  },
+  {
+    "block_timestamp": "2026-01-13T02:32:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 794297646574,
+    "price": 138574474,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-13T04:20:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 182290000000,
+    "price": 138583314,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-01-13T17:57:22",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 192218185167,
+    "price": 142740340,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-13T02:26:36",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 710358996204,
+    "price": 138688020,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-13T17:57:25",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 15810000000,
+    "price": 142722673,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-12T08:42:17",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1078000000,
+    "price": 3108736952,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-14T07:47:29",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 84100000,
+    "price": 95056600000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:02:46",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 133083823971,
+    "price": 144106277,
+    "user_acct": "DEScPHEgTPtvfVJhwSHnJhxV2hz6sPQ98gpY25WDT8wS"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 10000000000,
+    "price": 144226600,
+    "user_acct": "8RBN8RZvqzGFK8QJyJC3LUpg2vEmkfooG4ajLmn6yke"
+  },
+  {
+    "block_timestamp": "2026-01-12T08:43:42",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 88300000,
+    "price": 90459400000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T04:11:29",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1443000000,
+    "price": 3115760000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-15T21:19:17",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 42300000000,
+    "price": 141825400,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:15:08",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 83100000,
+    "price": 96200900000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:02:46",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1288866347020,
+    "price": 144112213,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-15T22:39:23",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 42120000000,
+    "price": 142455200,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-12T15:15:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1455000000,
+    "price": 3095748510,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-12T15:15:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 6010518116,
+    "price": 140199480,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-13T02:53:13",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 87800000,
+    "price": 91048500000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T13:41:48",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 86800000,
+    "price": 92043800000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T13:42:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 744800047119,
+    "price": 142261270,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-13T13:42:22",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 361700000,
+    "price": 92057210973,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-16T01:19:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 56189187259,
+    "price": 142230318,
+    "user_acct": "DEScPHEgTPtvfVJhwSHnJhxV2hz6sPQ98gpY25WDT8wS"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 623453082654,
+    "price": 144241200,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-14T07:48:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 102060157095,
+    "price": 144623223,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:09:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 240732458,
+    "price": 96255110313,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 416039140962,
+    "price": 144217200,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 838693416,
+    "price": 96214707347,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-16T01:18:43",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 42986166918,
+    "price": 142201800,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-12T06:26:22",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 48700000,
+    "price": 91826180858,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-13T02:38:54",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 776006129578,
+    "price": 138434855,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-16T01:23:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 52886603699,
+    "price": 142067300,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-16T01:23:53",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 723665105003,
+    "price": 142071478,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 99185127506,
+    "price": 144227690,
+    "user_acct": "DEScPHEgTPtvfVJhwSHnJhxV2hz6sPQ98gpY25WDT8wS"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:08:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 47161114662,
+    "price": 144217200,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-16T01:23:38",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 156158489797,
+    "price": 142050300,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-15T21:23:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 42290000000,
+    "price": 141843600,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T02:53:13",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 109700000,
+    "price": 91047800000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T13:41:52",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 42180000000,
+    "price": 142205700,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-13T13:41:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 77344073060,
+    "price": 142242680,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-13T13:42:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 34359300664,
+    "price": 3141941471,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-01-16T01:19:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 19210180987,
+    "price": 142234585,
+    "user_acct": "DEScPHEgTPtvfVJhwSHnJhxV2hz6sPQ98gpY25WDT8wS"
+  },
+  {
+    "block_timestamp": "2026-01-16T01:13:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 71221987623,
+    "price": 3303440314,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-01-16T01:18:42",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 59262307776,
+    "price": 142201800,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-15T22:34:17",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 610000000,
+    "price": 142503295,
+    "user_acct": "Eret6oEygdY3RTG3qvQZQiy8tD2iF592tM3GSJw3W5V"
+  },
+  {
+    "block_timestamp": "2026-01-15T21:22:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 42290000000,
+    "price": 141879700,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-15T22:36:42",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 42120000000,
+    "price": 142452500,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-15T21:18:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 42290000000,
+    "price": 141860000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-15T21:18:28",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 42310000000,
+    "price": 141816600,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-16T01:17:29",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 279000000,
+    "price": 3306923169,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-15T07:15:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 949372174,
+    "price": 96207842636,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:43:40",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 775321937765,
+    "price": 139009497,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:02:28",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 281000000,
+    "price": 3233611967,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-06T14:21:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 84700000,
+    "price": 94320600000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:49:48",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 200000000,
+    "price": 0,
+    "user_acct": "3qWiyf65N86oa5hMuBSVeB4ktbEwL5oQTcwqSfqgBQtp"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:48:56",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 43140000000,
+    "price": 139005800,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:38:28",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 891906141,
+    "price": 93791119826,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:18:56",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 410000000,
+    "price": 93591700000,
+    "user_acct": "ENCKpsYkok7KfBnDHaG1auE348XXLEe3GCDzJ2bCG4NM"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:18:23",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 106800000,
+    "price": 93608900000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:17:36",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 410000000,
+    "price": 93759700000,
+    "user_acct": "ENCKpsYkok7KfBnDHaG1auE348XXLEe3GCDzJ2bCG4NM"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:19:34",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 85500000,
+    "price": 93540300000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:16:04",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 10000000,
+    "price": 0,
+    "user_acct": "CqArrazZu1y71aUPpHyotZNejpqipfYKcooCLgN6KQUm"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:31:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 38300000000,
+    "price": 138863000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:01:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 160000000,
+    "price": 138930400,
+    "user_acct": "Eret6oEygdY3RTG3qvQZQiy8tD2iF592tM3GSJw3W5V"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:34:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 314000000,
+    "price": 3233871935,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:01:46",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 10000000,
+    "price": 138930100,
+    "user_acct": "Eret6oEygdY3RTG3qvQZQiy8tD2iF592tM3GSJw3W5V"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:52:53",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 43150000000,
+    "price": 138957400,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:19:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 85400000,
+    "price": 93616000000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:35:53",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 90000000,
+    "price": 139107000,
+    "user_acct": "Eret6oEygdY3RTG3qvQZQiy8tD2iF592tM3GSJw3W5V"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:27:09",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 23508270386,
+    "price": 3258374160,
+    "user_acct": "A5JS4T6yetbVBLrLUGVNuuZzoFaPzAnoek6S3UX8784R"
+  },
+  {
+    "block_timestamp": "2026-01-06T16:12:06",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1599008052,
+    "price": 140670066,
+    "user_acct": "FACgD9ZzCDjvqY8cVrywJxKU7Cfi1k773nf94WoLdyBv"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:39:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 31860000000,
+    "price": 139160499,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:00:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 386000000,
+    "price": 3234301884,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:37:48",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 13400000,
+    "price": 93706355237,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:19:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 411000000,
+    "price": 93541700000,
+    "user_acct": "ENCKpsYkok7KfBnDHaG1auE348XXLEe3GCDzJ2bCG4NM"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:17:53",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 85300000,
+    "price": 93786600000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:17:36",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 410000000,
+    "price": 93759700000,
+    "user_acct": "ENCKpsYkok7KfBnDHaG1auE348XXLEe3GCDzJ2bCG4NM"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:17:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 85200000,
+    "price": 93795300000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:19:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 85500000,
+    "price": 93540200000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:31:11",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 241000000,
+    "price": 92881585040,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:34:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 38838542803,
+    "price": 3255922492,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:22:22",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 26000000000,
+    "price": 138886000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:19:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 6300000,
+    "price": 92721273447,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:33:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1500000000,
+    "price": 138617000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:34:04",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 762262640561,
+    "price": 138965736,
+    "user_acct": "CVzo8cqsGboimbT353EFgWvXwhvEQdNduWonUMjXUEjj"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:18:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 410000000,
+    "price": 93601400000,
+    "user_acct": "ENCKpsYkok7KfBnDHaG1auE348XXLEe3GCDzJ2bCG4NM"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:32:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 4000000000,
+    "price": 139058613,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:35:53",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 680000000,
+    "price": 139107000,
+    "user_acct": "Eret6oEygdY3RTG3qvQZQiy8tD2iF592tM3GSJw3W5V"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:17:32",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 6230000000,
+    "price": 141185842,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:19:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 411000000,
+    "price": 93541700000,
+    "user_acct": "ENCKpsYkok7KfBnDHaG1auE348XXLEe3GCDzJ2bCG4NM"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:33:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 64099687842,
+    "price": 138612700,
+    "user_acct": "3tXGLfKrRQQ2rZM4soyvcHXf3WWyqmDrwdc3JLGU5KWD"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:40:51",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 490052878515,
+    "price": 138869180,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:35:46",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 379000000,
+    "price": 3232792065,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:33:37",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1500000000,
+    "price": 138617000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:32:05",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 547960000000,
+    "price": 138935511,
+    "user_acct": "8e3h67zqL6NbitJSvZWJuMwhX2hbZJBJEqcbmHZeUcTX"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:31:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 414214268657,
+    "price": 138919060,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-06T14:21:04",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 5800000,
+    "price": 94370275567,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:52:53",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 57540000000,
+    "price": 138952400,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:36:00",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 761747368567,
+    "price": 138909200,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:48:53",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 151000000,
+    "price": 3230293524,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:18:57",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 85400000,
+    "price": 93599600000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:19:00",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 106800000,
+    "price": 93599700000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:17:27",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1828000000,
+    "price": 3280990000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:31:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 38300000000,
+    "price": 138863000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:41:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 641924791490,
+    "price": 138737540,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:18:44",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 410000000,
+    "price": 93577300000,
+    "user_acct": "ENCKpsYkok7KfBnDHaG1auE348XXLEe3GCDzJ2bCG4NM"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:35:53",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 10000000,
+    "price": 139107000,
+    "user_acct": "Eret6oEygdY3RTG3qvQZQiy8tD2iF592tM3GSJw3W5V"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:01:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 660000000,
+    "price": 138930400,
+    "user_acct": "Eret6oEygdY3RTG3qvQZQiy8tD2iF592tM3GSJw3W5V"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:43:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 41015680522,
+    "price": 139015626,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:18:20",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 85400000,
+    "price": 93609000000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:39:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 269454623,
+    "price": 139170000,
+    "user_acct": "Eret6oEygdY3RTG3qvQZQiy8tD2iF592tM3GSJw3W5V"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:31:48",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 38300000000,
+    "price": 138948000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:27:09",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 573812359,
+    "price": 92843561091,
+    "user_acct": "9W6LoLnVWkekowKkP97HXsi6FVTQPXNbN4JrTUnaWugd"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:52:53",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 143850000000,
+    "price": 138959600,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:55:43",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 16600000,
+    "price": 93831440227,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:32:56",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 1600000000,
+    "price": 138664000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:32:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 4000000000,
+    "price": 139058613,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:34:16",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 522500000,
+    "price": 92823369617,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:31:48",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 38300000000,
+    "price": 138948000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:18:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 410000000,
+    "price": 93601400000,
+    "user_acct": "ENCKpsYkok7KfBnDHaG1auE348XXLEe3GCDzJ2bCG4NM"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:17:52",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 409000000,
+    "price": 93784200000,
+    "user_acct": "ENCKpsYkok7KfBnDHaG1auE348XXLEe3GCDzJ2bCG4NM"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:18:27",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 85400000,
+    "price": 93663100000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:18:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 85300000,
+    "price": 93788300000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:39:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 174528569553,
+    "price": 139170000,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:50:27",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 14000000000,
+    "price": 0,
+    "user_acct": "HfvcYRbvcnBHuQzE9Jz9itzNkaeCCfCJP3yeFtBBJwbK"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:19:09",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 85400000,
+    "price": 93614500000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:01:56",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 10100000,
+    "price": 93838139423,
+    "user_acct": "EjsrAPWU4D9ftwyX9ErEptxBbqt8YaihnWqYp4RM65mz"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:56:09",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 830000000,
+    "price": 138931700,
+    "user_acct": "Eret6oEygdY3RTG3qvQZQiy8tD2iF592tM3GSJw3W5V"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:18:44",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 410000000,
+    "price": 93577300000,
+    "user_acct": "ENCKpsYkok7KfBnDHaG1auE348XXLEe3GCDzJ2bCG4NM"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:32:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 38300000000,
+    "price": 138916000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:33:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 65139253299,
+    "price": 138612700,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-06T12:39:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 431127398146,
+    "price": 139170000,
+    "user_acct": "7oBgn8ppcSV5K644K7Ee42uw6Sc4p4RAgwfT7GLVjhW8"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:36:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 802413246,
+    "price": 92789424829,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:39:07",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 802428711,
+    "price": 92736836708,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-06T13:35:46",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 792303825,
+    "price": 93718322930,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:19:01",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 85400000,
+    "price": 93630000000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:29:32",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 0,
+    "base_amt": 2000000000000,
+    "price": 138826900,
+    "user_acct": "X5f4WpDXNHp5svKcsLZSeFrhSvtRN5kQuKdnd5HsZLE"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:22:23",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 26000000000,
+    "price": 138886000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-07T23:18:29",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Short\": {}\n}",
+    "mkt": 2,
+    "base_amt": 1689550836,
+    "price": 3161629129,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:32:03",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 38300000000,
+    "price": 138916000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:28:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 45200000000,
+    "price": 138961000,
+    "user_acct": "AE7xUuUsxs1i9BXqoaKZfVuMJG6JbVFewzZa88uJzmRF"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:32:56",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 18280000000,
+    "price": 138677082,
+    "user_acct": "Eret6oEygdY3RTG3qvQZQiy8tD2iF592tM3GSJw3W5V"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:31:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 85229594939,
+    "price": 138881780,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:33:35",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 65139253299,
+    "price": 138612700,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:31:26",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 13787000000,
+    "price": 3259593297,
+    "user_acct": "A5JS4T6yetbVBLrLUGVNuuZzoFaPzAnoek6S3UX8784R"
+  },
+  {
+    "block_timestamp": "2026-01-08T06:08:45",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 813508525,
+    "price": 90394619007,
+    "user_acct": "Fienskp3ZC31Gmzwj9xpRKV9JgN66fcG4qhg7Rur8G4b"
+  },
+  {
+    "block_timestamp": "2026-01-08T06:15:18",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 614818281503,
+    "price": 135729720,
+    "user_acct": "2JEC5adUthcP6x2rPDc7q3BKRNMHuUsgGGQVLFX29hsi"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:11:02",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 210000000,
+    "price": 3252689677,
+    "user_acct": "6McRjTd6iKrUSvzQewoMhrnEkcgZfrZPsXcTexihb9p6"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:43:08",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 2,
+    "base_amt": 38912994196,
+    "price": 3251841118,
+    "user_acct": "5JL74SChpbxBEQA4DkmRjMqDM2Wsn6Psrwd4LY7N1X9C"
+  },
+  {
+    "block_timestamp": "2026-01-07T06:33:36",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 0,
+    "base_amt": 64099687842,
+    "price": 138612700,
+    "user_acct": "C13FZykQfLXKuMAMh2iuG7JxhQqd8otujNRAgVETU6id"
+  },
+  {
+    "block_timestamp": "2026-01-06T21:19:41",
+    "name": "place_and_take_perp_order",
+    "direction": "{\n  \"Long\": {}\n}",
+    "mkt": 1,
+    "base_amt": 106900000,
+    "price": 93540100000,
+    "user_acct": "BrRpSaQ6hFDw8darPCyP9Sw7sjydMFQqB4ECAotXSEci"
+  }
+]

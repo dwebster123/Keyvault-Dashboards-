@@ -94,6 +94,88 @@
             <div class="metric-card"><div class="metric-label">Vault Share Price</div><div class="metric-value">--</div></div>
         </div>
 
+        <!-- Vault Performance by Timeframe -->
+        <h2 class="section-title">📊 Vault Performance by Timeframe</h2>
+        <div class="metrics-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            <div class="metric-card highlight">
+                <div class="metric-label">7D Performance</div>
+                <div class="metric-value positive">~11.6% APY</div>
+                <div class="metric-sub">KV1 actual · Share 1.004→1.012</div>
+                <div class="metric-sub">86 trades · $3.4M volume</div>
+            </div>
+            <div class="metric-card highlight">
+                <div class="metric-label">30D Performance</div>
+                <div class="metric-value positive">2.50% APY</div>
+                <div class="metric-sub">KV1 actual (36d)</div>
+                <div class="metric-sub">400 trades · $15.6M volume</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">90D Performance</div>
+                <div class="metric-value positive">8.98% APY</div>
+                <div class="metric-sub">Public vault proxy ℹ️</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">180D Performance</div>
+                <div class="metric-value positive">15.61% APY</div>
+                <div class="metric-sub">Public vault proxy ℹ️</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">365D Performance</div>
+                <div class="metric-value positive">16.91% APY</div>
+                <div class="metric-sub">Public vault proxy ℹ️</div>
+            </div>
+        </div>
+
+        <!-- Hedge Activity Chart -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <div>
+                    <h3 class="chart-title">🔄 Hedge Activity (Drift Perp Trades)</h3>
+                    <div style="font-size:0.7rem;color:#6b6b8d;margin-top:4px;">Daily trade count and volume from KV1 hedge operations</div>
+                </div>
+            </div>
+            <div class="chart-wrapper"><canvas id="hedgeActivityChart"></canvas></div>
+        </div>
+
+        <!-- Market Breakdown -->
+        <h2 class="section-title">🏦 Market Breakdown (Long vs Short)</h2>
+        <div class="two-col">
+            <div class="chart-container">
+                <h3 class="chart-title" style="margin-bottom:16px;">7D Breakdown</h3>
+                <div style="display:grid;gap:12px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(153,69,255,0.1);border-radius:8px;border-left:3px solid #9945FF;">
+                        <span style="font-weight:600;color:#9945FF;">SOL</span>
+                        <span style="font-size:0.85rem;color:#ccc;">27L ($1.2M) · 12S ($599k)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(247,147,26,0.1);border-radius:8px;border-left:3px solid #F7931A;">
+                        <span style="font-weight:600;color:#F7931A;">BTC</span>
+                        <span style="font-size:0.85rem;color:#ccc;">6L ($312k) · 28S ($516k)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(98,126,234,0.1);border-radius:8px;border-left:3px solid #627EEA;">
+                        <span style="font-weight:600;color:#627EEA;">ETH</span>
+                        <span style="font-size:0.85rem;color:#ccc;">4L ($38k) · 9S ($744k)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3 class="chart-title" style="margin-bottom:16px;">30D Breakdown</h3>
+                <div style="display:grid;gap:12px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(153,69,255,0.1);border-radius:8px;border-left:3px solid #9945FF;">
+                        <span style="font-weight:600;color:#9945FF;">SOL</span>
+                        <span style="font-size:0.85rem;color:#ccc;">111L ($6.1M) · 111S ($4.1M)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(247,147,26,0.1);border-radius:8px;border-left:3px solid #F7931A;">
+                        <span style="font-weight:600;color:#F7931A;">BTC</span>
+                        <span style="font-size:0.85rem;color:#ccc;">48L ($1.9M) · 66S ($1.3M)</span>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(98,126,234,0.1);border-radius:8px;border-left:3px solid #627EEA;">
+                        <span style="font-weight:600;color:#627EEA;">ETH</span>
+                        <span style="font-size:0.85rem;color:#ccc;">40L ($1.2M) · 24S ($1.0M)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Weekly Revenue Breakdown (Historical) -->
         <div class="chart-container" id="weeklyRevenueSection" style="display:none;">
             <div class="chart-header">
@@ -1328,6 +1410,48 @@ loadAll();
 loadDriftFunding();
 setInterval(() => { loadAll(); loadDriftFunding(); }, 60000);
 // Drift data is pre-fetched static JSON, no need to auto-refresh
+
+// Hedge Activity Chart
+(function() {
+    const dailyData = [
+        {date:'2026-01-06',trades:63,volume:1200000},{date:'2026-01-07',trades:35,volume:1300000},
+        {date:'2026-01-08',trades:2,volume:157000},{date:'2026-01-12',trades:18,volume:387000},
+        {date:'2026-01-13',trades:37,volume:1600000},{date:'2026-01-14',trades:6,volume:253000},
+        {date:'2026-01-15',trades:29,volume:1200000},{date:'2026-01-16',trades:10,volume:398000},
+        {date:'2026-01-19',trades:53,volume:1800000},{date:'2026-01-20',trades:10,volume:477000},
+        {date:'2026-01-21',trades:4,volume:204000},{date:'2026-01-22',trades:25,volume:635000},
+        {date:'2026-01-25',trades:8,volume:601000},{date:'2026-01-26',trades:28,volume:1300000},
+        {date:'2026-01-28',trades:6,volume:268000},{date:'2026-01-29',trades:21,volume:952000},
+        {date:'2026-01-30',trades:15,volume:490000},{date:'2026-01-31',trades:15,volume:730000},
+        {date:'2026-02-01',trades:15,volume:390000},{date:'2026-02-02',trades:14,volume:562000},
+        {date:'2026-02-03',trades:8,volume:361000},{date:'2026-02-04',trades:9,volume:212000},
+        {date:'2026-02-05',trades:17,volume:895000},{date:'2026-02-06',trades:52,volume:1900000}
+    ];
+    const ctx = document.getElementById('hedgeActivityChart').getContext('2d');
+    const grad = ctx.createLinearGradient(0,0,0,350);
+    grad.addColorStop(0,'rgba(0,212,255,0.7)');
+    grad.addColorStop(1,'rgba(124,58,237,0.3)');
+    new Chart(ctx, {
+        type:'bar',
+        data:{
+            labels: dailyData.map(d=>d.date),
+            datasets:[
+                {label:'Volume ($)',data:dailyData.map(d=>d.volume),backgroundColor:grad,borderRadius:4,yAxisID:'y',order:2},
+                {label:'Trades',data:dailyData.map(d=>d.trades),type:'line',borderColor:'#f472b6',backgroundColor:'rgba(244,114,182,0.1)',pointRadius:3,pointBackgroundColor:'#f472b6',yAxisID:'y1',order:1,tension:0.3}
+            ]
+        },
+        options:{
+            responsive:true,maintainAspectRatio:false,
+            interaction:{mode:'index',intersect:false},
+            scales:{
+                x:{ticks:{color:'#8b8ba7',maxRotation:45},grid:{color:'rgba(255,255,255,0.05)'}},
+                y:{position:'left',ticks:{color:'#8b8ba7',callback:v=>'$'+(v/1e6).toFixed(1)+'M'},grid:{color:'rgba(255,255,255,0.05)'}},
+                y1:{position:'right',ticks:{color:'#f472b6'},grid:{display:false}}
+            },
+            plugins:{legend:{labels:{color:'#ccc'}},tooltip:{callbacks:{label:function(c){return c.dataset.label==='Volume ($)'?'$'+(c.raw/1e6).toFixed(2)+'M':c.raw+' trades';}}}}
+        }
+    });
+})();
 </script>
 </body>
 </html>

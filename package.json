@@ -1,0 +1,25 @@
+{
+  "name": "keyvault-dashboards-",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dwebster123/Keyvault-Dashboards-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dwebster123/Keyvault-Dashboards-/issues"
+  },
+  "homepage": "https://github.com/dwebster123/Keyvault-Dashboards-#readme",
+  "dependencies": {
+    "@drift-labs/sdk": "^2.155.0",
+    "@solana/web3.js": "^1.98.4"
+  }
+}
