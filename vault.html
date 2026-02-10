@@ -590,7 +590,9 @@
             const cumulativeNetDeposits = tvl / sharePrice;
             const totalPNL = currentBalance - cumulativeNetDeposits;
             const grossReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100;
-            const netReturn = grossReturn * (1 - FEE_CONFIG.totalFeeRate);
+            // Share price is ALREADY net of all fees (Prime + KeyVault perf fees deducted before share price)
+            // Do NOT multiply by (1 - feeRate) again — that double-deducts
+            const netReturn = grossReturn;
             const allTimeAPY = totalDays > 0 ? (netReturn / totalDays) * 365 : 0;
 
             const rollingAPYs = calculateRollingAPYs(sortedHistory, sharePrice);
@@ -615,6 +617,7 @@
             const daysRemaining = Math.max(0, Math.ceil((endOfYear - now) / (1000 * 60 * 60 * 24)));
 
             const projectedTotalReturn = allTimeAPY;
+            // To get gross, divide net by 0.70 (reversing the 30% perf fee that's already baked into share price)
             const projectedGrossReturn = allTimeAPY / (1 - FEE_CONFIG.totalFeeRate);
             const projectedPerformanceFees = (projectedGrossReturn / 100) * FEE_CONFIG.performanceFeeRate * cumulativeNetDeposits;
             const projectedPrimeFees = (projectedGrossReturn / 100) * FEE_CONFIG.primeNumberFeeRate * cumulativeNetDeposits;
@@ -646,7 +649,8 @@
                 const startIndex = Math.max(0, history.length - daysAvailable);
                 const startPrice = history[startIndex].SharePrice;
                 const periodReturn = ((currentSharePrice - startPrice) / startPrice) * 100;
-                const netPeriodReturn = periodReturn * (1 - FEE_CONFIG.totalFeeRate);
+                // Share price is already net of all fees — no additional fee deduction needed
+                const netPeriodReturn = periodReturn;
                 const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
 
                 return { name: period.name, days: daysAvailable, return: netPeriodReturn, apy: annualizedAPY };
