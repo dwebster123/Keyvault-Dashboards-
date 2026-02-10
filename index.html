@@ -1074,9 +1074,8 @@
             // Gross return from spreadsheet
             const grossReturn = latest.realRet;
 
-            // Net return (after 20% performance fee on gains)
-            // Share price already net of all fees — no additional deduction
-            const netReturn = grossReturn;
+            // Net return (after 30% total fee on gains)
+            const netReturn = grossReturn * (1 - TOTAL_FEE_RATE);
 
             // Annualized APY
             const annualizedAPY = (netReturn / totalDays) * 365;
@@ -1112,8 +1111,7 @@
                 const startData = historicalData[startIndex];
 
                 const periodReturn = ((latest.net - startData.net) / startData.net) * 100;
-                // Share price already net of all fees
-                const netPeriodReturn = periodReturn;
+                const netPeriodReturn = periodReturn * (1 - TOTAL_FEE_RATE);
                 const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
 
                 return {
@@ -1207,9 +1205,9 @@
             const end2025 = data2025[data2025.length - 1];
             const days2025 = data2025.length;
 
-            // Calculate 2025 metrics
+            // Calculate 2025 metrics (net of 30% fee)
             const grossReturn2025 = ((end2025.net - start2025.net) / start2025.net) * 100;
-            const netReturn2025 = grossReturn2025; // already net
+            const netReturn2025 = grossReturn2025 * (1 - TOTAL_FEE_RATE);
             const apy2025 = (netReturn2025 / days2025) * 365;
 
             // Find best and worst days
@@ -1243,12 +1241,12 @@
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Best Day</div>
-                    <div class="metric-value positive" style="font-size: 1.1rem;">${formatPercent(bestDay.pct1d, 2)}</div>
+                    <div class="metric-value positive" style="font-size: 1.1rem;">${formatPercent(bestDay.pct1d * (1 - TOTAL_FEE_RATE), 2)}</div>
                     <div class="update-badge">${new Date(bestDay.date).toLocaleDateString()}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Worst Day</div>
-                    <div class="metric-value negative" style="font-size: 1.1rem;">${formatPercent(worstDay.pct1d, 2)}</div>
+                    <div class="metric-value negative" style="font-size: 1.1rem;">${formatPercent(worstDay.pct1d * (1 - TOTAL_FEE_RATE), 2)}</div>
                     <div class="update-badge">${new Date(worstDay.date).toLocaleDateString()}</div>
                 </div>
                 <div class="metric-card">
@@ -1294,10 +1292,10 @@
 
             const firstPrice = historicalData[0].net;
 
-            // Calculate cumulative ROI for all data points
+            // Calculate cumulative ROI for all data points (net of 30% fee)
             const allRoiData = historicalData.map((d, i) => {
                 const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
-                return cumulativeReturn; // already net of fees
+                return cumulativeReturn * (1 - TOTAL_FEE_RATE);
             });
 
             // Filter to the selected time period
@@ -1382,12 +1380,12 @@
 
             const firstPrice = historicalData[0].net;
 
-            // Calculate cumulative APY for all data points
+            // Calculate cumulative APY for all data points (net of 30% fee)
             const allApyData = historicalData.map((d, i) => {
                 if (i === 0) return 0;
                 const daysSinceStart = i + 1;
                 const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
-                const netReturn = cumulativeReturn; // already net of fees
+                const netReturn = cumulativeReturn * (1 - TOTAL_FEE_RATE);
                 return (netReturn / daysSinceStart) * 365;
             });
 
@@ -1461,10 +1459,10 @@
             const ctx = document.getElementById('roi2025Chart').getContext('2d');
             const start2025 = data2025[0];
 
-            // Calculate ROI from start of 2025
+            // Calculate ROI from start of 2025 (net of 30% fee)
             const roiData = data2025.map(d => {
                 const returnVal = ((d.net - start2025.net) / start2025.net) * 100;
-                return returnVal; // already net of fees
+                return returnVal * (1 - TOTAL_FEE_RATE);
             });
 
             if (roi2025Chart) roi2025Chart.destroy();
@@ -1525,12 +1523,12 @@
             const ctx = document.getElementById('apy2025Chart').getContext('2d');
             const start2025 = data2025[0];
 
-            // Calculate APY for each day in 2025
+            // Calculate APY for each day in 2025 (net of 30% fee)
             const apyData = data2025.map((d, i) => {
                 if (i === 0) return 0;
                 const daysSince2025Start = i + 1;
                 const returnVal = ((d.net - start2025.net) / start2025.net) * 100;
-                const netReturn = returnVal; // already net of fees
+                const netReturn = returnVal * (1 - TOTAL_FEE_RATE);
                 return (netReturn / daysSince2025Start) * 365;
             });
 
@@ -1609,11 +1607,11 @@
                 primeDataMap[d.date] = d.roi * (1 - TOTAL_FEE_RATE); // Net of 30% fees
             });
             
-            // Create a map of KeyVault data by date
+            // Create a map of KeyVault data by date (net of 30% fee)
             const kvDataMap = {};
             kvDataFiltered.forEach(d => {
                 const roi = ((d.net - kvBaseline) / kvBaseline) * 100;
-                kvDataMap[d.date] = roi; // Share price already net of fees
+                kvDataMap[d.date] = roi * (1 - TOTAL_FEE_RATE);
             });
             
             // Get all unique dates from both datasets
