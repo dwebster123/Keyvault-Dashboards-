@@ -519,15 +519,20 @@ function renderWaterfall() {
         const vaultDays = vaultStart && vaultEnd ? (vaultEnd.date - vaultStart.date) / 86400000 : 0;
         if (vaultStart && vaultEnd && vaultDays >= Math.min(tf.days * 0.5, 5)) {
             const sharePricePeriodReturn = vaultEnd.sharePrice / vaultStart.sharePrice - 1;
-            const netPeriodReturn = sharePricePeriodReturn * NET_INVESTOR_FACTOR;
-            actualReturn = (Math.pow(1 + netPeriodReturn, 365 / vaultDays) - 1) * 100;
+            // For gains: share price is after Prime's 10%, apply 7/9 for net of all fees
+            // For losses: no fees charged, investor bears full loss from share price
+            const netPeriodReturn = sharePricePeriodReturn >= 0
+                ? sharePricePeriodReturn * NET_INVESTOR_FACTOR
+                : sharePricePeriodReturn;
+            // Use linear annualization (consistent with expected yield calculation above)
+            actualReturn = (netPeriodReturn / vaultDays) * 365 * 100;
             actualLabel = vaultDays < tf.days * 0.8 ? `${Math.round(vaultDays)}d actual` : '';
         } else if (tf.days > 60) {
             actualLabel = 'N/A';
         }
 
-        // 5b. Expected Net AFTER perf fees (30% total: 10% Prime + 20% KeyVault)
-        const expectedNetAfterFees = expectedNet * (1 - TOTAL_FEE_RATE);
+        // 5b. Expected Net AFTER perf fees (only on positive expected yield — no fees on losses)
+        const expectedNetAfterFees = expectedNet > 0 ? expectedNet * (1 - TOTAL_FEE_RATE) : expectedNet;
 
         // 6. Capture Rate — compare actual (net) vs expected (net)
         let captureRate = null;
@@ -575,8 +580,10 @@ function renderWaterfall() {
         <tr>
             <td>− Performance Fees (30%)<span class="wf-sub">10% Prime Number + 20% KeyVault</span></td>
             ${cols.map(c => {
-                const fee = results[c].expectedNet * TOTAL_FEE_RATE;
-                return `<td class="wf-negative">-${Math.abs(fee).toFixed(2)}%</td>`;
+                const fee = results[c].expectedNet > 0 ? results[c].expectedNet * TOTAL_FEE_RATE : 0;
+                return fee > 0
+                    ? `<td class="wf-negative">-${fee.toFixed(2)}%</td>`
+                    : `<td class="wf-neutral">0.00%</td>`;
             }).join('')}
         </tr>
         <tr class="total-row">
@@ -584,7 +591,7 @@ function renderWaterfall() {
             ${cols.map(c => fmtPct(results[c].expectedNetAfterFees, results[c].expectedNetAfterFees >= 0 ? 'wf-positive' : 'wf-negative')).join('')}
         </tr>
         <tr>
-            <td>Actual Vault Return<span class="wf-sub">Share price APY, net of 30% fees</span></td>
+            <td>Actual Vault Return<span class="wf-sub">Share price return, annualized, net of fees on gains</span></td>
             ${cols.map(c => {
                 const r = results[c];
                 if (r.actualReturn === null) return `<td class="wf-neutral">N/A<span class="wf-sub">${r.actualLabel || 'insufficient data'}</span></td>`;
@@ -627,7 +634,7 @@ function renderWaterfallChart() {
 
     const labels = ['Gross Fees', 'Hedge Funding', 'Expected Gross', 'Perf Fees (30%)', 'Expected Net', 'Actual Return'];
     const hedgeImpact = r.hedgeCostYield;
-    const perfFee = -r.expectedNet * TOTAL_FEE_RATE;
+    const perfFee = r.expectedNet > 0 ? -r.expectedNet * TOTAL_FEE_RATE : 0;
 
     const data = [r.grossFeeYield, hedgeImpact, r.expectedNet, perfFee, r.expectedNetAfterFees, r.actualReturn !== null ? r.actualReturn : 0];
     const colors = [
