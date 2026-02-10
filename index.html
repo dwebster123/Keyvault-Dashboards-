@@ -966,7 +966,10 @@
             {date: "2026-01-07", net: 1.1917, pct1d: 0.07, realRet: 23.80}
         ];
 
-        // Fee structure (20% performance fee + 10% Prime Number fee = 30% total)
+        // Fee structure (20% KeyVault performance + 10% Prime Number manager = 30% total)
+        // Spreadsheet data: share prices are fully gross (no fees deducted) → apply full 30%
+        // Vault API data: share prices are net of Prime's 10% only → ideally 7/9 factor
+        // Using full 30% uniformly because spreadsheet era dominates (~316 of ~350 days)
         const PERFORMANCE_FEE_RATE = 0.20;
         const PRIME_NUMBER_FEE_RATE = 0.10;
         const TOTAL_FEE_RATE = PERFORMANCE_FEE_RATE + PRIME_NUMBER_FEE_RATE; // 30%

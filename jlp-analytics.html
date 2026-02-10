@@ -330,7 +330,12 @@ const CG_ETH_URL = 'https://api.coingecko.com/api/v3/coins/ethereum/market_chart
 const CG_BTC_URL = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365';
 
 // Fee structure: 20% performance (KeyVault) + 10% manager (Prime Number) = 30% total
-const TOTAL_FEE_RATE = 0.30;
+// Share price from vault API is net of Prime's 10% only
+const PERFORMANCE_FEE_RATE = 0.20;
+const PRIME_NUMBER_FEE_RATE = 0.10;
+const TOTAL_FEE_RATE = PERFORMANCE_FEE_RATE + PRIME_NUMBER_FEE_RATE; // 0.30
+const PRIME_NET_FACTOR = 1 - PRIME_NUMBER_FEE_RATE; // 0.90
+const NET_INVESTOR_FACTOR = (1 - TOTAL_FEE_RATE) / PRIME_NET_FACTOR; // 7/9 ≈ 0.7778
 
 let feeData = [], cgPrices = [], vaultCurrent = null, vaultHistory = [];
 let solPrices = [], ethPrices = [], btcPrices = [];
@@ -513,8 +518,8 @@ function renderWaterfall() {
         }
         const vaultDays = vaultStart && vaultEnd ? (vaultEnd.date - vaultStart.date) / 86400000 : 0;
         if (vaultStart && vaultEnd && vaultDays >= Math.min(tf.days * 0.5, 5)) {
-            const grossPeriodReturn = vaultEnd.sharePrice / vaultStart.sharePrice - 1;
-            const netPeriodReturn = grossPeriodReturn * (1 - TOTAL_FEE_RATE);
+            const sharePricePeriodReturn = vaultEnd.sharePrice / vaultStart.sharePrice - 1;
+            const netPeriodReturn = sharePricePeriodReturn * NET_INVESTOR_FACTOR;
             actualReturn = (Math.pow(1 + netPeriodReturn, 365 / vaultDays) - 1) * 100;
             actualLabel = vaultDays < tf.days * 0.8 ? `${Math.round(vaultDays)}d actual` : '';
         } else if (tf.days > 60) {
@@ -944,8 +949,8 @@ function renderHedgeEfficiency() {
         data: {
             datasets: [
                 { label: 'Expected Cumulative (Fees - Funding)', data: results.map(d => ({ x: d.date, y: d.cumExpected })), borderColor: chartColors.cyan, borderWidth: 2, pointRadius: 2, borderDash: [5, 3] },
-                { label: 'Gross Vault Return (before 30% fees)', data: results.map(d => ({ x: d.date, y: d.cumActual })), borderColor: chartColors.purple, borderWidth: 2, pointRadius: 1, borderDash: [3, 2] },
-                { label: 'Net Investor Return (after fees)', data: results.map(d => ({ x: d.date, y: d.cumActual * (1 - TOTAL_FEE_RATE) })), borderColor: chartColors.green, borderWidth: 2.5, pointRadius: 2 },
+                { label: 'Gross Vault Return (before all fees)', data: results.map(d => ({ x: d.date, y: d.cumActual / PRIME_NET_FACTOR })), borderColor: chartColors.purple, borderWidth: 2, pointRadius: 1, borderDash: [3, 2] },
+                { label: 'Net Investor Return (after fees)', data: results.map(d => ({ x: d.date, y: d.cumActual * NET_INVESTOR_FACTOR })), borderColor: chartColors.green, borderWidth: 2.5, pointRadius: 2 },
                 { label: '7D Rolling Capture Rate (%)', data: results.map(d => ({ x: d.date, y: d.rollCapture })), borderColor: chartColors.orange, borderWidth: 1.5, pointRadius: 1, yAxisID: 'y2', hidden: true }
             ]
         },
@@ -960,8 +965,9 @@ function renderHedgeEfficiency() {
     const days = results.length || 1;
     const totalExpPct = cumExpected * 100, totalActPct = cumActual * 100;
     const expApy = totalExpPct * 365 / days;
-    const grossApy = totalActPct * 365 / days;
-    const netApy = grossApy * (1 - TOTAL_FEE_RATE);
+    // totalActPct is from share prices (after Prime's 10%); recover true gross
+    const grossApy = (totalActPct / PRIME_NET_FACTOR) * 365 / days;
+    const netApy = (totalActPct * NET_INVESTOR_FACTOR) * 365 / days;
     const feeDrag = grossApy - netApy;
     const traderPnlApy = expApy - grossApy;
     const el = document.getElementById('hedgeEffMetrics');
@@ -1015,8 +1021,9 @@ function renderWeeklyRevenue() {
             if (window._onchainPnl && window._onchainPnl[key]) { onchainTraderPnl += window._onchainPnl[key].trader_pnl; hasOnchainData = true; }
         }
         const vaultTraderPnl = onchainTraderPnl * vaultShareOfPool;
-        const grossReturn = vEnd.sharePrice && vStart.sharePrice ? (vEnd.sharePrice / vStart.sharePrice - 1) : 0;
-        const grossDollar = grossReturn * tvl;
+        const sharePriceReturn = vEnd.sharePrice && vStart.sharePrice ? (vEnd.sharePrice / vStart.sharePrice - 1) : 0;
+        // Recover true gross from share price return (which is after Prime's 10%)
+        const grossDollar = (sharePriceReturn / PRIME_NET_FACTOR) * tvl;
         const perfFees = grossDollar * TOTAL_FEE_RATE;
         const netDollar = grossDollar - perfFees;
         const traderPnl = hasOnchainData ? -vaultTraderPnl : (expectedFeeRev - grossDollar);

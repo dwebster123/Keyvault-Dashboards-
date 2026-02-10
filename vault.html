@@ -408,6 +408,12 @@
             managementFeeRate: 0.02
         };
 
+        // Share price from vault API is net of Prime Number's 10% fee only.
+        // To recover true gross: divide by PRIME_NET_FACTOR (0.90)
+        // To get net-to-investor: multiply by NET_INVESTOR_FACTOR (7/9 ≈ 0.7778)
+        const PRIME_NET_FACTOR = 1 - FEE_CONFIG.primeNumberFeeRate; // 0.90
+        const NET_INVESTOR_FACTOR = (1 - FEE_CONFIG.totalFeeRate) / PRIME_NET_FACTOR; // 7/9
+
         // Quarter end dates for fee realization (5pm ET on last day of quarter)
         function getQuarterEndDates(year) {
             return [
@@ -473,7 +479,9 @@
                 const priceAtQuarter = getSharePriceAtDate(history, qEnd);
                 if (priceAtQuarter && priceAtQuarter > lastRealizedPrice) {
                     const gainPercent = (priceAtQuarter - lastRealizedPrice) / lastRealizedPrice;
-                    realizedFees += gainPercent * FEE_CONFIG.performanceFeeRate * 100;
+                    // Share price gain is after Prime's 10%; recover true gross for fee calc
+                    const trueGrossGain = gainPercent / PRIME_NET_FACTOR;
+                    realizedFees += trueGrossGain * FEE_CONFIG.performanceFeeRate * 100;
                     lastRealizedPrice = priceAtQuarter;
                     lastRealizationDate = qEnd;
                 }
@@ -482,7 +490,8 @@
             let unrealizedFees = 0;
             if (currentSharePrice > lastRealizedPrice) {
                 const unrealizedGainPercent = (currentSharePrice - lastRealizedPrice) / lastRealizedPrice;
-                unrealizedFees = unrealizedGainPercent * FEE_CONFIG.performanceFeeRate * 100;
+                const trueGrossUnrealizedGain = unrealizedGainPercent / PRIME_NET_FACTOR;
+                unrealizedFees = trueGrossUnrealizedGain * FEE_CONFIG.performanceFeeRate * 100;
             }
 
             return {
@@ -591,10 +600,10 @@
             const currentBalance = tvl;
             const cumulativeNetDeposits = tvl / sharePrice;
             const totalPNL = currentBalance - cumulativeNetDeposits;
-            const grossReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100;
-            // Share price is ALREADY net of all fees (Prime + KeyVault perf fees deducted before share price)
-            // Do NOT multiply by (1 - feeRate) again — that double-deducts
-            const netReturn = grossReturn;
+            // Share price is net of Prime's 10% fee only — KeyVault's 20% still needs deducting
+            const sharePriceReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100;
+            const grossReturn = sharePriceReturn / PRIME_NET_FACTOR; // True gross (before any fees)
+            const netReturn = sharePriceReturn * NET_INVESTOR_FACTOR; // Net of all 30% fees
             const allTimeAPY = totalDays > 0 ? (netReturn / totalDays) * 365 : 0;
 
             const rollingAPYs = calculateRollingAPYs(sortedHistory, sharePrice);
@@ -619,7 +628,7 @@
             const daysRemaining = Math.max(0, Math.ceil((endOfYear - now) / (1000 * 60 * 60 * 24)));
 
             const projectedTotalReturn = allTimeAPY;
-            // To get gross, divide net by 0.70 (reversing the 30% perf fee that's already baked into share price)
+            // Net APY is after all 30% fees; divide by 0.70 to recover true gross APY
             const projectedGrossReturn = allTimeAPY / (1 - FEE_CONFIG.totalFeeRate);
             const projectedPerformanceFees = (projectedGrossReturn / 100) * FEE_CONFIG.performanceFeeRate * cumulativeNetDeposits;
             const projectedPrimeFees = (projectedGrossReturn / 100) * FEE_CONFIG.primeNumberFeeRate * cumulativeNetDeposits;
@@ -651,8 +660,8 @@
                 const startIndex = Math.max(0, history.length - daysAvailable);
                 const startPrice = history[startIndex].SharePrice;
                 const periodReturn = ((currentSharePrice - startPrice) / startPrice) * 100;
-                // Share price is already net of all fees — no additional fee deduction needed
-                const netPeriodReturn = periodReturn;
+                // Share price is net of Prime's 10% only — apply remaining KV 20%
+                const netPeriodReturn = periodReturn * NET_INVESTOR_FACTOR;
                 const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
 
                 return { name: period.name, days: daysAvailable, return: netPeriodReturn, apy: annualizedAPY };
