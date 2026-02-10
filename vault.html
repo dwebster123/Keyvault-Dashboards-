@@ -497,7 +497,9 @@
 
         let currentData = null;
         let historicalData = null;
-        let charts = {};
+        let historyChartInstance = null;
+        let activeTab = 'overview';
+        let tabsInitialized = false;
 
         // CORS proxy configurations - tries each until one works
         const CORS_PROXIES = [
@@ -581,7 +583,7 @@
             const updateTime = data.update_time_utc || data.updateTime || new Date().toISOString();
 
             const historyArray = Array.isArray(history) ? history : [history];
-            const sortedHistory = historyArray.sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
+            const sortedHistory = [...historyArray].sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
 
             const initialSharePrice = sortedHistory.length > 0 ? sortedHistory[0].SharePrice : 1;
             const totalDays = sortedHistory.length;
@@ -694,7 +696,7 @@
 
             document.getElementById('content').innerHTML = `
                 <!-- OVERVIEW TAB -->
-                <div class="tab-content active" id="tab-overview">
+                <div class="tab-content ${activeTab === 'overview' ? 'active' : ''}" id="tab-overview">
                     <div class="metrics-grid">
                         <div class="metric-card highlight">
                             <div class="metric-label has-tooltip">
@@ -789,7 +791,7 @@
                 </div>
 
                 <!-- FEE REVENUE TAB -->
-                <div class="tab-content" id="tab-revenue">
+                <div class="tab-content ${activeTab === 'revenue' ? 'active' : ''}" id="tab-revenue">
                     <div class="section-header">
                         <span class="icon">💎</span>
                         <h2>Performance Fee</h2>
@@ -870,7 +872,7 @@
                 </div>
 
                 <!-- PROJECTIONS TAB -->
-                <div class="tab-content" id="tab-projections">
+                <div class="tab-content ${activeTab === 'projections' ? 'active' : ''}" id="tab-projections">
                     <div class="section-header">
                         <span class="icon">🔮</span>
                         <h2>End of Year Projections</h2>
@@ -928,8 +930,16 @@
                 </div>
             `;
 
-            // Setup tab navigation
-            setupTabs();
+            // Sync tab button active state
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.tab === activeTab);
+            });
+
+            // Setup tab navigation (only once — buttons are in static HTML)
+            if (!tabsInitialized) {
+                setupTabs();
+                tabsInitialized = true;
+            }
 
             // Render charts
             renderCharts(m);
@@ -938,89 +948,26 @@
         function setupTabs() {
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
+                    activeTab = btn.dataset.tab;
                     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                     btn.classList.add('active');
-                    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+                    document.getElementById('tab-' + activeTab).classList.add('active');
                 });
             });
         }
 
         function renderCharts(m) {
-            // Pie chart - Fee Breakdown
-            const pieCtx = document.getElementById('feeBreakdownChart')?.getContext('2d');
-            if (pieCtx) {
-                new Chart(pieCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Performance (20%)', 'Prime Number (10%)', 'Management (2%)'],
-                        datasets: [{
-                            data: [
-                                m.realizedFeeDollars + m.unrealizedFeeDollars,
-                                m.primeRealizedFeeDollars + m.primeUnrealizedFeeDollars,
-                                m.managementFeeDollars
-                            ],
-                            backgroundColor: ['#22c55e', '#a78bfa', '#f472b6'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: { color: '#8b8ba7', padding: 15 }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Bar chart - Realized vs Unrealized
-            const barCtx = document.getElementById('realizedChart')?.getContext('2d');
-            if (barCtx) {
-                new Chart(barCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Performance', 'Prime Number', 'Management'],
-                        datasets: [
-                            {
-                                label: 'Realized',
-                                data: [m.realizedFeeDollars, m.primeRealizedFeeDollars, m.managementFeeDollars],
-                                backgroundColor: '#22c55e'
-                            },
-                            {
-                                label: 'Unrealized',
-                                data: [m.unrealizedFeeDollars, m.primeUnrealizedFeeDollars, 0],
-                                backgroundColor: '#fbbf24'
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: { color: '#8b8ba7' }
-                            }
-                        },
-                        scales: {
-                            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b6b8d' } },
-                            y: {
-                                grid: { color: 'rgba(255,255,255,0.05)' },
-                                ticks: { color: '#6b6b8d', callback: v => '$' + (v/1000).toFixed(0) + 'k' }
-                            }
-                        }
-                    }
-                });
+            // Destroy previous chart instance to prevent memory leak
+            if (historyChartInstance) {
+                historyChartInstance.destroy();
+                historyChartInstance = null;
             }
 
             // Line chart - Historical
             const lineCtx = document.getElementById('historyChart')?.getContext('2d');
             if (lineCtx && m.history) {
-                new Chart(lineCtx, {
+                historyChartInstance = new Chart(lineCtx, {
                     type: 'line',
                     data: {
                         labels: m.history.map(h => new Date(h.update_time_utc).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })),
