@@ -329,6 +329,9 @@ const CG_SOL_URL = 'https://api.coingecko.com/api/v3/coins/solana/market_chart?v
 const CG_ETH_URL = 'https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=365';
 const CG_BTC_URL = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365';
 
+// Fee structure: 20% performance (KeyVault) + 10% manager (Prime Number) = 30% total
+const TOTAL_FEE_RATE = 0.30;
+
 let feeData = [], cgPrices = [], vaultCurrent = null, vaultHistory = [];
 let solPrices = [], ethPrices = [], btcPrices = [];
 let jlpPoolPrice = null;
@@ -510,15 +513,16 @@ function renderWaterfall() {
         }
         const vaultDays = vaultStart && vaultEnd ? (vaultEnd.date - vaultStart.date) / 86400000 : 0;
         if (vaultStart && vaultEnd && vaultDays >= Math.min(tf.days * 0.5, 5)) {
-            const periodReturn = vaultEnd.sharePrice / vaultStart.sharePrice - 1;
-            actualReturn = (Math.pow(1 + periodReturn, 365 / vaultDays) - 1) * 100;
+            const grossPeriodReturn = vaultEnd.sharePrice / vaultStart.sharePrice - 1;
+            const netPeriodReturn = grossPeriodReturn * (1 - TOTAL_FEE_RATE);
+            actualReturn = (Math.pow(1 + netPeriodReturn, 365 / vaultDays) - 1) * 100;
             actualLabel = vaultDays < tf.days * 0.8 ? `${Math.round(vaultDays)}d actual` : '';
         } else if (tf.days > 60) {
             actualLabel = 'N/A';
         }
 
         // 5b. Expected Net AFTER perf fees (30% total: 10% Prime + 20% KeyVault)
-        const expectedNetAfterFees = expectedNet * 0.70;
+        const expectedNetAfterFees = expectedNet * (1 - TOTAL_FEE_RATE);
 
         // 6. Capture Rate — compare actual (net) vs expected (net)
         let captureRate = null;
@@ -566,7 +570,7 @@ function renderWaterfall() {
         <tr>
             <td>− Performance Fees (30%)<span class="wf-sub">10% Prime Number + 20% KeyVault</span></td>
             ${cols.map(c => {
-                const fee = results[c].expectedNet * 0.30;
+                const fee = results[c].expectedNet * TOTAL_FEE_RATE;
                 return `<td class="wf-negative">-${Math.abs(fee).toFixed(2)}%</td>`;
             }).join('')}
         </tr>
@@ -575,7 +579,7 @@ function renderWaterfall() {
             ${cols.map(c => fmtPct(results[c].expectedNetAfterFees, results[c].expectedNetAfterFees >= 0 ? 'wf-positive' : 'wf-negative')).join('')}
         </tr>
         <tr>
-            <td>Actual Vault Return<span class="wf-sub">Share price APY (net of all fees)</span></td>
+            <td>Actual Vault Return<span class="wf-sub">Share price APY, net of 30% fees</span></td>
             ${cols.map(c => {
                 const r = results[c];
                 if (r.actualReturn === null) return `<td class="wf-neutral">N/A<span class="wf-sub">${r.actualLabel || 'insufficient data'}</span></td>`;
@@ -618,7 +622,7 @@ function renderWaterfallChart() {
 
     const labels = ['Gross Fees', 'Hedge Funding', 'Expected Gross', 'Perf Fees (30%)', 'Expected Net', 'Actual Return'];
     const hedgeImpact = r.hedgeCostYield;
-    const perfFee = -r.expectedNet * 0.30;
+    const perfFee = -r.expectedNet * TOTAL_FEE_RATE;
 
     const data = [r.grossFeeYield, hedgeImpact, r.expectedNet, perfFee, r.expectedNetAfterFees, r.actualReturn !== null ? r.actualReturn : 0];
     const colors = [
@@ -940,8 +944,8 @@ function renderHedgeEfficiency() {
         data: {
             datasets: [
                 { label: 'Expected Cumulative (Fees - Funding)', data: results.map(d => ({ x: d.date, y: d.cumExpected })), borderColor: chartColors.cyan, borderWidth: 2, pointRadius: 2, borderDash: [5, 3] },
-                { label: 'Gross Vault Return (before 30% fees)', data: results.map(d => ({ x: d.date, y: d.cumActual / 0.70 })), borderColor: chartColors.purple, borderWidth: 2, pointRadius: 1, borderDash: [3, 2] },
-                { label: 'Net Investor Return (after fees)', data: results.map(d => ({ x: d.date, y: d.cumActual })), borderColor: chartColors.green, borderWidth: 2.5, pointRadius: 2 },
+                { label: 'Gross Vault Return (before 30% fees)', data: results.map(d => ({ x: d.date, y: d.cumActual })), borderColor: chartColors.purple, borderWidth: 2, pointRadius: 1, borderDash: [3, 2] },
+                { label: 'Net Investor Return (after fees)', data: results.map(d => ({ x: d.date, y: d.cumActual * (1 - TOTAL_FEE_RATE) })), borderColor: chartColors.green, borderWidth: 2.5, pointRadius: 2 },
                 { label: '7D Rolling Capture Rate (%)', data: results.map(d => ({ x: d.date, y: d.rollCapture })), borderColor: chartColors.orange, borderWidth: 1.5, pointRadius: 1, yAxisID: 'y2', hidden: true }
             ]
         },
@@ -956,8 +960,8 @@ function renderHedgeEfficiency() {
     const days = results.length || 1;
     const totalExpPct = cumExpected * 100, totalActPct = cumActual * 100;
     const expApy = totalExpPct * 365 / days;
-    const netApy = totalActPct * 365 / days;
-    const grossApy = netApy / 0.70;
+    const grossApy = totalActPct * 365 / days;
+    const netApy = grossApy * (1 - TOTAL_FEE_RATE);
     const feeDrag = grossApy - netApy;
     const traderPnlApy = expApy - grossApy;
     const el = document.getElementById('hedgeEffMetrics');
@@ -1011,10 +1015,10 @@ function renderWeeklyRevenue() {
             if (window._onchainPnl && window._onchainPnl[key]) { onchainTraderPnl += window._onchainPnl[key].trader_pnl; hasOnchainData = true; }
         }
         const vaultTraderPnl = onchainTraderPnl * vaultShareOfPool;
-        const netReturn = vEnd.sharePrice && vStart.sharePrice ? (vEnd.sharePrice / vStart.sharePrice - 1) : 0;
-        const netDollar = netReturn * tvl;
-        const grossDollar = netDollar / 0.70;
-        const perfFees = grossDollar - netDollar;
+        const grossReturn = vEnd.sharePrice && vStart.sharePrice ? (vEnd.sharePrice / vStart.sharePrice - 1) : 0;
+        const grossDollar = grossReturn * tvl;
+        const perfFees = grossDollar * TOTAL_FEE_RATE;
+        const netDollar = grossDollar - perfFees;
         const traderPnl = hasOnchainData ? -vaultTraderPnl : (expectedFeeRev - grossDollar);
         cumNetInvestor += netDollar;
         return { weekLabel: w.start.toISOString().slice(5, 10) + ' → ' + w.end.toISOString().slice(5, 10), start: w.start, grossFees, feesToJLP, expectedFeeRev, traderPnl, grossDollar, perfFees, netDollar, cumNetInvestor, tvl, vaultShareOfPool };
