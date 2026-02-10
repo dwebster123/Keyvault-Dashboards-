@@ -1075,7 +1075,8 @@
             const grossReturn = latest.realRet;
 
             // Net return (after 20% performance fee on gains)
-            const netReturn = grossReturn * (1 - TOTAL_FEE_RATE);
+            // Share price already net of all fees — no additional deduction
+            const netReturn = grossReturn;
 
             // Annualized APY
             const annualizedAPY = (netReturn / totalDays) * 365;
@@ -1111,7 +1112,8 @@
                 const startData = historicalData[startIndex];
 
                 const periodReturn = ((latest.net - startData.net) / startData.net) * 100;
-                const netPeriodReturn = periodReturn * (1 - TOTAL_FEE_RATE);
+                // Share price already net of all fees
+                const netPeriodReturn = periodReturn;
                 const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
 
                 return {
@@ -1207,7 +1209,7 @@
 
             // Calculate 2025 metrics
             const grossReturn2025 = ((end2025.net - start2025.net) / start2025.net) * 100;
-            const netReturn2025 = grossReturn2025 * (1 - TOTAL_FEE_RATE);
+            const netReturn2025 = grossReturn2025; // already net
             const apy2025 = (netReturn2025 / days2025) * 365;
 
             // Find best and worst days
@@ -1292,7 +1294,7 @@
             // Calculate cumulative ROI for all data points
             const allRoiData = historicalData.map((d, i) => {
                 const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
-                return cumulativeReturn * (1 - TOTAL_FEE_RATE);
+                return cumulativeReturn; // already net of fees
             });
 
             // Filter to the selected time period
@@ -1380,7 +1382,7 @@
                 if (i === 0) return 0;
                 const daysSinceStart = i + 1;
                 const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
-                const netReturn = cumulativeReturn * (1 - TOTAL_FEE_RATE);
+                const netReturn = cumulativeReturn; // already net of fees
                 return (netReturn / daysSinceStart) * 365;
             });
 
@@ -1456,7 +1458,7 @@
             // Calculate ROI from start of 2025
             const roiData = data2025.map(d => {
                 const returnVal = ((d.net - start2025.net) / start2025.net) * 100;
-                return returnVal * (1 - TOTAL_FEE_RATE);
+                return returnVal; // already net of fees
             });
 
             if (roi2025Chart) roi2025Chart.destroy();
@@ -1522,7 +1524,7 @@
                 if (i === 0) return 0;
                 const daysSince2025Start = i + 1;
                 const returnVal = ((d.net - start2025.net) / start2025.net) * 100;
-                const netReturn = returnVal * (1 - TOTAL_FEE_RATE);
+                const netReturn = returnVal; // already net of fees
                 return (netReturn / daysSince2025Start) * 365;
             });
 
@@ -1605,7 +1607,7 @@
             const kvDataMap = {};
             kvDataFiltered.forEach(d => {
                 const roi = ((d.net - kvBaseline) / kvBaseline) * 100;
-                kvDataMap[d.date] = roi * (1 - TOTAL_FEE_RATE); // Net of fees
+                kvDataMap[d.date] = roi; // Share price already net of fees
             });
             
             // Get all unique dates from both datasets
