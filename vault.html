@@ -603,7 +603,10 @@
             // Share price is net of Prime's 10% fee only — KeyVault's 20% still needs deducting
             const sharePriceReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100;
             const grossReturn = sharePriceReturn / PRIME_NET_FACTOR; // True gross (before any fees)
-            const netReturn = sharePriceReturn * NET_INVESTOR_FACTOR; // Net of all 30% fees
+            // For gains: apply 7/9 for net of all 30% fees. For losses: no fees, full loss.
+            const netReturn = sharePriceReturn >= 0
+                ? sharePriceReturn * NET_INVESTOR_FACTOR
+                : sharePriceReturn;
             const allTimeAPY = totalDays > 0 ? (netReturn / totalDays) * 365 : 0;
 
             const rollingAPYs = calculateRollingAPYs(sortedHistory, sharePrice);
@@ -660,8 +663,11 @@
                 const startIndex = Math.max(0, history.length - daysAvailable);
                 const startPrice = history[startIndex].SharePrice;
                 const periodReturn = ((currentSharePrice - startPrice) / startPrice) * 100;
-                // Share price is net of Prime's 10% only — apply remaining KV 20%
-                const netPeriodReturn = periodReturn * NET_INVESTOR_FACTOR;
+                // For gains: share price is after Prime's 10%, apply 7/9 for net of all fees
+                // For losses: no fees charged, investor bears full loss
+                const netPeriodReturn = periodReturn >= 0
+                    ? periodReturn * NET_INVESTOR_FACTOR
+                    : periodReturn;
                 const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
 
                 return { name: period.name, days: daysAvailable, return: netPeriodReturn, apy: annualizedAPY };
