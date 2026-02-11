@@ -629,25 +629,17 @@
                 // Merge official NAV history with Prime Number history
                 // Official NAV takes precedence for dates where both exist
                 if (officialNav && officialNav.length > 0) {
-                    const officialDates = new Set(officialNav.map(n => n.date));
-                    const primeHistory = Array.isArray(history) ? history : [];
-                    // Keep Prime Number history for dates before official NAV started
-                    const mergedHistory = primeHistory.filter(h => {
-                        const d = (h.update_time_utc || '').split('T')[0];
-                        return !officialDates.has(d);
-                    });
-                    // Add official NAV records (they have update_time_utc = timestamp)
-                    officialNav.forEach(n => {
-                        mergedHistory.push({
-                            SharePrice: n.SharePrice,
-                            tvl: n.tvl,
-                            update_time_utc: n.timestamp,
-                            source: 'official-nav'
-                        });
-                    });
+                    // Private dashboard: only show private vault data (has rawPrivateSharePrice)
+                    const privateVaultData = officialNav.filter(n => n.rawPrivateSharePrice);
+                    const mergedHistory = privateVaultData.map(n => ({
+                        SharePrice: n.rawPrivateSharePrice,
+                        tvl: n.tvl,
+                        update_time_utc: n.timestamp,
+                        source: 'official-nav'
+                    }));
                     mergedHistory.sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
                     historicalData = mergedHistory;
-                    console.log(`✓ Using ${officialNav.length} official NAV stamps + ${primeHistory.length} Prime Number records`);
+                    console.log(`✓ Using ${privateVaultData.length} private vault NAV stamps (raw share prices)`);
                 } else {
                     historicalData = history;
                 }
@@ -658,7 +650,7 @@
                     const latestNav = officialNav[officialNav.length - 1];
                     currentData = {
                         tvl: latestNav.tvl,
-                        SharePrice: latestNav.SharePrice,
+                        SharePrice: latestNav.rawPrivateSharePrice || latestNav.SharePrice,
                         totalShares: latestNav.totalShares,
                         update_time_utc: latestNav.timestamp,
                         source: 'official-nav',
