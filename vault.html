@@ -652,7 +652,25 @@
                     historicalData = history;
                 }
 
-                currentData = current;
+                // Use last official NAV as "current" for display consistency
+                // This shows the 5 PM EST stamp, not jittery real-time data
+                if (officialNav && officialNav.length > 0) {
+                    const latestNav = officialNav[officialNav.length - 1];
+                    currentData = {
+                        tvl: latestNav.tvl,
+                        SharePrice: latestNav.SharePrice,
+                        update_time_utc: latestNav.timestamp,
+                        source: 'official-nav',
+                        // Include Drift extras if available for the positions tab
+                        health: driftData?.health,
+                        leverage: driftData?.leverage,
+                        positions: driftData?.positions,
+                        driftApys: driftData?.driftApys
+                    };
+                    console.log(`✓ Displaying official NAV from ${latestNav.date}: $${latestNav.SharePrice}`);
+                } else {
+                    currentData = current;
+                }
 
                 renderDashboard();
             } catch (error) {
@@ -789,7 +807,13 @@
         function renderDashboard() {
             const m = calculateMetrics(currentData, historicalData);
 
-            document.getElementById('updateTime').textContent = `Last Updated: ${formatDate(m.updateTime)}`;
+            const navSource = currentData.source === 'official-nav' ? 'Official NAV' : 'Live';
+            const navDate = currentData.source === 'official-nav'
+                ? new Date(m.updateTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' })
+                : formatDate(m.updateTime);
+            document.getElementById('updateTime').textContent = currentData.source === 'official-nav'
+                ? `${navSource}: ${navDate} — 5:00 PM EST`
+                : `Last Updated: ${formatDate(m.updateTime)}`;
 
             document.getElementById('content').innerHTML = `
                 <!-- OVERVIEW TAB -->

@@ -1,5 +1,266 @@
 [
   {
+    "date": "2026-01-13",
+    "timestamp": "2026-01-13T22:00:00Z",
+    "SharePrice": 0.998119,
+    "tvl": 4445247.74,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-13T23:53:23Z"
+  },
+  {
+    "date": "2026-01-14",
+    "timestamp": "2026-01-14T22:00:00Z",
+    "SharePrice": 1.000402,
+    "tvl": 4455413.41,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-14T23:53:18Z"
+  },
+  {
+    "date": "2026-01-15",
+    "timestamp": "2026-01-15T22:00:00Z",
+    "SharePrice": 1.000242,
+    "tvl": 4454704.34,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-15T23:53:22Z"
+  },
+  {
+    "date": "2026-01-16",
+    "timestamp": "2026-01-16T22:00:00Z",
+    "SharePrice": 1.000799,
+    "tvl": 4457185.15,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-16T23:53:26Z"
+  },
+  {
+    "date": "2026-01-17",
+    "timestamp": "2026-01-17T22:00:00Z",
+    "SharePrice": 1.001317,
+    "tvl": 4459488.91,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-17T23:53:23Z"
+  },
+  {
+    "date": "2026-01-18",
+    "timestamp": "2026-01-18T22:00:00Z",
+    "SharePrice": 1.002975,
+    "tvl": 4466875.79,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-18T23:53:21Z"
+  },
+  {
+    "date": "2026-01-19",
+    "timestamp": "2026-01-19T22:00:00Z",
+    "SharePrice": 1.003671,
+    "tvl": 4469975.94,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-19T23:53:17Z"
+  },
+  {
+    "date": "2026-01-20",
+    "timestamp": "2026-01-20T22:00:00Z",
+    "SharePrice": 1.003482,
+    "tvl": 4469130.06,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-20T23:53:18Z"
+  },
+  {
+    "date": "2026-01-21",
+    "timestamp": "2026-01-21T22:00:00Z",
+    "SharePrice": 1.006396,
+    "tvl": 4482110.93,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-21T23:53:20Z"
+  },
+  {
+    "date": "2026-01-22",
+    "timestamp": "2026-01-22T22:00:00Z",
+    "SharePrice": 1.007226,
+    "tvl": 4485805.01,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-22T23:53:17Z"
+  },
+  {
+    "date": "2026-01-23",
+    "timestamp": "2026-01-23T22:00:00Z",
+    "SharePrice": 1.005598,
+    "tvl": 4478555.1,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-23T23:53:19Z"
+  },
+  {
+    "date": "2026-01-24",
+    "timestamp": "2026-01-24T22:00:00Z",
+    "SharePrice": 1.007021,
+    "tvl": 4484894.48,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-24T23:53:25Z"
+  },
+  {
+    "date": "2026-01-25",
+    "timestamp": "2026-01-25T22:00:00Z",
+    "SharePrice": 1.004979,
+    "tvl": 4475797.43,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-25T23:53:21Z"
+  },
+  {
+    "date": "2026-01-26",
+    "timestamp": "2026-01-26T22:00:00Z",
+    "SharePrice": 1.003659,
+    "tvl": 4469921.37,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-26T23:53:17Z"
+  },
+  {
+    "date": "2026-01-27",
+    "timestamp": "2026-01-27T22:00:00Z",
+    "SharePrice": 1.007026,
+    "tvl": 4484917.58,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-27T23:53:17Z"
+  },
+  {
+    "date": "2026-01-28",
+    "timestamp": "2026-01-28T22:00:00Z",
+    "SharePrice": 1.004741,
+    "tvl": 4474739.89,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-28T23:53:20Z"
+  },
+  {
+    "date": "2026-01-29",
+    "timestamp": "2026-01-29T22:00:00Z",
+    "SharePrice": 1.005621,
+    "tvl": 4478658.48,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-29T23:53:22Z"
+  },
+  {
+    "date": "2026-01-30",
+    "timestamp": "2026-01-30T22:00:00Z",
+    "SharePrice": 1.00767,
+    "tvl": 4487784.88,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-30T23:53:16Z"
+  },
+  {
+    "date": "2026-01-31",
+    "timestamp": "2026-01-31T22:00:00Z",
+    "SharePrice": 1.007025,
+    "tvl": 4484911.7,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-01-31T23:53:20Z"
+  },
+  {
+    "date": "2026-02-01",
+    "timestamp": "2026-02-01T22:00:00Z",
+    "SharePrice": 1.00697,
+    "tvl": 4484664.83,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-02-01T23:53:15Z"
+  },
+  {
+    "date": "2026-02-02",
+    "timestamp": "2026-02-02T22:00:00Z",
+    "SharePrice": 1.005054,
+    "tvl": 4476131.85,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-02-02T23:53:17Z"
+  },
+  {
+    "date": "2026-02-03",
+    "timestamp": "2026-02-03T22:00:00Z",
+    "SharePrice": 1.0063,
+    "tvl": 4481681.98,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-02-03T23:53:18Z"
+  },
+  {
+    "date": "2026-02-04",
+    "timestamp": "2026-02-04T22:00:00Z",
+    "SharePrice": 1.005451,
+    "tvl": 4477902.3,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-02-04T23:53:27Z"
+  },
+  {
+    "date": "2026-02-05",
+    "timestamp": "2026-02-05T22:00:00Z",
+    "SharePrice": 1.016518,
+    "tvl": 4527189.54,
+    "totalShares": 4453624.616476,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-02-05T23:53:18Z"
+  },
+  {
+    "date": "2026-02-06",
+    "timestamp": "2026-02-06T22:00:00Z",
+    "SharePrice": 1.005721,
+    "tvl": 3960138.36,
+    "totalShares": 3937611.470579,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-02-06T23:53:17Z"
+  },
+  {
+    "date": "2026-02-07",
+    "timestamp": "2026-02-07T22:00:00Z",
+    "SharePrice": 1.005415,
+    "tvl": 3958934.76,
+    "totalShares": 3937611.470579,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-02-07T23:53:19Z"
+  },
+  {
+    "date": "2026-02-08",
+    "timestamp": "2026-02-08T22:00:00Z",
+    "SharePrice": 1.0063,
+    "tvl": 3962417.89,
+    "totalShares": 3937611.470579,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-02-08T23:53:27Z"
+  },
+  {
+    "date": "2026-02-09",
+    "timestamp": "2026-02-09T22:00:00Z",
+    "SharePrice": 0.99957,
+    "tvl": 3935917.97,
+    "totalShares": 3937611.470579,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-02-09T23:53:20Z"
+  },
+  {
+    "date": "2026-02-10",
+    "timestamp": "2026-02-10T22:00:00Z",
+    "SharePrice": 1.003536,
+    "tvl": 3951534.58,
+    "totalShares": 3937611.470579,
+    "source": "primenumber-history-backfill",
+    "originalTimestamp": "2026-02-10T22:37:16Z"
+  },
+  {
     "date": "2026-02-11",
     "timestamp": "2026-02-11T18:31:20.403Z",
     "SharePrice": 1.007194,
