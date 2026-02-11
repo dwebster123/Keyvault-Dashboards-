@@ -564,12 +564,58 @@
             throw new Error('All CORS proxies failed');
         }
 
+        async function fetchDriftData() {
+            // Fetch real-time vault equity from Drift's public APIs
+            const VAULT_USER = 'X5f4WpDXNHp5svKcsLZSeFrhSvtRN5kQuKdnd5HsZLE';
+            const VAULT_ADDRESS = 'G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp';
+            const TOTAL_SHARES = 3937611.470579; // From on-chain vault account
+
+            try {
+                const [userResp, vaultResp] = await Promise.all([
+                    fetch(`https://data.api.drift.trade/user/${VAULT_USER}`),
+                    fetch(`https://app.drift.trade/api/vaults`)
+                ]);
+
+                const userData = await userResp.json();
+                const vaultsData = await vaultResp.json();
+                const vaultApys = vaultsData[VAULT_ADDRESS] || {};
+
+                const balance = parseFloat(userData.account?.balance || 0);
+                const sharePrice = balance / TOTAL_SHARES;
+
+                return {
+                    tvl: balance,
+                    SharePrice: sharePrice,
+                    update_time_utc: new Date().toISOString(),
+                    source: 'drift',
+                    driftApys: vaultApys.apys || {},
+                    health: userData.account?.health,
+                    leverage: userData.account?.leverage,
+                    positions: userData.positions || []
+                };
+            } catch (e) {
+                console.warn('Drift API failed, falling back to Prime Number:', e);
+                return null;
+            }
+        }
+
         async function fetchData() {
             try {
-                const [current, history] = await Promise.all([
+                // Try Drift first (source of truth), fall back to Prime Number
+                const driftData = await fetchDriftData();
+
+                const [primeCurrent, history] = await Promise.all([
                     fetchWithFallback('https://app.primenumber.trade/data/PN_KV1.json'),
                     fetchWithFallback('https://app.primenumber.trade/data/PN_KV1_history.json')
                 ]);
+
+                // Use Drift data if available, otherwise Prime Number
+                const current = driftData || primeCurrent;
+                if (driftData) {
+                    console.log(`✓ Using Drift data: TVL=$${driftData.tvl.toFixed(0)}, SharePrice=$${driftData.SharePrice.toFixed(6)}`);
+                } else {
+                    console.warn('⚠ Using Prime Number data (Drift unavailable)');
+                }
 
                 currentData = current;
                 historicalData = history;
