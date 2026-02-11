@@ -1348,11 +1348,10 @@
 
             document.getElementById('vaultMetrics').innerHTML = `
                 <div class="metric-card highlight">
-                    <div class="metric-label">Share Price (Official NAV)</div>
-                    <div class="metric-value">$${latest.net.toFixed(6)}</div>
-                    <div class="update-badge">Last stamp: ${latest.date}</div>
+                    <div class="metric-label">Current Balance</div>
+                    <div class="metric-value">${latest.tvl ? formatCurrency(latest.tvl) : '--'}</div>
+                    <div class="update-badge">Official NAV: ${new Date(latest.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} — 5:00 PM EST</div>
                 </div>
-                ${tvlHtml}
             `;
         }
 
