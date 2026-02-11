@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyVault Investment Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d1f 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        a { color: #7c3aed; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .nav { text-align: center; margin-bottom: 10px; font-size: 0.9rem; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+        .header img.logo {
+            height: 120px;
+            margin-bottom: 16px;
+            filter: brightness(0) invert(1);
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        .header .subtitle { color: #8b8ba7; font-size: 1rem; }
+
+        .dashboard { max-width: 1200px; margin: 0 auto; }
+
+        /* Input Controls */
+        .controls {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 24px;
+        }
+        .controls h2 {
+            font-size: 1.2rem;
+            color: #f472b6;
+            margin-bottom: 16px;
+        }
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .control-group label {
+            display: block;
+            color: #8b8ba7;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+        .control-group input[type="number"],
+        .control-group select {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+        .control-group input[type="number"]:focus,
+        .control-group select:focus {
+            border-color: #7c3aed;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin-top: 4px;
+            accent-color: #7c3aed;
+        }
+        .range-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .range-row input[type="range"] { flex: 1; }
+        .range-val {
+            min-width: 50px;
+            text-align: right;
+            font-weight: 600;
+            color: #22c55e;
+        }
+
+        /* Scenario Buttons */
+        .scenarios {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .scenario-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .scenario-btn:hover { background: rgba(124,58,237,0.3); border-color: #7c3aed; }
+        .scenario-btn.active { background: rgba(124,58,237,0.4); border-color: #7c3aed; color: #f472b6; font-weight: 600; }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .toggle-row input[type="checkbox"] { accent-color: #7c3aed; width: 18px; height: 18px; }
+        .toggle-row label { color: #8b8ba7; font-size: 0.9rem; cursor: pointer; }
+
+        /* Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .metric-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .metric-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .metric-card .label { color: #8b8ba7; font-size: 0.8rem; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-card .value { font-size: 1.5rem; font-weight: 700; }
+        .metric-card .value.green { color: #22c55e; }
+        .metric-card .value.pink { color: #f472b6; }
+        .metric-card .value.purple { color: #7c3aed; }
+
+        /* Chart */
+        .chart-container {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 24px;
+        }
+        .chart-container h2 { font-size: 1.1rem; color: #f472b6; margin-bottom: 16px; }
+
+        /* Table */
+        .table-container {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow-x: auto;
+        }
+        .table-container h2 { font-size: 1.1rem; color: #f472b6; margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { color: #8b8ba7; text-align: right; padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; white-space: nowrap; }
+        th:first-child { text-align: left; }
+        td { padding: 10px 12px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); white-space: nowrap; }
+        td:first-child { text-align: left; color: #7c3aed; font-weight: 600; }
+        tr:hover td { background: rgba(255,255,255,0.03); }
+        .fee-col { color: #f472b6; }
+        .green-col { color: #22c55e; }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.6rem; }
+            .metric-card .value { font-size: 1.2rem; }
+            .control-grid { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="nav"><a href="index.html">← Back to Dashboard</a></div>
+        <div class="header">
+            <img src="logo.png" alt="KeyVault" class="logo">
+            <h1>KeyVault Investment Calculator</h1>
+            <p class="subtitle">Model projected returns after management fees, performance fees & high water mark</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <h2>⚙️ Parameters</h2>
+            <div class="control-grid">
+                <div class="control-group">
+                    <label>Initial Investment ($)</label>
+                    <input type="number" id="investment" value="1000000" min="1000" step="10000">
+                </div>
+                <div class="control-group">
+                    <label>Expected Annual Return (%)</label>
+                    <div class="range-row">
+                        <input type="range" id="returnSlider" min="0" max="50" step="0.5" value="18">
+                        <span class="range-val" id="returnVal">18%</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>Time Horizon (years)</label>
+                    <select id="years">
+                        <option value="1">1 year</option>
+                        <option value="2">2 years</option>
+                        <option value="3" selected>3 years</option>
+                        <option value="4">4 years</option>
+                        <option value="5">5 years</option>
+                        <option value="6">6 years</option>
+                        <option value="7">7 years</option>
+                        <option value="8">8 years</option>
+                        <option value="9">9 years</option>
+                        <option value="10">10 years</option>
+                    </select>
+                </div>
+            </div>
+            <div class="scenarios">
+                <button class="scenario-btn" data-rate="12">🐢 Conservative (12%)</button>
+                <button class="scenario-btn active" data-rate="18">⚖️ Moderate (18%)</button>
+                <button class="scenario-btn" data-rate="25">🚀 Aggressive (25%)</button>
+            </div>
+            <div class="toggle-row">
+                <input type="checkbox" id="badYear">
+                <label for="badYear">Simulate a bad year (-15% in Year 2) to show HWM protection</label>
+            </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card"><div class="label">Projected End Value</div><div class="value green" id="mEndVal">—</div></div>
+            <div class="metric-card"><div class="label">Total Fees Paid</div><div class="value pink" id="mTotalFees">—</div></div>
+            <div class="metric-card"><div class="label">Net Return %</div><div class="value green" id="mNetReturn">—</div></div>
+            <div class="metric-card"><div class="label">Net APY</div><div class="value green" id="mNetAPY">—</div></div>
+            <div class="metric-card"><div class="label">Management Fees</div><div class="value pink" id="mMgmtFees">—</div></div>
+            <div class="metric-card"><div class="label">Performance Fees</div><div class="value pink" id="mPerfFees">—</div></div>
+            <div class="metric-card"><div class="label">Gross vs Net Spread</div><div class="value purple" id="mSpread">—</div></div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-container">
+            <h2>📈 Portfolio Growth Over Time</h2>
+            <canvas id="growthChart" height="100"></canvas>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <h2>📊 Quarterly Fee Breakdown</h2>
+            <table id="feeTable">
+                <thead>
+                    <tr>
+                        <th>Quarter</th>
+                        <th>Starting Value</th>
+                        <th>Gross Return</th>
+                        <th>Mgmt Fee</th>
+                        <th>Hurdle</th>
+                        <th>HWM</th>
+                        <th>Perf Fee (20%)</th>
+                        <th>Net Value</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = v => '$' + v.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+const fmtD = v => '$' + v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const pct = v => v.toFixed(2) + '%';
+
+let chart = null;
+
+function calculate() {
+    const initial = parseFloat($('investment').value) || 1000000;
+    const annualReturn = parseFloat($('returnSlider').value) / 100;
+    const years = parseInt($('years').value);
+    const badYear = $('badYear').checked;
+    const quarterlyReturn = annualReturn / 4;
+    const quarterlyHurdle = 0.0125; // 5% / 4
+    const totalQuarters = years * 4;
+
+    let value = initial;
+    let hwm = initial;
+    let grossValue = initial; // track no-fee growth
+    let totalMgmt = 0, totalPerf = 0;
+    const rows = [];
+    const chartLabels = ['Start'];
+    const chartNet = [initial];
+    const chartGross = [initial];
+
+    for (let q = 1; q <= totalQuarters; q++) {
+        const startVal = value;
+        const year = Math.ceil(q / 4);
+
+        // Determine this quarter's return
+        let qReturn = quarterlyReturn;
+        if (badYear && year === 2) {
+            qReturn = -0.15 / 4; // -15% annual spread over 4 quarters
+        }
+
+        // 1. Gross value after return
+        const grossAfterReturn = startVal * (1 + qReturn);
+
+        // 2. Management fee: 0.5% of beginning value
+        const mgmtFee = startVal * 0.005;
+
+        // 3. Value after mgmt fee
+        const afterMgmt = grossAfterReturn - mgmtFee;
+
+        // 4. Gain after mgmt fee
+        const gain = afterMgmt - startVal;
+
+        // 5. Hurdle: only gains above 1.25% of start
+        const hurdleAmount = startVal * quarterlyHurdle;
+        const aboveHurdle = Math.max(0, gain - hurdleAmount);
+
+        // 6. HWM: only gains that put us above previous HWM
+        const aboveHWM = Math.max(0, afterMgmt - hwm);
+
+        // 7. Eligible gain = min of above-hurdle and above-HWM
+        const eligible = Math.min(aboveHurdle, aboveHWM);
+
+        // 8. Performance fee (20%)
+        const kvFee = eligible * 0.20;
+        const totalPerfFee = kvFee;
+
+        // 9. End value
+        value = afterMgmt - totalPerfFee;
+
+        // Update HWM
+        if (value > hwm) hwm = value;
+
+        // Track gross (no fees)
+        grossValue *= (1 + qReturn);
+
+        totalMgmt += mgmtFee;
+        totalPerf += kvFee;
+
+        rows.push({
+            q, startVal, grossReturn: grossAfterReturn - startVal, mgmtFee,
+            hurdleAmount, aboveHurdle, hwmVal: hwm, aboveHWM, eligible,
+            perfFee: totalPerfFee, endVal: value,
+            hurdleMet: gain > hurdleAmount, hwmMet: afterMgmt > hwm - (value - afterMgmt + totalPerfFee)
+        });
+
+        chartLabels.push(`Q${q}`);
+        chartNet.push(value);
+        chartGross.push(grossValue);
+    }
+
+    const totalFees = totalMgmt + totalPerf;
+    const netReturn = ((value - initial) / initial) * 100;
+    const netAPY = (Math.pow(value / initial, 1 / years) - 1) * 100;
+    const grossReturn = ((grossValue - initial) / initial) * 100;
+
+    // Update metrics
+    $('mEndVal').textContent = fmt(value);
+    $('mTotalFees').textContent = fmt(totalFees);
+    $('mNetReturn').textContent = pct(netReturn);
+    $('mNetAPY').textContent = pct(netAPY);
+    $('mMgmtFees').textContent = fmt(totalMgmt);
+    $('mPerfFees').textContent = fmt(totalPerf);
+    $('mSpread').textContent = pct(grossReturn - netReturn);
+
+    // Update table
+    const tbody = document.querySelector('#feeTable tbody');
+    tbody.innerHTML = rows.map(r => `<tr>
+        <td>Q${r.q} (Y${Math.ceil(r.q/4)})</td>
+        <td>${fmt(r.startVal)}</td>
+        <td class="green-col">${fmtD(r.grossReturn)}</td>
+        <td class="fee-col">${fmtD(r.mgmtFee)}</td>
+        <td>${r.hurdleMet ? '✅' : '❌'} ${fmtD(r.hurdleAmount)}</td>
+        <td>${r.aboveHWM > 0 ? '✅' : '❌'} ${fmt(r.hwmVal)}</td>
+        <td class="fee-col">${fmtD(r.perfFee)}</td>
+        <td class="green-col" style="font-weight:600">${fmt(r.endVal)}</td>
+    </tr>`).join('');
+
+    // Update chart
+    if (chart) chart.destroy();
+    chart = new Chart($('growthChart'), {
+        type: 'line',
+        data: {
+            labels: chartLabels,
+            datasets: [
+                {
+                    label: 'Net Value (After Fees)',
+                    data: chartNet,
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34,197,94,0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 2
+                },
+                {
+                    label: 'Gross Value (No Fees)',
+                    data: chartGross,
+                    borderColor: '#7c3aed',
+                    backgroundColor: 'rgba(124,58,237,0.08)',
+                    fill: true,
+                    tension: 0.3,
+                    borderDash: [5, 5],
+                    pointRadius: 2
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { labels: { color: '#8b8ba7' } },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ctx.dataset.label + ': ' + fmt(ctx.parsed.y)
+                    }
+                }
+            },
+            scales: {
+                x: { ticks: { color: '#8b8ba7' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                y: {
+                    ticks: { color: '#8b8ba7', callback: v => '$' + (v/1e6).toFixed(1) + 'M' },
+                    grid: { color: 'rgba(255,255,255,0.05)' }
+                }
+            }
+        }
+    });
+}
+
+// Event listeners
+$('investment').addEventListener('input', calculate);
+$('returnSlider').addEventListener('input', () => {
+    $('returnVal').textContent = $('returnSlider').value + '%';
+    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.scenario-btn').forEach(b => {
+        if (parseFloat(b.dataset.rate) === parseFloat($('returnSlider').value)) b.classList.add('active');
+    });
+    calculate();
+});
+$('years').addEventListener('change', calculate);
+$('badYear').addEventListener('change', calculate);
+
+document.querySelectorAll('.scenario-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        $('returnSlider').value = btn.dataset.rate;
+        $('returnVal').textContent = btn.dataset.rate + '%';
+        calculate();
+    });
+});
+
+// Initial calculation
+calculate();
+</script>
+</body>
+</html>
