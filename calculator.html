@@ -271,7 +271,7 @@
                         <th>Mgmt Fee</th>
                         <th>Hurdle</th>
                         <th>HWM</th>
-                        <th>Perf Fee (20%)</th>
+                        <th>Perf Fee</th>
                         <th>Net Value</th>
                     </tr>
                 </thead>
@@ -338,9 +338,17 @@ function calculate() {
         // 7. Eligible gain = min of above-hurdle and above-HWM
         const eligible = Math.min(aboveHurdle, aboveHWM);
 
-        // 8. Performance fee (20%)
-        const kvFee = eligible * 0.20;
+        // 8. Performance fee with kicker
+        // Kicker threshold: 5% quarterly return (20% annualized)
+        const kickerThreshold = startVal * 0.05; // 5% of starting value
+        const gainAboveKicker = Math.max(0, gain - kickerThreshold);
+        const baseEligible = Math.max(0, eligible - Math.min(gainAboveKicker, eligible));
+        const kickerEligible = eligible - baseEligible;
+        const baseFee = baseEligible * 0.20;
+        const kickerFee = kickerEligible * 0.25;
+        const kvFee = baseFee + kickerFee;
         const totalPerfFee = kvFee;
+        const hasKicker = kickerEligible > 0;
 
         // 9. End value
         value = afterMgmt - totalPerfFee;
@@ -357,7 +365,7 @@ function calculate() {
         rows.push({
             q, startVal, grossReturn: grossAfterReturn - startVal, mgmtFee,
             hurdleAmount, aboveHurdle, hwmVal: hwm, aboveHWM, eligible,
-            perfFee: totalPerfFee, endVal: value,
+            perfFee: totalPerfFee, endVal: value, hasKicker,
             hurdleMet: gain > hurdleAmount, hwmMet: afterMgmt > hwm - (value - afterMgmt + totalPerfFee)
         });
 
@@ -389,7 +397,7 @@ function calculate() {
         <td class="fee-col">${fmtD(r.mgmtFee)}</td>
         <td>${r.hurdleMet ? '✅' : '❌'} ${fmtD(r.hurdleAmount)}</td>
         <td>${r.aboveHWM > 0 ? '✅' : '❌'} ${fmt(r.hwmVal)}</td>
-        <td class="fee-col">${fmtD(r.perfFee)}</td>
+        <td class="fee-col">${fmtD(r.perfFee)}${r.hasKicker ? ' 🚀' : ''}</td>
         <td class="green-col" style="font-weight:600">${fmt(r.endVal)}</td>
     </tr>`).join('');
 
