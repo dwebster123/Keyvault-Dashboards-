@@ -658,7 +658,7 @@
 
             return periods.map(period => {
                 const daysAvailable = Math.min(period.days, history.length);
-                if (daysAvailable < 1) return { name: period.name, days: 0, return: 0, apy: 0 };
+                if (daysAvailable < 1) return { name: period.name, days: 0, requestedDays: period.days, return: 0, apy: 0, insufficient: false };
 
                 const startIndex = Math.max(0, history.length - daysAvailable);
                 const startPrice = history[startIndex].SharePrice;
@@ -669,8 +669,10 @@
                     ? periodReturn * NET_INVESTOR_FACTOR
                     : periodReturn;
                 const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
+                // Flag when we don't have enough data for the requested period
+                const insufficient = period.name !== 'All Time' && daysAvailable < period.days;
 
-                return { name: period.name, days: daysAvailable, return: netPeriodReturn, apy: annualizedAPY };
+                return { name: period.name, days: daysAvailable, requestedDays: period.days, return: netPeriodReturn, apy: annualizedAPY, insufficient };
             });
         }
 
@@ -766,9 +768,9 @@
                     <div class="metrics-grid">
                         ${m.rollingAPYs.map(apy => `
                             <div class="metric-card ${apy.apy >= 0 ? 'realized' : ''}">
-                                <div class="metric-label"><span class="icon">📉</span> ${apy.name} APY</div>
+                                <div class="metric-label"><span class="icon">📉</span> ${apy.name} APY${apy.insufficient ? ' *' : ''}</div>
                                 <div class="metric-value ${apy.apy >= 0 ? 'realized' : ''}">${formatPercent(apy.apy)}</div>
-                                <div class="metric-subtext">${apy.days} days</div>
+                                <div class="metric-subtext">${apy.insufficient ? `${apy.days} of ${apy.requestedDays} days available` : `${apy.days} days`}</div>
                             </div>
                         `).join('')}
                     </div>
