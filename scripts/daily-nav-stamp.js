@@ -130,8 +130,13 @@ async function main() {
     }
 
     // 3. Calculate share price
-    const sharePrice = balance / totalShares;
-    console.log(`[NAV Stamp] Share price: $${sharePrice.toFixed(6)}`);
+    // Normalization ratio aligns raw Drift share price with the historical series
+    // (accounts for initial deposit pricing vs share issuance)
+    const NORMALIZATION_RATIO = 1.1909;
+    const rawSharePrice = balance / totalShares;
+    const sharePrice = rawSharePrice * NORMALIZATION_RATIO;
+    console.log(`[NAV Stamp] Raw share price: $${rawSharePrice.toFixed(6)}`);
+    console.log(`[NAV Stamp] Normalized share price: $${sharePrice.toFixed(6)} (ratio: ${NORMALIZATION_RATIO})`);
 
     // 4. Get positions
     const positions = (userData.positions || []).filter(p => parseFloat(p.baseAssetAmount) !== 0);
