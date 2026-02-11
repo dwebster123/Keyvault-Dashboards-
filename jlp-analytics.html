@@ -149,7 +149,7 @@
             <img src="logo.png" alt="KeyVault" class="logo">
             <h1>KeyVault JLP Analytics</h1>
             <div class="subtitle">Jupiter Perpetual Exchange Fee & Performance Analytics</div>
-            <div class="update-badge"><span class="live-indicator"></span>Auto-refreshing · <span id="lastUpdate">Loading...</span></div>
+            <div class="update-badge">Official NAV · <span id="lastUpdate">Loading...</span></div>
         </div>
 
         <!-- 1. Slim Top Metrics -->
@@ -313,7 +313,7 @@
 
         <!-- Attribution -->
         <div style="text-align:center;padding:20px;color:#555;font-size:0.7rem;">
-            On-chain data powered by <a href="https://allium.so" target="_blank" style="color:#00d4ff;text-decoration:none;">Allium</a> · Prices from CoinGecko · Vault NAV from Google Sheets
+            On-chain data powered by <a href="https://allium.so" target="_blank" style="color:#00d4ff;text-decoration:none;">Allium</a> · Prices from CoinGecko · Vault NAV from official daily stamps
         </div>
     </div>
 
@@ -321,9 +321,8 @@
 const PROXY = u => 'https://api.allorigins.win/get?url=' + encodeURIComponent(u);
 const DEFILLAMA_URL = 'https://api.llama.fi/summary/fees/jupiter-perpetual-exchange';
 const COINGECKO_URL = 'https://api.coingecko.com/api/v3/coins/jupiter-perpetuals-liquidity-provider-token/market_chart?vs_currency=usd&days=365';
-const VAULT_URL = 'https://app.primenumber.trade/data/PN_KV1.json';
-const VAULT_HIST_URL = 'https://app.primenumber.trade/data/PN_KV1_history.json';
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1tCkeY0rYnBTacwrn4DFAASY89JpnWBo06X2x333u2YA/gviz/tq?tqx=out:csv&gid=0';
+// Vault data now comes from official NAV stamps (no live API)
+const OFFICIAL_NAV_URL = 'data/official-nav-history.json';
 const JLP_INFO_URL = 'https://perps-api.jup.ag/v2/jlp-info';
 const CG_SOL_URL = 'https://api.coingecko.com/api/v3/coins/solana/market_chart?vs_currency=usd&days=365';
 const CG_ETH_URL = 'https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=365';
@@ -380,42 +379,15 @@ async function fetchJSON(url, useProxy = false) {
     }
 }
 
-async function fetchSpreadsheetData() {
+// Load vault history from official NAV stamps
+async function fetchOfficialNavHistory() {
     try {
-        const res = await fetch(SHEET_URL);
-        const csv = await res.text();
-        const lines = csv.trim().split('\n');
-        const data = [];
-        let lastDate = null;
-        for (const line of lines) {
-            const cols = line.split(',').map(c => c.replace(/"/g, '').trim());
-            if (cols[4] && (cols[4].includes('2025') || cols[4].includes('2026'))) {
-                lastDate = cols[4];
-            } else if (cols[1] && lastDate) {
-                const price = parseFloat(cols[1]);
-                if (!isNaN(price) && price > 0) {
-                    data.push({ date: new Date(lastDate + 'T00:00:00Z'), sharePrice: price, tvl: null, source: 'spreadsheet' });
-                }
-            }
-        }
-        return data;
-    } catch (e) { return []; }
-}
-
-function combineVaultHistory(spreadsheetData, liveData) {
-    if (!spreadsheetData.length) return liveData;
-    if (!liveData.length) return spreadsheetData;
-    const sheetEnd = spreadsheetData[spreadsheetData.length - 1];
-    const sheetEndDate = sheetEnd.date.toISOString().slice(0, 10);
-    const newLive = liveData.filter(d => d.date.toISOString().slice(0, 10) > sheetEndDate);
-    if (!newLive.length) return spreadsheetData;
-    const liveBaseline = newLive[0].sharePrice;
-    const sheetEndPrice = sheetEnd.sharePrice;
-    const combined = [...spreadsheetData];
-    for (const v of newLive) {
-        combined.push({ date: v.date, sharePrice: sheetEndPrice * (v.sharePrice / liveBaseline), tvl: v.tvl, source: 'live' });
-    }
-    return combined;
+        const res = await fetch(OFFICIAL_NAV_URL + '?t=' + Date.now());
+        const entries = await res.json();
+        return entries
+            .sort((a, b) => a.date.localeCompare(b.date))
+            .map(e => ({ date: new Date(e.date + 'T00:00:00Z'), sharePrice: e.SharePrice, tvl: e.tvl || null, source: 'official-nav' }));
+    } catch (e) { console.error('Failed to load official NAV history:', e); return []; }
 }
 
 // ============ WATERFALL TABLE ============
@@ -709,18 +681,16 @@ document.getElementById('wfChartTabs').addEventListener('click', e => {
 // ============ MAIN LOAD ============
 async function loadAll() {
     try {
-        const [alliumFeesData, alliumPnlData, dlData, cgData, vc, vh, jlpInfo, solData, ethData, btcData, sheetData, onchainPnlData] = await Promise.all([
+        const [alliumFeesData, alliumPnlData, dlData, cgData, navHistory, jlpInfo, solData, ethData, btcData, onchainPnlData] = await Promise.all([
             fetch('./data/allium-fees.json?t=' + Date.now()).then(r => r.json()).catch(() => null),
             fetch('./data/allium-trader-pnl.json?t=' + Date.now()).then(r => r.json()).catch(() => null),
             fetchJSON(DEFILLAMA_URL).catch(() => null),
             fetchJSON(COINGECKO_URL).catch(() => null),
-            fetchJSON(VAULT_URL, true).catch(() => null),
-            fetchJSON(VAULT_HIST_URL, true).catch(() => null),
+            fetchOfficialNavHistory(),
             fetchJSON(JLP_INFO_URL).catch(() => null),
             fetchJSON(CG_SOL_URL).catch(() => null),
             fetchJSON(CG_ETH_URL).catch(() => null),
             fetchJSON(CG_BTC_URL).catch(() => null),
-            fetchSpreadsheetData(),
             fetch('./data/trader-pnl-onchain.json?t=' + Date.now()).then(r => r.json()).catch(() => [])
         ]);
 
@@ -748,9 +718,8 @@ async function loadAll() {
         solPrices = ((solData && solData.prices) || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         ethPrices = ((ethData && ethData.prices) || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
         btcPrices = ((btcData && btcData.prices) || []).map(([ts, p]) => ({ date: new Date(ts), price: p }));
-        vaultCurrent = vc;
-        const liveHistory = ((vh && Array.isArray(vh)) ? vh : []).map(d => ({ date: new Date(d.update_time_utc), sharePrice: d.SharePrice, tvl: d.tvl })).sort((a, b) => a.date - b.date);
-        vaultHistory = combineVaultHistory(sheetData, liveHistory);
+        vaultHistory = navHistory;
+        vaultCurrent = navHistory.length ? { SharePrice: navHistory[navHistory.length - 1].sharePrice, tvl: navHistory[navHistory.length - 1].tvl } : null;
 
         if (jlpInfo && jlpInfo.jlpPriceUsd) {
             jlpPoolPrice = parseInt(jlpInfo.jlpPriceUsd) / 1e6;
@@ -765,14 +734,15 @@ async function loadAll() {
             ? alliumFeesData[alliumFeesData.length - 1].total_fees
             : (dlData ? dlData.total24h || 0 : 0);
         const vaultSharePrice = vaultCurrent ? vaultCurrent.SharePrice : null;
-        const vaultTvl = vaultHistory.length ? (vaultHistory[vaultHistory.length - 1].tvl || null) : null;
+        const vaultTvl = vaultCurrent ? (vaultCurrent.tvl || null) : null;
+        const lastNavDate = navHistory.length ? navHistory[navHistory.length - 1].date.toISOString().slice(0, 10) : null;
 
         document.getElementById('sm-jlp').textContent = jlpPrice ? '$' + jlpPrice.toFixed(4) : '--';
         document.getElementById('sm-fees').textContent = fees24h >= 1e6 ? '$' + (fees24h / 1e6).toFixed(2) + 'M' : '$' + (fees24h / 1e3).toFixed(0) + 'K';
         document.getElementById('sm-share').textContent = vaultSharePrice ? '$' + vaultSharePrice.toFixed(4) : '--';
         document.getElementById('sm-tvl').textContent = vaultTvl ? '$' + (vaultTvl / 1e6).toFixed(2) + 'M' : '--';
 
-        document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+        document.getElementById('lastUpdate').textContent = lastNavDate ? 'Last stamp: ' + lastNavDate : new Date().toLocaleTimeString();
 
         const feeBadge = document.getElementById('feeSourceBadge');
         if (feeBadge) {
@@ -1226,10 +1196,9 @@ document.getElementById('fundingTabs').addEventListener('click', e => {
     renderFundingChart();
 });
 
-// Init + auto-refresh
+// Init (no auto-refresh — vault data updates daily via NAV stamp system)
 loadAll();
 loadDriftFunding();
-setInterval(() => { loadAll(); loadDriftFunding(); }, 60000);
 
 // Hedge Activity Chart — deferred until details section is opened
 let hedgeActivityRendered = false;
