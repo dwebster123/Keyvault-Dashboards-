@@ -609,7 +609,16 @@
                     fetchWithFallback('https://app.primenumber.trade/data/PN_KV1_history.json')
                 ]);
 
-                // Use Drift data if available, otherwise Prime Number
+                // Try to load official NAV history (5 PM EST daily stamps)
+                let officialNav = null;
+                try {
+                    const navResp = await fetch('data/official-nav-history.json');
+                    officialNav = await navResp.json();
+                } catch (e) {
+                    console.warn('No official NAV history yet');
+                }
+
+                // Use Drift for current data, official NAV for history when available
                 const current = driftData || primeCurrent;
                 if (driftData) {
                     console.log(`✓ Using Drift data: TVL=$${driftData.tvl.toFixed(0)}, SharePrice=$${driftData.SharePrice.toFixed(6)}`);
@@ -617,8 +626,33 @@
                     console.warn('⚠ Using Prime Number data (Drift unavailable)');
                 }
 
+                // Merge official NAV history with Prime Number history
+                // Official NAV takes precedence for dates where both exist
+                if (officialNav && officialNav.length > 0) {
+                    const officialDates = new Set(officialNav.map(n => n.date));
+                    const primeHistory = Array.isArray(history) ? history : [];
+                    // Keep Prime Number history for dates before official NAV started
+                    const mergedHistory = primeHistory.filter(h => {
+                        const d = (h.update_time_utc || '').split('T')[0];
+                        return !officialDates.has(d);
+                    });
+                    // Add official NAV records (they have update_time_utc = timestamp)
+                    officialNav.forEach(n => {
+                        mergedHistory.push({
+                            SharePrice: n.SharePrice,
+                            tvl: n.tvl,
+                            update_time_utc: n.timestamp,
+                            source: 'official-nav'
+                        });
+                    });
+                    mergedHistory.sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
+                    historicalData = mergedHistory;
+                    console.log(`✓ Using ${officialNav.length} official NAV stamps + ${primeHistory.length} Prime Number records`);
+                } else {
+                    historicalData = history;
+                }
+
                 currentData = current;
-                historicalData = history;
 
                 renderDashboard();
             } catch (error) {

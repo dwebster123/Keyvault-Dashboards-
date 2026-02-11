@@ -1,0 +1,40 @@
+[
+  {
+    "date": "2026-02-11",
+    "timestamp": "2026-02-11T18:31:20.403Z",
+    "SharePrice": 1.007194,
+    "tvl": 3965940.44,
+    "totalShares": 3937611.470579,
+    "totalCollateral": 7216911.84,
+    "health": 30,
+    "leverage": 1.6457,
+    "positions": [
+      {
+        "symbol": "SOL-PERP",
+        "baseAssetAmount": "-4576.320000000",
+        "settledPnl": "682961.579162",
+        "liquidationPrice": "131.329869"
+      },
+      {
+        "symbol": "BTC-PERP",
+        "baseAssetAmount": "-10.837700000",
+        "settledPnl": "439504.690431",
+        "liquidationPrice": "291278.886533"
+      },
+      {
+        "symbol": "ETH-PERP",
+        "baseAssetAmount": "-162.139000000",
+        "settledPnl": "341565.088020",
+        "liquidationPrice": "8205.735335"
+      }
+    ],
+    "driftApys": {
+      "7d": -1.945788493014322,
+      "30d": 4.9046581878130935,
+      "90d": 3.868215126327379,
+      "180d": 3.868215126327379,
+      "365d": 3.868215126327379
+    },
+    "source": "drift-onchain"
+  }
+]
