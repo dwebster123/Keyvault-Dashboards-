@@ -157,6 +157,8 @@ async function main() {
         date: now.toISOString().split('T')[0],
         timestamp: now.toISOString(),
         SharePrice: parseFloat(sharePrice.toFixed(6)),
+        rawPrivateSharePrice: parseFloat(rawSharePrice.toFixed(6)),
+        normalizationRatio: NORMALIZATION_RATIO,
         tvl: parseFloat(balance.toFixed(2)),
         totalShares: parseFloat(totalShares.toFixed(6)),
         totalCollateral: parseFloat(totalCollateral.toFixed(2)),

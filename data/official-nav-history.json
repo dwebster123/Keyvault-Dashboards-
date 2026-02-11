@@ -2271,6 +2271,8 @@
       "180d": 3.480843780727505,
       "365d": 3.480843780727505
     },
-    "source": "drift-onchain"
+    "source": "drift-onchain",
+    "rawPrivateSharePrice": 1.00609,
+    "normalizationRatio": 1.1909
   }
 ]
