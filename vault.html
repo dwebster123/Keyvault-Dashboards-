@@ -659,6 +659,7 @@
                     currentData = {
                         tvl: latestNav.tvl,
                         SharePrice: latestNav.SharePrice,
+                        totalShares: latestNav.totalShares,
                         update_time_utc: latestNav.timestamp,
                         source: 'official-nav',
                         // Include Drift extras if available for the positions tab
@@ -696,7 +697,9 @@
             const totalDays = sortedHistory.length;
 
             const currentBalance = tvl;
-            const cumulativeNetDeposits = tvl / sharePrice;
+            // Total shares ≈ total dollars deposited (each share costs ~$1.00 at deposit)
+            const totalShares = data.totalShares || TOTAL_SHARES || (tvl / sharePrice);
+            const cumulativeNetDeposits = totalShares; // Each share = ~$1 deposited
             const totalPNL = currentBalance - cumulativeNetDeposits;
             // Share price is net of Prime's 10% fee only — KeyVault's 20% still needs deducting
             const sharePriceReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100;
