@@ -1,301 +1,306 @@
 [
   {
+    "date": "2025-12-25",
+    "timestamp": "2025-12-25T22:00:00Z",
+    "SharePrice": 1.000001,
+    "tvl": 10.0,
+    "totalShares": 10.0,
+    "source": "drift-vault-snapshots"
+  },
+  {
+    "date": "2026-01-06",
+    "timestamp": "2026-01-06T22:00:00Z",
+    "SharePrice": 1.000432,
+    "tvl": 199973.13,
+    "totalShares": 199886.795942,
+    "source": "drift-vault-snapshots"
+  },
+  {
+    "date": "2026-01-07",
+    "timestamp": "2026-01-07T22:00:00Z",
+    "SharePrice": 1.000532,
+    "tvl": 700448.53,
+    "totalShares": 700076.024058,
+    "source": "drift-vault-snapshots"
+  },
+  {
+    "date": "2026-01-08",
+    "timestamp": "2026-01-08T22:00:00Z",
+    "SharePrice": 1.000672,
+    "tvl": 2200541.64,
+    "totalShares": 2199063.810625,
+    "source": "drift-vault-snapshots"
+  },
+  {
+    "date": "2026-01-09",
+    "timestamp": "2026-01-09T22:00:00Z",
+    "SharePrice": 1.001042,
+    "tvl": 2700421.93,
+    "totalShares": 2697610.408922,
+    "source": "drift-vault-snapshots"
+  },
+  {
+    "date": "2026-01-10",
+    "timestamp": "2026-01-10T22:00:00Z",
+    "SharePrice": 1.003448,
+    "tvl": 2706912.59,
+    "totalShares": 2697610.408922,
+    "source": "drift-vault-snapshots"
+  },
+  {
+    "date": "2026-01-11",
+    "timestamp": "2026-01-11T22:00:00Z",
+    "SharePrice": 0.999823,
+    "tvl": 3196344.71,
+    "totalShares": 3196911.93881,
+    "source": "drift-vault-snapshots"
+  },
+  {
+    "date": "2026-01-12",
+    "timestamp": "2026-01-12T22:00:00Z",
+    "SharePrice": 1.001252,
+    "tvl": 3700284.39,
+    "totalShares": 3695659.130005,
+    "source": "drift-vault-snapshots"
+  },
+  {
     "date": "2026-01-13",
     "timestamp": "2026-01-13T22:00:00Z",
-    "SharePrice": 0.998119,
-    "tvl": 4445247.74,
-    "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-13T23:53:23Z"
+    "SharePrice": 1.001637,
+    "tvl": 3701710.03,
+    "totalShares": 3695659.130005,
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-14",
     "timestamp": "2026-01-14T22:00:00Z",
-    "SharePrice": 1.000402,
-    "tvl": 4455413.41,
+    "SharePrice": 0.999863,
+    "tvl": 4453012.35,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-14T23:53:18Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-15",
     "timestamp": "2026-01-15T22:00:00Z",
-    "SharePrice": 1.000242,
-    "tvl": 4454704.34,
+    "SharePrice": 1.00096,
+    "tvl": 4457901.48,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-15T23:53:22Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-16",
     "timestamp": "2026-01-16T22:00:00Z",
-    "SharePrice": 1.000799,
-    "tvl": 4457185.15,
+    "SharePrice": 1.000228,
+    "tvl": 4454639.66,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-16T23:53:26Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-17",
     "timestamp": "2026-01-17T22:00:00Z",
-    "SharePrice": 1.001317,
-    "tvl": 4459488.91,
+    "SharePrice": 0.999684,
+    "tvl": 4452216.84,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-17T23:53:23Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-18",
     "timestamp": "2026-01-18T22:00:00Z",
-    "SharePrice": 1.002975,
-    "tvl": 4466875.79,
+    "SharePrice": 1.001125,
+    "tvl": 4458637.1,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-18T23:53:21Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-19",
     "timestamp": "2026-01-19T22:00:00Z",
-    "SharePrice": 1.003671,
-    "tvl": 4469975.94,
+    "SharePrice": 1.003616,
+    "tvl": 4469728.49,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-19T23:53:17Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-20",
     "timestamp": "2026-01-20T22:00:00Z",
-    "SharePrice": 1.003482,
-    "tvl": 4469130.06,
+    "SharePrice": 1.002397,
+    "tvl": 4464297.73,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-20T23:53:18Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-21",
     "timestamp": "2026-01-21T22:00:00Z",
-    "SharePrice": 1.006396,
-    "tvl": 4482110.93,
+    "SharePrice": 1.002848,
+    "tvl": 4466308.91,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-21T23:53:20Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-22",
     "timestamp": "2026-01-22T22:00:00Z",
-    "SharePrice": 1.007226,
-    "tvl": 4485805.01,
+    "SharePrice": 1.005646,
+    "tvl": 4478770.25,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-22T23:53:17Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-23",
     "timestamp": "2026-01-23T22:00:00Z",
-    "SharePrice": 1.005598,
-    "tvl": 4478555.1,
+    "SharePrice": 1.008465,
+    "tvl": 4491324.83,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-23T23:53:19Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-24",
     "timestamp": "2026-01-24T22:00:00Z",
-    "SharePrice": 1.007021,
-    "tvl": 4484894.48,
+    "SharePrice": 1.007447,
+    "tvl": 4486788.83,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-24T23:53:25Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-25",
     "timestamp": "2026-01-25T22:00:00Z",
-    "SharePrice": 1.004979,
-    "tvl": 4475797.43,
+    "SharePrice": 1.007936,
+    "tvl": 4488967.54,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-25T23:53:21Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-26",
     "timestamp": "2026-01-26T22:00:00Z",
-    "SharePrice": 1.003659,
-    "tvl": 4469921.37,
+    "SharePrice": 1.006977,
+    "tvl": 4484698.93,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-26T23:53:17Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-27",
     "timestamp": "2026-01-27T22:00:00Z",
-    "SharePrice": 1.007026,
-    "tvl": 4484917.58,
+    "SharePrice": 1.005886,
+    "tvl": 4479836.55,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-27T23:53:17Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-28",
     "timestamp": "2026-01-28T22:00:00Z",
-    "SharePrice": 1.004741,
-    "tvl": 4474739.89,
+    "SharePrice": 1.004865,
+    "tvl": 4475293.62,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-28T23:53:20Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-29",
     "timestamp": "2026-01-29T22:00:00Z",
-    "SharePrice": 1.005621,
-    "tvl": 4478658.48,
+    "SharePrice": 1.005267,
+    "tvl": 4477080.57,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-29T23:53:22Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-30",
     "timestamp": "2026-01-30T22:00:00Z",
-    "SharePrice": 1.00767,
-    "tvl": 4487784.88,
+    "SharePrice": 1.005652,
+    "tvl": 4478794.34,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-30T23:53:16Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-01-31",
     "timestamp": "2026-01-31T22:00:00Z",
-    "SharePrice": 1.007025,
-    "tvl": 4484911.7,
+    "SharePrice": 1.007694,
+    "tvl": 4487890.06,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-01-31T23:53:20Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-02-01",
     "timestamp": "2026-02-01T22:00:00Z",
-    "SharePrice": 1.00697,
-    "tvl": 4484664.83,
+    "SharePrice": 1.006546,
+    "tvl": 4482775.95,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-02-01T23:53:15Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-02-02",
     "timestamp": "2026-02-02T22:00:00Z",
-    "SharePrice": 1.005054,
-    "tvl": 4476131.85,
+    "SharePrice": 1.00753,
+    "tvl": 4487162.01,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-02-02T23:53:17Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-02-03",
     "timestamp": "2026-02-03T22:00:00Z",
-    "SharePrice": 1.0063,
-    "tvl": 4481681.98,
+    "SharePrice": 1.005475,
+    "tvl": 4478006.93,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-02-03T23:53:18Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-02-04",
     "timestamp": "2026-02-04T22:00:00Z",
-    "SharePrice": 1.005451,
-    "tvl": 4477902.3,
+    "SharePrice": 1.006731,
+    "tvl": 4483600.9,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-02-04T23:53:27Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-02-05",
     "timestamp": "2026-02-05T22:00:00Z",
-    "SharePrice": 1.016518,
-    "tvl": 4527189.54,
+    "SharePrice": 1.006189,
+    "tvl": 4481190.19,
     "totalShares": 4453624.616476,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-02-05T23:53:18Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-02-06",
     "timestamp": "2026-02-06T22:00:00Z",
-    "SharePrice": 1.005721,
-    "tvl": 3960138.36,
-    "totalShares": 3937611.470579,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-02-06T23:53:17Z"
+    "SharePrice": 1.009158,
+    "tvl": 4494411.92,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-02-07",
     "timestamp": "2026-02-07T22:00:00Z",
-    "SharePrice": 1.005415,
-    "tvl": 3958934.76,
+    "SharePrice": 1.006993,
+    "tvl": 3965146.75,
     "totalShares": 3937611.470579,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-02-07T23:53:19Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-02-08",
     "timestamp": "2026-02-08T22:00:00Z",
-    "SharePrice": 1.0063,
-    "tvl": 3962417.89,
+    "SharePrice": 1.007515,
+    "tvl": 3967203.69,
     "totalShares": 3937611.470579,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-02-08T23:53:27Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-02-09",
     "timestamp": "2026-02-09T22:00:00Z",
-    "SharePrice": 0.99957,
-    "tvl": 3935917.97,
+    "SharePrice": 1.004983,
+    "tvl": 3957232.56,
     "totalShares": 3937611.470579,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-02-09T23:53:20Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-02-10",
     "timestamp": "2026-02-10T22:00:00Z",
-    "SharePrice": 1.003536,
-    "tvl": 3951534.58,
+    "SharePrice": 1.003286,
+    "tvl": 3950550.06,
     "totalShares": 3937611.470579,
-    "source": "primenumber-history-backfill",
-    "originalTimestamp": "2026-02-10T22:37:16Z"
+    "source": "drift-vault-snapshots"
   },
   {
     "date": "2026-02-11",
-    "timestamp": "2026-02-11T18:31:20.403Z",
-    "SharePrice": 1.007194,
-    "tvl": 3965940.44,
+    "timestamp": "2026-02-11T22:00:00Z",
+    "SharePrice": 1.00422,
+    "tvl": 3954226.82,
     "totalShares": 3937611.470579,
-    "totalCollateral": 7216911.84,
-    "health": 30,
-    "leverage": 1.6457,
-    "positions": [
-      {
-        "symbol": "SOL-PERP",
-        "baseAssetAmount": "-4576.320000000",
-        "settledPnl": "682961.579162",
-        "liquidationPrice": "131.329869"
-      },
-      {
-        "symbol": "BTC-PERP",
-        "baseAssetAmount": "-10.837700000",
-        "settledPnl": "439504.690431",
-        "liquidationPrice": "291278.886533"
-      },
-      {
-        "symbol": "ETH-PERP",
-        "baseAssetAmount": "-162.139000000",
-        "settledPnl": "341565.088020",
-        "liquidationPrice": "8205.735335"
-      }
-    ],
-    "driftApys": {
-      "7d": -1.945788493014322,
-      "30d": 4.9046581878130935,
-      "90d": 3.868215126327379,
-      "180d": 3.868215126327379,
-      "365d": 3.868215126327379
-    },
-    "source": "drift-onchain"
+    "source": "drift-vault-snapshots"
   }
 ]
