@@ -100,8 +100,20 @@ async function main() {
 
     console.log(`[NAV Stamp] Drift balance: $${balance.toFixed(2)}`);
 
-    // 2. Get total shares from on-chain
-    let totalShares = await getTotalShares();
+    // 1b. Also fetch latest Drift vault snapshot for total shares
+    let snapshotData = null;
+    try {
+        const snapshots = await fetchJSON(`https://app.drift.trade/api/vaults/vault-snapshots?vault=${VAULT_ADDRESS}`);
+        if (snapshots && snapshots.length > 0) {
+            snapshotData = snapshots[snapshots.length - 1];
+            console.log(`[NAV Stamp] Latest Drift snapshot slot: ${snapshotData.slot}`);
+        }
+    } catch (e) {
+        console.warn(`[NAV Stamp] Could not fetch Drift snapshots: ${e.message}`);
+    }
+
+    // 2. Get total shares — prefer snapshot, then on-chain, then fallback
+    let totalShares = snapshotData ? parseInt(snapshotData.totalShares) / 1e6 : await getTotalShares();
     
     // Fallback: load last known from history
     if (!totalShares) {
