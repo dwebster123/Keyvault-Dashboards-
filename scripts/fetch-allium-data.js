@@ -225,6 +225,11 @@ async function main() {
 }
 
 main().catch(e => {
-    console.error('Fatal error:', e);
+    console.error('Allium error:', e.message || e);
+    if (String(e).includes('401') || String(e).includes('subscription')) {
+        console.error('⚠️  Allium API subscription expired or invalid. Existing data files preserved.');
+        console.error('   Dashboard will show stale data with a warning.');
+        process.exit(0); // Don't fail the pipeline
+    }
     process.exit(1);
 });
