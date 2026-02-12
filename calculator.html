@@ -209,10 +209,10 @@
                     <input type="number" id="investment" value="1000000" min="1000" step="10000">
                 </div>
                 <div class="control-group">
-                    <label>Expected Annual Return (%)</label>
+                    <label>Target Net Annual Return (%)</label>
                     <div class="range-row">
-                        <input type="range" id="returnSlider" min="0" max="50" step="0.5" value="18">
-                        <span class="range-val" id="returnVal">18%</span>
+                        <input type="range" id="returnSlider" min="0" max="50" step="0.5" value="14">
+                        <span class="range-val" id="returnVal">14%</span>
                     </div>
                 </div>
                 <div class="control-group">
@@ -232,9 +232,9 @@
                 </div>
             </div>
             <div class="scenarios">
-                <button class="scenario-btn" data-rate="12">🐢 Conservative (12%)</button>
-                <button class="scenario-btn active" data-rate="18">⚖️ Moderate (18%)</button>
-                <button class="scenario-btn" data-rate="25">🚀 Aggressive (25%)</button>
+                <button class="scenario-btn" data-rate="8">🐢 Conservative (8% net)</button>
+                <button class="scenario-btn active" data-rate="14">⚖️ Moderate (14% net)</button>
+                <button class="scenario-btn" data-rate="22">🚀 Aggressive (22% net)</button>
             </div>
             <div class="toggle-row">
                 <input type="checkbox" id="badYear">
@@ -246,18 +246,17 @@
         <div class="metrics-grid">
             <div class="metric-card"><div class="label">Projected End Value</div><div class="value green" id="mEndVal">—</div></div>
             <div class="metric-card"><div class="label">Total Fees Paid</div><div class="value pink" id="mTotalFees">—</div></div>
-            <div class="metric-card"><div class="label">Net Return %</div><div class="value green" id="mNetReturn">—</div></div>
+            <div class="metric-card"><div class="label">Implied Gross APY</div><div class="value purple" id="mGrossAPY">—</div></div>
             <div class="metric-card"><div class="label">Net APY</div><div class="value green" id="mNetAPY">—</div></div>
             <div class="metric-card"><div class="label">Management Fees</div><div class="value pink" id="mMgmtFees">—</div></div>
             <div class="metric-card"><div class="label">Performance Fees</div><div class="value pink" id="mPerfFees">—</div></div>
-<!-- removed gross vs net spread -->
         </div>
 
 <!-- portfolio growth chart removed -->
 
         <!-- Table -->
         <div class="table-container">
-            <h2>📊 Quarterly Fee Breakdown</h2>
+            <h2>📊 Quarterly Breakdown (Gross → Net)</h2>
             <table id="feeTable">
                 <thead>
                     <tr>
@@ -282,117 +281,109 @@ const fmt = v => '$' + v.toLocaleString('en-US', {minimumFractionDigits: 0, maxi
 const fmtD = v => '$' + v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 const pct = v => v.toFixed(2) + '%';
 
-function calculate() {
-    const initial = parseFloat($('investment').value) || 1000000;
-    const annualReturn = parseFloat($('returnSlider').value) / 100;
-    const years = parseInt($('years').value);
-    const badYear = $('badYear').checked;
-    const quarterlyReturn = annualReturn / 4;
+function solveGrossForNet(targetNetAnnual, initial, years, badYear) {
+    // Binary search for the gross annual return that produces the target net return
+    let lo = 0, hi = 1.0; // 0% to 100%
+    for (let i = 0; i < 60; i++) {
+        const mid = (lo + hi) / 2;
+        const result = simulate(mid, initial, years, badYear);
+        const achievedNet = Math.pow(result.endValue / initial, 1 / years) - 1;
+        if (achievedNet < targetNetAnnual) lo = mid;
+        else hi = mid;
+    }
+    return (lo + hi) / 2;
+}
+
+function simulate(annualGross, initial, years, badYear) {
+    const quarterlyReturn = annualGross / 4;
     const quarterlyHurdle = 0.0125; // 5% / 4
     const totalQuarters = years * 4;
 
     let value = initial;
     let hwm = initial;
-    let grossValue = initial; // track no-fee growth
+    let grossValue = initial;
     let totalMgmt = 0, totalPerf = 0;
     const rows = [];
-    const chartLabels = ['Start'];
-    const chartNet = [initial];
-    const chartGross = [initial];
 
     for (let q = 1; q <= totalQuarters; q++) {
         const startVal = value;
         const year = Math.ceil(q / 4);
 
-        // Determine this quarter's return
         let qReturn = quarterlyReturn;
         if (badYear && year === 2) {
-            qReturn = -0.15 / 4; // -15% annual spread over 4 quarters
+            qReturn = -0.15 / 4;
         }
 
-        // 1. Gross value after return
         const grossAfterReturn = startVal * (1 + qReturn);
-
-        // 2. Management fee: 0.5% of beginning value
         const mgmtFee = startVal * 0.005;
-
-        // 3. Value after mgmt fee
         const afterMgmt = grossAfterReturn - mgmtFee;
-
-        // 4. Gain after mgmt fee
         const gain = afterMgmt - startVal;
-
-        // 5. Hurdle: only gains above 1.25% of start
         const hurdleAmount = startVal * quarterlyHurdle;
         const aboveHurdle = Math.max(0, gain - hurdleAmount);
-
-        // 6. HWM: only gains that put us above previous HWM
         const aboveHWM = Math.max(0, afterMgmt - hwm);
-
-        // 7. Eligible gain = min of above-hurdle and above-HWM
         const eligible = Math.min(aboveHurdle, aboveHWM);
 
-        // 8. Performance fee with kicker
-        // Kicker threshold: 5% quarterly return (20% annualized)
-        const kickerThreshold = startVal * 0.05; // 5% of starting value
+        const kickerThreshold = startVal * 0.05;
         const gainAboveKicker = Math.max(0, gain - kickerThreshold);
         const baseEligible = Math.max(0, eligible - Math.min(gainAboveKicker, eligible));
         const kickerEligible = eligible - baseEligible;
         const baseFee = baseEligible * 0.20;
         const kickerFee = kickerEligible * 0.25;
         const kvFee = baseFee + kickerFee;
-        const totalPerfFee = kvFee;
         const hasKicker = kickerEligible > 0;
 
-        // 9. End value
-        value = afterMgmt - totalPerfFee;
-
-        // Update HWM
+        value = afterMgmt - kvFee;
         if (value > hwm) hwm = value;
-
-        // Track gross (no fees)
         grossValue *= (1 + qReturn);
-
         totalMgmt += mgmtFee;
         totalPerf += kvFee;
 
         rows.push({
             q, startVal, grossReturn: grossAfterReturn - startVal, mgmtFee,
-            hurdleAmount, aboveHurdle, hwmVal: hwm, aboveHWM, eligible,
-            perfFee: totalPerfFee, endVal: value, hasKicker,
-            hurdleMet: gain > hurdleAmount, hwmMet: afterMgmt > hwm - (value - afterMgmt + totalPerfFee)
+            hurdleAmount, hwmVal: hwm, aboveHWM,
+            perfFee: kvFee, endVal: value, hasKicker,
+            hurdleMet: gain > hurdleAmount,
+            grossReturnPct: qReturn * 100
         });
-
-        chartLabels.push(`Q${q}`);
-        chartNet.push(value);
-        chartGross.push(grossValue);
     }
 
-    const totalFees = totalMgmt + totalPerf;
-    const netReturn = ((value - initial) / initial) * 100;
-    const netAPY = (Math.pow(value / initial, 1 / years) - 1) * 100;
-    const grossReturn = ((grossValue - initial) / initial) * 100;
+    return { endValue: value, grossValue, totalMgmt, totalPerf, rows };
+}
+
+function calculate() {
+    const initial = parseFloat($('investment').value) || 1000000;
+    const targetNetAnnual = parseFloat($('returnSlider').value) / 100;
+    const years = parseInt($('years').value);
+    const badYear = $('badYear').checked;
+
+    // Solve for gross return that achieves this net
+    const impliedGross = solveGrossForNet(targetNetAnnual, initial, years, badYear);
+    const result = simulate(impliedGross, initial, years, badYear);
+
+    const totalFees = result.totalMgmt + result.totalPerf;
+    const netAPY = (Math.pow(result.endValue / initial, 1 / years) - 1) * 100;
+    const grossAPY = impliedGross * 100;
 
     // Update metrics
-    $('mEndVal').textContent = fmt(value);
+    $('mEndVal').textContent = fmt(result.endValue);
     $('mTotalFees').textContent = fmt(totalFees);
-    $('mNetReturn').textContent = pct(netReturn);
+    $('mGrossAPY').textContent = pct(grossAPY);
     $('mNetAPY').textContent = pct(netAPY);
-    $('mMgmtFees').textContent = fmt(totalMgmt);
-    $('mPerfFees').textContent = fmt(totalPerf);
+    $('mMgmtFees').textContent = fmt(result.totalMgmt);
+    $('mPerfFees').textContent = fmt(result.totalPerf);
+
     // Update table
     const tbody = document.querySelector('#feeTable tbody');
-    tbody.innerHTML = rows.map(r => `<tr>
+    tbody.innerHTML = result.rows.map(r => `<tr>
         <td>Q${r.q} (Y${Math.ceil(r.q/4)})</td>
         <td>${fmt(r.startVal)}</td>
-        <td class="green-col">${fmtD(r.grossReturn)}</td>
+        <td class="green-col">${fmtD(r.grossReturn)} (${r.grossReturnPct.toFixed(2)}%)</td>
         <td class="fee-col">${fmtD(r.mgmtFee)}</td>
         <td>${r.hurdleMet ? '✅' : '❌'} ${fmtD(r.hurdleAmount)}</td>
         <td>${r.aboveHWM > 0 ? '✅' : '❌'} ${fmt(r.hwmVal)}</td>
         <td class="fee-col">${fmtD(r.perfFee)}${r.hasKicker ? ' 🚀' : ''}</td>
         <td class="green-col" style="font-weight:600">${fmt(r.endVal)}</td>
     </tr>`).join('');
-
 }
 
 // Event listeners
