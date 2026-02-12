@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KeyVault Investment Calculator</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- chart.js removed -->
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -250,14 +250,10 @@
             <div class="metric-card"><div class="label">Net APY</div><div class="value green" id="mNetAPY">—</div></div>
             <div class="metric-card"><div class="label">Management Fees</div><div class="value pink" id="mMgmtFees">—</div></div>
             <div class="metric-card"><div class="label">Performance Fees</div><div class="value pink" id="mPerfFees">—</div></div>
-            <div class="metric-card"><div class="label">Gross vs Net Spread</div><div class="value purple" id="mSpread">—</div></div>
+<!-- removed gross vs net spread -->
         </div>
 
-        <!-- Chart -->
-        <div class="chart-container">
-            <h2>📈 Portfolio Growth Over Time</h2>
-            <canvas id="growthChart" height="100"></canvas>
-        </div>
+<!-- portfolio growth chart removed -->
 
         <!-- Table -->
         <div class="table-container">
@@ -285,8 +281,6 @@ const $ = id => document.getElementById(id);
 const fmt = v => '$' + v.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
 const fmtD = v => '$' + v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 const pct = v => v.toFixed(2) + '%';
-
-let chart = null;
 
 function calculate() {
     const initial = parseFloat($('investment').value) || 1000000;
@@ -386,8 +380,6 @@ function calculate() {
     $('mNetAPY').textContent = pct(netAPY);
     $('mMgmtFees').textContent = fmt(totalMgmt);
     $('mPerfFees').textContent = fmt(totalPerf);
-    $('mSpread').textContent = pct(grossReturn - netReturn);
-
     // Update table
     const tbody = document.querySelector('#feeTable tbody');
     tbody.innerHTML = rows.map(r => `<tr>
@@ -401,53 +393,6 @@ function calculate() {
         <td class="green-col" style="font-weight:600">${fmt(r.endVal)}</td>
     </tr>`).join('');
 
-    // Update chart
-    if (chart) chart.destroy();
-    chart = new Chart($('growthChart'), {
-        type: 'line',
-        data: {
-            labels: chartLabels,
-            datasets: [
-                {
-                    label: 'Net Value (After Fees)',
-                    data: chartNet,
-                    borderColor: '#22c55e',
-                    backgroundColor: 'rgba(34,197,94,0.1)',
-                    fill: true,
-                    tension: 0.3,
-                    pointRadius: 2
-                },
-                {
-                    label: 'Gross Value (No Fees)',
-                    data: chartGross,
-                    borderColor: '#7c3aed',
-                    backgroundColor: 'rgba(124,58,237,0.08)',
-                    fill: true,
-                    tension: 0.3,
-                    borderDash: [5, 5],
-                    pointRadius: 2
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { labels: { color: '#8b8ba7' } },
-                tooltip: {
-                    callbacks: {
-                        label: ctx => ctx.dataset.label + ': ' + fmt(ctx.parsed.y)
-                    }
-                }
-            },
-            scales: {
-                x: { ticks: { color: '#8b8ba7' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                y: {
-                    ticks: { color: '#8b8ba7', callback: v => '$' + (v/1e6).toFixed(1) + 'M' },
-                    grid: { color: 'rgba(255,255,255,0.05)' }
-                }
-            }
-        }
-    });
 }
 
 // Event listeners
