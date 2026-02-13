@@ -161,7 +161,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
   <ul>
     <li><strong>No bank accounts hold investor capital.</strong> Funds exist on-chain at all times.</li>
     <li><strong>No single individual can move funds.</strong> The smart contract enforces all deposit, trading, and withdrawal rules programmatically.</li>
-    <li><strong>Fund managers are delegates, not custodians.</strong> The vault manager (Prime Number Trade) has delegated trading authority — the ability to open and close positions — but the smart contract prohibits withdrawals to any wallet other than the original depositor's.</li>
+    <li><strong>Fund managers are delegates, not custodians.</strong> The vault manager has delegated trading authority — the ability to open and close positions — but the smart contract prohibits withdrawals to any wallet other than the original depositor's.</li>
   </ul>
 
   <h3>2.2 Drift Protocol</h3>
@@ -254,8 +254,8 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
 
   <h3>4.1 Vault Management</h3>
   <ul>
-    <li><strong>Sub-manager:</strong> Prime Number Trade serves as the vault's delegated trading manager on Drift Protocol. They execute the delta-neutral strategy — maintaining JLP positions and corresponding perpetual hedges.</li>
-    <li><strong>Key security:</strong> Vault management keys are secured by Prime Number Trade following institutional key management practices. The delegate key permits trading only; it cannot withdraw funds.</li>
+    <li><strong>Sub-manager:</strong> The delegated trading manager operates on Drift Protocol. They execute the delta-neutral strategy — maintaining JLP positions and corresponding perpetual hedges.</li>
+    <li><strong>Key security:</strong> Vault management keys are secured by the vault manager following institutional key management practices. The delegate key permits trading only; it cannot withdraw funds.</li>
   </ul>
 
   <h3>4.2 Monitoring</h3>
@@ -276,7 +276,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
   <ul>
     <li><strong>Position unwinding protocols:</strong> In adverse scenarios, the vault manager can rapidly close positions to reduce exposure and free liquidity.</li>
     <li><strong>Kill switches:</strong> Emergency procedures exist to halt active trading and move the vault to a defensive posture (fully hedged or cash-equivalent).</li>
-    <li><strong>Communication chain:</strong> Fund principals (Deven Webster, Brett Nielsen, JD Beck) maintain direct communication channels with Prime Number Trade for rapid decision-making.</li>
+    <li><strong>Communication chain:</strong> Fund principals (Deven Webster, Brett Nielsen, JD Beck) maintain direct communication channels with the vault manager for rapid decision-making.</li>
   </ul>
 </div>
 
@@ -325,7 +325,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
     <tr><td><strong>Regulatory uncertainty</strong></td><td>Evolving crypto regulations could impact fund operations, DeFi protocol availability, or investor access.</td><td>Legal counsel (Morrison Cohen LLP) monitors regulatory landscape. Fund structured for compliance.</td></tr>
     <tr><td><strong>Market / basis risk</strong></td><td>Even delta-neutral strategies have residual risk during extreme moves — funding rates can spike, basis can diverge, and JLP composition can shift.</td><td>Continuous monitoring, leverage limits, and rebalancing protocols.</td></tr>
     <tr><td><strong>Liquidity risk</strong></td><td>Large redemptions during volatile periods may require position unwinding at unfavorable prices.</td><td>Redemption periods allow orderly unwinding.</td></tr>
-    <tr><td><strong>Key person risk</strong></td><td>Dependence on Prime Number Trade for strategy execution.</td><td>Documented procedures, Drift vault design limits manager actions, fund principals maintain oversight.</td></tr>
+    <tr><td><strong>Key person risk</strong></td><td>Dependence on the vault manager for strategy execution.</td><td>Documented procedures, Drift vault design limits manager actions, fund principals maintain oversight.</td></tr>
   </table>
 
   <h3>Liquidity Risk — A Real Example</h3>
@@ -389,8 +389,8 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
 <div class="card" id="s9">
   <h2>9. Disaster Recovery</h2>
 
-  <h3>9.1 Prime Number Trade Goes Offline</h3>
-  <p>If Prime Number Trade becomes unable to manage the vault:</p>
+  <h3>9.1 Vault Manager Goes Offline</h3>
+  <p>If the delegated vault manager becomes unable to manage the vault:</p>
   <ol>
     <li><strong>Existing positions remain open</strong> on Drift — the smart contract continues to hold and margin positions.</li>
     <li><strong>Fund principals</strong> (Deven Webster, Brett Nielsen, JD Beck) can appoint a replacement delegate or directly manage the vault's delegate key.</li>
@@ -440,7 +440,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
   <p>Deven Webster · Brett Nielsen · JD Beck</p>
   <p style="margin-top:12px"><strong>Legal Counsel:</strong> Brian Forman, Morrison Cohen LLP</p>
   <p><strong>Fund Administrator:</strong> NAV Consulting</p>
-  <p><strong>Sub-Manager:</strong> Prime Number Trade</p>
+  <p><strong>Sub-Manager:</strong> Delegated vault manager</p>
   <p style="margin-top:12px"><strong>Vault Address:</strong> <code>G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp</code></p>
   <p style="margin-top:20px">© 2026 KeyVault Fund. All rights reserved.</p>
 </div>
