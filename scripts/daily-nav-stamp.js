@@ -63,7 +63,7 @@ async function main() {
   const record = {
     date: todayDate,
     timestamp: now.toISOString(),
-    sharePrice: vault.SharePrice,
+    SharePrice: vault.SharePrice,
     tvl: vault.tvl,
     source_update_time: vault.update_time_utc,
   };

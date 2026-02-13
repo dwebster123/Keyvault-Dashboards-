@@ -606,10 +606,25 @@
                 // Try Drift first (source of truth), fall back to Prime Number
                 const driftData = await fetchDriftData();
 
-                const [primeCurrent, history] = await Promise.all([
-                    fetchWithFallback('https://app.primenumber.trade/data/PN_KV1.json'),
-                    fetchWithFallback('https://app.primenumber.trade/data/PN_KV1_history.json')
-                ]);
+                // Try local cached data first (updated by daily cron), fall back to CORS proxy
+                let primeCurrent, history;
+                try {
+                    const [localCurrent, localHistory] = await Promise.all([
+                        fetch('data/pn-kv1-current.json').then(r => r.ok ? r.json() : null),
+                        fetch('data/pn-kv1-history.json').then(r => r.ok ? r.json() : null)
+                    ]);
+                    primeCurrent = localCurrent;
+                    history = localHistory;
+                    if (primeCurrent) console.log('✓ Using local cached Prime Number data');
+                } catch (e) {
+                    console.warn('Local data failed, trying CORS proxies:', e);
+                }
+                if (!primeCurrent || !history) {
+                    [primeCurrent, history] = await Promise.all([
+                        fetchWithFallback('https://app.primenumber.trade/data/PN_KV1.json'),
+                        fetchWithFallback('https://app.primenumber.trade/data/PN_KV1_history.json')
+                    ]);
+                }
 
                 // Try to load official NAV history (5 PM EST daily stamps)
                 let officialNav = null;
