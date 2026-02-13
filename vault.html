@@ -692,7 +692,7 @@
 
             const currentBalance = tvl;
             // Total shares ≈ total dollars deposited (each share costs ~$1.00 at deposit)
-            const totalShares = data.totalShares || TOTAL_SHARES || (tvl / sharePrice);
+            const totalShares = data.totalShares || (typeof TOTAL_SHARES !== 'undefined' ? TOTAL_SHARES : null) || (tvl / sharePrice);
             const cumulativeNetDeposits = totalShares; // Each share = ~$1 deposited
             const totalPNL = currentBalance - cumulativeNetDeposits;
             // Share price is net of Prime's 10% fee only — KeyVault's 20% still needs deducting
