@@ -42,9 +42,20 @@ else
   ERRORS=$((ERRORS + 1))
 fi
 
-# 4. Fetch Allium on-chain data (fees + trader P&L)
+# 4. Fetch Prime Number vault data (for CORS-free dashboard loading)
 echo ""
-echo "[4/4] Fetching Allium on-chain data..."
+echo "[4/5] Fetching Prime Number vault data..."
+if curl -sf "https://app.primenumber.trade/data/PN_KV1.json" -o data/pn-kv1-current.json && \
+   curl -sf "https://app.primenumber.trade/data/PN_KV1_history.json" -o data/pn-kv1-history.json; then
+  echo "  ✅ Prime Number data OK"
+else
+  echo "  ❌ Prime Number data FAILED"
+  ERRORS=$((ERRORS + 1))
+fi
+
+# 5. Fetch Allium on-chain data (fees + trader P&L)
+echo ""
+echo "[5/5] Fetching Allium on-chain data..."
 if node scripts/fetch-allium-data.js 2>&1; then
   echo "  ✅ Allium data OK"
 else
