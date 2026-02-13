@@ -296,7 +296,7 @@ function solveGrossForNet(targetNetAnnual, initial, years, badYear) {
 
 function simulate(annualGross, initial, years, badYear) {
     const quarterlyReturn = annualGross / 4;
-    const quarterlyHurdle = 0.0125; // 5% / 4
+    const quarterlyHurdle = 0.0175; // 7% / 4
     const totalQuarters = years * 4;
 
     let value = initial;
