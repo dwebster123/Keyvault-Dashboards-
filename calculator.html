@@ -326,8 +326,8 @@ function simulate(annualGross, initial, years, badYear) {
 
         const kickerThreshold = startVal * 0.05;
         const gainAboveKicker = Math.max(0, gain - kickerThreshold);
-        const baseEligible = Math.max(0, eligible - Math.min(gainAboveKicker, eligible));
-        const kickerEligible = eligible - baseEligible;
+        const kickerEligible = Math.min(gainAboveKicker, eligible);
+        const baseEligible = eligible - kickerEligible;
         const baseFee = baseEligible * 0.20;
         const kickerFee = kickerEligible * 0.25;
         const kvFee = baseFee + kickerFee;

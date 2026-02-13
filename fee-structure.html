@@ -144,15 +144,15 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
     <tr><td><strong>Kicker Performance Fee</strong></td><td>25% on gains above 5% quarterly return (20% annualized)</td></tr>
     <tr><td><strong>Crystallization</strong></td><td>Quarterly</td></tr>
   </table>
-  <p>Performance fees are only charged on gains that exceed <strong>both</strong> the hurdle rate <strong>and</strong> the high water mark. Two conditions must be met — not one.</p>
+  <p>This is a <strong>soft hurdle.</strong> If the fund's net return exceeds the 1.75% quarterly hurdle, performance fees apply to the <strong>entire gain</strong> — not just the portion above the hurdle. If returns fall below the hurdle, no performance fee is charged. The high water mark must also be exceeded — both conditions must be met.</p>
 
   <h3>Performance Fee Kicker</h3>
   <p>When the fund delivers exceptional returns — above 20% annualized (5% per quarter) — the performance fee steps up to <strong>25%</strong> on the portion of gains above that threshold. We earn a little more when we knock it out of the park for you.</p>
   <table>
     <tr><th>Gain Range (after mgmt fee)</th><th>Performance Fee Rate</th></tr>
     <tr><td>Below hurdle (1.75% quarterly)</td><td>0% — you keep it all</td></tr>
-    <tr><td>Hurdle (1.75%) up to 5% quarterly return</td><td>20%</td></tr>
-    <tr><td>Above 5% quarterly return</td><td>25% (kicker tier)</td></tr>
+    <tr><td>Above hurdle, up to 5% quarterly return</td><td>20% on <strong>all</strong> gains (soft hurdle)</td></tr>
+    <tr><td>Above 5% quarterly return</td><td>25% on gains above 5% threshold (kicker tier)</td></tr>
   </table>
   <div class="highlight">The high water mark still applies to everything. No gains are fee-eligible unless the fund is at a new all-time high.</div>
 </div>
@@ -166,7 +166,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
   </table>
   <p>The hurdle rate is the minimum return threshold before any performance fees kick in. Think of it as a gate — below 7% annualized, you pay zero performance fees. Above it, fees apply to the full gain.</p>
   <div class="highlight">
-    <strong>Why 7%?</strong> It exceeds the risk-free rate of return. You're taking risk by investing with us — the least we can do is let you keep what you could have earned in treasuries and then some. Performance fees only kick in on returns <em>above</em> that threshold.
+    <strong>Why 7%?</strong> It exceeds the risk-free rate of return. You're taking risk by investing with us — the least we can do is let you keep what you could have earned in treasuries and then some. If we don't clear that bar, you pay zero performance fees.
   </div>
   <p><strong>How it works:</strong> This is a <strong>soft hurdle.</strong> Each quarter, we calculate the 1.75% hurdle. If the fund returned less than 1.75%, no performance fee is charged. If it returned more (e.g., 4%), performance fees apply to the <strong>entire 4% gain</strong> — not just the portion above the hurdle. The hurdle is a gate, not a deduction.</p>
 </div>
@@ -177,7 +177,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
   <p><strong>Example — $1,000,000 Investment:</strong></p>
   <table>
     <tr><th>Year</th><th>Return</th><th>End Value*</th><th>High Water Mark</th><th>Hurdle Cleared?</th><th>Performance Fee</th></tr>
-    <tr><td>1</td><td>+25%</td><td>$1,250,000</td><td>$1,250,000</td><td><span class="check">✅ Yes</span></td><td>20% × $180,000 = <strong>$36,000</strong></td></tr>
+    <tr><td>1</td><td>+25%</td><td>$1,250,000</td><td>$1,250,000</td><td><span class="check">✅ Yes</span></td><td>20% × $250,000 = <strong>$50,000</strong></td></tr>
     <tr><td>2</td><td>−10%</td><td>$1,080,000*</td><td>$1,250,000</td><td><span class="cross">❌ No (loss year)</span></td><td><strong>$0</strong></td></tr>
     <tr><td>3</td><td>+12%</td><td>$1,209,600*</td><td>$1,250,000</td><td><span class="cross">❌ No (below HWM)</span></td><td><strong>$0</strong></td></tr>
     <tr><td>4</td><td>+20%</td><td>$1,451,520*</td><td>$1,451,520</td><td><span class="check">✅ Yes</span></td><td>20% × $201,520** = <strong>$40,304</strong></td></tr>
@@ -200,19 +200,19 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
     <tr><td><strong>1. Gross Return</strong></td><td>$1,000,000 × 8%</td><td>$80,000</td></tr>
     <tr><td><strong>2. Management Fee</strong></td><td>$1,000,000 × 0.5% (quarterly)</td><td>−$5,000</td></tr>
     <tr><td><strong>3. Net Return</strong></td><td>$80,000 − $5,000</td><td>$75,000</td></tr>
-    <tr><td><strong>4. Hurdle Check</strong></td><td>$1,000,000 × 1.75% (quarterly)</td><td>$17,500</td></tr>
-    <tr><td><strong>5. Gains Above Hurdle</strong></td><td>$75,000 − $17,500</td><td>$57,500</td></tr>
+    <tr><td><strong>4. Hurdle Check (soft)</strong></td><td>$1,000,000 × 1.75% = $17,500</td><td>$75,000 &gt; $17,500 → <span class="check">✅ Cleared</span></td></tr>
+    <tr><td><strong>5. Fee-Eligible Gains</strong></td><td>Soft hurdle cleared → entire gain is eligible</td><td>$75,000</td></tr>
     <tr><td><strong>6. HWM Check</strong></td><td>Is NAV above prior HWM?</td><td><span class="check">✅ Yes</span></td></tr>
     <tr><td><strong>7. Kicker Threshold</strong></td><td>$1,000,000 × 5% (quarterly)</td><td>$50,000</td></tr>
-    <tr><td><strong>8. Base Tier Gains</strong></td><td>$50,000 − $17,500 (hurdle to 5%)</td><td>$32,500</td></tr>
+    <tr><td><strong>8. Base Tier Gains</strong></td><td>All gains up to kicker threshold</td><td>$50,000</td></tr>
     <tr><td><strong>9. Kicker Tier Gains</strong></td><td>$75,000 − $50,000 (above 5%)</td><td>$25,000</td></tr>
-    <tr><td><strong>10. Base Performance Fee</strong></td><td>$32,500 × 20%</td><td>−$6,500</td></tr>
+    <tr><td><strong>10. Base Performance Fee</strong></td><td>$50,000 × 20%</td><td>−$10,000</td></tr>
     <tr><td><strong>11. Kicker Performance Fee</strong></td><td>$25,000 × 25%</td><td>−$6,250</td></tr>
-    <tr><td><strong>12. Total Performance Fee</strong></td><td>$6,500 + $6,250</td><td>−$12,750</td></tr>
-    <tr><td><strong>13. Net to Investor</strong></td><td>$1,000,000 + $75,000 − $12,750</td><td><strong>$1,062,250</strong></td></tr>
+    <tr><td><strong>12. Total Performance Fee</strong></td><td>$10,000 + $6,250</td><td>−$16,250</td></tr>
+    <tr><td><strong>13. Net to Investor</strong></td><td>$1,000,000 + $75,000 − $16,250</td><td><strong>$1,058,750</strong></td></tr>
   </table>
-  <p><strong>Your net return: 6.225%</strong> for the quarter after all fees.</p>
-  <p>The order matters: management fee comes out first, then we check the hurdle, then we check the HWM, then we split gains into base tier (20%) and kicker tier (25%) based on the 5% quarterly threshold.</p>
+  <p><strong>Your net return: 5.875%</strong> for the quarter after all fees.</p>
+  <p>The order matters: management fee comes out first, then we check the soft hurdle (a gate — is the gain above 1.75%?), then we check the HWM, then we split the <strong>entire gain</strong> into base tier (20%) and kicker tier (25%) based on the 5% quarterly threshold.</p>
 </div>
 
 <div class="card" id="comparison">
@@ -247,7 +247,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
   <p>You pay zero performance fees. The management fee still applies (it covers operations), but no performance fee is charged until the fund exceeds its prior high water mark <em>and</em> clears the hurdle rate.</p>
 
   <h3>What's the performance fee kicker?</h3>
-  <p>When the fund returns more than 20% annualized (5% per quarter), the performance fee on gains above that threshold steps up from 20% to 25%. It only applies to the portion of gains above the kicker threshold — not to your entire return. The base 20% rate still applies to gains between the hurdle and the 5% quarterly mark. We earn a little more when we knock it out of the park for you.</p>
+  <p>This is a <strong>soft hurdle</strong> structure. If the fund doesn't clear 7% annualized (1.75% per quarter), you pay zero performance fees. Once the hurdle is cleared, the 20% fee applies to the <strong>entire</strong> gain (not just the excess above the hurdle) up to the 5% quarterly kicker threshold. Above that, returns enter the kicker tier at 25%. We earn a little more when we knock it out of the park for you.</p>
 
   <h3>Can fees change?</h3>
   <p>Fee terms are fixed at the time of your investment and documented in your subscription agreement. Any changes require investor notification and consent.</p>
