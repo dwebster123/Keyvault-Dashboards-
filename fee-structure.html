@@ -140,7 +140,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
   <h2>Performance Fee</h2>
   <table>
     <tr><th>Detail</th><th>Value</th></tr>
-    <tr><td><strong>Base Performance Fee</strong></td><td>20% of gains above hurdle + HWM</td></tr>
+    <tr><td><strong>Base Performance Fee</strong></td><td>20% of all gains (soft hurdle — once 7% annualized is cleared, fee applies to entire gain)</td></tr>
     <tr><td><strong>Kicker Performance Fee</strong></td><td>25% on gains above 5% quarterly return (20% annualized)</td></tr>
     <tr><td><strong>Crystallization</strong></td><td>Quarterly</td></tr>
   </table>
@@ -164,11 +164,11 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
     <tr><td><strong>Annualized Rate</strong></td><td>7.0%</td></tr>
     <tr><td><strong>Quarterly Equivalent</strong></td><td>1.75% per quarter</td></tr>
   </table>
-  <p>The hurdle rate is the minimum return investors keep before any performance fees apply. Think of it as a free pass on the first 7% annualized.</p>
+  <p>The hurdle rate is the minimum return threshold before any performance fees kick in. Think of it as a gate — below 7% annualized, you pay zero performance fees. Above it, fees apply to the full gain.</p>
   <div class="highlight">
     <strong>Why 7%?</strong> It exceeds the risk-free rate of return. You're taking risk by investing with us — the least we can do is let you keep what you could have earned in treasuries and then some. Performance fees only kick in on returns <em>above</em> that threshold.
   </div>
-  <p><strong>How it works:</strong> Each quarter, we calculate the 1.75% hurdle. If the fund returned 4% in a quarter, performance fees apply only to the 2.25% above the hurdle — not the full 4%.</p>
+  <p><strong>How it works:</strong> This is a <strong>soft hurdle.</strong> Each quarter, we calculate the 1.75% hurdle. If the fund returned less than 1.75%, no performance fee is charged. If it returned more (e.g., 4%), performance fees apply to the <strong>entire 4% gain</strong> — not just the portion above the hurdle. The hurdle is a gate, not a deduction.</p>
 </div>
 
 <div class="card" id="hwm">
@@ -227,7 +227,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
     <tr><td>Crystallization</td><td>Quarterly</td><td>Varies (often annual)</td></tr>
     <tr><td>Lock-up Period</td><td><strong>None</strong></td><td>1–2 years typical</td></tr>
   </table>
-  <p>Most hedge funds charge 2/20 with no hurdle rate — meaning they earn performance fees on the first dollar of return. We don't. You keep the first 7% annualized before we earn a cent. And the kicker only applies when we're delivering outsized returns — above 20% annualized.</p>
+  <p>Most hedge funds charge 2/20 with no hurdle rate — meaning they earn performance fees on the first dollar of return. We don't. Below 7% annualized, you pay zero performance fees. And the kicker only applies when we're delivering outsized returns — above 20% annualized.</p>
   <p><strong>No lock-up period.</strong> Redemptions are available at quarterly windows. Your capital isn't trapped.</p>
 </div>
 

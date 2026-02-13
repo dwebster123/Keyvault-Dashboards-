@@ -319,7 +319,8 @@ function simulate(annualGross, initial, years, badYear) {
         const afterMgmt = grossAfterReturn - mgmtFee;
         const gain = afterMgmt - startVal;
         const hurdleAmount = startVal * quarterlyHurdle;
-        const aboveHurdle = Math.max(0, gain - hurdleAmount);
+        // Soft hurdle: if gain exceeds hurdle, fee applies to ALL gains (not just excess)
+        const aboveHurdle = gain > hurdleAmount ? gain : 0;
         const aboveHWM = Math.max(0, afterMgmt - hwm);
         const eligible = Math.min(aboveHurdle, aboveHWM);
 
