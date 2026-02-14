@@ -607,6 +607,14 @@
             // Rolling APYs
             const rollingAPYs = calculateRollingAPYs();
 
+            // Sharpe Ratio — annualized (risk-free rate = 5% T-bill proxy)
+            const dailyReturns = historicalData.slice(1).map(d => d.pct1d / 100); // decimal daily returns
+            const netDailyReturns = dailyReturns.map(r => r * (1 - TOTAL_FEE_RATE));
+            const avgDailyReturn = netDailyReturns.reduce((a, b) => a + b, 0) / netDailyReturns.length;
+            const dailyStdDev = Math.sqrt(netDailyReturns.reduce((sum, r) => sum + Math.pow(r - avgDailyReturn, 2), 0) / (netDailyReturns.length - 1));
+            const riskFreeDaily = 0.05 / 365; // 5% annual risk-free rate
+            const sharpeRatio = dailyStdDev > 0 ? ((avgDailyReturn - riskFreeDaily) / dailyStdDev) * Math.sqrt(365) : 0;
+
             return {
                 sharePrice: latest.net,
                 grossROI: grossReturn,
@@ -614,7 +622,8 @@
                 allTimeAPY: annualizedAPY,
                 daysSinceInception: totalDays,
                 inceptionDate: first.date,
-                rollingAPYs
+                rollingAPYs,
+                sharpeRatio
             };
         }
 
@@ -691,6 +700,10 @@
                 <div class="metric-card highlight">
                     <div class="metric-label">Net APY (All Time)</div>
                     <div class="metric-value positive">${formatPercent(metrics.allTimeAPY)}</div>
+                </div>
+                <div class="metric-card highlight">
+                    <div class="metric-label">Sharpe Ratio</div>
+                    <div class="metric-value ${metrics.sharpeRatio >= 2 ? 'positive' : ''}">${metrics.sharpeRatio.toFixed(2)}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Days Since Inception</div>

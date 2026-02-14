@@ -2286,11 +2286,11 @@
   },
   {
     "date": "2026-02-14",
-    "timestamp": "2026-02-14T02:13:03.106Z",
-    "SharePrice": 1.1938998771,
-    "rawSharePrice": 1.002519,
+    "timestamp": "2026-02-14T02:33:34.223Z",
+    "SharePrice": 1.1936235972516205,
+    "rawSharePrice": 1.0022870075166852,
     "normalizationRatio": 1.1909,
-    "tvl": 3947530.668058,
-    "source_update_time": "2026-02-14T02:11:13Z"
+    "tvl": 3946616.81761,
+    "source_update_time": "2026-02-14T02:31:13Z"
   }
 ]
