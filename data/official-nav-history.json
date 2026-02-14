@@ -2292,5 +2292,14 @@
     "normalizationRatio": 1.1909,
     "tvl": 3942295.935335,
     "source_update_time": "2026-02-14T02:42:13Z"
+  },
+  {
+    "date": "2026-02-14",
+    "timestamp": "2026-02-14T22:00:04.512Z",
+    "SharePrice": 1.192657449254013,
+    "rawSharePrice": 1.0014757320127743,
+    "normalizationRatio": 1.1909,
+    "tvl": 3943422.32988,
+    "source_update_time": "2026-02-14T21:53:16Z"
   }
 ]
