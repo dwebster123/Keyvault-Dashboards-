@@ -42,7 +42,14 @@ async function main() {
   if (!vaultRes.ok) throw new Error(`Failed to fetch vault data: ${vaultRes.status}`);
   const vault = await vaultRes.json();
 
-  console.log(`[NAV Stamp] Vault data fetched — SharePrice: ${vault.SharePrice}, TVL: ${vault.tvl}`);
+  // Apply normalization ratio — the vault's inception share price was ~0.9626,
+  // and historical tracking uses a normalized basis so share price reflects
+  // cumulative performance from inception. Ratio = 1.1909 (from Drift on-chain data).
+  const NORMALIZATION_RATIO = 1.1909;
+  const rawSharePrice = vault.SharePrice;
+  const normalizedSharePrice = rawSharePrice * NORMALIZATION_RATIO;
+
+  console.log(`[NAV Stamp] Vault data fetched — Raw: ${rawSharePrice}, Normalized: ${normalizedSharePrice.toFixed(6)}, TVL: ${vault.tvl}`);
 
   // 2. Fetch history (for reference/logging)
   let remoteHistory = [];
@@ -63,7 +70,9 @@ async function main() {
   const record = {
     date: todayDate,
     timestamp: now.toISOString(),
-    SharePrice: vault.SharePrice,
+    SharePrice: normalizedSharePrice,
+    rawSharePrice: rawSharePrice,
+    normalizationRatio: NORMALIZATION_RATIO,
     tvl: vault.tvl,
     source_update_time: vault.update_time_utc,
   };
@@ -95,13 +104,13 @@ async function main() {
     const prev = history[todayIdx - 1];
     const prevPrice = prev.sharePrice ?? prev.SharePrice;
     if (prevPrice) {
-      dayChange = ((record.sharePrice - prevPrice) / prevPrice) * 100;
+      dayChange = ((record.SharePrice - prevPrice) / prevPrice) * 100;
     }
   }
 
   // 8. Summary
   console.log(`\n=== OFFICIAL NAV — ${todayDate} ===`);
-  console.log(`Share Price:  $${record.sharePrice}`);
+  console.log(`Share Price:  $${record.SharePrice.toFixed(6)} (raw: $${record.rawSharePrice.toFixed(6)})`);
   console.log(`TVL:          $${record.tvl.toLocaleString()}`);
   console.log(`Source Time:  ${record.source_update_time}`);
   if (dayChange !== null) {

@@ -2,854 +2,1138 @@
   {
     "date": "2025-02-26",
     "timestamp": "2025-02-26T22:00:00Z",
-    "SharePrice": 0.9626,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.14636034,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9626,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-02-27",
     "timestamp": "2025-02-27T22:00:00Z",
-    "SharePrice": 0.9643,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1483848700000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9643,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-02-28",
     "timestamp": "2025-02-28T22:00:00Z",
-    "SharePrice": 0.9621,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.14576489,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9621,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-01",
     "timestamp": "2025-03-01T22:00:00Z",
-    "SharePrice": 0.9664,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1508857600000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9664,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-02",
     "timestamp": "2025-03-02T22:00:00Z",
-    "SharePrice": 0.9673,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1519575700000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9673,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-03",
     "timestamp": "2025-03-03T22:00:00Z",
-    "SharePrice": 0.9717,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1571975300000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9717,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-04",
     "timestamp": "2025-03-04T22:00:00Z",
-    "SharePrice": 0.9671,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15171939,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9671,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-05",
     "timestamp": "2025-03-05T22:00:00Z",
-    "SharePrice": 0.9703,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15553027,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9703,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-06",
     "timestamp": "2025-03-06T22:00:00Z",
-    "SharePrice": 0.9712,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15660208,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9712,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-07",
     "timestamp": "2025-03-07T22:00:00Z",
-    "SharePrice": 0.9712,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15660208,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9712,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-08",
     "timestamp": "2025-03-08T22:00:00Z",
-    "SharePrice": 0.97,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.155173,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.97,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-09",
     "timestamp": "2025-03-09T22:00:00Z",
-    "SharePrice": 0.9706,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1558875400000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9706,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-10",
     "timestamp": "2025-03-10T22:00:00Z",
-    "SharePrice": 0.9686,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1535057400000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9686,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-11",
     "timestamp": "2025-03-11T22:00:00Z",
-    "SharePrice": 0.9682,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15302938,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9682,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-12",
     "timestamp": "2025-03-12T22:00:00Z",
-    "SharePrice": 0.9682,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15302938,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9682,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-13",
     "timestamp": "2025-03-13T22:00:00Z",
-    "SharePrice": 0.9676,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15231484,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9676,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-14",
     "timestamp": "2025-03-14T22:00:00Z",
-    "SharePrice": 0.9684,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1532675600000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9684,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-15",
     "timestamp": "2025-03-15T22:00:00Z",
-    "SharePrice": 0.9719,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1574357100000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9719,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-16",
     "timestamp": "2025-03-16T22:00:00Z",
-    "SharePrice": 0.9722,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15779298,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9722,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-17",
     "timestamp": "2025-03-17T22:00:00Z",
-    "SharePrice": 0.9723,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15791207,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9723,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-18",
     "timestamp": "2025-03-18T22:00:00Z",
-    "SharePrice": 0.9718,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15731662,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9718,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-19",
     "timestamp": "2025-03-19T22:00:00Z",
-    "SharePrice": 0.972,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1575548,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.972,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-20",
     "timestamp": "2025-03-20T22:00:00Z",
-    "SharePrice": 0.9748,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1608893200000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9748,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-21",
     "timestamp": "2025-03-21T22:00:00Z",
-    "SharePrice": 0.9745,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.16053205,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9745,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-22",
     "timestamp": "2025-03-22T22:00:00Z",
-    "SharePrice": 0.9729,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15862661,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9729,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-23",
     "timestamp": "2025-03-23T22:00:00Z",
-    "SharePrice": 0.9737,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1595793300000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9737,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-24",
     "timestamp": "2025-03-24T22:00:00Z",
-    "SharePrice": 0.9751,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.16124659,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9751,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-25",
     "timestamp": "2025-03-25T22:00:00Z",
-    "SharePrice": 0.9761,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.16243749,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9761,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-26",
     "timestamp": "2025-03-26T22:00:00Z",
-    "SharePrice": 0.9766,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1630329400000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9766,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-27",
     "timestamp": "2025-03-27T22:00:00Z",
-    "SharePrice": 0.9766,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1630329400000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9766,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-28",
     "timestamp": "2025-03-28T22:00:00Z",
-    "SharePrice": 0.9747,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.16077023,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9747,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-29",
     "timestamp": "2025-03-29T22:00:00Z",
-    "SharePrice": 0.9744,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1604129600000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9744,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-30",
     "timestamp": "2025-03-30T22:00:00Z",
-    "SharePrice": 0.9745,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.16053205,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9745,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-03-31",
     "timestamp": "2025-03-31T22:00:00Z",
-    "SharePrice": 0.9753,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.16148477,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9753,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-01",
     "timestamp": "2025-04-01T22:00:00Z",
-    "SharePrice": 0.9757,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1619611300000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9757,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-02",
     "timestamp": "2025-04-02T22:00:00Z",
-    "SharePrice": 0.975,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1611275,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.975,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-03",
     "timestamp": "2025-04-03T22:00:00Z",
-    "SharePrice": 0.9741,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.16005569,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9741,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-04",
     "timestamp": "2025-04-04T22:00:00Z",
-    "SharePrice": 0.9702,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15541118,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9702,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-05",
     "timestamp": "2025-04-05T22:00:00Z",
-    "SharePrice": 0.9717,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1571975300000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9717,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-06",
     "timestamp": "2025-04-06T22:00:00Z",
-    "SharePrice": 0.9727,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15838843,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9727,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-07",
     "timestamp": "2025-04-07T22:00:00Z",
-    "SharePrice": 0.9696,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15469664,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9696,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-08",
     "timestamp": "2025-04-08T22:00:00Z",
-    "SharePrice": 0.9718,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15731662,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9718,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-09",
     "timestamp": "2025-04-09T22:00:00Z",
-    "SharePrice": 0.9723,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.15791207,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9723,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-10",
     "timestamp": "2025-04-10T22:00:00Z",
-    "SharePrice": 0.9748,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1608893200000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9748,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-11",
     "timestamp": "2025-04-11T22:00:00Z",
-    "SharePrice": 0.9757,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1619611300000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9757,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-12",
     "timestamp": "2025-04-12T22:00:00Z",
-    "SharePrice": 0.9788,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.16565292,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9788,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-13",
     "timestamp": "2025-04-13T22:00:00Z",
-    "SharePrice": 0.9818,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.16922562,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9818,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-14",
     "timestamp": "2025-04-14T22:00:00Z",
-    "SharePrice": 0.9821,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.16958289,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9821,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-15",
     "timestamp": "2025-04-15T22:00:00Z",
-    "SharePrice": 0.983,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1706547,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.983,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-16",
     "timestamp": "2025-04-16T22:00:00Z",
-    "SharePrice": 0.9838,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1716074200000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9838,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-17",
     "timestamp": "2025-04-17T22:00:00Z",
-    "SharePrice": 0.9843,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.17220287,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9843,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-18",
     "timestamp": "2025-04-18T22:00:00Z",
-    "SharePrice": 0.9859,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.17410831,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9859,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-19",
     "timestamp": "2025-04-19T22:00:00Z",
-    "SharePrice": 0.9891,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1779191900000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9891,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-20",
     "timestamp": "2025-04-20T22:00:00Z",
-    "SharePrice": 0.988,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1766092000000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.988,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-21",
     "timestamp": "2025-04-21T22:00:00Z",
-    "SharePrice": 0.9871,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1755373900000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9871,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-22",
     "timestamp": "2025-04-22T22:00:00Z",
-    "SharePrice": 0.9874,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1758946600000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9874,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-23",
     "timestamp": "2025-04-23T22:00:00Z",
-    "SharePrice": 0.9911,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.18030099,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9911,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-24",
     "timestamp": "2025-04-24T22:00:00Z",
-    "SharePrice": 0.9915,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.18077735,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9915,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-25",
     "timestamp": "2025-04-25T22:00:00Z",
-    "SharePrice": 0.9919,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.18125371,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9919,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-26",
     "timestamp": "2025-04-26T22:00:00Z",
-    "SharePrice": 0.9912,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.18042008,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9912,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-27",
     "timestamp": "2025-04-27T22:00:00Z",
-    "SharePrice": 0.9918,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1811346200000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9918,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-28",
     "timestamp": "2025-04-28T22:00:00Z",
-    "SharePrice": 0.9917,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.18101553,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9917,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-29",
     "timestamp": "2025-04-29T22:00:00Z",
-    "SharePrice": 0.9913,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.18053917,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9913,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-04-30",
     "timestamp": "2025-04-30T22:00:00Z",
-    "SharePrice": 0.9906,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.17970554,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9906,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-01",
     "timestamp": "2025-05-01T22:00:00Z",
-    "SharePrice": 0.9909,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1800628100000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9909,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-02",
     "timestamp": "2025-05-02T22:00:00Z",
-    "SharePrice": 0.9931,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.18268279,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9931,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-03",
     "timestamp": "2025-05-03T22:00:00Z",
-    "SharePrice": 0.9926,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.18208734,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9926,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-04",
     "timestamp": "2025-05-04T22:00:00Z",
-    "SharePrice": 0.9925,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1819682500000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9925,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-05",
     "timestamp": "2025-05-05T22:00:00Z",
-    "SharePrice": 0.9928,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.18232552,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9928,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-06",
     "timestamp": "2025-05-06T22:00:00Z",
-    "SharePrice": 0.9906,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.17970554,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9906,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-07",
     "timestamp": "2025-05-07T22:00:00Z",
-    "SharePrice": 0.9942,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.18399278,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9942,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-08",
     "timestamp": "2025-05-08T22:00:00Z",
-    "SharePrice": 0.9943,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.18411187,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9943,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-09",
     "timestamp": "2025-05-09T22:00:00Z",
-    "SharePrice": 0.9997,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1905427300000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 0.9997,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-10",
     "timestamp": "2025-05-10T22:00:00Z",
-    "SharePrice": 1.0033,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1948299700000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0033,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-11",
     "timestamp": "2025-05-11T22:00:00Z",
-    "SharePrice": 1.0047,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.19649723,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0047,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-12",
     "timestamp": "2025-05-12T22:00:00Z",
-    "SharePrice": 1.0049,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.19673541,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0049,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-13",
     "timestamp": "2025-05-13T22:00:00Z",
-    "SharePrice": 1.0043,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.1960208700000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0043,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-14",
     "timestamp": "2025-05-14T22:00:00Z",
-    "SharePrice": 1.0096,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20233264,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0096,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-15",
     "timestamp": "2025-05-15T22:00:00Z",
-    "SharePrice": 1.0087,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20126083,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0087,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-16",
     "timestamp": "2025-05-16T22:00:00Z",
-    "SharePrice": 1.0095,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2022135500000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0095,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-17",
     "timestamp": "2025-05-17T22:00:00Z",
-    "SharePrice": 1.0093,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2019753700000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0093,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-18",
     "timestamp": "2025-05-18T22:00:00Z",
-    "SharePrice": 1.0084,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20090356,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0084,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-19",
     "timestamp": "2025-05-19T22:00:00Z",
-    "SharePrice": 1.0084,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20090356,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0084,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-20",
     "timestamp": "2025-05-20T22:00:00Z",
-    "SharePrice": 1.0092,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20185628,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0092,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-21",
     "timestamp": "2025-05-21T22:00:00Z",
-    "SharePrice": 1.009,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2016181,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.009,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-22",
     "timestamp": "2025-05-22T22:00:00Z",
-    "SharePrice": 1.0102,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20304718,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0102,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-23",
     "timestamp": "2025-05-23T22:00:00Z",
-    "SharePrice": 1.013,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2063817,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.013,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-24",
     "timestamp": "2025-05-24T22:00:00Z",
-    "SharePrice": 1.0116,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20471444,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0116,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-25",
     "timestamp": "2025-05-25T22:00:00Z",
-    "SharePrice": 1.0102,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20304718,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0102,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-26",
     "timestamp": "2025-05-26T22:00:00Z",
-    "SharePrice": 1.0126,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20590534,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0126,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-27",
     "timestamp": "2025-05-27T22:00:00Z",
-    "SharePrice": 1.0121,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20530989,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0121,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-28",
     "timestamp": "2025-05-28T22:00:00Z",
-    "SharePrice": 1.0123,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20554807,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0123,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-29",
     "timestamp": "2025-05-29T22:00:00Z",
-    "SharePrice": 1.0145,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20816805,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0145,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-30",
     "timestamp": "2025-05-30T22:00:00Z",
-    "SharePrice": 1.0146,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20828714,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0146,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-05-31",
     "timestamp": "2025-05-31T22:00:00Z",
-    "SharePrice": 1.0112,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20423808,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0112,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-01",
     "timestamp": "2025-06-01T22:00:00Z",
-    "SharePrice": 1.0127,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20602443,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0127,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-02",
     "timestamp": "2025-06-02T22:00:00Z",
-    "SharePrice": 1.0111,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2041189900000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0111,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-03",
     "timestamp": "2025-06-03T22:00:00Z",
-    "SharePrice": 1.0133,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2067389700000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0133,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-04",
     "timestamp": "2025-06-04T22:00:00Z",
-    "SharePrice": 1.013,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2063817,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.013,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-05",
     "timestamp": "2025-06-05T22:00:00Z",
-    "SharePrice": 1.0129,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20626261,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0129,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-06",
     "timestamp": "2025-06-06T22:00:00Z",
-    "SharePrice": 1.0112,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20423808,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0112,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-07",
     "timestamp": "2025-06-07T22:00:00Z",
-    "SharePrice": 1.0124,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20566716,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0124,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-08",
     "timestamp": "2025-06-08T22:00:00Z",
-    "SharePrice": 1.0133,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2067389700000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0133,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-09",
     "timestamp": "2025-06-09T22:00:00Z",
-    "SharePrice": 1.0135,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2069771500000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0135,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-10",
     "timestamp": "2025-06-10T22:00:00Z",
-    "SharePrice": 1.0176,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2118598400000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0176,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-11",
     "timestamp": "2025-06-11T22:00:00Z",
-    "SharePrice": 1.0192,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2137652800000003,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0192,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-12",
     "timestamp": "2025-06-12T22:00:00Z",
-    "SharePrice": 1.0193,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2138843700000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0193,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-13",
     "timestamp": "2025-06-13T22:00:00Z",
-    "SharePrice": 1.0142,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20781078,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0142,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-14",
     "timestamp": "2025-06-14T22:00:00Z",
-    "SharePrice": 1.0156,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20947804,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0156,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-15",
     "timestamp": "2025-06-15T22:00:00Z",
-    "SharePrice": 1.0164,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.21043076,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0164,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-16",
     "timestamp": "2025-06-16T22:00:00Z",
-    "SharePrice": 1.0188,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2132889199999999,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0188,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-17",
     "timestamp": "2025-06-17T22:00:00Z",
-    "SharePrice": 1.0177,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2119789300000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0177,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-18",
     "timestamp": "2025-06-18T22:00:00Z",
-    "SharePrice": 1.0152,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2090016800000003,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0152,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-19",
     "timestamp": "2025-06-19T22:00:00Z",
-    "SharePrice": 1.0146,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20828714,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0146,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-20",
     "timestamp": "2025-06-20T22:00:00Z",
-    "SharePrice": 1.0144,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20804896,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0144,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-21",
     "timestamp": "2025-06-21T22:00:00Z",
-    "SharePrice": 1.0124,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20566716,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0124,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-22",
     "timestamp": "2025-06-22T22:00:00Z",
-    "SharePrice": 1.0114,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.20447626,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0114,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-23",
     "timestamp": "2025-06-23T22:00:00Z",
-    "SharePrice": 1.011,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2039999,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.011,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-24",
     "timestamp": "2025-06-24T22:00:00Z",
-    "SharePrice": 1.0166,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.21066894,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0166,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-25",
     "timestamp": "2025-06-25T22:00:00Z",
-    "SharePrice": 1.0187,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.21316983,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0187,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-26",
     "timestamp": "2025-06-26T22:00:00Z",
-    "SharePrice": 1.0186,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.21305074,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0186,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-27",
     "timestamp": "2025-06-27T22:00:00Z",
-    "SharePrice": 1.0184,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.21281256,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0184,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-28",
     "timestamp": "2025-06-28T22:00:00Z",
-    "SharePrice": 1.0197,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.21436073,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0197,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-29",
     "timestamp": "2025-06-29T22:00:00Z",
-    "SharePrice": 1.0217,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.21674253,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0217,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-06-30",
     "timestamp": "2025-06-30T22:00:00Z",
-    "SharePrice": 1.0232,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2185288800000003,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0232,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-01",
     "timestamp": "2025-07-01T22:00:00Z",
-    "SharePrice": 1.0231,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.21840979,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0231,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-02",
     "timestamp": "2025-07-02T22:00:00Z",
-    "SharePrice": 1.0257,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.22150613,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0257,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-03",
     "timestamp": "2025-07-03T22:00:00Z",
-    "SharePrice": 1.0284,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.22472156,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0284,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-04",
     "timestamp": "2025-07-04T22:00:00Z",
-    "SharePrice": 1.0281,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.22436429,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0281,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-05",
     "timestamp": "2025-07-05T22:00:00Z",
-    "SharePrice": 1.0264,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.22233976,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0264,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-06",
     "timestamp": "2025-07-06T22:00:00Z",
-    "SharePrice": 1.0259,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.22174431,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0259,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-07",
     "timestamp": "2025-07-07T22:00:00Z",
-    "SharePrice": 1.0271,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.22317339,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0271,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-08",
     "timestamp": "2025-07-08T22:00:00Z",
-    "SharePrice": 1.0271,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.22317339,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0271,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-09",
     "timestamp": "2025-07-09T22:00:00Z",
-    "SharePrice": 1.0285,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.22484065,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0285,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-10",
     "timestamp": "2025-07-10T22:00:00Z",
-    "SharePrice": 1.03,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2266270000000001,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.03,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-11",
     "timestamp": "2025-07-11T22:00:00Z",
-    "SharePrice": 1.0355,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2331769500000003,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0355,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-12",
     "timestamp": "2025-07-12T22:00:00Z",
-    "SharePrice": 1.0381,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2362732900000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0381,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-13",
     "timestamp": "2025-07-13T22:00:00Z",
-    "SharePrice": 1.0367,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.23460603,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0367,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-14",
     "timestamp": "2025-07-14T22:00:00Z",
-    "SharePrice": 1.0401,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.2386550900000002,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0401,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-15",
     "timestamp": "2025-07-15T22:00:00Z",
-    "SharePrice": 1.0409,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.23960781,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0409,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-16",
     "timestamp": "2025-07-16T22:00:00Z",
-    "SharePrice": 1.0422,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.24115598,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0422,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-17",
     "timestamp": "2025-07-17T22:00:00Z",
-    "SharePrice": 1.0485,
-    "source": "public-vault-spreadsheet"
+    "SharePrice": 1.24865865,
+    "source": "public-vault-spreadsheet",
+    "rawSharePrice": 1.0485,
+    "normalizationRatio": 1.1909
   },
   {
     "date": "2025-07-18",
@@ -2280,6 +2564,17 @@
     "timestamp": "2026-02-12T22:13:38.160Z",
     "tvl": 3963265.437685,
     "source_update_time": "2026-02-12T22:11:13Z",
-    "SharePrice": 1.0065151087906161
+    "SharePrice": 1.1986588430587448,
+    "rawSharePrice": 1.0065151087906161,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-14",
+    "timestamp": "2026-02-14T02:13:03.106Z",
+    "SharePrice": 1.1938999842203841,
+    "rawSharePrice": 1.0025190899491008,
+    "normalizationRatio": 1.1909,
+    "tvl": 3947530.668058,
+    "source_update_time": "2026-02-14T02:11:13Z"
   }
 ]
