@@ -646,17 +646,16 @@
                 // Merge official NAV history with Prime Number history
                 // Official NAV takes precedence for dates where both exist
                 if (officialNav && officialNav.length > 0) {
-                    // Private dashboard: only show private vault data (has rawPrivateSharePrice)
-                    const privateVaultData = officialNav.filter(n => n.rawPrivateSharePrice);
-                    const mergedHistory = privateVaultData.map(n => ({
-                        SharePrice: n.rawPrivateSharePrice,
+                    // Use all official NAV entries with normalized SharePrice
+                    const mergedHistory = officialNav.map(n => ({
+                        SharePrice: n.SharePrice,
                         tvl: n.tvl,
-                        update_time_utc: n.timestamp,
+                        update_time_utc: n.timestamp || n.update_time_utc,
                         source: 'official-nav'
                     }));
                     mergedHistory.sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
                     historicalData = mergedHistory;
-                    console.log(`✓ Using ${privateVaultData.length} private vault NAV stamps (raw share prices)`);
+                    console.log(`✓ Using ${officialNav.length} official NAV stamps (normalized share prices)`);
                 } else {
                     historicalData = history;
                 }
@@ -667,7 +666,7 @@
                     const latestNav = officialNav[officialNav.length - 1];
                     currentData = {
                         tvl: latestNav.tvl,
-                        SharePrice: latestNav.rawPrivateSharePrice || latestNav.SharePrice,
+                        SharePrice: latestNav.SharePrice,
                         totalShares: latestNav.totalShares,
                         update_time_utc: latestNav.timestamp,
                         source: 'official-nav',
@@ -703,7 +702,10 @@
             const sortedHistory = [...historyArray].sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
 
             const initialSharePrice = sortedHistory.length > 0 ? sortedHistory[0].SharePrice : 1;
-            const totalDays = sortedHistory.length;
+            // Use actual calendar days between first and last entry
+            const firstDate = sortedHistory.length > 0 ? new Date(sortedHistory[0].update_time_utc) : new Date();
+            const lastDate = sortedHistory.length > 1 ? new Date(sortedHistory[sortedHistory.length - 1].update_time_utc) : new Date();
+            const totalDays = Math.max(1, Math.round((lastDate - firstDate) / (1000 * 60 * 60 * 24)));
 
             const currentBalance = tvl;
             // Total shares ≈ total dollars deposited (each share costs ~$1.00 at deposit)
@@ -848,15 +850,6 @@
                             </div>
                             <div class="metric-value ${m.totalPNL >= 0 ? 'realized' : ''}">${formatCurrency(m.totalPNL)}</div>
                             <div class="metric-subtext">Total PNL</div>
-                        </div>
-
-                        <div class="metric-card highlight">
-                            <div class="metric-label has-tooltip">
-                                <span class="icon">🪙</span> Share Price
-                                <span class="tooltip-text">Current net asset value (NAV) per share</span>
-                            </div>
-                            <div class="metric-value">${m.sharePrice.toFixed(6)}</div>
-                            <div class="metric-subtext">NAV per share</div>
                         </div>
 
                         <div class="metric-card highlight">
