@@ -1,14 +1,19 @@
 #!/usr/bin/env node
 /**
  * Daily NAV Stamp — Official 5 PM EST vault valuation
- * 
+ *
+ * The Prime Number Trade API returns the raw private vault SharePrice
+ * (around ~1.00x). To convert to the public-equivalent NAV, we multiply
+ * by NORMALIZATION_RATIO (1.1909), bridging the gap between the private
+ * vault's internal accounting and the public vault's share price history.
+ *
  * Fetches current vault data from Prime Number Trade API,
  * applies normalization ratio to bridge old public vault → new private vault,
  * appends to official-nav-history.json with deduplication.
- * 
+ *
  * Run daily at 5:00 PM EST via cron.
  * No external dependencies — uses built-in fetch.
- * 
+ *
  * NORMALIZATION CONTEXT:
  * KV was originally in Prime Number's public vault (share price $0.9626 → $1.19).
  * Migrated to private custom vault (PN_KV1) around Jan 2026 — share price reset to ~$1.00.
@@ -37,6 +42,10 @@ function loadHistory() {
   return [];
 }
 
+function getESTDate(date) {
+  return date.toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+}
+
 async function main() {
   console.log(`[NAV Stamp] ${new Date().toISOString()} — Starting daily NAV stamp`);
 
@@ -58,16 +67,17 @@ async function main() {
   console.log(`[NAV Stamp] Vault data fetched — Raw: ${rawSharePrice.toFixed(6)}, Normalized: ${normalizedSharePrice.toFixed(6)}, TVL: $${vault.tvl.toLocaleString()}`);
 
   // 2. Build today's record — use EST date (5 PM EST = official valuation time)
-  const todayDate = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' }); // YYYY-MM-DD format
+  const now = new Date();
+  const todayDate = getESTDate(now);
 
   const record = {
     date: todayDate,
-    timestamp: new Date().toISOString(),
+    timestamp: now.toISOString(),
     SharePrice: normalizedSharePrice,
     rawSharePrice: rawSharePrice,
     normalizationRatio: NORMALIZATION_RATIO,
     tvl: vault.tvl,
-    source_update_time: vault.update_time_utc || new Date().toISOString(),
+    source_update_time: vault.update_time_utc || now.toISOString(),
   };
 
   // 3. Load local history, deduplicate, append
@@ -86,10 +96,11 @@ async function main() {
   history.sort((a, b) => a.date.localeCompare(b.date));
 
   // 5. Sanity check — normalized price should be in reasonable range
+  const todayIdx = history.findIndex(h => h.date === todayDate);
   const lastFewPrices = history.slice(-5).map(h => h.SharePrice);
   const avg = lastFewPrices.reduce((a, b) => a + b, 0) / lastFewPrices.length;
   if (Math.abs(normalizedSharePrice - avg) / avg > 0.05) {
-    console.warn(`[NAV Stamp] ⚠️ WARNING: Today's price $${normalizedSharePrice.toFixed(6)} deviates >5% from recent average $${avg.toFixed(6)}`);
+    console.warn(`[NAV Stamp] WARNING: Today's price $${normalizedSharePrice.toFixed(6)} deviates >5% from recent average $${avg.toFixed(6)}`);
   }
 
   // 6. Write file
@@ -98,13 +109,12 @@ async function main() {
   console.log(`[NAV Stamp] Saved ${history.length} records to ${NAV_FILE}`);
 
   // 7. Day-over-day change
-  const todayIdx = history.findIndex(h => h.date === todayDate);
   let dayChange = null;
   if (todayIdx > 0) {
     const prev = history[todayIdx - 1];
     const prevPrice = prev.SharePrice;
     if (prevPrice && prevPrice > 0) {
-      dayChange = ((record.SharePrice - prevPrice) / prevPrice) * 100;
+      dayChange = ((normalizedSharePrice - prevPrice) / prevPrice) * 100;
     }
   }
 
