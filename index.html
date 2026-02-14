@@ -1399,15 +1399,15 @@
         // Fetch status banner
         async function updateFetchStatus() {
             try {
-                const r = await fetch('data/fetch-status.json?t=' + Date.now());
+                const r = await fetch('data/official-nav-history.json?t=' + Date.now());
                 if (!r.ok) throw new Error('not found');
-                const s = await r.json();
-                const d = new Date(s.lastFetch);
-                const fmt = d.toLocaleString(undefined, { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', timeZoneName:'short' });
-                const hasErrors = s.errors > 0 || Object.values(s.sources || {}).some(v => v === null || v === 'error');
+                const navData = await r.json();
+                const latest = navData[navData.length - 1];
+                // Show the NAV stamp date as "5:00 PM EST" (official valuation time)
+                const navDate = new Date(latest.date + 'T17:00:00-05:00');
+                const fmt = navDate.toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', timeZone: 'America/New_York', timeZoneName:'short' });
                 document.getElementById('fetchStatusBanner').innerHTML =
-                    (hasErrors ? '⚠️ ' : '✅ ') + 'Data as of: <strong style="color:#fff">' + fmt + '</strong>' +
-                    (hasErrors ? ' <span style="color:#eab308;margin-left:6px;">Some sources had errors</span>' : '');
+                    '✅ Official NAV: <strong style="color:#fff">' + fmt + '</strong>';
             } catch(e) {
                 document.getElementById('fetchStatusBanner').innerHTML = '⏳ Data freshness unavailable';
             }
