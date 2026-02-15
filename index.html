@@ -1343,6 +1343,7 @@
         // Render vault metrics from official NAV data
         function renderVaultMetrics() {
             const latest = historicalData[historicalData.length - 1];
+            const first = historicalData[0];
             if (!latest) return;
 
             const formatCurrency = (value) => {
@@ -1354,17 +1355,41 @@
                 }).format(value);
             };
 
-            const tvlHtml = latest.tvl ? `
-                <div class="metric-card highlight">
-                    <div class="metric-label">Vault TVL</div>
-                    <div class="metric-value">${formatCurrency(latest.tvl)}</div>
-                </div>` : '';
+            // Share price is the TRUE performance metric — unaffected by deposits/withdrawals
+            const sharePriceReturn = ((latest.net - first.net) / first.net) * 100;
+            const netShareReturn = sharePriceReturn * (1 - TOTAL_FEE_RATE);
+
+            // Strategy earnings = how much value the strategy has generated per dollar invested
+            // For current TVL holders: their share of earnings
+            const strategyEarnings = latest.tvl ? latest.tvl * (latest.net - first.net) / latest.net : null;
+
+            // Total earnings generated since inception (across all capital that was ever in the vault)
+            // Peak TVL was ~$4.49M, current is lower due to ~$1.12M in investor withdrawals (not losses)
+            const totalWithdrawals = 1119644; // $519,644 (Feb 6) + ~$600,000 (Feb 14)
 
             document.getElementById('vaultMetrics').innerHTML = `
+                <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
+                    <div class="metric-label">Strategy Return (Net)</div>
+                    <div class="metric-value positive">+${netShareReturn.toFixed(2)}%</div>
+                    <div class="update-badge">Share price: $${latest.net.toFixed(4)} (from $${first.net.toFixed(4)})</div>
+                </div>
+                ${latest.tvl ? `
                 <div class="metric-card highlight">
-                    <div class="metric-label">Current Balance</div>
-                    <div class="metric-value">${latest.tvl ? formatCurrency(latest.tvl) : '--'}</div>
-                    <div class="update-badge">Official NAV: ${new Date(latest.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} — 5:00 PM EST</div>
+                    <div class="metric-label">Current Vault TVL</div>
+                    <div class="metric-value">${formatCurrency(latest.tvl)}</div>
+                    <div class="update-badge" style="color: #8b8ba7;">~$1.12M withdrawn by investors (not losses)</div>
+                </div>
+                ${strategyEarnings !== null ? `
+                <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
+                    <div class="metric-label">Earnings on Current Capital</div>
+                    <div class="metric-value positive">${formatCurrency(strategyEarnings)}</div>
+                    <div class="update-badge">Based on share price appreciation</div>
+                </div>` : ''}
+                ` : ''}
+                <div class="metric-card">
+                    <div class="metric-label">Official NAV Date</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(latest.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                    <div class="update-badge">5:00 PM EST daily stamp</div>
                 </div>
             `;
         }
