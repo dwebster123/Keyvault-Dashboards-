@@ -1032,7 +1032,10 @@
             const currentBalance = tvl;
             const totalShares = data.totalShares || TOTAL_SHARES || (tvl / sharePrice);
             const cumulativeNetDeposits = totalShares;
-            const totalPNL = currentBalance - cumulativeNetDeposits;
+            // PNL based on share price appreciation (unaffected by withdrawals)
+            // This shows the TRUE strategy earnings on current capital
+            const sharePriceGainPct = (sharePrice - initialSharePrice) / initialSharePrice;
+            const totalPNL = currentBalance * sharePriceGainPct;
             const sharePriceReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100;
             const grossReturn = sharePriceReturn / PRIME_NET_FACTOR;
             const netReturn = sharePriceReturn >= 0 ? sharePriceReturn * NET_INVESTOR_FACTOR : sharePriceReturn;
@@ -1248,11 +1251,11 @@
                         </div>
                         <div class="metric-card realized">
                             <div class="metric-label has-tooltip">
-                                <span class="icon">💵</span> Vault Earnings
-                                <span class="tooltip-text">Total profit/loss (Current Balance minus Net Deposits)</span>
+                                <span class="icon">💵</span> Strategy Earnings
+                                <span class="tooltip-text">Earnings from share price appreciation on current capital</span>
                             </div>
                             <div class="metric-value ${m.totalPNL >= 0 ? 'realized' : ''}">${formatCurrency(m.totalPNL)}</div>
-                            <div class="metric-subtext">Total PNL</div>
+                            <div class="metric-subtext">On current AUM (${formatPercent((m.sharePrice - 1) / 1 * 100 * 0.7, 1)} net return)</div>
                         </div>
                         <div class="metric-card highlight">
                             <div class="metric-label has-tooltip">
