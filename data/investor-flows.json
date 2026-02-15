@@ -1,0 +1,32 @@
+[
+  {
+    "id": "flow-001",
+    "type": "withdrawal",
+    "date": "2026-02-06",
+    "timestamp": "2026-02-06T22:00:00Z",
+    "amount_approx": 519644,
+    "shares_redeemed": 516013.146,
+    "share_price_at_execution": 1.201806,
+    "tvl_before": 4494412,
+    "tvl_after": 3965147,
+    "execution_cost_est": 42000,
+    "leverage_at_time": 2.4,
+    "investor": "investor-1",
+    "notes": "Large withdrawal during peak volatility. 8% execution drag due to forced unwind at 2.4x leverage."
+  },
+  {
+    "id": "flow-002",
+    "type": "withdrawal",
+    "date": "2026-02-14",
+    "timestamp": "2026-02-15T05:00:00Z",
+    "amount_approx": 600000,
+    "shares_redeemed": null,
+    "share_price_at_execution": 1.192,
+    "tvl_before": 3942296,
+    "tvl_after": 3343674,
+    "execution_cost_est": null,
+    "leverage_at_time": 1.66,
+    "investor": "investor-2",
+    "notes": "Investor withdrawal for house purchase. Executed ~9PM PST Feb 14. TVL drop ~$599K. Share price impact minimal (-0.018%)."
+  }
+]
