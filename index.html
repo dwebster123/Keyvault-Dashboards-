@@ -1359,10 +1359,13 @@
             const sharePriceReturn = ((latest.net - first.net) / first.net) * 100;
             const netShareReturn = sharePriceReturn * (1 - TOTAL_FEE_RATE);
 
-            // TRUE EARNINGS from Drift UI (verified across all wallets + both vaults)
-            // Public vault: ~$200,035 | Private vault: $1,467 | Total: $201,502
-            // Source: Drift depositor earnings, manually verified 2026-02-15
-            const strategyEarnings = 201502;
+            // TRUE EARNINGS: Public vault (hardcoded) + Private vault (Drift-verified)
+            // Public vault (LOCKED, net of Prime fees): EVd3=$203,650 + Dq95=$8,305 + AV3=$34 = $211,989
+            // Private vault: from Drift UI (2026-02-15): $1,467
+            // TODO: auto-query private vault earnings in daily NAV stamp
+            const PUBLIC_VAULT_EARNINGS = 211989;
+            const PRIVATE_VAULT_EARNINGS = 1467;
+            const strategyEarnings = PUBLIC_VAULT_EARNINGS + PRIVATE_VAULT_EARNINGS;
             const totalWithdrawals = 1118918; // $519,644 (Feb 6) + $599,274 (Feb 14)
 
             document.getElementById('vaultMetrics').innerHTML = `

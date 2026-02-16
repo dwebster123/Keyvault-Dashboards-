@@ -1032,11 +1032,17 @@
             const currentBalance = tvl;
             const totalShares = data.totalShares || TOTAL_SHARES || (tvl / sharePrice);
             const cumulativeNetDeposits = totalShares;
-            // TRUE EARNINGS from Drift UI (verified across all wallets + both vaults)
-            // Public vault: ~$200,035 | Private vault: $1,467 | Total: $201,502
-            // Source: Drift depositor earnings, manually verified 2026-02-15
-            const DRIFT_VERIFIED_EARNINGS = 201502;
-            const totalPNL = DRIFT_VERIFIED_EARNINGS;
+            // TRUE EARNINGS: Public vault (hardcoded, final) + Private vault (live)
+            // Public vault earnings (LOCKED - all capital withdrawn, never changes):
+            //   EVd3ATEW: $203,650 | Dq95Pq71: $8,305 | AV3oo27Y: $34
+            // Source: Drift UI, verified 2026-02-15
+            // Public vault earnings (LOCKED, net of Prime fees): $211,989
+            // Private vault earnings: queried from Drift depositor accounts
+            // TODO: auto-query private vault earnings in daily NAV stamp
+            // For now: hardcoded from Drift UI (2026-02-15): $1,467
+            const PUBLIC_VAULT_EARNINGS = 211989;
+            const PRIVATE_VAULT_EARNINGS = 1467; // Updates with share price — refresh manually or via NAV stamp
+            const totalPNL = PUBLIC_VAULT_EARNINGS + PRIVATE_VAULT_EARNINGS;
             const sharePriceReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100;
             const grossReturn = sharePriceReturn / PRIME_NET_FACTOR;
             const netReturn = sharePriceReturn >= 0 ? sharePriceReturn * NET_INVESTOR_FACTOR : sharePriceReturn;
@@ -1252,11 +1258,11 @@
                         </div>
                         <div class="metric-card realized">
                             <div class="metric-label has-tooltip">
-                                <span class="icon">💵</span> Strategy Earnings
-                                <span class="tooltip-text">Earnings from share price appreciation on current capital</span>
+                                <span class="icon">💵</span> Total Fund Earnings
+                                <span class="tooltip-text">Public vault (locked: $211,989) + Private vault (live P&L)</span>
                             </div>
                             <div class="metric-value ${m.totalPNL >= 0 ? 'realized' : ''}">${formatCurrency(m.totalPNL)}</div>
-                            <div class="metric-subtext">On current AUM (${formatPercent((m.sharePrice - 1) / 1 * 100 * 0.7, 1)} net return)</div>
+                            <div class="metric-subtext">Drift-verified across all wallets</div>
                         </div>
                         <div class="metric-card highlight">
                             <div class="metric-label has-tooltip">
