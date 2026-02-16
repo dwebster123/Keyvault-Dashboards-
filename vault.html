@@ -1121,7 +1121,23 @@
 
         // =========== FLOW CALCULATIONS ===========
         function getAllFlows() {
-            const jsonFlows = investorFlows || [];
+            // investorFlows may be an array (legacy) or an object with .withdrawals
+            let jsonFlows;
+            if (Array.isArray(investorFlows)) {
+                jsonFlows = investorFlows;
+            } else if (investorFlows && Array.isArray(investorFlows.withdrawals)) {
+                jsonFlows = investorFlows.withdrawals.map(w => ({
+                    date: w.date,
+                    type: 'withdrawal',
+                    amount_approx: w.amount || 0,
+                    vault: w.vault,
+                    notes: w.notes,
+                    sharePriceImpact: w.sharePriceImpact,
+                    costToHolders: w.costToHolders
+                }));
+            } else {
+                jsonFlows = [];
+            }
             const localFlows = JSON.parse(localStorage.getItem('kv-manual-flows') || '[]');
             return [...jsonFlows, ...localFlows].sort((a, b) => new Date(a.date) - new Date(b.date));
         }
