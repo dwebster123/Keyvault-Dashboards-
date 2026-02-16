@@ -1389,7 +1389,7 @@
                 ` : ''}
                 <div class="metric-card">
                     <div class="metric-label">Official NAV Date</div>
-                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(latest.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(latest.date + 'T17:00:00-05:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' })}</div>
                     <div class="update-badge">5:00 PM EST daily stamp</div>
                 </div>
             `;
