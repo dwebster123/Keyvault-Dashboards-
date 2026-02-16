@@ -1359,13 +1359,11 @@
             const sharePriceReturn = ((latest.net - first.net) / first.net) * 100;
             const netShareReturn = sharePriceReturn * (1 - TOTAL_FEE_RATE);
 
-            // Strategy earnings = how much value the strategy has generated per dollar invested
-            // For current TVL holders: their share of earnings
-            const strategyEarnings = latest.tvl ? latest.tvl * (latest.net - first.net) / latest.net : null;
-
-            // Total earnings generated since inception (across all capital that was ever in the vault)
-            // Peak TVL was ~$4.49M, current is lower due to ~$1.12M in investor withdrawals (not losses)
-            const totalWithdrawals = 1119644; // $519,644 (Feb 6) + ~$600,000 (Feb 14)
+            // TRUE EARNINGS from Drift UI (verified across all wallets + both vaults)
+            // Public vault: ~$200,035 | Private vault: $1,467 | Total: $201,502
+            // Source: Drift depositor earnings, manually verified 2026-02-15
+            const strategyEarnings = 201502;
+            const totalWithdrawals = 1118918; // $519,644 (Feb 6) + $599,274 (Feb 14)
 
             document.getElementById('vaultMetrics').innerHTML = `
                 <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
@@ -1383,7 +1381,7 @@
                 <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
                     <div class="metric-label">Earnings on Current Capital</div>
                     <div class="metric-value positive">${formatCurrency(strategyEarnings)}</div>
-                    <div class="update-badge">Based on share price appreciation</div>
+                    <div class="update-badge">Drift-verified (all wallets + both vaults)</div>
                 </div>` : ''}
                 ` : ''}
                 <div class="metric-card">

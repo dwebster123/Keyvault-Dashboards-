@@ -1,32 +1,51 @@
-[
-  {
-    "id": "flow-001",
-    "type": "withdrawal",
-    "date": "2026-02-06",
-    "timestamp": "2026-02-06T22:00:00Z",
-    "amount_approx": 519644,
-    "shares_redeemed": 516013.146,
-    "share_price_at_execution": 1.201806,
-    "tvl_before": 4494412,
-    "tvl_after": 3965147,
-    "execution_cost_est": 42000,
-    "leverage_at_time": 2.4,
-    "investor": "investor-1",
-    "notes": "Large withdrawal during peak volatility. 8% execution drag due to forced unwind at 2.4x leverage."
+{
+  "wallets": {
+    "EVd3ATEW9nv7jLzvViePYD5M98o1DASxTLxStZFbtvXE": {
+      "label": "Main Fund Wallet",
+      "publicVaultEarnings": 200000,
+      "privateVaultEarnings": 1852
+    },
+    "AV3oo27Yi6JtnGEvduanu6SeTWixsW9Tk2MJqtYtnXuM": {
+      "label": "Fund Wallet 2",
+      "publicVaultEarnings": 35,
+      "privateVaultEarnings": 0
+    },
+    "Dq95Pq71J9Sq2k2TmwZz9NdzZSu3a9px6DtkhtEr6S4": {
+      "label": "Fund Wallet 3",
+      "publicVaultEarnings": 0,
+      "privateVaultEarnings": 33
+    },
+    "915VLaYkU21GxtiLwHTowz3GgXzKtiAuWWmF3F7utFEN": {
+      "label": "Fund Wallet 4",
+      "publicVaultEarnings": 0,
+      "privateVaultEarnings": -418
+    }
   },
-  {
-    "id": "flow-002",
-    "type": "withdrawal",
-    "date": "2026-02-14",
-    "timestamp": "2026-02-15T05:00:00Z",
-    "amount_approx": 600000,
-    "shares_redeemed": null,
-    "share_price_at_execution": 1.192,
-    "tvl_before": 3942296,
-    "tvl_after": 3343674,
-    "execution_cost_est": null,
-    "leverage_at_time": 1.66,
-    "investor": "investor-2",
-    "notes": "Investor withdrawal for house purchase. Executed ~9PM PST Feb 14. TVL drop ~$599K. Share price impact minimal (-0.018%)."
-  }
-]
+  "totalEarnings": {
+    "publicVault": 200035,
+    "privateVault": 1467,
+    "combined": 201502,
+    "lastUpdated": "2026-02-15T16:05:00-08:00",
+    "source": "Drift UI (manually verified)"
+  },
+  "withdrawals": [
+    {
+      "date": "2026-02-06",
+      "amount": 519643.89,
+      "vault": "private",
+      "wallet": "EVd3ATEW9nv7jLzvViePYD5M98o1DASxTLxStZFbtvXE",
+      "sharePriceImpact": -0.002578,
+      "costToHolders": 10151,
+      "notes": "Investor redemption during high volatility, 2.4x leverage"
+    },
+    {
+      "date": "2026-02-14",
+      "amount": 599274.24,
+      "vault": "private",
+      "wallet": "EVd3ATEW9nv7jLzvViePYD5M98o1DASxTLxStZFbtvXE",
+      "sharePriceImpact": -0.000214,
+      "costToHolders": 600,
+      "notes": "Investor withdrawal for house purchase. Clean execution at 1.66x leverage"
+    }
+  ]
+}

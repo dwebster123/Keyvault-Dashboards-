@@ -1032,10 +1032,11 @@
             const currentBalance = tvl;
             const totalShares = data.totalShares || TOTAL_SHARES || (tvl / sharePrice);
             const cumulativeNetDeposits = totalShares;
-            // PNL based on share price appreciation (unaffected by withdrawals)
-            // This shows the TRUE strategy earnings on current capital
-            const sharePriceGainPct = (sharePrice - initialSharePrice) / initialSharePrice;
-            const totalPNL = currentBalance * sharePriceGainPct;
+            // TRUE EARNINGS from Drift UI (verified across all wallets + both vaults)
+            // Public vault: ~$200,035 | Private vault: $1,467 | Total: $201,502
+            // Source: Drift depositor earnings, manually verified 2026-02-15
+            const DRIFT_VERIFIED_EARNINGS = 201502;
+            const totalPNL = DRIFT_VERIFIED_EARNINGS;
             const sharePriceReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100;
             const grossReturn = sharePriceReturn / PRIME_NET_FACTOR;
             const netReturn = sharePriceReturn >= 0 ? sharePriceReturn * NET_INVESTOR_FACTOR : sharePriceReturn;
