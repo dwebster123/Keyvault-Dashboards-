@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <title>KeyVault JLP Analytics</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -319,7 +319,7 @@
     </div>
 
 <script>
-const PROXY = u => 'https://api.allorigins.win/get?url=' + encodeURIComponent(u);
+const PROXY = u => 'https://keyvault.deven-m-webster.workers.dev/?url=' + encodeURIComponent(u);
 const DEFILLAMA_URL = 'https://api.llama.fi/summary/fees/jupiter-perpetual-exchange';
 const COINGECKO_URL = 'https://api.coingecko.com/api/v3/coins/jupiter-perpetuals-liquidity-provider-token/market_chart?vs_currency=usd&days=365';
 // Vault data now comes from official NAV stamps (no live API)
@@ -370,7 +370,9 @@ async function fetchJSON(url, useProxy = false) {
         clearTimeout(timeout);
         const data = await res.json();
         if (useProxy) {
-            try { return JSON.parse(data.contents); } catch { return null; }
+            // keyvault-worker returns JSON directly; allorigins used to wrap in {contents:...}
+            if (data && data.contents) { try { return JSON.parse(data.contents); } catch { return data; } }
+            return data;
         }
         return data;
     } catch (e) {

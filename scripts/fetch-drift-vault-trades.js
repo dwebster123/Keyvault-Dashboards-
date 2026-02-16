@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const VAULT_ADDRESS = 'G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp';
-const RPC_URL = 'https://api.mainnet-beta.solana.com';
+const RPC_URL = 'https://mainnet.helius-rpc.com/?api-key=86b538c8-91f4-4ae5-95ec-4392a2fbecaf';
 
 // Drift program
 const DRIFT_PROGRAM = new PublicKey('dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH');

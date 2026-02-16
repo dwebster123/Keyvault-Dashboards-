@@ -18,7 +18,7 @@ async function main() {
 
         const snapshot = {
             timestamp: new Date().toISOString(),
-            date: new Date().toISOString().slice(0, 10),
+            date: new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' }),
             // Pool metrics
             poolNavUsd: info.poolNavUsd,
             aumUsd: info.aumUsd,

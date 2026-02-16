@@ -10,11 +10,18 @@ cd "$(dirname "$0")/.."
 ERRORS=0
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S %Z')
 
+# OS-portable stat for file modification time
+if [[ "$(uname)" == "Darwin" ]]; then
+  file_mtime() { stat -f '%Sm' -t '%Y-%m-%dT%H:%M:%S' "$1" 2>/dev/null || echo 'missing'; }
+else
+  file_mtime() { stat -c '%y' "$1" 2>/dev/null | cut -d. -f1 || echo 'missing'; }
+fi
+
 echo "=== Daily Data Fetch $TIMESTAMP ==="
 
 # 1. Fetch Drift funding rates
 echo ""
-echo "[1/4] Fetching Drift funding rates..."
+echo "[1/5] Fetching Drift funding rates..."
 if node scripts/fetch-drift-funding.js 2>&1; then
   echo "  ✅ Drift funding rates OK"
 else
@@ -24,7 +31,7 @@ fi
 
 # 2. Fetch JLP pool snapshot (NAV, AUM, fees, trader exposure)
 echo ""
-echo "[2/4] Fetching JLP pool snapshot..."
+echo "[2/5] Fetching JLP pool snapshot..."
 if node scripts/fetch-jlp-snapshot.js 2>&1; then
   echo "  ✅ JLP snapshot OK"
 else
@@ -34,7 +41,7 @@ fi
 
 # 3. Fetch trader P&L snapshot
 echo ""
-echo "[3/4] Fetching trader P&L snapshot..."
+echo "[3/5] Fetching trader P&L snapshot..."
 if node scripts/fetch-trader-pnl.js 2>&1; then
   echo "  ✅ Trader P&L OK"
 else
@@ -44,7 +51,7 @@ fi
 
 # 4. Fetch Prime Number vault data (for CORS-free dashboard loading)
 echo ""
-echo "[4/5] Fetching Prime Number vault data..."
+echo "[4/5] Fetching Prime Number vault data (CORS-free)..."
 if curl -sf "https://app.primenumber.trade/data/PN_KV1.json" -o data/pn-kv1-current.json && \
    curl -sf "https://app.primenumber.trade/data/PN_KV1_history.json" -o data/pn-kv1-history.json; then
   echo "  ✅ Prime Number data OK"
@@ -68,11 +75,11 @@ cat > data/fetch-status.json << EOF
   "lastFetch": "$(date -u '+%Y-%m-%dT%H:%M:%SZ')",
   "errors": $ERRORS,
   "sources": {
-    "drift": "$(stat -f '%Sm' -t '%Y-%m-%dT%H:%M:%S' data/drift-funding-rates.json 2>/dev/null || echo 'missing')",
-    "jlp": "$(stat -f '%Sm' -t '%Y-%m-%dT%H:%M:%S' data/jlp-snapshots.json 2>/dev/null || echo 'missing')",
-    "traderPnl": "$(stat -f '%Sm' -t '%Y-%m-%dT%H:%M:%S' data/trader-pnl-snapshots.json 2>/dev/null || echo 'missing')",
-    "alliumFees": "$(stat -f '%Sm' -t '%Y-%m-%dT%H:%M:%S' data/allium-fees.json 2>/dev/null || echo 'missing')",
-    "alliumTraderPnl": "$(stat -f '%Sm' -t '%Y-%m-%dT%H:%M:%S' data/allium-trader-pnl.json 2>/dev/null || echo 'missing')"
+    "drift": "$(file_mtime data/drift-funding-rates.json)",
+    "jlp": "$(file_mtime data/jlp-snapshots.json)",
+    "traderPnl": "$(file_mtime data/trader-pnl-snapshots.json)",
+    "alliumFees": "$(file_mtime data/allium-fees.json)",
+    "alliumTraderPnl": "$(file_mtime data/allium-trader-pnl.json)"
   }
 }
 EOF

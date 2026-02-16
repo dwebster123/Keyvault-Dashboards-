@@ -7,8 +7,8 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Public KeyVault Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -484,9 +484,6 @@
             }
         }
 
-        // Legacy fallbackData removed — official-nav-history.json is the single source of truth
-        const _removed_fallbackData = "removed"; // Was [
-
         // Fee structure (20% KeyVault performance + 10% Prime Number manager = 30% total)
         // Spreadsheet data: share prices are fully gross (no fees deducted) → apply full 30%
         // Vault API data: share prices are net of Prime's 10% only → ideally 7/9 factor
@@ -690,6 +687,10 @@
 
         // Render metrics
         function renderMetrics() {
+            if (!historicalData || historicalData.length === 0) {
+                document.getElementById('metricsGrid').innerHTML = '<div class="metric-card"><div class="metric-value" style="color:#ef4444;">No data available</div></div>';
+                return;
+            }
             const metrics = calculateMetrics();
 
             document.getElementById('metricsGrid').innerHTML = `
@@ -711,7 +712,7 @@
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Inception Date</div>
-                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(metrics.inceptionDate).toLocaleDateString()}</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(metrics.inceptionDate + 'T12:00:00').toLocaleDateString()}</div>
                 </div>
             `;
 
@@ -770,21 +771,21 @@
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Start Date</div>
-                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(start2025.date).toLocaleDateString()}</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(start2025.date + 'T12:00:00').toLocaleDateString()}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">End Date</div>
-                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(end2025.date).toLocaleDateString()}</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(end2025.date + 'T12:00:00').toLocaleDateString()}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Best Day</div>
                     <div class="metric-value positive" style="font-size: 1.1rem;">${formatPercent(bestDay.pct1d * (1 - TOTAL_FEE_RATE), 2)}</div>
-                    <div class="update-badge">${new Date(bestDay.date).toLocaleDateString()}</div>
+                    <div class="update-badge">${new Date(bestDay.date + 'T12:00:00').toLocaleDateString()}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Worst Day</div>
                     <div class="metric-value negative" style="font-size: 1.1rem;">${formatPercent(worstDay.pct1d * (1 - TOTAL_FEE_RATE), 2)}</div>
-                    <div class="update-badge">${new Date(worstDay.date).toLocaleDateString()}</div>
+                    <div class="update-badge">${new Date(worstDay.date + 'T12:00:00').toLocaleDateString()}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Starting Share Price</div>
@@ -1272,8 +1273,8 @@
             }
             
             const latestCommonDate = commonDates[commonDates.length - 1];
-            const startDate = new Date('2025-11-06');
-            const endDate = new Date(latestCommonDate);
+            const startDate = new Date('2025-11-06T12:00:00');
+            const endDate = new Date(latestCommonDate + 'T12:00:00');
             const days = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
             
             const kvRoi = kvDataMap[latestCommonDate] || 0;
@@ -1315,7 +1316,7 @@
                 </div>
                 <div class="metric-card" style="grid-column: span 2;">
                     <div class="metric-label">Comparison Period</div>
-                    <div class="metric-value" style="font-size: 1.1rem;">Nov 6, 2025 → ${new Date(latestCommonDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">Nov 6, 2025 → ${new Date(latestCommonDate + 'T12:00:00').toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}</div>
                     <div class="update-badge">${days} days of overlapping data</div>
                 </div>
             `;
@@ -1342,6 +1343,10 @@
 
         // Render vault metrics from official NAV data
         function renderVaultMetrics() {
+            if (!historicalData || historicalData.length === 0) {
+                document.getElementById('vaultMetrics').innerHTML = '<div class="metric-card"><div class="metric-value" style="color:#ef4444;">No vault data available</div></div>';
+                return;
+            }
             const latest = historicalData[historicalData.length - 1];
             const first = historicalData[0];
             if (!latest) return;
@@ -1417,19 +1422,17 @@
             render2025APYChart();
             setupTabs();
             renderVaultMetrics();
+            updateFetchStatus();
             // No auto-refresh — data updates daily via NAV stamp system
         }
 
         init();
 
-        // Fetch status banner
-        async function updateFetchStatus() {
+        // Fetch status banner — uses already-loaded historicalData instead of re-fetching
+        function updateFetchStatus() {
             try {
-                const r = await fetch('data/official-nav-history.json?t=' + Date.now());
-                if (!r.ok) throw new Error('not found');
-                const navData = await r.json();
-                const latest = navData[navData.length - 1];
-                // Show the NAV stamp date as "5:00 PM EST" (official valuation time)
+                if (!historicalData || historicalData.length === 0) throw new Error('no data');
+                const latest = historicalData[historicalData.length - 1];
                 const navDate = new Date(latest.date + 'T17:00:00-05:00');
                 const fmt = navDate.toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', timeZone: 'America/New_York', timeZoneName:'short' });
                 document.getElementById('fetchStatusBanner').innerHTML =
@@ -1438,8 +1441,6 @@
                 document.getElementById('fetchStatusBanner').innerHTML = '⏳ Data freshness unavailable';
             }
         }
-        updateFetchStatus();
-        setInterval(updateFetchStatus, 5 * 60 * 1000);
     </script>
 </body>
 </html>

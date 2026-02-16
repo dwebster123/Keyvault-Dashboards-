@@ -80,8 +80,24 @@ async function main() {
     source_update_time: vault.update_time_utc || now.toISOString(),
   };
 
-  // 3. Load local history, deduplicate, append
+  // 3. Load local history, validate TVL, deduplicate, append
   const history = loadHistory();
+
+  // TVL validation: skip if zero/negative, warn if >40% drop
+  if (vault.tvl <= 0) {
+    console.error(`[NAV Stamp] SKIPPING: TVL is ${vault.tvl} (zero or negative)`);
+    process.exit(1);
+  }
+  if (history.length > 0) {
+    const prevEntry = history[history.length - 1];
+    if (prevEntry.tvl && prevEntry.tvl > 0) {
+      const dropPct = (prevEntry.tvl - vault.tvl) / prevEntry.tvl;
+      if (dropPct > 0.40) {
+        console.warn(`[NAV Stamp] WARNING: TVL dropped ${(dropPct * 100).toFixed(1)}% from $${prevEntry.tvl.toLocaleString()} to $${vault.tvl.toLocaleString()} — large withdrawals may explain this`);
+      }
+    }
+  }
+
   const existingIdx = history.findIndex(h => h.date === todayDate);
 
   if (existingIdx >= 0) {
