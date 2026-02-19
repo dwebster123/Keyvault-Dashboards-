@@ -335,7 +335,9 @@ const PERFORMANCE_FEE_RATE = 0.20;
 const PRIME_NUMBER_FEE_RATE = 0.10;
 const TOTAL_FEE_RATE = PERFORMANCE_FEE_RATE + PRIME_NUMBER_FEE_RATE; // 0.30
 const PRIME_NET_FACTOR = 1 - PRIME_NUMBER_FEE_RATE; // 0.90
-const NET_INVESTOR_FACTOR = (1 - TOTAL_FEE_RATE) / PRIME_NET_FACTOR; // 7/9 ≈ 0.7778
+// Share price is already net of PM's 10% fee (confirmed Feb 2026).
+// NET_INVESTOR_FACTOR only applies KV's 20% performance fee on top.
+const NET_INVESTOR_FACTOR = 1 - PERFORMANCE_FEE_RATE; // 0.80
 
 let feeData = [], cgPrices = [], vaultCurrent = null, vaultHistory = [];
 let solPrices = [], ethPrices = [], btcPrices = [];
