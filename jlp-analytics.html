@@ -149,7 +149,7 @@
             <img src="logo.png" alt="KeyVault" class="logo">
             <h1>KeyVault JLP Analytics</h1>
             <div class="subtitle">Jupiter Perpetual Exchange Fee & Performance Analytics</div>
-            <div class="update-badge">Official NAV · <span id="lastUpdate">Loading...</span></div>
+            <div class="update-badge">Official NAV · <span id="lastUpdate">Loading...</span> &nbsp;<button onclick="loadAll();loadDriftFunding();" style="background:none;border:1px solid #4b4b6d;color:#8b8ba7;border-radius:4px;padding:1px 6px;font-size:0.65rem;cursor:pointer;vertical-align:middle;" title="Refresh data">↻</button></div>
             <div id="fetchStatusBanner" style="margin-top:8px;padding:8px 18px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:8px;font-size:0.82rem;color:#8b8ba7;display:inline-block;"></div>
         </div>
 
@@ -1201,9 +1201,10 @@ document.getElementById('fundingTabs').addEventListener('click', e => {
     renderFundingChart();
 });
 
-// Init (no auto-refresh — vault data updates daily via NAV stamp system)
+// Init + auto-refresh every 5 minutes
 loadAll();
 loadDriftFunding();
+setInterval(() => { loadAll(); loadDriftFunding(); }, 5 * 60 * 1000);
 
 // Hedge Activity Chart — deferred until details section is opened
 let hedgeActivityRendered = false;
