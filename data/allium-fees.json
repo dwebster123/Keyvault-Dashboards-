@@ -790,5 +790,14 @@
     "close_count": null,
     "total_txns": null,
     "source": "defillama"
+  },
+  {
+    "date": "2026-02-18",
+    "total_fees": 1281191,
+    "position_fees": 1281191,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
   }
 ]
