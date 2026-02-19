@@ -60,9 +60,19 @@ else
   ERRORS=$((ERRORS + 1))
 fi
 
-# 5. Fetch on-chain fee data (DefiLlama — Allium fallback until subscription renews)
+# 5. Stamp official NAV (share price snapshot at 5 PM EST)
 echo ""
-echo "[5/5] Fetching fee data (DefiLlama fallback)..."
+echo "[5/5] Stamping official NAV..."
+if node scripts/daily-nav-stamp.js 2>&1; then
+  echo "  ✅ NAV stamp OK"
+else
+  echo "  ❌ NAV stamp FAILED"
+  ERRORS=$((ERRORS + 1))
+fi
+
+# 6. Fetch on-chain fee data (DefiLlama — Allium fallback until subscription renews)
+echo ""
+echo "[6/6] Fetching fee data (DefiLlama fallback)..."
 if node scripts/fetch-defillama-data.js 2>&1; then
   echo "  ✅ Fee data OK (DefiLlama — trader P&L unavailable until Allium renews)"
 else
