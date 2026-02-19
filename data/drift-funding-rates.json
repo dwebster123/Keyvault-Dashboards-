@@ -1,0 +1,621 @@
+{
+  "lastUpdated": "2026-02-19T00:17:01.474Z",
+  "markets": {
+    "SOL-PERP": [
+      {
+        "date": "2026-01-10",
+        "avgRate": -0.00000475,
+        "annualizedPct": -4.1607
+      },
+      {
+        "date": "2026-01-11",
+        "avgRate": -0.00001225,
+        "annualizedPct": -10.7307
+      },
+      {
+        "date": "2026-01-12",
+        "avgRate": -0.00000605,
+        "annualizedPct": -5.3006
+      },
+      {
+        "date": "2026-01-13",
+        "avgRate": -0.00001508,
+        "annualizedPct": -13.2112
+      },
+      {
+        "date": "2026-01-14",
+        "avgRate": -0.00000637,
+        "annualizedPct": -5.5815
+      },
+      {
+        "date": "2026-01-15",
+        "avgRate": 0.00000968,
+        "annualizedPct": 8.4839
+      },
+      {
+        "date": "2026-01-16",
+        "avgRate": 0.00000205,
+        "annualizedPct": 1.798
+      },
+      {
+        "date": "2026-01-17",
+        "avgRate": -0.00000485,
+        "annualizedPct": -4.2502
+      },
+      {
+        "date": "2026-01-18",
+        "avgRate": 0.00001425,
+        "annualizedPct": 12.4816
+      },
+      {
+        "date": "2026-01-19",
+        "avgRate": 1e-8,
+        "annualizedPct": 0.0095
+      },
+      {
+        "date": "2026-01-20",
+        "avgRate": 5.6e-7,
+        "annualizedPct": 0.4921
+      },
+      {
+        "date": "2026-01-21",
+        "avgRate": -0.00001059,
+        "annualizedPct": -9.2731
+      },
+      {
+        "date": "2026-01-22",
+        "avgRate": -6e-8,
+        "annualizedPct": -0.0553
+      },
+      {
+        "date": "2026-01-23",
+        "avgRate": -0.000009,
+        "annualizedPct": -7.8867
+      },
+      {
+        "date": "2026-01-24",
+        "avgRate": -0.00001064,
+        "annualizedPct": -9.3184
+      },
+      {
+        "date": "2026-01-25",
+        "avgRate": -0.00001079,
+        "annualizedPct": -9.4542
+      },
+      {
+        "date": "2026-01-26",
+        "avgRate": -0.00001158,
+        "annualizedPct": -10.1402
+      },
+      {
+        "date": "2026-01-27",
+        "avgRate": -0.00000578,
+        "annualizedPct": -5.065
+      },
+      {
+        "date": "2026-01-28",
+        "avgRate": 0.00000305,
+        "annualizedPct": 2.6754
+      },
+      {
+        "date": "2026-01-29",
+        "avgRate": -0.000001,
+        "annualizedPct": -0.8763
+      },
+      {
+        "date": "2026-01-30",
+        "avgRate": -0.00001704,
+        "annualizedPct": -14.9306
+      },
+      {
+        "date": "2026-01-31",
+        "avgRate": -0.00002469,
+        "annualizedPct": -21.6271
+      },
+      {
+        "date": "2026-02-01",
+        "avgRate": -0.0000518,
+        "annualizedPct": -45.3755
+      },
+      {
+        "date": "2026-02-02",
+        "avgRate": -0.00002837,
+        "annualizedPct": -24.8543
+      },
+      {
+        "date": "2026-02-03",
+        "avgRate": -0.00002364,
+        "annualizedPct": -20.7079
+      },
+      {
+        "date": "2026-02-04",
+        "avgRate": -0.00003628,
+        "annualizedPct": -31.78
+      },
+      {
+        "date": "2026-02-05",
+        "avgRate": -0.00003968,
+        "annualizedPct": -34.7598
+      },
+      {
+        "date": "2026-02-06",
+        "avgRate": -0.00005203,
+        "annualizedPct": -45.5752
+      },
+      {
+        "date": "2026-02-07",
+        "avgRate": -0.00004214,
+        "annualizedPct": -36.919
+      },
+      {
+        "date": "2026-02-08",
+        "avgRate": -0.00002648,
+        "annualizedPct": -23.1925
+      },
+      {
+        "date": "2026-02-09",
+        "avgRate": -0.00002456,
+        "annualizedPct": -21.5141
+      },
+      {
+        "date": "2026-02-10",
+        "avgRate": -0.00002026,
+        "annualizedPct": -17.7501
+      },
+      {
+        "date": "2026-02-11",
+        "avgRate": -0.0000295,
+        "annualizedPct": -25.8423
+      },
+      {
+        "date": "2026-02-12",
+        "avgRate": -0.00002692,
+        "annualizedPct": -23.5809
+      },
+      {
+        "date": "2026-02-13",
+        "avgRate": -0.00001952,
+        "annualizedPct": -17.0991
+      },
+      {
+        "date": "2026-02-14",
+        "avgRate": -2.4e-7,
+        "annualizedPct": -0.2111
+      },
+      {
+        "date": "2026-02-15",
+        "avgRate": -0.00002282,
+        "annualizedPct": -19.9925
+      },
+      {
+        "date": "2026-02-16",
+        "avgRate": -0.00002647,
+        "annualizedPct": -23.1865
+      },
+      {
+        "date": "2026-02-17",
+        "avgRate": -0.00001821,
+        "annualizedPct": -15.9561
+      },
+      {
+        "date": "2026-02-18",
+        "avgRate": -0.00001741,
+        "annualizedPct": -15.2532
+      },
+      {
+        "date": "2026-02-19",
+        "avgRate": 0.00000759,
+        "annualizedPct": 6.6455
+      }
+    ],
+    "BTC-PERP": [
+      {
+        "date": "2026-01-10",
+        "avgRate": 0.0000053,
+        "annualizedPct": 4.6385
+      },
+      {
+        "date": "2026-01-11",
+        "avgRate": 0.00001076,
+        "annualizedPct": 9.4264
+      },
+      {
+        "date": "2026-01-12",
+        "avgRate": 0.00000291,
+        "annualizedPct": 2.5511
+      },
+      {
+        "date": "2026-01-13",
+        "avgRate": -0.00002375,
+        "annualizedPct": -20.8048
+      },
+      {
+        "date": "2026-01-14",
+        "avgRate": -0.00000235,
+        "annualizedPct": -2.0585
+      },
+      {
+        "date": "2026-01-15",
+        "avgRate": 0.00000969,
+        "annualizedPct": 8.49
+      },
+      {
+        "date": "2026-01-16",
+        "avgRate": 0.00001635,
+        "annualizedPct": 14.327
+      },
+      {
+        "date": "2026-01-17",
+        "avgRate": 0.00000452,
+        "annualizedPct": 3.9614
+      },
+      {
+        "date": "2026-01-18",
+        "avgRate": 0.00001773,
+        "annualizedPct": 15.5334
+      },
+      {
+        "date": "2026-01-19",
+        "avgRate": 0.00000568,
+        "annualizedPct": 4.9738
+      },
+      {
+        "date": "2026-01-20",
+        "avgRate": 0.00000894,
+        "annualizedPct": 7.8303
+      },
+      {
+        "date": "2026-01-21",
+        "avgRate": 0.00000941,
+        "annualizedPct": 8.2424
+      },
+      {
+        "date": "2026-01-22",
+        "avgRate": 0.00000405,
+        "annualizedPct": 3.5497
+      },
+      {
+        "date": "2026-01-23",
+        "avgRate": 0.00000239,
+        "annualizedPct": 2.0945
+      },
+      {
+        "date": "2026-01-24",
+        "avgRate": 0.00000497,
+        "annualizedPct": 4.3572
+      },
+      {
+        "date": "2026-01-25",
+        "avgRate": 0.00000486,
+        "annualizedPct": 4.2605
+      },
+      {
+        "date": "2026-01-26",
+        "avgRate": 0.00000239,
+        "annualizedPct": 2.0965
+      },
+      {
+        "date": "2026-01-27",
+        "avgRate": 0.0000042,
+        "annualizedPct": 3.6832
+      },
+      {
+        "date": "2026-01-28",
+        "avgRate": 0.00000516,
+        "annualizedPct": 4.5225
+      },
+      {
+        "date": "2026-01-29",
+        "avgRate": 0.00001004,
+        "annualizedPct": 8.7934
+      },
+      {
+        "date": "2026-01-30",
+        "avgRate": 0.00000966,
+        "annualizedPct": 8.4651
+      },
+      {
+        "date": "2026-01-31",
+        "avgRate": 0.00000821,
+        "annualizedPct": 7.1916
+      },
+      {
+        "date": "2026-02-01",
+        "avgRate": 0.00000201,
+        "annualizedPct": 1.7599
+      },
+      {
+        "date": "2026-02-02",
+        "avgRate": 0.0000016,
+        "annualizedPct": 1.3997
+      },
+      {
+        "date": "2026-02-03",
+        "avgRate": -7e-8,
+        "annualizedPct": -0.0592
+      },
+      {
+        "date": "2026-02-04",
+        "avgRate": 0.00000549,
+        "annualizedPct": 4.805
+      },
+      {
+        "date": "2026-02-05",
+        "avgRate": 0.00000471,
+        "annualizedPct": 4.1258
+      },
+      {
+        "date": "2026-02-06",
+        "avgRate": -0.00001739,
+        "annualizedPct": -15.233
+      },
+      {
+        "date": "2026-02-07",
+        "avgRate": -0.00001574,
+        "annualizedPct": -13.7924
+      },
+      {
+        "date": "2026-02-08",
+        "avgRate": -0.0000023,
+        "annualizedPct": -2.0127
+      },
+      {
+        "date": "2026-02-09",
+        "avgRate": -0.00000588,
+        "annualizedPct": -5.1493
+      },
+      {
+        "date": "2026-02-10",
+        "avgRate": -0.00000705,
+        "annualizedPct": -6.1785
+      },
+      {
+        "date": "2026-02-11",
+        "avgRate": -0.00001696,
+        "annualizedPct": -14.8547
+      },
+      {
+        "date": "2026-02-12",
+        "avgRate": -0.0000025,
+        "annualizedPct": -2.187
+      },
+      {
+        "date": "2026-02-13",
+        "avgRate": -0.0000214,
+        "annualizedPct": -18.7477
+      },
+      {
+        "date": "2026-02-14",
+        "avgRate": 0.00000763,
+        "annualizedPct": 6.6873
+      },
+      {
+        "date": "2026-02-15",
+        "avgRate": 0.00002907,
+        "annualizedPct": 25.4648
+      },
+      {
+        "date": "2026-02-16",
+        "avgRate": 0.0000161,
+        "annualizedPct": 14.1066
+      },
+      {
+        "date": "2026-02-17",
+        "avgRate": 0.00000172,
+        "annualizedPct": 1.505
+      },
+      {
+        "date": "2026-02-18",
+        "avgRate": 0.00000119,
+        "annualizedPct": 1.0382
+      }
+    ],
+    "ETH-PERP": [
+      {
+        "date": "2026-01-10",
+        "avgRate": -0.00000106,
+        "annualizedPct": -0.9313
+      },
+      {
+        "date": "2026-01-11",
+        "avgRate": 0.0000016,
+        "annualizedPct": 1.4054
+      },
+      {
+        "date": "2026-01-12",
+        "avgRate": 0.00001952,
+        "annualizedPct": 17.1036
+      },
+      {
+        "date": "2026-01-13",
+        "avgRate": -0.00002017,
+        "annualizedPct": -17.6704
+      },
+      {
+        "date": "2026-01-14",
+        "avgRate": -0.00000917,
+        "annualizedPct": -8.0313
+      },
+      {
+        "date": "2026-01-15",
+        "avgRate": 0.00000272,
+        "annualizedPct": 2.382
+      },
+      {
+        "date": "2026-01-16",
+        "avgRate": 0.00000752,
+        "annualizedPct": 6.5834
+      },
+      {
+        "date": "2026-01-17",
+        "avgRate": 0.00000348,
+        "annualizedPct": 3.0481
+      },
+      {
+        "date": "2026-01-18",
+        "avgRate": 0.000001,
+        "annualizedPct": 0.8727
+      },
+      {
+        "date": "2026-01-19",
+        "avgRate": -0.00000207,
+        "annualizedPct": -1.8117
+      },
+      {
+        "date": "2026-01-20",
+        "avgRate": 0.00000136,
+        "annualizedPct": 1.1927
+      },
+      {
+        "date": "2026-01-21",
+        "avgRate": 0.00000274,
+        "annualizedPct": 2.3986
+      },
+      {
+        "date": "2026-01-22",
+        "avgRate": -6.8e-7,
+        "annualizedPct": -0.6
+      },
+      {
+        "date": "2026-01-23",
+        "avgRate": -0.00000304,
+        "annualizedPct": -2.6657
+      },
+      {
+        "date": "2026-01-24",
+        "avgRate": -0.00000434,
+        "annualizedPct": -3.8004
+      },
+      {
+        "date": "2026-01-25",
+        "avgRate": -0.00000212,
+        "annualizedPct": -1.8574
+      },
+      {
+        "date": "2026-01-26",
+        "avgRate": 3.9e-7,
+        "annualizedPct": 0.34
+      },
+      {
+        "date": "2026-01-27",
+        "avgRate": 0.00000806,
+        "annualizedPct": 7.0572
+      },
+      {
+        "date": "2026-01-28",
+        "avgRate": 0.00000594,
+        "annualizedPct": 5.2043
+      },
+      {
+        "date": "2026-01-29",
+        "avgRate": 0.00000827,
+        "annualizedPct": 7.2469
+      },
+      {
+        "date": "2026-01-30",
+        "avgRate": 8.2e-7,
+        "annualizedPct": 0.721
+      },
+      {
+        "date": "2026-01-31",
+        "avgRate": -7.8e-7,
+        "annualizedPct": -0.6827
+      },
+      {
+        "date": "2026-02-01",
+        "avgRate": -0.00000841,
+        "annualizedPct": -7.3628
+      },
+      {
+        "date": "2026-02-02",
+        "avgRate": -0.00001031,
+        "annualizedPct": -9.0348
+      },
+      {
+        "date": "2026-02-03",
+        "avgRate": -0.00001001,
+        "annualizedPct": -8.7698
+      },
+      {
+        "date": "2026-02-04",
+        "avgRate": -0.00000493,
+        "annualizedPct": -4.3163
+      },
+      {
+        "date": "2026-02-05",
+        "avgRate": -0.00000604,
+        "annualizedPct": -5.2899
+      },
+      {
+        "date": "2026-02-06",
+        "avgRate": -0.00001755,
+        "annualizedPct": -15.3705
+      },
+      {
+        "date": "2026-02-07",
+        "avgRate": -0.00000294,
+        "annualizedPct": -2.5748
+      },
+      {
+        "date": "2026-02-08",
+        "avgRate": -0.00000277,
+        "annualizedPct": -2.4254
+      },
+      {
+        "date": "2026-02-09",
+        "avgRate": -0.00000679,
+        "annualizedPct": -5.95
+      },
+      {
+        "date": "2026-02-10",
+        "avgRate": -0.0000043,
+        "annualizedPct": -3.7639
+      },
+      {
+        "date": "2026-02-11",
+        "avgRate": -0.0000079,
+        "annualizedPct": -6.9191
+      },
+      {
+        "date": "2026-02-12",
+        "avgRate": 0.00000191,
+        "annualizedPct": 1.6768
+      },
+      {
+        "date": "2026-02-13",
+        "avgRate": 0.00000462,
+        "annualizedPct": 4.048
+      },
+      {
+        "date": "2026-02-14",
+        "avgRate": 0.00002154,
+        "annualizedPct": 18.8687
+      },
+      {
+        "date": "2026-02-15",
+        "avgRate": -0.00001017,
+        "annualizedPct": -8.9097
+      },
+      {
+        "date": "2026-02-16",
+        "avgRate": 0.00000779,
+        "annualizedPct": 6.8283
+      },
+      {
+        "date": "2026-02-17",
+        "avgRate": 0.00001641,
+        "annualizedPct": 14.3752
+      },
+      {
+        "date": "2026-02-18",
+        "avgRate": 0.00000476,
+        "annualizedPct": 4.1698
+      },
+      {
+        "date": "2026-02-19",
+        "avgRate": -0.00000159,
+        "annualizedPct": -1.3949
+      }
+    ]
+  }
+}

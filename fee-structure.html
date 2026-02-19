@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KeyVault Fund — Fee Structure</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0d0d1f 100%);
+  color: #ffffff;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+.container { max-width: 900px; margin: 0 auto; padding: 40px 24px 60px; }
+.header { text-align: center; margin-bottom: 48px; padding-top: 20px; }
+.header img { height: 64px; margin-bottom: 20px; }
+.header h1 {
+  font-size: 2.4rem; font-weight: 700; margin-bottom: 8px;
+  background: linear-gradient(135deg, #00d4ff, #7c3aed);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.header .subtitle { color: #8b8ba7; font-size: 1rem; }
+.card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 32px; margin-bottom: 28px;
+}
+.card h2 {
+  font-size: 1.6rem; font-weight: 700; margin-bottom: 18px;
+  background: linear-gradient(135deg, #00d4ff, #7c3aed);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.card h3 { font-size: 1.15rem; color: #f472b6; margin: 24px 0 10px; font-weight: 600; }
+.card p { color: #d1d1e0; margin-bottom: 14px; }
+.card ul, .card ol { color: #d1d1e0; padding-left: 22px; margin-bottom: 14px; }
+.card li { margin-bottom: 6px; }
+.card strong { color: #ffffff; }
+.card a { color: #00d4ff; text-decoration: none; }
+.card a:hover { text-decoration: underline; }
+.card code {
+  background: rgba(0,212,255,0.1); color: #00d4ff; padding: 2px 6px;
+  border-radius: 4px; font-size: 0.9em;
+}
+.highlight {
+  background: rgba(0,212,255,0.08); border-left: 3px solid #00d4ff;
+  padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0;
+  color: #d1d1e0;
+}
+table { width: 100%; border-collapse: collapse; margin: 16px 0 20px; font-size: 0.92rem; }
+th {
+  text-align: left; padding: 10px 14px; color: #00d4ff;
+  border-bottom: 2px solid rgba(0,212,255,0.3); font-weight: 600;
+}
+td { padding: 10px 14px; color: #d1d1e0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
+.toc {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 28px 32px; margin-bottom: 32px;
+}
+.toc h2 {
+  font-size: 1.1rem; color: #00d4ff; margin-bottom: 14px; text-transform: uppercase;
+  letter-spacing: 1.5px; font-weight: 600;
+}
+.toc ol { padding-left: 20px; }
+.toc li { margin-bottom: 6px; }
+.toc a { color: #8b8ba7; text-decoration: none; transition: color .2s; }
+.toc a:hover { color: #00d4ff; }
+.check { color: #22c55e; }
+.cross { color: #ef4444; }
+.footer {
+  text-align: center; padding: 40px 0 0; color: #6b6b8d; font-size: 0.88rem;
+  border-top: 1px solid rgba(255,255,255,0.08); margin-top: 28px;
+}
+.footer p { margin-bottom: 6px; }
+@media (max-width: 640px) {
+  .container { padding: 20px 14px 40px; }
+  .header h1 { font-size: 1.7rem; }
+  .card { padding: 20px 16px; }
+  table { font-size: 0.82rem; }
+  th, td { padding: 8px 8px; }
+}
+@media print {
+  body { background: #fff; color: #1a1a1a; }
+  .container { max-width: 100%; padding: 0; }
+  .card, .toc, .highlight { background: #fff; border-color: #ddd; color: #1a1a1a; }
+  .card h2, .toc h2, .header h1 {
+    -webkit-text-fill-color: #1a1a1a; color: #1a1a1a; background: none;
+  }
+  .card h3 { color: #7c3aed; -webkit-text-fill-color: #7c3aed; }
+  .card p, .card li, td, .footer { color: #333; }
+  th { color: #0077aa; border-bottom-color: #0077aa; }
+  a { color: #0077aa; }
+  .highlight { border-left-color: #0077aa; background: #f5f5f5; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <img src="logo.png" alt="KeyVault">
+  <h1>Fee Structure</h1>
+  <p class="subtitle">KeyVault Fund</p>
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#mgmt">Management Fee</a></li>
+    <li><a href="#perf">Performance Fee</a></li>
+    <li><a href="#hurdle">Hurdle Rate</a></li>
+    <li><a href="#hwm">High Water Mark</a></li>
+    <li><a href="#waterfall">Fee Waterfall Example</a></li>
+    <li><a href="#comparison">Comparison to Industry</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ol>
+</div>
+
+<div class="card" id="overview">
+  <h2>Overview</h2>
+  <p>KeyVault's fee structure is built on a simple principle: <strong>we eat when you eat.</strong> Our economics are aligned with yours. We charge a modest management fee to keep the lights on, and we only earn meaningful compensation when we're generating returns above a baseline hurdle — and only on <em>new</em> all-time highs. If we lose money, we don't get paid until we make it back. Period.</p>
+</div>
+
+<div class="card" id="mgmt">
+  <h2>Management Fee</h2>
+  <table>
+    <tr><th>Detail</th><th>Value</th></tr>
+    <tr><td><strong>Annual Rate</strong></td><td>2.0% of AUM</td></tr>
+    <tr><td><strong>Charged</strong></td><td>Quarterly (0.5% per quarter)</td></tr>
+    <tr><td><strong>Basis</strong></td><td>Net Asset Value at quarter-end</td></tr>
+  </table>
+  <p>The management fee covers fund operations, infrastructure, and base compensation. It is deducted from fund assets before performance calculations.</p>
+</div>
+
+<div class="card" id="perf">
+  <h2>Performance Fee</h2>
+  <table>
+    <tr><th>Detail</th><th>Value</th></tr>
+    <tr><td><strong>Base Performance Fee</strong></td><td>20% of all gains (soft hurdle — once 7% annualized is cleared, fee applies to entire gain)</td></tr>
+    <tr><td><strong>Kicker Performance Fee</strong></td><td>25% on gains above 5% quarterly return (20% annualized)</td></tr>
+    <tr><td><strong>Crystallization</strong></td><td>Quarterly</td></tr>
+  </table>
+  <p>This is a <strong>soft hurdle.</strong> If the fund's net return exceeds the 1.75% quarterly hurdle, performance fees apply to the <strong>entire gain</strong> — not just the portion above the hurdle. If returns fall below the hurdle, no performance fee is charged. The high water mark must also be exceeded — both conditions must be met.</p>
+
+  <h3>Performance Fee Kicker</h3>
+  <p>When the fund delivers exceptional returns — above 20% annualized (5% per quarter) — the performance fee steps up to <strong>25%</strong> on the portion of gains above that threshold. We earn a little more when we knock it out of the park for you.</p>
+  <table>
+    <tr><th>Gain Range (after mgmt fee)</th><th>Performance Fee Rate</th></tr>
+    <tr><td>Below hurdle (1.75% quarterly)</td><td>0% — you keep it all</td></tr>
+    <tr><td>Above hurdle, up to 5% quarterly return</td><td>20% on <strong>all</strong> gains (soft hurdle)</td></tr>
+    <tr><td>Above 5% quarterly return</td><td>25% on gains above 5% threshold (kicker tier)</td></tr>
+  </table>
+  <div class="highlight">The high water mark still applies to everything. No gains are fee-eligible unless the fund is at a new all-time high.</div>
+</div>
+
+<div class="card" id="hurdle">
+  <h2>Hurdle Rate</h2>
+  <table>
+    <tr><th>Detail</th><th>Value</th></tr>
+    <tr><td><strong>Annualized Rate</strong></td><td>7.0%</td></tr>
+    <tr><td><strong>Quarterly Equivalent</strong></td><td>1.75% per quarter</td></tr>
+  </table>
+  <p>The hurdle rate is the minimum return threshold before any performance fees kick in. Think of it as a gate — below 7% annualized, you pay zero performance fees. Above it, fees apply to the full gain.</p>
+  <div class="highlight">
+    <strong>Why 7%?</strong> It exceeds the risk-free rate of return. You're taking risk by investing with us — the least we can do is let you keep what you could have earned in treasuries and then some. If we don't clear that bar, you pay zero performance fees.
+  </div>
+  <p><strong>How it works:</strong> This is a <strong>soft hurdle.</strong> Each quarter, we calculate the 1.75% hurdle. If the fund returned less than 1.75%, no performance fee is charged. If it returned more (e.g., 4%), performance fees apply to the <strong>entire 4% gain</strong> — not just the portion above the hurdle. The hurdle is a gate, not a deduction.</p>
+</div>
+
+<div class="card" id="hwm">
+  <h2>High Water Mark</h2>
+  <p>The high water mark (HWM) ensures you never pay performance fees twice on the same dollar of gains. If the fund drops, we earn zero performance fees until we recover past the previous peak.</p>
+  <p><strong>Example — $1,000,000 Investment:</strong></p>
+  <table>
+    <tr><th>Year</th><th>Return</th><th>End Value*</th><th>High Water Mark</th><th>Hurdle Cleared?</th><th>Performance Fee</th></tr>
+    <tr><td>1</td><td>+25%</td><td>$1,250,000</td><td>$1,250,000</td><td><span class="check">✅ Yes</span></td><td>20% × $250,000 = <strong>$50,000</strong></td></tr>
+    <tr><td>2</td><td>−10%</td><td>$1,080,000*</td><td>$1,250,000</td><td><span class="cross">❌ No (loss year)</span></td><td><strong>$0</strong></td></tr>
+    <tr><td>3</td><td>+12%</td><td>$1,209,600*</td><td>$1,250,000</td><td><span class="cross">❌ No (below HWM)</span></td><td><strong>$0</strong></td></tr>
+    <tr><td>4</td><td>+20%</td><td>$1,451,520*</td><td>$1,451,520</td><td><span class="check">✅ Yes</span></td><td>20% × $201,520** = <strong>$40,304</strong></td></tr>
+  </table>
+  <p style="color:#6b6b8d; font-size:0.88rem;">*After 2% management fee.<br>**Only gains above previous high water mark ($1,250,000) are subject to performance fee.</p>
+  <p><strong>Key takeaways:</strong></p>
+  <ul>
+    <li><strong>Year 2:</strong> Fund lost money. No performance fee. Zero.</li>
+    <li><strong>Year 3:</strong> Fund gained 12%, but hadn't recovered past its Year 1 high. No performance fee — even though there was a positive return.</li>
+    <li><strong>Year 4:</strong> New all-time high. Performance fee applies only to gains above the prior HWM of $1,250,000.</li>
+  </ul>
+  <div class="highlight"><strong>We only earn performance fees when we're making investors <em>new</em> money.</strong></div>
+</div>
+
+<div class="card" id="waterfall">
+  <h2>Fee Waterfall Example</h2>
+  <p>Here's how fees flow on a <strong>$1,000,000 investment</strong> in a quarter where the fund returns <strong>8%</strong> (gross) — high enough to trigger the kicker:</p>
+  <table>
+    <tr><th>Step</th><th>Calculation</th><th>Amount</th></tr>
+    <tr><td><strong>1. Gross Return</strong></td><td>$1,000,000 × 8%</td><td>$80,000</td></tr>
+    <tr><td><strong>2. Management Fee</strong></td><td>$1,000,000 × 0.5% (quarterly)</td><td>−$5,000</td></tr>
+    <tr><td><strong>3. Net Return</strong></td><td>$80,000 − $5,000</td><td>$75,000</td></tr>
+    <tr><td><strong>4. Hurdle Check (soft)</strong></td><td>$1,000,000 × 1.75% = $17,500</td><td>$75,000 &gt; $17,500 → <span class="check">✅ Cleared</span></td></tr>
+    <tr><td><strong>5. Fee-Eligible Gains</strong></td><td>Soft hurdle cleared → entire gain is eligible</td><td>$75,000</td></tr>
+    <tr><td><strong>6. HWM Check</strong></td><td>Is NAV above prior HWM?</td><td><span class="check">✅ Yes</span></td></tr>
+    <tr><td><strong>7. Kicker Threshold</strong></td><td>$1,000,000 × 5% (quarterly)</td><td>$50,000</td></tr>
+    <tr><td><strong>8. Base Tier Gains</strong></td><td>All gains up to kicker threshold</td><td>$50,000</td></tr>
+    <tr><td><strong>9. Kicker Tier Gains</strong></td><td>$75,000 − $50,000 (above 5%)</td><td>$25,000</td></tr>
+    <tr><td><strong>10. Base Performance Fee</strong></td><td>$50,000 × 20%</td><td>−$10,000</td></tr>
+    <tr><td><strong>11. Kicker Performance Fee</strong></td><td>$25,000 × 25%</td><td>−$6,250</td></tr>
+    <tr><td><strong>12. Total Performance Fee</strong></td><td>$10,000 + $6,250</td><td>−$16,250</td></tr>
+    <tr><td><strong>13. Net to Investor</strong></td><td>$1,000,000 + $75,000 − $16,250</td><td><strong>$1,058,750</strong></td></tr>
+  </table>
+  <p><strong>Your net return: 5.875%</strong> for the quarter after all fees.</p>
+  <p>The order matters: management fee comes out first, then we check the soft hurdle (a gate — is the gain above 1.75%?), then we check the HWM, then we split the <strong>entire gain</strong> into base tier (20%) and kicker tier (25%) based on the 5% quarterly threshold.</p>
+</div>
+
+<div class="card" id="comparison">
+  <h2>Comparison to Industry</h2>
+  <table>
+    <tr><th></th><th>KeyVault</th><th>Typical Hedge Fund</th></tr>
+    <tr><td>Management Fee</td><td>2%</td><td>2%</td></tr>
+    <tr><td>Performance Fee</td><td>20% (base) / 25% (kicker)</td><td>20%</td></tr>
+    <tr><td>Kicker Threshold</td><td><span class="check">✅ 25% only above 20% annualized</span></td><td><span class="cross">❌ Flat rate</span></td></tr>
+    <tr><td>Hurdle Rate</td><td><span class="check">✅ 7% annualized</span></td><td><span class="cross">❌ Usually none</span></td></tr>
+    <tr><td>High Water Mark</td><td><span class="check">✅ Yes</span></td><td>Sometimes</td></tr>
+    <tr><td>Crystallization</td><td>Quarterly</td><td>Varies (often annual)</td></tr>
+    <tr><td>Lock-up Period</td><td><strong>None</strong></td><td>1–2 years typical</td></tr>
+  </table>
+  <p>Most hedge funds charge 2/20 with no hurdle rate — meaning they earn performance fees on the first dollar of return. We don't. Below 7% annualized, you pay zero performance fees. And the kicker only applies when we're delivering outsized returns — above 20% annualized.</p>
+  <p><strong>No lock-up period.</strong> Redemptions are available at quarterly windows. Your capital isn't trapped.</p>
+</div>
+
+<div class="card" id="faq">
+  <h2>FAQ</h2>
+
+  <h3>When are fees charged?</h3>
+  <p>Management fees and performance fees are both assessed and deducted quarterly. Crystallization occurs at each quarter-end.</p>
+
+  <h3>What happens if I withdraw mid-quarter?</h3>
+  <p>Fees are prorated to your withdrawal date. You pay the management fee for the portion of the quarter you were invested, and any accrued performance fees are crystallized at withdrawal.</p>
+
+  <h3>Do I pay performance fees on unrealized gains?</h3>
+  <p>Yes, at quarterly crystallization. Gains are marked-to-market each quarter. This protects both parties — you get a clean accounting, and the fund doesn't accumulate long periods of un-crystallized fees.</p>
+
+  <h3>What if the fund loses money?</h3>
+  <p>You pay zero performance fees. The management fee still applies (it covers operations), but no performance fee is charged until the fund exceeds its prior high water mark <em>and</em> clears the hurdle rate.</p>
+
+  <h3>What's the performance fee kicker?</h3>
+  <p>This is a <strong>soft hurdle</strong> structure. If the fund doesn't clear 7% annualized (1.75% per quarter), you pay zero performance fees. Once the hurdle is cleared, the 20% fee applies to the <strong>entire</strong> gain (not just the excess above the hurdle) up to the 5% quarterly kicker threshold. Above that, returns enter the kicker tier at 25%. We earn a little more when we knock it out of the park for you.</p>
+
+  <h3>Can fees change?</h3>
+  <p>Fee terms are fixed at the time of your investment and documented in your subscription agreement. Any changes require investor notification and consent.</p>
+
+  <h3>What's the minimum investment?</h3>
+  <p>Contact us directly for current minimums and onboarding details.</p>
+</div>
+
+<div class="footer">
+  <p style="color:#6b6b8d; font-size:0.85rem; font-style:italic;">This document is for informational purposes and summarizes the fee structure outlined in the KeyVault Fund offering documents. In the event of any discrepancy, the formal Private Placement Memorandum and Limited Partnership Agreement govern.</p>
+  <p style="margin-top:16px;">© 2026 KeyVault Fund. All rights reserved.</p>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Private KeyVault Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0d0d1f 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .header img.logo {
+            height: 120px;
+            margin-bottom: 16px;
+            filter: brightness(0) invert(1);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .header .update-time {
+            color: #6b6b8d;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hamburger Menu */
+        .hamburger-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(0, 212, 255, 0.4);
+        }
+
+        .hamburger-btn.open {
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            border-color: transparent;
+        }
+
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .nav-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -280px;
+            width: 280px;
+            height: 100vh;
+            background: rgba(15, 15, 35, 0.97);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 80px 20px 20px;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .nav-menu.open {
+            right: 0;
+        }
+
+        .nav-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #8b8ba7;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .nav-menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-menu-item.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(124, 58, 237, 0.2));
+            color: #ffffff;
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .nav-menu-item .nav-icon {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Tab Navigation - hidden, replaced by hamburger */
+        .tab-nav {
+            display: none;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Metrics Grid - Consistent 3 columns */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metrics-grid.two-col {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 900px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Metric Cards */
+        .metric-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Color-coded borders */
+        .metric-card.realized {
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+
+        .metric-card.pending {
+            border-color: rgba(251, 191, 36, 0.4);
+        }
+
+        .metric-card.projected {
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .metric-card.prime {
+            border-color: rgba(124, 58, 237, 0.4);
+        }
+
+        .metric-card.management {
+            border-color: rgba(244, 114, 182, 0.4);
+        }
+
+        .metric-card.highlight {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(124, 58, 237, 0.12) 100%);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .metric-card.grand-total {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(0, 212, 255, 0.15) 100%);
+            border-color: rgba(34, 197, 94, 0.5);
+            grid-column: span 1;
+        }
+
+        .metric-card.flow-deposit {
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+
+        .metric-card.flow-withdrawal {
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        .metric-card.flow-net {
+            border-color: rgba(0, 212, 255, 0.4);
+        }
+
+        .metric-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: #8b8ba7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .metric-label .icon {
+            font-size: 1rem;
+        }
+
+        .metric-value {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .metric-value.realized { color: #22c55e; }
+        .metric-value.pending { color: #fbbf24; }
+        .metric-value.projected { color: #38bdf8; }
+        .metric-value.prime { color: #a78bfa; }
+        .metric-value.management { color: #f472b6; }
+        .metric-value.grand { color: #22c55e; font-size: 2rem; }
+        .metric-value.withdrawal { color: #ef4444; }
+        .metric-value.deposit { color: #22c55e; }
+
+        .metric-subtext {
+            font-size: 0.75rem;
+            color: #6b6b8d;
+            margin-top: 8px;
+        }
+
+        /* Tooltips */
+        .has-tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .has-tooltip .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e1e3f;
+            color: #e2e2e2;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+            white-space: nowrap;
+            max-width: 280px;
+            white-space: normal;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            z-index: 100;
+            transition: opacity 0.2s, visibility 0.2s;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .has-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Section Dividers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 35px 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .section-header .icon {
+            font-size: 1.3rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .section-header .badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #8b8ba7;
+        }
+
+        /* Charts */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 800px) {
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chart-card h3 {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 220px;
+        }
+
+        .chart-wrapper.tall {
+            height: 280px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #8b8ba7;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            color: #ef4444;
+        }
+
+        /* Color Legend */
+        .color-legend {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: #8b8ba7;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.realized { background: #22c55e; }
+        .legend-dot.pending { background: #fbbf24; }
+        .legend-dot.projected { background: #38bdf8; }
+
+        /* Flow History Table */
+        .flow-table-wrap {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+
+        .flow-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .flow-table th {
+            text-align: left;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #8b8ba7;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.72rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+        }
+
+        .flow-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #c8c8e0;
+        }
+
+        .flow-table tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .flow-type-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .flow-type-badge.deposit {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .flow-type-badge.withdrawal {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* Log Flow Button */
+        .log-flow-btn {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: auto;
+        }
+
+        .log-flow-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a3e;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 32px;
+            width: 90%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .modal-field {
+            margin-bottom: 16px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-size: 0.8rem;
+            color: #8b8ba7;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-field input,
+        .modal-field select,
+        .modal-field textarea {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .modal-field input:focus,
+        .modal-field select:focus,
+        .modal-field textarea:focus {
+            border-color: rgba(0, 212, 255, 0.5);
+        }
+
+        .modal-field textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .modal-actions .btn-save {
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            color: #fff;
+        }
+
+        .modal-actions .btn-cancel {
+            background: rgba(255, 255, 255, 0.08);
+            color: #8b8ba7;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-actions button:hover {
+            transform: translateY(-1px);
+        }
+
+        .local-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            background: rgba(124, 58, 237, 0.2);
+            color: #a78bfa;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMenu()">☰</button>
+    <div class="nav-overlay" id="navOverlay" onclick="closeMenu()"></div>
+    <nav class="nav-menu" id="navMenu">
+        <div class="nav-menu-item active" data-tab="overview" onclick="switchTab('overview')">
+            <span class="nav-icon">📊</span> Overview
+        </div>
+        <div class="nav-menu-item" data-tab="revenue" onclick="switchTab('revenue')">
+            <span class="nav-icon">💎</span> Fee Revenue
+        </div>
+        <div class="nav-menu-item" data-tab="projections" onclick="switchTab('projections')">
+            <span class="nav-icon">🔮</span> Projections
+        </div>
+        <div class="nav-menu-item" data-tab="flows" onclick="switchTab('flows')">
+            <span class="nav-icon">🌊</span> Fund Flows
+        </div>
+    </nav>
+
+    <div class="header">
+        <img src="logo.png" alt="KeyVault" class="logo">
+        <h1>Private KeyVault Dashboard</h1>
+        <div class="update-time" id="updateTime">Loading...</div>
+        <div id="fetchStatusBanner" style="margin-top:8px;padding:8px 18px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:8px;font-size:0.82rem;color:#8b8ba7;display:inline-block;"></div>
+    </div>
+
+    <div class="dashboard">
+        <!-- Color Legend -->
+        <div class="color-legend">
+            <div class="legend-item"><span class="legend-dot realized"></span> Realized/Collected</div>
+            <div class="legend-item"><span class="legend-dot pending"></span> Pending/Unrealized</div>
+            <div class="legend-item"><span class="legend-dot projected"></span> Projected/Future</div>
+        </div>
+
+        <div id="content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading vault data...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Log Flow Modal -->
+    <div class="modal-overlay" id="flowModal">
+        <div class="modal-content">
+            <h3>🌊 Log New Flow</h3>
+            <div class="modal-field">
+                <label>Date</label>
+                <input type="date" id="flowDate">
+            </div>
+            <div class="modal-field">
+                <label>Type</label>
+                <select id="flowType">
+                    <option value="deposit">Deposit</option>
+                    <option value="withdrawal">Withdrawal</option>
+                </select>
+            </div>
+            <div class="modal-field">
+                <label>Approximate Amount ($)</label>
+                <input type="number" id="flowAmount" placeholder="500000">
+            </div>
+            <div class="modal-field">
+                <label>Share Price at Execution</label>
+                <input type="number" id="flowSharePrice" step="0.000001" placeholder="1.192">
+            </div>
+            <div class="modal-field">
+                <label>Notes</label>
+                <textarea id="flowNotes" placeholder="Optional notes..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeFlowModal()">Cancel</button>
+                <button class="btn-save" onclick="saveFlow()">Save Flow</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========== MENU ===========
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            const overlay = document.getElementById('navOverlay');
+            const btn = document.getElementById('hamburgerBtn');
+            const isOpen = menu.classList.contains('open');
+            menu.classList.toggle('open', !isOpen);
+            overlay.classList.toggle('open', !isOpen);
+            btn.classList.toggle('open', !isOpen);
+            btn.textContent = isOpen ? '☰' : '✕';
+        }
+
+        function closeMenu() {
+            document.getElementById('navMenu').classList.remove('open');
+            document.getElementById('navOverlay').classList.remove('open');
+            const btn = document.getElementById('hamburgerBtn');
+            btn.classList.remove('open');
+            btn.textContent = '☰';
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+            closeMenu();
+            // Update menu active state
+            document.querySelectorAll('.nav-menu-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.tab === tab);
+            });
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            const tabEl = document.getElementById('tab-' + tab);
+            if (tabEl) tabEl.classList.add('active');
+            // Re-render charts if needed
+            if (tab === 'projections' && currentData && historicalData) {
+                const m = calculateMetrics(currentData, historicalData);
+                renderCharts(m);
+            }
+            if (tab === 'flows' && currentData && historicalData) {
+                renderFlowChart();
+            }
+        }
+
+        // =========== FLOW MODAL ===========
+        function openFlowModal() {
+            document.getElementById('flowModal').classList.add('open');
+            document.getElementById('flowDate').value = new Date().toISOString().split('T')[0];
+        }
+
+        function closeFlowModal() {
+            document.getElementById('flowModal').classList.remove('open');
+        }
+
+        function saveFlow() {
+            const flow = {
+                id: 'local-' + Date.now(),
+                date: document.getElementById('flowDate').value,
+                type: document.getElementById('flowType').value,
+                amount_approx: parseFloat(document.getElementById('flowAmount').value) || 0,
+                share_price_at_execution: parseFloat(document.getElementById('flowSharePrice').value) || null,
+                notes: document.getElementById('flowNotes').value,
+                source: 'localStorage'
+            };
+            const stored = JSON.parse(localStorage.getItem('kv-manual-flows') || '[]');
+            stored.push(flow);
+            localStorage.setItem('kv-manual-flows', JSON.stringify(stored));
+            closeFlowModal();
+            // Re-render
+            if (currentData && historicalData) renderDashboard();
+        }
+
+        // =========== FEE STRUCTURE ===========
+        const FEE_CONFIG = {
+            performanceFeeRate: 0.20,
+            primeNumberFeeRate: 0.10,
+            totalFeeRate: 0.30,
+            managementFeeRate: 0.02
+        };
+
+        const PRIME_NET_FACTOR = 1 - FEE_CONFIG.primeNumberFeeRate;
+        // NET_INVESTOR_FACTOR = 7/9 ≈ 0.7778
+        // Drift API share price is already net of Prime's 10% fee, so to get net-of-all-fees
+        // we apply (1 - 0.30) / (1 - 0.10) = 0.70 / 0.90 = 7/9.
+        // This differs from index.html which uses *0.70 because its spreadsheet-era data
+        // has fully gross share prices (no fees deducted at all).
+        const NET_INVESTOR_FACTOR = (1 - FEE_CONFIG.totalFeeRate) / PRIME_NET_FACTOR;
+
+        function getQuarterEndDates(year) {
+            return [
+                new Date(`${year}-03-31T17:00:00-05:00`),
+                new Date(`${year}-06-30T17:00:00-04:00`),
+                new Date(`${year}-09-30T17:00:00-04:00`),
+                new Date(`${year}-12-31T17:00:00-05:00`)
+            ];
+        }
+
+        function getPastQuarterEnds(inceptionDate) {
+            const quarters = [];
+            const now = new Date();
+            const startYear = new Date(inceptionDate).getFullYear();
+            for (let year = startYear; year <= now.getFullYear(); year++) {
+                for (const qEnd of getQuarterEndDates(year)) {
+                    if (qEnd > new Date(inceptionDate) && qEnd < now) quarters.push(qEnd);
+                }
+            }
+            return quarters;
+        }
+
+        function getNextQuarterEnd() {
+            const now = new Date();
+            const year = now.getFullYear();
+            for (const qEnd of getQuarterEndDates(year)) {
+                if (qEnd > now) return qEnd;
+            }
+            return getQuarterEndDates(year + 1)[0];
+        }
+
+        function getSharePriceAtDate(history, targetDate) {
+            const target = new Date(targetDate);
+            let closest = history[0];
+            let minDiff = Infinity;
+            for (const h of history) {
+                const diff = Math.abs(new Date(h.update_time_utc) - target);
+                if (diff < minDiff && new Date(h.update_time_utc) <= target) {
+                    minDiff = diff;
+                    closest = h;
+                }
+            }
+            return closest ? closest.SharePrice : null;
+        }
+
+        function calculatePerformanceFees(history, currentSharePrice, inceptionDate) {
+            const initialPrice = history[0]?.SharePrice || 1;
+            const pastQuarters = getPastQuarterEnds(inceptionDate);
+            let realizedFees = 0;
+            let lastRealizedPrice = initialPrice;
+            let lastRealizationDate = null;
+            for (const qEnd of pastQuarters) {
+                const priceAtQuarter = getSharePriceAtDate(history, qEnd);
+                if (priceAtQuarter && priceAtQuarter > lastRealizedPrice) {
+                    const gainPercent = (priceAtQuarter - lastRealizedPrice) / lastRealizedPrice;
+                    const trueGrossGain = gainPercent / PRIME_NET_FACTOR;
+                    realizedFees += trueGrossGain * FEE_CONFIG.performanceFeeRate * 100;
+                    lastRealizedPrice = priceAtQuarter;
+                    lastRealizationDate = qEnd;
+                }
+            }
+            let unrealizedFees = 0;
+            if (currentSharePrice > lastRealizedPrice) {
+                const unrealizedGainPercent = (currentSharePrice - lastRealizedPrice) / lastRealizedPrice;
+                const trueGrossUnrealizedGain = unrealizedGainPercent / PRIME_NET_FACTOR;
+                unrealizedFees = trueGrossUnrealizedGain * FEE_CONFIG.performanceFeeRate * 100;
+            }
+            return {
+                realizedFees, unrealizedFees,
+                totalFees: realizedFees + unrealizedFees,
+                lastRealizationDate,
+                nextQuarterEnd: getNextQuarterEnd(),
+                pastQuartersCount: pastQuarters.length
+            };
+        }
+
+        let currentData = null;
+        let historicalData = null;
+        let investorFlows = null;
+        let historyChartInstance = null;
+        let flowChartInstance = null;
+        let activeTab = 'overview';
+
+        const CORS_PROXIES = [
+            { name: 'direct', url: u => u, parse: r => r.json() },
+            { name: 'keyvault-worker', url: u => `https://keyvault.deven-m-webster.workers.dev/?url=${encodeURIComponent(u)}`, parse: r => r.json() },
+        ];
+
+        async function fetchWithFallback(url) {
+            for (const proxy of CORS_PROXIES) {
+                try {
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 8000);
+                    const response = await fetch(proxy.url(url), { signal: controller.signal });
+                    clearTimeout(timeout);
+                    if (response.ok) {
+                        const data = await proxy.parse(response);
+                        console.log(`✓ ${proxy.name} worked for ${url}`);
+                        return data;
+                    }
+                } catch (e) {
+                    console.log(`✗ ${proxy.name} failed: ${e.message}`);
+                    continue;
+                }
+            }
+            throw new Error('All CORS proxies failed');
+        }
+
+        let TOTAL_SHARES = 3937611.470579; // fallback; updated dynamically after loading NAV history
+
+        async function fetchDriftData() {
+            const VAULT_USER = 'X5f4WpDXNHp5svKcsLZSeFrhSvtRN5kQuKdnd5HsZLE';
+            const VAULT_ADDRESS = 'G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp';
+            try {
+                const [userResp, vaultResp] = await Promise.all([
+                    fetch(`https://data.api.drift.trade/user/${VAULT_USER}`),
+                    fetch(`https://app.drift.trade/api/vaults`)
+                ]);
+                const userData = await userResp.json();
+                const vaultsData = await vaultResp.json();
+                const vaultApys = vaultsData[VAULT_ADDRESS] || {};
+                const balance = parseFloat(userData.account?.balance || 0);
+                const sharePrice = balance / TOTAL_SHARES;
+                return {
+                    tvl: balance, SharePrice: sharePrice,
+                    update_time_utc: new Date().toISOString(), source: 'drift',
+                    driftApys: vaultApys.apys || {},
+                    health: userData.account?.health,
+                    leverage: userData.account?.leverage,
+                    positions: userData.positions || []
+                };
+            } catch (e) {
+                console.warn('Drift API failed:', e);
+                return null;
+            }
+        }
+
+        async function fetchData() {
+            try {
+                const driftData = await fetchDriftData();
+                let primeCurrent, history;
+                try {
+                    const [localCurrent, localHistory] = await Promise.all([
+                        fetch('data/pn-kv1-current.json').then(r => r.ok ? r.json() : null),
+                        fetch('data/pn-kv1-history.json').then(r => r.ok ? r.json() : null)
+                    ]);
+                    primeCurrent = localCurrent;
+                    history = localHistory;
+                } catch (e) {
+                    console.warn('Local data failed:', e);
+                }
+                if (!primeCurrent || !history) {
+                    [primeCurrent, history] = await Promise.all([
+                        fetchWithFallback('https://app.primenumber.trade/data/PN_KV1.json'),
+                        fetchWithFallback('https://app.primenumber.trade/data/PN_KV1_history.json')
+                    ]);
+                }
+
+                let officialNav = null;
+                try {
+                    officialNav = await (await fetch('data/official-nav-history.json')).json();
+                } catch (e) { console.warn('No official NAV history'); }
+
+                // Dynamically calculate TOTAL_SHARES from latest NAV entry
+                if (officialNav && officialNav.length > 0) {
+                    const latestNav = officialNav[officialNav.length - 1];
+                    if (latestNav.totalShares) {
+                        TOTAL_SHARES = latestNav.totalShares;
+                    } else if (latestNav.tvl && latestNav.rawSharePrice && latestNav.rawSharePrice > 0) {
+                        TOTAL_SHARES = latestNav.tvl / latestNav.rawSharePrice;
+                    }
+                    console.log(`TOTAL_SHARES set to ${TOTAL_SHARES.toFixed(2)}`);
+                }
+
+                // Load investor flows
+                try {
+                    investorFlows = await (await fetch('data/investor-flows.json')).json();
+                } catch (e) {
+                    console.warn('No investor flows data');
+                    investorFlows = [];
+                }
+
+                const current = driftData || primeCurrent;
+
+                if (officialNav && officialNav.length > 0) {
+                    const mergedHistory = officialNav.map(n => ({
+                        SharePrice: n.SharePrice,
+                        tvl: n.tvl,
+                        update_time_utc: n.timestamp || n.update_time_utc,
+                        source: 'official-nav'
+                    }));
+                    mergedHistory.sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
+                    historicalData = mergedHistory;
+                } else {
+                    historicalData = history;
+                }
+
+                if (officialNav && officialNav.length > 0) {
+                    const latestNav = officialNav[officialNav.length - 1];
+                    currentData = {
+                        tvl: latestNav.tvl, SharePrice: latestNav.SharePrice,
+                        totalShares: latestNav.totalShares,
+                        update_time_utc: latestNav.timestamp, source: 'official-nav',
+                        health: driftData?.health, leverage: driftData?.leverage,
+                        positions: driftData?.positions, driftApys: driftData?.driftApys
+                    };
+                } else {
+                    currentData = current;
+                }
+
+                renderDashboard();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('content').innerHTML = `
+                    <div class="error">
+                        <p>Error loading vault data.</p>
+                        <p style="font-size: 0.8rem; margin-top: 10px;">${error.message}</p>
+                    </div>`;
+            }
+        }
+
+        function calculateMetrics(data, history) {
+            const tvl = data.tvl || data.TVL || 0;
+            const sharePrice = data.SharePrice || data.sharePrice || 1;
+            const updateTime = data.update_time_utc || data.updateTime || new Date().toISOString();
+            const historyArray = Array.isArray(history) ? history : [history];
+            const sortedHistory = [...historyArray].sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
+            const initialSharePrice = sortedHistory.length > 0 ? sortedHistory[0].SharePrice : 1;
+            const firstDate = sortedHistory.length > 0 ? new Date(sortedHistory[0].update_time_utc) : new Date();
+            const lastDate = sortedHistory.length > 1 ? new Date(sortedHistory[sortedHistory.length - 1].update_time_utc) : new Date();
+            const totalDays = Math.max(1, Math.round((lastDate - firstDate) / (1000 * 60 * 60 * 24)));
+            const currentBalance = tvl;
+            const totalShares = data.totalShares || TOTAL_SHARES || (tvl / sharePrice);
+            const cumulativeNetDeposits = totalShares;
+            // TRUE EARNINGS: Public vault (hardcoded, final) + Private vault (live)
+            // Public vault earnings (LOCKED - all capital withdrawn, never changes):
+            //   EVd3ATEW: $203,650 | Dq95Pq71: $8,305 | AV3oo27Y: $34
+            // Source: Drift UI, verified 2026-02-15
+            // Public vault earnings (LOCKED, net of Prime fees): $211,989
+            // Private vault earnings: queried from Drift depositor accounts
+            // TODO: auto-query private vault earnings in daily NAV stamp
+            // For now: hardcoded from Drift UI (2026-02-15): $1,467
+            const PUBLIC_VAULT_EARNINGS = 211989;
+            const PRIVATE_VAULT_EARNINGS = 1467; // Updates with share price — refresh manually or via NAV stamp
+            const totalPNL = PUBLIC_VAULT_EARNINGS + PRIVATE_VAULT_EARNINGS;
+            const sharePriceReturn = ((sharePrice - initialSharePrice) / initialSharePrice) * 100;
+            const grossReturn = sharePriceReturn / PRIME_NET_FACTOR;
+            const netReturn = sharePriceReturn >= 0 ? sharePriceReturn * NET_INVESTOR_FACTOR : sharePriceReturn;
+            const allTimeAPY = totalDays > 0 ? (netReturn / totalDays) * 365 : 0;
+            const rollingAPYs = calculateRollingAPYs(sortedHistory, sharePrice);
+            const inceptionDate = sortedHistory[0]?.update_time_utc || new Date().toISOString();
+            const performanceFees = calculatePerformanceFees(sortedHistory, sharePrice, inceptionDate);
+            const realizedFeeDollars = (performanceFees.realizedFees / 100) * cumulativeNetDeposits;
+            const unrealizedFeeDollars = (performanceFees.unrealizedFees / 100) * cumulativeNetDeposits;
+            const primeRealizedFeeDollars = realizedFeeDollars * (FEE_CONFIG.primeNumberFeeRate / FEE_CONFIG.performanceFeeRate);
+            const primeUnrealizedFeeDollars = unrealizedFeeDollars * (FEE_CONFIG.primeNumberFeeRate / FEE_CONFIG.performanceFeeRate);
+            const managementFeeDollars = cumulativeNetDeposits * (FEE_CONFIG.managementFeeRate / (1 - FEE_CONFIG.managementFeeRate));
+            const totalRealizedRevenue = realizedFeeDollars + primeRealizedFeeDollars + managementFeeDollars;
+            const totalUnrealizedRevenue = unrealizedFeeDollars + primeUnrealizedFeeDollars;
+            const totalRevenue = totalRealizedRevenue + totalUnrealizedRevenue;
+            const now = new Date();
+            const endOfYear = new Date(now.getFullYear(), 11, 31, 17, 0, 0);
+            const daysRemaining = Math.max(0, Math.ceil((endOfYear - now) / (1000 * 60 * 60 * 24)));
+            const projectedTotalReturn = allTimeAPY;
+            const projectedGrossReturn = allTimeAPY / (1 - FEE_CONFIG.totalFeeRate);
+            const projectedPerformanceFees = (projectedGrossReturn / 100) * FEE_CONFIG.performanceFeeRate * cumulativeNetDeposits;
+            const projectedPrimeFees = (projectedGrossReturn / 100) * FEE_CONFIG.primeNumberFeeRate * cumulativeNetDeposits;
+            const projectedTotalRevenue = projectedPerformanceFees + projectedPrimeFees + managementFeeDollars;
+            return {
+                currentBalance, cumulativeNetDeposits, sharePrice, grossReturn, netReturn,
+                allTimeAPY, rollingAPYs, totalPNL, totalDays, updateTime, history: sortedHistory,
+                performanceFees, realizedFeeDollars, unrealizedFeeDollars,
+                primeRealizedFeeDollars, primeUnrealizedFeeDollars, managementFeeDollars,
+                totalRealizedRevenue, totalUnrealizedRevenue, totalRevenue,
+                daysRemaining, projectedTotalReturn, projectedPerformanceFees,
+                projectedPrimeFees, projectedTotalRevenue
+            };
+        }
+
+        function calculateRollingAPYs(history, currentSharePrice) {
+            const periods = [
+                { name: '7D', days: 7 }, { name: '30D', days: 30 },
+                { name: '90D', days: 90 }, { name: '180D', days: 180 },
+                { name: 'All Time', days: history.length }
+            ];
+            return periods.map(period => {
+                const daysAvailable = Math.min(period.days, history.length);
+                if (daysAvailable < 1) return { name: period.name, days: 0, requestedDays: period.days, return: 0, apy: 0, insufficient: false };
+                const startIndex = Math.max(0, history.length - daysAvailable);
+                const startPrice = history[startIndex].SharePrice;
+                const periodReturn = ((currentSharePrice - startPrice) / startPrice) * 100;
+                const netPeriodReturn = periodReturn >= 0 ? periodReturn * NET_INVESTOR_FACTOR : periodReturn;
+                const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
+                const insufficient = period.name !== 'All Time' && daysAvailable < period.days;
+                return { name: period.name, days: daysAvailable, requestedDays: period.days, return: netPeriodReturn, apy: annualizedAPY, insufficient };
+            });
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
+        }
+
+        function formatPercent(value) {
+            return `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`;
+        }
+
+        function formatDate(dateStr) {
+            return new Date(dateStr).toLocaleString('en-US', {
+                month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+                timeZone: 'America/Los_Angeles'
+            }) + ' PT';
+        }
+
+        function formatQuarterDate(date) {
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' 5pm ET';
+        }
+
+        function getDaysUntil(date) {
+            return Math.ceil((date - new Date()) / (1000 * 60 * 60 * 24));
+        }
+
+        // =========== FLOW CALCULATIONS ===========
+        function getAllFlows() {
+            // investorFlows may be an array (legacy) or an object with .withdrawals
+            let jsonFlows;
+            if (Array.isArray(investorFlows)) {
+                jsonFlows = investorFlows;
+            } else if (investorFlows && Array.isArray(investorFlows.withdrawals)) {
+                jsonFlows = investorFlows.withdrawals.map(w => ({
+                    date: w.date,
+                    type: 'withdrawal',
+                    amount_approx: w.amount || 0,
+                    vault: w.vault,
+                    notes: w.notes,
+                    sharePriceImpact: w.sharePriceImpact,
+                    costToHolders: w.costToHolders
+                }));
+            } else {
+                jsonFlows = [];
+            }
+            const localFlows = JSON.parse(localStorage.getItem('kv-manual-flows') || '[]');
+            return [...jsonFlows, ...localFlows].sort((a, b) => new Date(a.date) - new Date(b.date));
+        }
+
+        function calculateFlowMetrics(flows, navHistory) {
+            let totalDeposited = 0, totalWithdrawn = 0, totalExecCosts = 0;
+            const allFlows = flows || [];
+
+            for (const f of allFlows) {
+                const amt = f.amount_approx || 0;
+                if (f.type === 'deposit') totalDeposited += amt;
+                else totalWithdrawn += amt;
+                totalExecCosts += f.execution_cost_est || 0;
+            }
+
+            const firstFlow = allFlows.length > 0 ? allFlows[0] : null;
+            const lastFlow = allFlows.length > 0 ? allFlows[allFlows.length - 1] : null;
+            const tvlBeforeAllFlows = firstFlow ? (firstFlow.tvl_before || null) : null;
+
+            // Current TVL from latest NAV
+            const sortedNav = navHistory ? [...navHistory].filter(n => n.tvl).sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc)) : [];
+            const currentTvl = sortedNav.length > 0 ? sortedNav[sortedNav.length - 1].tvl : null;
+
+            // Since last flow performance
+            let sinceLastFlowReturn = null;
+            if (lastFlow && navHistory) {
+                const flowDate = new Date(lastFlow.date || lastFlow.timestamp);
+                const flowPrice = lastFlow.share_price_at_execution;
+                const latestNav = sortedNav.length > 0 ? sortedNav[sortedNav.length - 1] : null;
+                if (flowPrice && latestNav) {
+                    sinceLastFlowReturn = ((latestNav.SharePrice - flowPrice) / flowPrice) * 100;
+                }
+            }
+
+            return {
+                totalDeposited, totalWithdrawn,
+                netFlows: totalDeposited - totalWithdrawn,
+                totalExecCosts, currentTvl, tvlBeforeAllFlows,
+                sinceLastFlowReturn,
+                lastFlowDate: lastFlow?.date || null
+            };
+        }
+
+        function calculateFlowAdjustedNAV(navHistory, flows) {
+            // The idea: share price doesn't change from flows (proportional burn/mint),
+            // but TVL does. We want to show "what would TVL be if all capital stayed?"
+            // Approach: track a counterfactual TVL that starts at the first TVL we know,
+            // and applies the same daily share price returns, but adds back withdrawn amounts
+            // and removes extra deposited amounts.
+
+            if (!navHistory || navHistory.length === 0) return [];
+
+            const sorted = [...navHistory].sort((a, b) => new Date(a.update_time_utc) - new Date(b.update_time_utc));
+            const allFlows = (flows || []).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            // Build flow impact map by date
+            const flowImpact = {};
+            for (const f of allFlows) {
+                const d = f.date;
+                if (!flowImpact[d]) flowImpact[d] = 0;
+                // For the counterfactual: withdrawals mean capital LEFT, so we ADD it back
+                // Deposits mean extra capital came IN, so we SUBTRACT it
+                if (f.type === 'withdrawal') flowImpact[d] += (f.amount_approx || 0);
+                else flowImpact[d] -= (f.amount_approx || 0);
+            }
+
+            // We compute a "counterfactual TVL" line using actual share price returns
+            // applied to an adjusted TVL that accounts for flow impacts
+            const result = [];
+            let adjustedTvl = null;
+
+            for (let i = 0; i < sorted.length; i++) {
+                const entry = sorted[i];
+                const date = (entry.update_time_utc || '').split('T')[0] || entry.date;
+
+                if (i === 0) {
+                    adjustedTvl = entry.tvl || (entry.SharePrice * TOTAL_SHARES);
+                    // Add back any flows that happened before or on the first date
+                    if (flowImpact[date]) adjustedTvl += flowImpact[date];
+                } else {
+                    // Apply same return as actual share price
+                    const prevPrice = sorted[i - 1].SharePrice;
+                    const curPrice = entry.SharePrice;
+                    if (prevPrice > 0) {
+                        const dailyReturn = curPrice / prevPrice;
+                        adjustedTvl = adjustedTvl * dailyReturn;
+                    }
+                    // Add back flow impacts for this date
+                    if (flowImpact[date]) adjustedTvl += flowImpact[date];
+                }
+
+                // Convert adjusted TVL to a "counterfactual share price" using original total shares
+                // Use the total shares from the first entry (before any flows changed share count)
+                const originalShares = sorted[0].tvl ? (sorted[0].tvl / sorted[0].SharePrice) : TOTAL_SHARES;
+                const adjustedSharePrice = adjustedTvl / originalShares;
+
+                result.push({
+                    date: date,
+                    actualPrice: entry.SharePrice,
+                    adjustedPrice: adjustedSharePrice,
+                    actualTvl: entry.tvl,
+                    adjustedTvl: adjustedTvl
+                });
+            }
+
+            return result;
+        }
+
+        // =========== RENDER ===========
+        function renderDashboard() {
+            if (!currentData || !historicalData || historicalData.length === 0) {
+                document.getElementById('content').innerHTML = '<div class="error"><p>No vault data available. Please try again later.</p></div>';
+                return;
+            }
+            const m = calculateMetrics(currentData, historicalData);
+            const flows = getAllFlows();
+            const flowMetrics = calculateFlowMetrics(flows, historicalData);
+
+            const navSource = currentData.source === 'official-nav' ? 'Official NAV' : 'Live';
+            const navDate = currentData.source === 'official-nav'
+                ? new Date(m.updateTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' })
+                : formatDate(m.updateTime);
+            document.getElementById('updateTime').textContent = currentData.source === 'official-nav'
+                ? `${navSource}: ${navDate} — 5:00 PM EST`
+                : `Last Updated: ${formatDate(m.updateTime)}`;
+
+            document.getElementById('content').innerHTML = `
+                <!-- OVERVIEW TAB -->
+                <div class="tab-content ${activeTab === 'overview' ? 'active' : ''}" id="tab-overview">
+                    <div class="metrics-grid">
+                        <div class="metric-card highlight">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">💰</span> Current Balance
+                                <span class="tooltip-text">Total value of all assets under management (AUM)</span>
+                            </div>
+                            <div class="metric-value">${formatCurrency(m.currentBalance)}</div>
+                            <div class="metric-subtext">Total AUM</div>
+                        </div>
+                        <div class="metric-card realized">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">💵</span> Total Fund Earnings
+                                <span class="tooltip-text">Public vault (locked: $211,989) + Private vault (live P&L)</span>
+                            </div>
+                            <div class="metric-value ${m.totalPNL >= 0 ? 'realized' : ''}">${formatCurrency(m.totalPNL)}</div>
+                            <div class="metric-subtext">Drift-verified across all wallets</div>
+                        </div>
+                        <div class="metric-card highlight">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">📊</span> Net ROI
+                                <span class="tooltip-text">Total return on investment after all fees (30%)</span>
+                            </div>
+                            <div class="metric-value ${m.netReturn >= 0 ? 'realized' : ''}">${formatPercent(m.netReturn)}</div>
+                            <div class="metric-subtext">${m.totalDays} days</div>
+                        </div>
+                        <div class="metric-card highlight">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">📈</span> Net APY
+                                <span class="tooltip-text">Annualized percentage yield after fees</span>
+                            </div>
+                            <div class="metric-value ${m.allTimeAPY >= 0 ? 'realized' : ''}">${formatPercent(m.allTimeAPY)}</div>
+                            <div class="metric-subtext">All-time annualized</div>
+                        </div>
+                    </div>
+
+                    <div class="section-header">
+                        <span class="icon">⏱️</span>
+                        <h2>Rolling Performance</h2>
+                    </div>
+                    <div class="metrics-grid">
+                        ${m.rollingAPYs.map(apy => `
+                            <div class="metric-card ${apy.apy >= 0 ? 'realized' : ''}">
+                                <div class="metric-label"><span class="icon">📉</span> ${apy.name} APY${apy.insufficient ? ' *' : ''}</div>
+                                <div class="metric-value ${apy.apy >= 0 ? 'realized' : ''}">${formatPercent(apy.apy)}</div>
+                                <div class="metric-subtext">${apy.insufficient ? `${apy.days} of ${apy.requestedDays} days available` : `${apy.days} days`}${apy.name === '7D' ? ' · Short periods are volatile' : ''}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="section-header">
+                        <span class="icon">💵</span>
+                        <h2>Revenue Summary</h2>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card realized">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">✅</span> Total Realized
+                                <span class="tooltip-text">Fees already collected and paid out</span>
+                            </div>
+                            <div class="metric-value realized">${formatCurrency(m.totalRealizedRevenue)}</div>
+                            <div class="metric-subtext">Already collected</div>
+                        </div>
+                        <div class="metric-card pending">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">⏳</span> Total Unrealized
+                                <span class="tooltip-text">Fees pending until next quarter end</span>
+                            </div>
+                            <div class="metric-value pending">${formatCurrency(m.totalUnrealizedRevenue)}</div>
+                            <div class="metric-subtext">Pending realization</div>
+                        </div>
+                        <div class="metric-card grand-total">
+                            <div class="metric-label"><span class="icon">🏆</span> Grand Total</div>
+                            <div class="metric-value grand">${formatCurrency(m.totalRevenue)}</div>
+                            <div class="metric-subtext">All fees combined</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FEE REVENUE TAB -->
+                <div class="tab-content ${activeTab === 'revenue' ? 'active' : ''}" id="tab-revenue">
+                    <div class="section-header">
+                        <span class="icon">💎</span>
+                        <h2>Performance Fee</h2>
+                        <span class="badge">20%</span>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card realized">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">✅</span> Realized
+                                <span class="tooltip-text">Performance fees collected at past quarter ends</span>
+                            </div>
+                            <div class="metric-value realized">${formatCurrency(m.realizedFeeDollars)}</div>
+                            <div class="metric-subtext">${m.performanceFees.pastQuartersCount} quarters</div>
+                        </div>
+                        <div class="metric-card pending">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">⏳</span> Unrealized
+                                <span class="tooltip-text">Pending fees from gains since last quarter</span>
+                            </div>
+                            <div class="metric-value pending">${formatCurrency(m.unrealizedFeeDollars)}</div>
+                            <div class="metric-subtext">Pending</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label"><span class="icon">📅</span> Next Realization</div>
+                            <div class="metric-value" style="font-size: 1.3rem;">${formatQuarterDate(m.performanceFees.nextQuarterEnd)}</div>
+                            <div class="metric-subtext">${getDaysUntil(m.performanceFees.nextQuarterEnd)} days</div>
+                        </div>
+                    </div>
+
+                    <div class="section-header">
+                        <span class="icon">🔮</span>
+                        <h2>Prime Number Fee</h2>
+                        <span class="badge">10%</span>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card prime">
+                            <div class="metric-label"><span class="icon">✅</span> Realized</div>
+                            <div class="metric-value prime">${formatCurrency(m.primeRealizedFeeDollars)}</div>
+                            <div class="metric-subtext">${m.performanceFees.pastQuartersCount} quarters</div>
+                        </div>
+                        <div class="metric-card prime">
+                            <div class="metric-label"><span class="icon">⏳</span> Unrealized</div>
+                            <div class="metric-value prime" style="opacity: 0.7;">${formatCurrency(m.primeUnrealizedFeeDollars)}</div>
+                            <div class="metric-subtext">Pending</div>
+                        </div>
+                        <div class="metric-card prime">
+                            <div class="metric-label"><span class="icon">📊</span> Total Expected</div>
+                            <div class="metric-value prime">${formatCurrency(m.primeRealizedFeeDollars + m.primeUnrealizedFeeDollars)}</div>
+                            <div class="metric-subtext">Combined</div>
+                        </div>
+                    </div>
+
+                    <div class="section-header">
+                        <span class="icon">🏛️</span>
+                        <h2>Management Fee</h2>
+                        <span class="badge">2%</span>
+                    </div>
+                    <div class="metrics-grid two-col">
+                        <div class="metric-card management">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">✅</span> Collected
+                                <span class="tooltip-text">2% fee deducted from deposits before entering vault</span>
+                            </div>
+                            <div class="metric-value management">${formatCurrency(m.managementFeeDollars)}</div>
+                            <div class="metric-subtext">Already collected</div>
+                        </div>
+                        <div class="metric-card management">
+                            <div class="metric-label"><span class="icon">💵</span> Original Deposits</div>
+                            <div class="metric-value management" style="opacity: 0.7;">${formatCurrency(m.cumulativeNetDeposits + m.managementFeeDollars)}</div>
+                            <div class="metric-subtext">Before 2% deduction</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PROJECTIONS TAB -->
+                <div class="tab-content ${activeTab === 'projections' ? 'active' : ''}" id="tab-projections">
+                    <div class="section-header">
+                        <span class="icon">🔮</span>
+                        <h2>End of Year Projections</h2>
+                        <span class="badge">Dec 31, ${new Date().getFullYear()}</span>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card projected">
+                            <div class="metric-label"><span class="icon">📅</span> Days Remaining</div>
+                            <div class="metric-value projected">${m.daysRemaining}</div>
+                            <div class="metric-subtext">Until year end</div>
+                        </div>
+                        <div class="metric-card projected">
+                            <div class="metric-label has-tooltip">
+                                <span class="icon">📈</span> Projected APY
+                                <span class="tooltip-text">Expected annual return based on current performance</span>
+                            </div>
+                            <div class="metric-value projected">${formatPercent(m.projectedTotalReturn)}</div>
+                            <div class="metric-subtext">Based on all-time APY</div>
+                        </div>
+                        <div class="metric-card projected">
+                            <div class="metric-label"><span class="icon">💎</span> Projected Perf. Fee</div>
+                            <div class="metric-value realized">${formatCurrency(m.projectedPerformanceFees)}</div>
+                            <div class="metric-subtext">Your 20% share</div>
+                        </div>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card projected">
+                            <div class="metric-label"><span class="icon">🔮</span> Projected Prime Fee</div>
+                            <div class="metric-value prime">${formatCurrency(m.projectedPrimeFees)}</div>
+                            <div class="metric-subtext">10% share</div>
+                        </div>
+                        <div class="metric-card projected">
+                            <div class="metric-label"><span class="icon">🏛️</span> Management Fee</div>
+                            <div class="metric-value management">${formatCurrency(m.managementFeeDollars)}</div>
+                            <div class="metric-subtext">Already collected</div>
+                        </div>
+                        <div class="metric-card" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(34, 197, 94, 0.2) 100%); border-color: rgba(56, 189, 248, 0.5);">
+                            <div class="metric-label"><span class="icon">🎯</span> Total EOY Revenue</div>
+                            <div class="metric-value projected" style="font-size: 2rem;">${formatCurrency(m.projectedTotalRevenue)}</div>
+                            <div class="metric-subtext">All fees projected</div>
+                        </div>
+                    </div>
+                    <div class="chart-card" style="margin-top: 20px;">
+                        <h3><span class="icon">📊</span> Historical Performance</h3>
+                        <div class="chart-wrapper tall">
+                            <canvas id="historyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FUND FLOWS TAB -->
+                <div class="tab-content ${activeTab === 'flows' ? 'active' : ''}" id="tab-flows">
+                    <div class="section-header">
+                        <span class="icon">🌊</span>
+                        <h2>Fund Flow Summary</h2>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card flow-deposit">
+                            <div class="metric-label"><span class="icon">📥</span> Total Deposited</div>
+                            <div class="metric-value deposit">${formatCurrency(flowMetrics.totalDeposited)}</div>
+                        </div>
+                        <div class="metric-card flow-withdrawal">
+                            <div class="metric-label"><span class="icon">📤</span> Total Withdrawn</div>
+                            <div class="metric-value withdrawal">${formatCurrency(flowMetrics.totalWithdrawn)}</div>
+                        </div>
+                        <div class="metric-card flow-net">
+                            <div class="metric-label"><span class="icon">📊</span> Net Flows</div>
+                            <div class="metric-value ${flowMetrics.netFlows >= 0 ? 'deposit' : 'withdrawal'}">${formatCurrency(flowMetrics.netFlows)}</div>
+                        </div>
+                        <div class="metric-card pending">
+                            <div class="metric-label"><span class="icon">⚡</span> Est. Execution Costs</div>
+                            <div class="metric-value pending">${flowMetrics.totalExecCosts > 0 ? formatCurrency(flowMetrics.totalExecCosts) : 'N/A'}</div>
+                        </div>
+                        <div class="metric-card highlight">
+                            <div class="metric-label"><span class="icon">💰</span> Current TVL</div>
+                            <div class="metric-value">${flowMetrics.currentTvl ? formatCurrency(flowMetrics.currentTvl) : 'N/A'}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label"><span class="icon">🏦</span> TVL Before All Flows</div>
+                            <div class="metric-value" style="font-size:1.4rem">${flowMetrics.tvlBeforeAllFlows ? formatCurrency(flowMetrics.tvlBeforeAllFlows) : 'N/A'}</div>
+                        </div>
+                    </div>
+
+                    ${flowMetrics.sinceLastFlowReturn !== null ? `
+                    <div class="metrics-grid" style="grid-template-columns: 1fr;">
+                        <div class="metric-card" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(124, 58, 237, 0.12) 100%); border-color: rgba(0, 212, 255, 0.3);">
+                            <div class="metric-label"><span class="icon">🚀</span> Since Last Flow Performance</div>
+                            <div class="metric-value ${flowMetrics.sinceLastFlowReturn >= 0 ? 'realized' : 'withdrawal'}" style="font-size: 2rem;">
+                                ${formatPercent(flowMetrics.sinceLastFlowReturn)}
+                            </div>
+                            <div class="metric-subtext">Since ${flowMetrics.lastFlowDate} (share price return)</div>
+                        </div>
+                    </div>` : ''}
+
+                    <div class="chart-card" style="margin-bottom: 30px;">
+                        <h3><span class="icon">📈</span> Flow-Adjusted NAV Chart</h3>
+                        <div style="display:flex;gap:20px;margin-bottom:12px;flex-wrap:wrap;">
+                            <div class="legend-item"><span style="display:inline-block;width:24px;height:3px;background:#00d4ff;border-radius:2px;vertical-align:middle;margin-right:6px;"></span> Actual Share Price</div>
+                            <div class="legend-item"><span style="display:inline-block;width:24px;height:3px;background:#22c55e;border-radius:2px;vertical-align:middle;margin-right:6px;border-top:2px dashed #22c55e;"></span> Flow-Adjusted NAV</div>
+                        </div>
+                        <div class="chart-wrapper tall">
+                            <canvas id="flowChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <span class="icon">📋</span>
+                            <h2>Flow History</h2>
+                        </div>
+                        <button class="log-flow-btn" onclick="openFlowModal()">+ Log Flow</button>
+                    </div>
+                    <div class="flow-table-wrap">
+                        <table class="flow-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Share Price</th>
+                                    <th>TVL Before → After</th>
+                                    <th>Exec Cost Est</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${flows.length === 0 ? '<tr><td colspan="7" style="text-align:center;color:#6b6b8d;padding:30px;">No flows recorded yet</td></tr>' :
+                                flows.map(f => `
+                                    <tr>
+                                        <td>${f.date}${f.source === 'localStorage' ? '<span class="local-badge">local</span>' : ''}</td>
+                                        <td><span class="flow-type-badge ${f.type}">${f.type}</span></td>
+                                        <td style="color:${f.type === 'withdrawal' ? '#ef4444' : '#22c55e'}">${f.amount_approx ? formatCurrency(f.amount_approx) : '—'}</td>
+                                        <td>$${f.share_price_at_execution || '—'}</td>
+                                        <td>${f.tvl_before && f.tvl_after ? formatCurrency(f.tvl_before) + ' → ' + formatCurrency(f.tvl_after) : '—'}</td>
+                                        <td>${f.execution_cost_est ? formatCurrency(f.execution_cost_est) : '—'}</td>
+                                        <td style="max-width:200px;font-size:0.78rem;color:#8b8ba7;">${f.notes || '—'}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            // Render charts for active tab
+            if (activeTab === 'projections') renderCharts(m);
+            if (activeTab === 'flows') renderFlowChart();
+        }
+
+        function renderCharts(m) {
+            if (historyChartInstance) { historyChartInstance.destroy(); historyChartInstance = null; }
+            const lineCtx = document.getElementById('historyChart')?.getContext('2d');
+            if (lineCtx && m.history) {
+                historyChartInstance = new Chart(lineCtx, {
+                    type: 'line',
+                    data: {
+                        labels: m.history.map(h => new Date(h.update_time_utc).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })),
+                        datasets: [{
+                            label: 'TVL ($)',
+                            data: m.history.map(h => h.tvl),
+                            borderColor: '#00d4ff',
+                            backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                            fill: true, tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b6b8d' } },
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#00d4ff', callback: v => '$' + (v/1000000).toFixed(1) + 'M' } }
+                        }
+                    }
+                });
+            }
+        }
+
+        function renderFlowChart() {
+            if (flowChartInstance) { flowChartInstance.destroy(); flowChartInstance = null; }
+            const ctx = document.getElementById('flowChart')?.getContext('2d');
+            if (!ctx || !historicalData) return;
+
+            const flows = getAllFlows();
+            const adjusted = calculateFlowAdjustedNAV(historicalData, flows);
+            if (adjusted.length === 0) return;
+
+            // Sample if too many points (show every Nth)
+            const maxPoints = 120;
+            const step = Math.max(1, Math.floor(adjusted.length / maxPoints));
+            const sampled = adjusted.filter((_, i) => i % step === 0 || i === adjusted.length - 1);
+
+            flowChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: sampled.map(d => {
+                        const dt = new Date(d.date + 'T12:00:00');
+                        return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    }),
+                    datasets: [
+                        {
+                            label: 'Actual Share Price',
+                            data: sampled.map(d => d.actualPrice),
+                            borderColor: '#00d4ff',
+                            backgroundColor: 'rgba(0, 212, 255, 0.05)',
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 0,
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Flow-Adjusted NAV',
+                            data: sampled.map(d => d.adjustedPrice),
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34, 197, 94, 0.05)',
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 0,
+                            borderWidth: 2,
+                            borderDash: [6, 4]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y.toFixed(4)}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 12 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#00d4ff', callback: v => '$' + v.toFixed(2) }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Data updates daily via NAV stamp — no auto-refresh needed
+        fetchData();
+
+        // Fetch status banner
+        async function updateFetchStatus() {
+            try {
+                const r = await fetch('data/official-nav-history.json?t=' + Date.now());
+                if (!r.ok) throw new Error('not found');
+                const navData = await r.json();
+                const latest = navData[navData.length - 1];
+                const navDate = new Date(latest.date + 'T17:00:00-05:00');
+                const fmt = navDate.toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', timeZone: 'America/New_York', timeZoneName:'short' });
+                document.getElementById('fetchStatusBanner').innerHTML =
+                    '✅ Official NAV: <strong style="color:#fff">' + fmt + '</strong>';
+            } catch(e) {
+                document.getElementById('fetchStatusBanner').innerHTML = '⏳ Data freshness unavailable';
+            }
+        }
+        updateFetchStatus();
+        setInterval(updateFetchStatus, 5 * 60 * 1000);
+    </script>
+</body>
+</html>

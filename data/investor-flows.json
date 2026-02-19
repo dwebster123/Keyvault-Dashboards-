@@ -1,0 +1,51 @@
+{
+  "wallets": {
+    "EVd3ATEW9nv7jLzvViePYD5M98o1DASxTLxStZFbtvXE": {
+      "label": "Main Fund Wallet",
+      "publicVaultEarnings": 203650,
+      "privateVaultEarnings": 1852
+    },
+    "AV3oo27Yi6JtnGEvduanu6SeTWixsW9Tk2MJqtYtnXuM": {
+      "label": "Fund Wallet 2",
+      "publicVaultEarnings": 34,
+      "privateVaultEarnings": 0
+    },
+    "Dq95Pq71J9Sq2k2TmwZz9NdzZSu3a9px6DtkhtEr6S4": {
+      "label": "Fund Wallet 3",
+      "publicVaultEarnings": 8305,
+      "privateVaultEarnings": 33
+    },
+    "915VLaYkU21GxtiLwHTowz3GgXzKtiAuWWmF3F7utFEN": {
+      "label": "Fund Wallet 4",
+      "publicVaultEarnings": 0,
+      "privateVaultEarnings": -418
+    }
+  },
+  "totalEarnings": {
+    "publicVault": 211989,
+    "privateVault": 1467,
+    "combined": 213456,
+    "lastUpdated": "2026-02-15T16:05:00-08:00",
+    "source": "Drift UI (manually verified)"
+  },
+  "withdrawals": [
+    {
+      "date": "2026-02-06",
+      "amount": 519643.89,
+      "vault": "private",
+      "wallet": "EVd3ATEW9nv7jLzvViePYD5M98o1DASxTLxStZFbtvXE",
+      "sharePriceImpact": -0.002578,
+      "costToHolders": 10151,
+      "notes": "Investor redemption during high volatility, 2.4x leverage"
+    },
+    {
+      "date": "2026-02-14",
+      "amount": 599274.24,
+      "vault": "private",
+      "wallet": "EVd3ATEW9nv7jLzvViePYD5M98o1DASxTLxStZFbtvXE",
+      "sharePriceImpact": -0.000214,
+      "costToHolders": 600,
+      "notes": "Investor withdrawal for house purchase. Clean execution at 1.66x leverage"
+    }
+  ]
+}

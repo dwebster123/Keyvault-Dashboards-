@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyVault Investment Calculator</title>
+    <!-- chart.js removed -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d1f 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        a { color: #7c3aed; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .nav { text-align: center; margin-bottom: 10px; font-size: 0.9rem; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+        .header img.logo {
+            height: 120px;
+            margin-bottom: 16px;
+            filter: brightness(0) invert(1);
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        .header .subtitle { color: #8b8ba7; font-size: 1rem; }
+
+        .dashboard { max-width: 1200px; margin: 0 auto; }
+
+        /* Input Controls */
+        .controls {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 24px;
+        }
+        .controls h2 {
+            font-size: 1.2rem;
+            color: #f472b6;
+            margin-bottom: 16px;
+        }
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .control-group label {
+            display: block;
+            color: #8b8ba7;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+        .control-group input[type="number"],
+        .control-group select {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+        .control-group input[type="number"]:focus,
+        .control-group select:focus {
+            border-color: #7c3aed;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin-top: 4px;
+            accent-color: #7c3aed;
+        }
+        .range-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .range-row input[type="range"] { flex: 1; }
+        .range-val {
+            min-width: 50px;
+            text-align: right;
+            font-weight: 600;
+            color: #22c55e;
+        }
+
+        /* Scenario Buttons */
+        .scenarios {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .scenario-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .scenario-btn:hover { background: rgba(124,58,237,0.3); border-color: #7c3aed; }
+        .scenario-btn.active { background: rgba(124,58,237,0.4); border-color: #7c3aed; color: #f472b6; font-weight: 600; }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .toggle-row input[type="checkbox"] { accent-color: #7c3aed; width: 18px; height: 18px; }
+        .toggle-row label { color: #8b8ba7; font-size: 0.9rem; cursor: pointer; }
+
+        /* Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .metric-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .metric-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .metric-card .label { color: #8b8ba7; font-size: 0.8rem; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-card .value { font-size: 1.5rem; font-weight: 700; }
+        .metric-card .value.green { color: #22c55e; }
+        .metric-card .value.pink { color: #f472b6; }
+        .metric-card .value.purple { color: #7c3aed; }
+
+        /* Chart */
+        .chart-container {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 24px;
+        }
+        .chart-container h2 { font-size: 1.1rem; color: #f472b6; margin-bottom: 16px; }
+
+        /* Table */
+        .table-container {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow-x: auto;
+        }
+        .table-container h2 { font-size: 1.1rem; color: #f472b6; margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { color: #8b8ba7; text-align: right; padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; white-space: nowrap; }
+        th:first-child { text-align: left; }
+        td { padding: 10px 12px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); white-space: nowrap; }
+        td:first-child { text-align: left; color: #7c3aed; font-weight: 600; }
+        tr:hover td { background: rgba(255,255,255,0.03); }
+        .fee-col { color: #f472b6; }
+        .green-col { color: #22c55e; }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.6rem; }
+            .metric-card .value { font-size: 1.2rem; }
+            .control-grid { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="nav"><a href="index.html">← Back to Dashboard</a></div>
+        <div class="header">
+            <img src="logo.png" alt="KeyVault" class="logo">
+            <h1>KeyVault Investment Calculator</h1>
+            <p class="subtitle">Model projected returns after management fees, performance fees & high water mark</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <h2>⚙️ Parameters</h2>
+            <div class="control-grid">
+                <div class="control-group">
+                    <label>Initial Investment ($)</label>
+                    <input type="number" id="investment" value="1000000" min="1000" step="10000">
+                </div>
+                <div class="control-group">
+                    <label>Target Net Annual Return (%)</label>
+                    <div class="range-row">
+                        <input type="range" id="returnSlider" min="0" max="50" step="0.5" value="16">
+                        <span class="range-val" id="returnVal">16%</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>Time Horizon (years)</label>
+                    <select id="years">
+                        <option value="1">1 year</option>
+                        <option value="2">2 years</option>
+                        <option value="3" selected>3 years</option>
+                        <option value="4">4 years</option>
+                        <option value="5">5 years</option>
+                        <option value="6">6 years</option>
+                        <option value="7">7 years</option>
+                        <option value="8">8 years</option>
+                        <option value="9">9 years</option>
+                        <option value="10">10 years</option>
+                    </select>
+                </div>
+            </div>
+            <div class="scenarios">
+                <button class="scenario-btn" data-rate="10">🐢 Conservative (10% net)</button>
+                <button class="scenario-btn active" data-rate="16">⚖️ Moderate (16% net)</button>
+                <button class="scenario-btn" data-rate="22">🚀 Aggressive (22% net)</button>
+            </div>
+            <div class="toggle-row">
+                <input type="checkbox" id="badYear">
+                <label for="badYear">Simulate a bad year (-15% in Year 2) to show HWM protection</label>
+            </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card"><div class="label">Projected End Value</div><div class="value green" id="mEndVal">—</div></div>
+            <div class="metric-card"><div class="label">Total Fees Paid</div><div class="value pink" id="mTotalFees">—</div></div>
+            <div class="metric-card"><div class="label">Implied Gross APY</div><div class="value purple" id="mGrossAPY">—</div></div>
+            <div class="metric-card"><div class="label">Net APY</div><div class="value green" id="mNetAPY">—</div></div>
+            <div class="metric-card"><div class="label">Management Fees</div><div class="value pink" id="mMgmtFees">—</div></div>
+            <div class="metric-card"><div class="label">Performance Fees</div><div class="value pink" id="mPerfFees">—</div></div>
+        </div>
+
+<!-- portfolio growth chart removed -->
+
+        <!-- Table -->
+        <div class="table-container">
+            <h2>📊 Quarterly Breakdown (Gross → Net)</h2>
+            <table id="feeTable">
+                <thead>
+                    <tr>
+                        <th>Quarter</th>
+                        <th>Starting Value</th>
+                        <th>Gross Return</th>
+                        <th>Mgmt Fee</th>
+                        <th>Hurdle</th>
+                        <th>HWM</th>
+                        <th>Perf Fee</th>
+                        <th>Net Value</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = v => '$' + v.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+const fmtD = v => '$' + v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const pct = v => v.toFixed(2) + '%';
+
+function solveGrossForNet(targetNetAnnual, initial, years, badYear) {
+    // Binary search for the gross annual return that produces the target net return
+    let lo = 0, hi = 1.0; // 0% to 100%
+    for (let i = 0; i < 60; i++) {
+        const mid = (lo + hi) / 2;
+        const result = simulate(mid, initial, years, badYear);
+        const achievedNet = Math.pow(result.endValue / initial, 1 / years) - 1;
+        if (achievedNet < targetNetAnnual) lo = mid;
+        else hi = mid;
+    }
+    return (lo + hi) / 2;
+}
+
+function simulate(annualGross, initial, years, badYear) {
+    const quarterlyReturn = annualGross / 4;
+    const quarterlyHurdle = 0.0175; // 7% / 4
+    const totalQuarters = years * 4;
+
+    let value = initial;
+    let hwm = initial;
+    let grossValue = initial;
+    let totalMgmt = 0, totalPerf = 0;
+    const rows = [];
+
+    for (let q = 1; q <= totalQuarters; q++) {
+        const startVal = value;
+        const year = Math.ceil(q / 4);
+
+        let qReturn = quarterlyReturn;
+        if (badYear && year === 2) {
+            qReturn = -0.15 / 4;
+        }
+
+        const grossAfterReturn = startVal * (1 + qReturn);
+        const mgmtFee = startVal * 0.005;
+        const afterMgmt = grossAfterReturn - mgmtFee;
+        const gain = afterMgmt - startVal;
+        const hurdleAmount = startVal * quarterlyHurdle;
+        // Soft hurdle: if gain exceeds hurdle, fee applies to ALL gains (not just excess)
+        const aboveHurdle = gain > hurdleAmount ? gain : 0;
+        const aboveHWM = Math.max(0, afterMgmt - hwm);
+        const eligible = Math.min(aboveHurdle, aboveHWM);
+
+        const kickerThreshold = startVal * 0.05;
+        const gainAboveKicker = Math.max(0, gain - kickerThreshold);
+        const kickerEligible = Math.min(gainAboveKicker, eligible);
+        const baseEligible = eligible - kickerEligible;
+        const baseFee = baseEligible * 0.20;
+        const kickerFee = kickerEligible * 0.25;
+        const kvFee = baseFee + kickerFee;
+        const hasKicker = kickerEligible > 0;
+
+        value = afterMgmt - kvFee;
+        if (value > hwm) hwm = value;
+        grossValue *= (1 + qReturn);
+        totalMgmt += mgmtFee;
+        totalPerf += kvFee;
+
+        rows.push({
+            q, startVal, grossReturn: grossAfterReturn - startVal, mgmtFee,
+            hurdleAmount, hwmVal: hwm, aboveHWM,
+            perfFee: kvFee, endVal: value, hasKicker,
+            hurdleMet: gain > hurdleAmount,
+            grossReturnPct: qReturn * 100
+        });
+    }
+
+    return { endValue: value, grossValue, totalMgmt, totalPerf, rows };
+}
+
+function calculate() {
+    const initial = parseFloat($('investment').value) || 1000000;
+    const targetNetAnnual = parseFloat($('returnSlider').value) / 100;
+    const years = parseInt($('years').value);
+    const badYear = $('badYear').checked;
+
+    // Solve for gross return that achieves this net
+    const impliedGross = solveGrossForNet(targetNetAnnual, initial, years, badYear);
+    const result = simulate(impliedGross, initial, years, badYear);
+
+    const totalFees = result.totalMgmt + result.totalPerf;
+    const netAPY = (Math.pow(result.endValue / initial, 1 / years) - 1) * 100;
+    const grossAPY = impliedGross * 100;
+
+    // Update metrics
+    $('mEndVal').textContent = fmt(result.endValue);
+    $('mTotalFees').textContent = fmt(totalFees);
+    $('mGrossAPY').textContent = pct(grossAPY);
+    $('mNetAPY').textContent = pct(netAPY);
+    $('mMgmtFees').textContent = fmt(result.totalMgmt);
+    $('mPerfFees').textContent = fmt(result.totalPerf);
+
+    // Update table
+    const tbody = document.querySelector('#feeTable tbody');
+    tbody.innerHTML = result.rows.map(r => `<tr>
+        <td>Q${r.q} (Y${Math.ceil(r.q/4)})</td>
+        <td>${fmt(r.startVal)}</td>
+        <td class="green-col">${fmtD(r.grossReturn)} (${r.grossReturnPct.toFixed(2)}%)</td>
+        <td class="fee-col">${fmtD(r.mgmtFee)}</td>
+        <td>${r.hurdleMet ? '✅' : '❌'} ${fmtD(r.hurdleAmount)}</td>
+        <td>${r.aboveHWM > 0 ? '✅' : '❌'} ${fmt(r.hwmVal)}</td>
+        <td class="fee-col">${fmtD(r.perfFee)}${r.hasKicker ? ' 🚀' : ''}</td>
+        <td class="green-col" style="font-weight:600">${fmt(r.endVal)}</td>
+    </tr>`).join('');
+}
+
+// Event listeners
+$('investment').addEventListener('input', calculate);
+$('returnSlider').addEventListener('input', () => {
+    $('returnVal').textContent = $('returnSlider').value + '%';
+    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.scenario-btn').forEach(b => {
+        if (parseFloat(b.dataset.rate) === parseFloat($('returnSlider').value)) b.classList.add('active');
+    });
+    calculate();
+});
+$('years').addEventListener('change', calculate);
+$('badYear').addEventListener('change', calculate);
+
+document.querySelectorAll('.scenario-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        $('returnSlider').value = btn.dataset.rate;
+        $('returnVal').textContent = btn.dataset.rate + '%';
+        calculate();
+    });
+});
+
+// Initial calculation
+calculate();
+</script>
+</body>
+</html>

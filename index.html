@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Public KeyVault Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d1f 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .header img.logo {
+            height: 120px;
+            margin-bottom: 16px;
+            filter: brightness(0) invert(1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #8b8ba7;
+            font-size: 1rem;
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-card.highlight {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: #8b8ba7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .metric-value.positive {
+            color: #22c55e;
+        }
+
+        .metric-value.negative {
+            color: #ef4444;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin: 30px 0 15px 0;
+            color: #00d4ff;
+        }
+
+        .tabs-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #8b8ba7;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            color: #ffffff;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 350px;
+        }
+
+        .apy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .apy-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .apy-period {
+            font-size: 0.7rem;
+            color: #6b6b8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .apy-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .apy-value.negative {
+            color: #ef4444;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .metric-value {
+                font-size: 1.3rem;
+            }
+            .chart-wrapper {
+                height: 280px;
+            }
+            /* Mobile: Force single column for comparison metrics */
+            #comparisonMetrics {
+                grid-template-columns: 1fr !important;
+            }
+            #comparisonMetrics .metric-card {
+                grid-column: span 1 !important;
+            }
+            .info-box {
+                font-size: 0.75rem;
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+            .header img.logo {
+                height: 80px;
+            }
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            .section-title {
+                font-size: 1.1rem;
+            }
+            .metric-card {
+                padding: 16px;
+            }
+            .metric-label {
+                font-size: 0.65rem;
+            }
+            .metric-value {
+                font-size: 1.1rem;
+            }
+            .update-badge {
+                font-size: 0.6rem;
+            }
+            .chart-wrapper {
+                height: 220px;
+            }
+            .chart-title {
+                font-size: 0.9rem;
+            }
+            .tabs-container {
+                gap: 4px;
+            }
+            .tab {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            .apy-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .apy-card {
+                padding: 10px;
+            }
+            .apy-period {
+                font-size: 0.6rem;
+            }
+            .apy-value {
+                font-size: 1rem;
+            }
+        }
+
+        .info-box {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #8b8ba7;
+        }
+
+        .vault-address {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #6b6b8d;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+
+        .section-header {
+            margin-bottom: 15px;
+        }
+
+        .update-badge {
+            font-size: 0.7rem;
+            color: #6b6b8d;
+            margin-top: 5px;
+        }
+
+        .live-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="logo.png" alt="KeyVault" class="logo">
+        <h1>Public KeyVault Dashboard</h1>
+        <div class="subtitle">Jupiter Liquidity Pool Strategy</div>
+        <div id="fetchStatusBanner" style="margin-top:12px;padding:8px 18px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:8px;font-size:0.82rem;color:#8b8ba7;display:inline-block;"></div>
+    </div>
+
+    <div class="dashboard">
+        <!-- Private Vault Section -->
+        <div class="section-header">
+            <h2 class="section-title" style="margin-top: 0;">Private Vault (Official NAV)</h2>
+            <div class="vault-address">G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp</div>
+        </div>
+        <div class="metrics-grid" id="vaultMetrics">
+            <div class="metric-card">
+                <div class="metric-label">Loading...</div>
+                <div class="metric-value">--</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Historical Performance (PN_JLP1)</h2>
+        <!-- Performance Metrics -->
+        <div class="metrics-grid" id="metricsGrid">
+            <!-- Populated by JS -->
+        </div>
+
+        <!-- Rolling APY Section -->
+        <h2 class="section-title">Rolling APY Performance</h2>
+        <div class="apy-grid" id="apyGrid">
+            <!-- Populated by JS -->
+        </div>
+
+
+        <!-- Cumulative ROI Chart -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Cumulative ROI (Net of Fees)</h3>
+                <div class="tabs-container" id="roiChartTabs">
+                    <div class="tab active" data-period="all">All Time</div>
+                    <div class="tab" data-period="365">1 Year</div>
+                    <div class="tab" data-period="180">180 Days</div>
+                    <div class="tab" data-period="90">90 Days</div>
+                </div>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="roiChart"></canvas>
+            </div>
+        </div>
+
+        <!-- APY Chart -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">APY Performance (Annualized)</h3>
+                <div class="tabs-container" id="apyChartTabs">
+                    <div class="tab active" data-period="all">All Time</div>
+                    <div class="tab" data-period="365">1 Year</div>
+                    <div class="tab" data-period="180">180 Days</div>
+                    <div class="tab" data-period="90">90 Days</div>
+                </div>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="apyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Pro Forma Comparison Section -->
+        <h2 class="section-title">Pro Forma Comparison: Current Strategy vs Cross-Platform JLP</h2>
+        <div class="info-box">
+            <strong>Note:</strong> The KeyVault Pro Cross-Platform JLP Strategy data is <em>pro forma backtested performance</em>, not live trading results. 
+            KeyVault (Current) performance is actual live results. Both shown net of fees. Past performance does not guarantee future results.
+        </div>
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Cumulative ROI Comparison - Net of Fees (Nov 6, 2025 → Present)</h3>
+            </div>
+            <div class="chart-wrapper" style="height: 400px;">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </div>
+        <div class="metrics-grid" id="comparisonMetrics">
+            <!-- Populated by JS -->
+        </div>
+
+        <!-- 2025 Year Performance Section -->
+        <h2 class="section-title">2025 Year Performance</h2>
+        <div class="metrics-grid" id="metrics2025Grid">
+            <!-- Populated by JS -->
+        </div>
+
+        <div class="two-col">
+            <!-- 2025 ROI Chart -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">2025 Cumulative ROI</h3>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="roi2025Chart"></canvas>
+                </div>
+            </div>
+
+            <!-- 2025 APY Chart -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">2025 APY Performance</h3>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="apy2025Chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Official NAV history - single source of truth
+        let historicalData = [];
+
+        // Load official NAV history from daily stamp JSON
+        async function fetchHistoricalData() {
+            try {
+                const response = await fetch('data/official-nav-history.json?t=' + Date.now());
+                const navEntries = await response.json();
+
+                // Sort by date
+                navEntries.sort((a, b) => a.date.localeCompare(b.date));
+
+                const firstNet = navEntries[0].SharePrice;
+                let prevNet = firstNet;
+
+                historicalData = navEntries.map((entry, i) => {
+                    const net = entry.SharePrice;
+                    const pct1d = i === 0 ? 0 : ((net - prevNet) / prevNet) * 100;
+                    const realRet = ((net / firstNet) - 1) * 100;
+                    prevNet = net;
+                    return {
+                        date: entry.date,
+                        net: net,
+                        pct1d: pct1d,
+                        realRet: realRet,
+                        tvl: entry.tvl || null,
+                        source: entry.source || 'official-nav'
+                    };
+                });
+
+                console.log(`Loaded ${historicalData.length} entries from official-nav-history.json`);
+                return true;
+            } catch (error) {
+                console.error('Error loading official NAV history:', error);
+                return false;
+            }
+        }
+
+        // Fee structure (20% KeyVault performance + 10% Prime Number manager = 30% total)
+        // Spreadsheet data: share prices are fully gross (no fees deducted) → apply full 30%
+        // Vault API data: share prices are net of Prime's 10% only → ideally 7/9 factor
+        // Using full 30% uniformly because spreadsheet era dominates (~316 of ~350 days)
+        const PERFORMANCE_FEE_RATE = 0.20;
+        const PRIME_NUMBER_FEE_RATE = 0.10;
+        const TOTAL_FEE_RATE = PERFORMANCE_FEE_RATE + PRIME_NUMBER_FEE_RATE; // 30%
+
+        // Prime Number Pro Forma Data - 3x Jupiter JLP (backtested, NOT live results)
+        const primeProFormaData = [
+            {date: "2025-11-06", roi: 0.05898279960576413},
+            {date: "2025-11-07", roi: 0.1660754931213967},
+            {date: "2025-11-08", roi: 0.20823944064165384},
+            {date: "2025-11-09", roi: 0.2581063629295693},
+            {date: "2025-11-10", roi: 0.31614395549544694},
+            {date: "2025-11-11", roi: 0.36476883616022454},
+            {date: "2025-11-12", roi: 0.4070194166630293},
+            {date: "2025-11-13", roi: 0.5701196682153792},
+            {date: "2025-11-14", roi: 0.7346448232229756},
+            {date: "2025-11-15", roi: 0.8295049342232159},
+            {date: "2025-11-16", roi: 0.9110799951650682},
+            {date: "2025-11-17", roi: 1.1468880497402836},
+            {date: "2025-11-18", roi: 1.2789381880953798},
+            {date: "2025-11-19", roi: 1.3864231681433805},
+            {date: "2025-11-20", roi: 1.5089597594662574},
+            {date: "2025-11-21", roi: 1.8084112881291765},
+            {date: "2025-11-22", roi: 1.809188096481452},
+            {date: "2025-11-23", roi: 1.8807225844853708},
+            {date: "2025-11-24", roi: 1.9286723924783256},
+            {date: "2025-11-25", roi: 1.99888521708997},
+            {date: "2025-11-26", roi: 2.0402766586978758},
+            {date: "2025-11-27", roi: 2.110896448729818},
+            {date: "2025-11-28", roi: 2.132755183088863},
+            {date: "2025-11-29", roi: 2.1708419116722912},
+            {date: "2025-11-30", roi: 2.2398829188344958},
+            {date: "2025-12-01", roi: 2.3499965756716223},
+            {date: "2025-12-02", roi: 2.447457788738291},
+            {date: "2025-12-03", roi: 2.4810301543502487},
+            {date: "2025-12-04", roi: 2.5420107792696687},
+            {date: "2025-12-05", roi: 2.606215083937192},
+            {date: "2025-12-06", roi: 2.6436168180376223},
+            {date: "2025-12-07", roi: 2.6921761842273635},
+            {date: "2025-12-08", roi: 2.755547640599282},
+            {date: "2025-12-09", roi: 2.8074977878238716},
+            {date: "2025-12-10", roi: 2.9034641983224243},
+            {date: "2025-12-11", roi: 2.945219063108132},
+            {date: "2025-12-12", roi: 3.0239535764587395},
+            {date: "2025-12-13", roi: 3.060056440411851},
+            {date: "2025-12-14", roi: 3.114039775551741},
+            {date: "2025-12-15", roi: 3.1609341547045555},
+            {date: "2025-12-16", roi: 3.230307539679681},
+            {date: "2025-12-17", roi: 3.3709856531831237},
+            {date: "2025-12-18", roi: 3.510518028034062},
+            {date: "2025-12-19", roi: 3.5799038226218087},
+            {date: "2025-12-20", roi: 3.6526450884196726},
+            {date: "2025-12-21", roi: 3.702221469749948},
+            {date: "2025-12-22", roi: 3.781143707445177},
+            {date: "2025-12-23", roi: 3.81106305455313},
+            {date: "2025-12-24", roi: 3.8789320688342315},
+            {date: "2025-12-25", roi: 3.930322259495464},
+            {date: "2025-12-26", roi: 4.02483577288422},
+            {date: "2025-12-27", roi: 4.0668758518371},
+            {date: "2025-12-28", roi: 4.142066164431607},
+            {date: "2025-12-29", roi: 4.216272774510642},
+            {date: "2025-12-30", roi: 4.286434958736225},
+            {date: "2025-12-31", roi: 4.342649380371656},
+            {date: "2026-01-01", roi: 4.3896098361618705},
+            {date: "2026-01-02", roi: 4.457810773227028},
+            {date: "2026-01-03", roi: 4.537540750730981},
+            {date: "2026-01-04", roi: 4.531391205595133},
+            {date: "2026-01-05", roi: 4.670115287689825},
+            {date: "2026-01-06", roi: 4.800091165772613},
+            {date: "2026-01-07", roi: 4.902583878965844},
+            {date: "2026-01-08", roi: 4.982487965779431},
+            {date: "2026-01-09", roi: 5.0829925423957985},
+            {date: "2026-01-10", roi: 5.093126776147202},
+            {date: "2026-01-11", roi: 5.1752936950524315},
+            {date: "2026-01-12", roi: 5.255650765679679},
+            {date: "2026-01-13", roi: 5.373600018908876},
+            {date: "2026-01-14", roi: 5.458739534220675},
+            {date: "2026-01-15", roi: 5.530166530751416},
+            {date: "2026-01-16", roi: 5.556045760722339},
+            {date: "2026-01-17", roi: 5.619816105838529},
+            {date: "2026-01-18", roi: 5.635059801039942},
+            {date: "2026-01-19", roi: 5.7698401709508875},
+            {date: "2026-01-20", roi: 5.893013851827748},
+            {date: "2026-01-21", roi: 5.973898938517764},
+            {date: "2026-01-22", roi: 6.002533079496279},
+            {date: "2026-01-23", roi: 6.0405871489162655},
+            {date: "2026-01-24", roi: 6.023428984023232},
+            {date: "2026-01-25", roi: 6.115452052184524},
+            {date: "2026-01-26", roi: 6.125656574869783},
+            {date: "2026-01-27", roi: 6.1961963543095235},
+            {date: "2026-01-28", roi: 6.174161543434197},
+            {date: "2026-01-29", roi: 6.282578472377233},
+            {date: "2026-01-30", roi: 6.358496251383314},
+            {date: "2026-01-31", roi: 6.695535547957172},
+            {date: "2026-02-01", roi: 6.629214814675826},
+            {date: "2026-02-02", roi: 6.65315032964607},
+            {date: "2026-02-03", roi: 6.573638063379751}
+        ];
+
+        // Calculate metrics
+        function calculateMetrics() {
+            const latest = historicalData[historicalData.length - 1];
+            const first = historicalData[0];
+            const totalDays = historicalData.length;
+
+            // Gross return from spreadsheet
+            const grossReturn = latest.realRet;
+
+            // Net return (after 30% total fee on gains)
+            const netReturn = grossReturn * (1 - TOTAL_FEE_RATE);
+
+            // Annualized APY
+            const annualizedAPY = (netReturn / totalDays) * 365;
+
+            // Rolling APYs
+            const rollingAPYs = calculateRollingAPYs();
+
+            // Sharpe Ratio — annualized (risk-free rate = 5% T-bill proxy)
+            const dailyReturns = historicalData.slice(1).map(d => d.pct1d / 100); // decimal daily returns
+            const netDailyReturns = dailyReturns.map(r => r * (1 - TOTAL_FEE_RATE));
+            const avgDailyReturn = netDailyReturns.reduce((a, b) => a + b, 0) / netDailyReturns.length;
+            const dailyStdDev = Math.sqrt(netDailyReturns.reduce((sum, r) => sum + Math.pow(r - avgDailyReturn, 2), 0) / (netDailyReturns.length - 1));
+            const riskFreeDaily = 0.05 / 365; // 5% annual risk-free rate
+            const sharpeRatio = dailyStdDev > 0 ? ((avgDailyReturn - riskFreeDaily) / dailyStdDev) * Math.sqrt(365) : 0;
+
+            return {
+                sharePrice: latest.net,
+                grossROI: grossReturn,
+                netROI: netReturn,
+                allTimeAPY: annualizedAPY,
+                daysSinceInception: totalDays,
+                inceptionDate: first.date,
+                rollingAPYs,
+                sharpeRatio
+            };
+        }
+
+        function calculateRollingAPYs() {
+            const latest = historicalData[historicalData.length - 1];
+
+            const periods = [
+                { name: '90D', days: 90 },
+                { name: '180D', days: 180 },
+                { name: '1Y', days: 365 },
+                { name: 'All Time', days: historicalData.length }
+            ];
+
+            return periods.map(period => {
+                // Calculate for day-based periods
+                const daysAvailable = Math.min(period.days, historicalData.length);
+                const startIndex = historicalData.length - daysAvailable;
+                const startData = historicalData[startIndex];
+
+                const periodReturn = ((latest.net - startData.net) / startData.net) * 100;
+                const netPeriodReturn = periodReturn * (1 - TOTAL_FEE_RATE);
+                const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
+
+                return {
+                    name: period.name,
+                    days: daysAvailable,
+                    return: netPeriodReturn,
+                    apy: annualizedAPY
+                };
+            });
+        }
+
+        function getFilteredData(period) {
+            // Handle special period types
+            if (period === 'all' || (typeof period === 'number' && period >= historicalData.length)) {
+                return historicalData;
+            }
+
+            // Handle year-based filtering
+            if (period === 'ytd') {
+                // Year to date - from Jan 1 of current year to latest data
+                const currentYear = new Date().getFullYear();
+                const startDate = `${currentYear}-01-01`;
+                return historicalData.filter(d => d.date >= startDate);
+            }
+
+            if (period === '2025') {
+                // Full 2025 year
+                return historicalData.filter(d => d.date >= '2025-01-01' && d.date <= '2025-12-31');
+            }
+
+            // Handle numeric day-based filtering
+            if (typeof period === 'number') {
+                return historicalData.slice(-period);
+            }
+
+            return historicalData;
+        }
+
+        function formatPercent(value, decimals = 2) {
+            const sign = value >= 0 ? '+' : '';
+            return `${sign}${value.toFixed(decimals)}%`;
+        }
+
+        // Render metrics
+        function renderMetrics() {
+            if (!historicalData || historicalData.length === 0) {
+                document.getElementById('metricsGrid').innerHTML = '<div class="metric-card"><div class="metric-value" style="color:#ef4444;">No data available</div></div>';
+                return;
+            }
+            const metrics = calculateMetrics();
+
+            document.getElementById('metricsGrid').innerHTML = `
+                <div class="metric-card highlight">
+                    <div class="metric-label">ROI (Net of Fees)</div>
+                    <div class="metric-value positive">${formatPercent(metrics.netROI)}</div>
+                </div>
+                <div class="metric-card highlight">
+                    <div class="metric-label">Net APY (All Time)</div>
+                    <div class="metric-value positive">${formatPercent(metrics.allTimeAPY)}</div>
+                </div>
+                <div class="metric-card highlight">
+                    <div class="metric-label">Sharpe Ratio</div>
+                    <div class="metric-value ${metrics.sharpeRatio >= 2 ? 'positive' : ''}">${metrics.sharpeRatio.toFixed(2)}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Days Since Inception</div>
+                    <div class="metric-value">${metrics.daysSinceInception}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Inception Date</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(metrics.inceptionDate + 'T12:00:00').toLocaleDateString()}</div>
+                </div>
+            `;
+
+            // Render APY grid
+            document.getElementById('apyGrid').innerHTML = metrics.rollingAPYs.map(apy => `
+                <div class="apy-card">
+                    <div class="apy-period">${apy.name} APY</div>
+                    <div class="apy-value ${apy.apy >= 0 ? '' : 'negative'}">${formatPercent(apy.apy)}</div>
+                </div>
+            `).join('');
+        }
+
+        // Render 2025 metrics
+        function render2025Metrics() {
+            const data2025 = historicalData.filter(d => d.date >= '2025-01-01' && d.date <= '2025-12-31');
+
+            if (data2025.length === 0) {
+                document.getElementById('metrics2025Grid').innerHTML = `
+                    <div class="metric-card">
+                        <div class="metric-label">No 2025 Data Available</div>
+                        <div class="metric-value">--</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const start2025 = data2025[0];
+            const end2025 = data2025[data2025.length - 1];
+            const days2025 = data2025.length;
+
+            // Calculate 2025 metrics (net of 30% fee)
+            const grossReturn2025 = ((end2025.net - start2025.net) / start2025.net) * 100;
+            const netReturn2025 = grossReturn2025 * (1 - TOTAL_FEE_RATE);
+            const apy2025 = (netReturn2025 / days2025) * 365;
+
+            // Find best and worst days
+            let bestDay = data2025[0];
+            let worstDay = data2025[0];
+            data2025.forEach(d => {
+                if (d.pct1d > bestDay.pct1d) bestDay = d;
+                if (d.pct1d < worstDay.pct1d) worstDay = d;
+            });
+
+            document.getElementById('metrics2025Grid').innerHTML = `
+                <div class="metric-card highlight">
+                    <div class="metric-label">2025 ROI (Net)</div>
+                    <div class="metric-value ${netReturn2025 >= 0 ? 'positive' : 'negative'}">${formatPercent(netReturn2025)}</div>
+                </div>
+                <div class="metric-card highlight">
+                    <div class="metric-label">2025 APY</div>
+                    <div class="metric-value ${apy2025 >= 0 ? 'positive' : 'negative'}">${formatPercent(apy2025)}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Trading Days in 2025</div>
+                    <div class="metric-value">${days2025}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Start Date</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(start2025.date + 'T12:00:00').toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">End Date</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(end2025.date + 'T12:00:00').toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Best Day</div>
+                    <div class="metric-value positive" style="font-size: 1.1rem;">${formatPercent(bestDay.pct1d * (1 - TOTAL_FEE_RATE), 2)}</div>
+                    <div class="update-badge">${new Date(bestDay.date + 'T12:00:00').toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Worst Day</div>
+                    <div class="metric-value negative" style="font-size: 1.1rem;">${formatPercent(worstDay.pct1d * (1 - TOTAL_FEE_RATE), 2)}</div>
+                    <div class="update-badge">${new Date(worstDay.date + 'T12:00:00').toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Starting Share Price</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">$${start2025.net.toFixed(4)}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Ending Share Price</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">$${end2025.net.toFixed(4)}</div>
+                </div>
+            `;
+        }
+
+        // Charts
+        let roiChart = null;
+        let apyChart = null;
+        let roi2025Chart = null;
+        let apy2025Chart = null;
+        let comparisonChart = null;
+        let activeRoiPeriod = 'all';
+        let activeApyPeriod = 'all';
+
+        function renderROIChart(period = 'all') {
+            activeRoiPeriod = period;
+            const ctx = document.getElementById('roiChart').getContext('2d');
+
+            // Determine if this is a day-based or date-based period
+            let periodType = period;
+            if (period !== 'all') {
+                periodType = parseInt(period);
+            }
+
+            const data = getFilteredData(periodType);
+
+            let chartLabel;
+
+            // Set chart label based on period type
+            if (period === 'all') {
+                chartLabel = 'Cumulative ROI (All Time)';
+            } else {
+                chartLabel = `Cumulative ROI (Last ${periodType} Days)`;
+            }
+
+            const firstPrice = historicalData[0].net;
+
+            // Calculate cumulative ROI for all data points (net of 30% fee)
+            const allRoiData = historicalData.map((d, i) => {
+                const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
+                return cumulativeReturn * (1 - TOTAL_FEE_RATE);
+            });
+
+            // Filter to the selected time period
+            let roiData;
+            if (period === 'all') {
+                roiData = allRoiData;
+            } else {
+                // Find the indices that match our filtered data
+                const startIndex = historicalData.findIndex(d => d.date === data[0].date);
+                const endIndex = historicalData.findIndex(d => d.date === data[data.length - 1].date);
+                roiData = allRoiData.slice(startIndex, endIndex + 1);
+            }
+
+            if (roiChart) roiChart.destroy();
+
+            roiChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.date),
+                    datasets: [{
+                        label: chartLabel,
+                        data: roiData,
+                        borderColor: '#22c55e',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => `ROI: ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 8 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#22c55e',
+                                callback: v => v.toFixed(0) + '%'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderAPYChart(period = 'all') {
+            activeApyPeriod = period;
+            const ctx = document.getElementById('apyChart').getContext('2d');
+
+            // Determine if this is a day-based or date-based period
+            let periodType = period;
+            if (period !== 'all') {
+                periodType = parseInt(period);
+            }
+
+            const data = getFilteredData(periodType);
+
+            let chartLabel;
+
+            // Set chart label based on period type
+            if (period === 'all') {
+                chartLabel = 'Cumulative APY (All Time)';
+            } else {
+                chartLabel = `Cumulative APY (Last ${periodType} Days)`;
+            }
+
+            const firstPrice = historicalData[0].net;
+
+            // Calculate cumulative APY for all data points (net of 30% fee)
+            const allApyData = historicalData.map((d, i) => {
+                if (i === 0) return 0;
+                const daysSinceStart = i + 1;
+                const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
+                const netReturn = cumulativeReturn * (1 - TOTAL_FEE_RATE);
+                return (netReturn / daysSinceStart) * 365;
+            });
+
+            // Filter to the selected time period
+            let apyData;
+            if (period === 'all') {
+                apyData = allApyData;
+            } else {
+                // Find the indices that match our filtered data
+                const startIndex = historicalData.findIndex(d => d.date === data[0].date);
+                const endIndex = historicalData.findIndex(d => d.date === data[data.length - 1].date);
+                apyData = allApyData.slice(startIndex, endIndex + 1);
+            }
+
+            if (apyChart) apyChart.destroy();
+
+            apyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.date),
+                    datasets: [{
+                        label: chartLabel,
+                        data: apyData,
+                        borderColor: '#7c3aed',
+                        backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => `APY: ${ctx.parsed.y.toFixed(2)}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 8 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#7c3aed',
+                                callback: v => v.toFixed(0) + '%'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 2025 specific charts
+        function render2025ROIChart() {
+            const data2025 = historicalData.filter(d => d.date >= '2025-01-01' && d.date <= '2025-12-31');
+
+            if (data2025.length === 0) {
+                return;
+            }
+
+            const ctx = document.getElementById('roi2025Chart').getContext('2d');
+            const start2025 = data2025[0];
+
+            // Calculate ROI from start of 2025 (net of 30% fee)
+            const roiData = data2025.map(d => {
+                const returnVal = ((d.net - start2025.net) / start2025.net) * 100;
+                return returnVal * (1 - TOTAL_FEE_RATE);
+            });
+
+            if (roi2025Chart) roi2025Chart.destroy();
+
+            roi2025Chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data2025.map(d => d.date),
+                    datasets: [{
+                        label: '2025 ROI',
+                        data: roiData,
+                        borderColor: '#22c55e',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => `ROI: ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 8 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#22c55e',
+                                callback: v => v.toFixed(0) + '%'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function render2025APYChart() {
+            const data2025 = historicalData.filter(d => d.date >= '2025-01-01' && d.date <= '2025-12-31');
+
+            if (data2025.length === 0) {
+                return;
+            }
+
+            const ctx = document.getElementById('apy2025Chart').getContext('2d');
+            const start2025 = data2025[0];
+
+            // Calculate APY for each day in 2025 (net of 30% fee)
+            const apyData = data2025.map((d, i) => {
+                if (i === 0) return 0;
+                const daysSince2025Start = i + 1;
+                const returnVal = ((d.net - start2025.net) / start2025.net) * 100;
+                const netReturn = returnVal * (1 - TOTAL_FEE_RATE);
+                return (netReturn / daysSince2025Start) * 365;
+            });
+
+            if (apy2025Chart) apy2025Chart.destroy();
+
+            apy2025Chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data2025.map(d => d.date),
+                    datasets: [{
+                        label: '2025 APY',
+                        data: apyData,
+                        borderColor: '#7c3aed',
+                        backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => `APY: ${ctx.parsed.y.toFixed(2)}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 8 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#7c3aed',
+                                callback: v => v.toFixed(0) + '%'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Comparison Chart - KeyVault vs Prime Number Pro Forma
+        function renderComparisonChart() {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            // Get KeyVault data starting from Nov 6, 2025 (when pro forma starts)
+            const comparisonStartDate = '2025-11-06';
+            const kvDataFiltered = historicalData.filter(d => d.date >= comparisonStartDate);
+            
+            if (kvDataFiltered.length === 0) {
+                console.warn('No KeyVault data available for comparison period');
+                return;
+            }
+            
+            // Get the KeyVault share price on Nov 6, 2025 as baseline
+            const kvBaseline = kvDataFiltered[0].net;
+            
+            // Build aligned datasets
+            const labels = [];
+            const kvRoiData = [];
+            const primeRoiData = [];
+            
+            // Create a map of pro forma data by date (apply 30% fee to get net returns)
+            const primeDataMap = {};
+            primeProFormaData.forEach(d => {
+                primeDataMap[d.date] = d.roi * (1 - TOTAL_FEE_RATE); // Net of 30% fees
+            });
+            
+            // Create a map of KeyVault data by date (net of 30% fee)
+            const kvDataMap = {};
+            kvDataFiltered.forEach(d => {
+                const roi = ((d.net - kvBaseline) / kvBaseline) * 100;
+                kvDataMap[d.date] = roi * (1 - TOTAL_FEE_RATE);
+            });
+            
+            // Get all unique dates from both datasets
+            const allDates = new Set([
+                ...kvDataFiltered.map(d => d.date),
+                ...primeProFormaData.map(d => d.date)
+            ]);
+            
+            // Sort dates and build aligned arrays
+            const sortedDates = Array.from(allDates).sort();
+            
+            sortedDates.forEach(date => {
+                labels.push(date);
+                kvRoiData.push(kvDataMap[date] !== undefined ? kvDataMap[date] : null);
+                primeRoiData.push(primeDataMap[date] !== undefined ? primeDataMap[date] : null);
+            });
+            
+            if (comparisonChart) comparisonChart.destroy();
+            
+            comparisonChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'KeyVault Current Strategy (Actual)',
+                            data: kvRoiData,
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34, 197, 94, 0.15)',
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 0,
+                            pointHoverRadius: 5,
+                            borderWidth: 2.5,
+                            order: 2
+                        },
+                        {
+                            label: 'KeyVault Pro Cross-Platform JLP (Pro Forma)',
+                            data: primeRoiData,
+                            borderColor: '#f472b6',
+                            backgroundColor: 'rgba(244, 114, 182, 0.08)',
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 0,
+                            pointHoverRadius: 5,
+                            borderWidth: 2.5,
+                            order: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: '#8b8ba7',
+                                usePointStyle: true,
+                                padding: 15,
+                                font: {
+                                    size: window.innerWidth < 480 ? 10 : 12
+                                },
+                                boxWidth: window.innerWidth < 480 ? 8 : 12
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => {
+                                    if (ctx.parsed.y === null) return null;
+                                    return `${ctx.dataset.label}: ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#6b6b8d', maxTicksLimit: 10 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#8b8ba7',
+                                callback: v => v.toFixed(0) + '%'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Cumulative ROI %',
+                                color: '#6b6b8d'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Render comparison metrics
+            renderComparisonMetrics(kvDataMap, primeDataMap);
+        }
+        
+        function renderComparisonMetrics(kvDataMap, primeDataMap) {
+            // Get overlapping dates only for fair comparison
+            const kvDates = Object.keys(kvDataMap).sort();
+            const primeDates = Object.keys(primeDataMap).sort();
+            
+            // Find the latest common date (where both have data)
+            const kvDateSet = new Set(kvDates);
+            const commonDates = primeDates.filter(d => kvDateSet.has(d)).sort();
+            
+            if (commonDates.length === 0) {
+                document.getElementById('comparisonMetrics').innerHTML = '<div class="metric-card"><div class="metric-value">No overlapping data</div></div>';
+                return;
+            }
+            
+            const latestCommonDate = commonDates[commonDates.length - 1];
+            const startDate = new Date('2025-11-06T12:00:00');
+            const endDate = new Date(latestCommonDate + 'T12:00:00');
+            const days = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+            
+            const kvRoi = kvDataMap[latestCommonDate] || 0;
+            const primeRoi = primeDataMap[latestCommonDate] || 0;
+            
+            // Annualized APY
+            const kvAPY = (kvRoi / days) * 365;
+            const primeAPY = (primeRoi / days) * 365;
+            
+            // Outperformance
+            const outperformance = primeRoi - kvRoi;
+            const outperformClass = outperformance >= 0 ? 'positive' : 'negative';
+            
+            document.getElementById('comparisonMetrics').innerHTML = `
+                <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
+                    <div class="metric-label">Current Strategy ROI (Actual)</div>
+                    <div class="metric-value positive">${formatPercent(kvRoi)}</div>
+                    <div class="update-badge">Net of fees • ${days} days</div>
+                </div>
+                <div class="metric-card" style="border-color: rgba(244, 114, 182, 0.4);">
+                    <div class="metric-label">Cross-Platform JLP ROI (Pro Forma)</div>
+                    <div class="metric-value" style="color: #f472b6;">${formatPercent(primeRoi)}</div>
+                    <div class="update-badge">Net of fees • ${days} days</div>
+                </div>
+                <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
+                    <div class="metric-label">Current Strategy APY (Actual)</div>
+                    <div class="metric-value positive">${formatPercent(kvAPY)}</div>
+                    <div class="update-badge">Annualized, net of fees</div>
+                </div>
+                <div class="metric-card" style="border-color: rgba(244, 114, 182, 0.4);">
+                    <div class="metric-label">Cross-Platform JLP APY (Pro Forma)</div>
+                    <div class="metric-value" style="color: #f472b6;">${formatPercent(primeAPY)}</div>
+                    <div class="update-badge">Annualized, net of fees</div>
+                </div>
+                <div class="metric-card" style="border-color: rgba(124, 58, 237, 0.4); grid-column: span 2;">
+                    <div class="metric-label">Pro Forma Outperformance</div>
+                    <div class="metric-value" style="color: #a78bfa;">${formatPercent(outperformance)}</div>
+                    <div class="update-badge">Additional return vs current strategy (same period)</div>
+                </div>
+                <div class="metric-card" style="grid-column: span 2;">
+                    <div class="metric-label">Comparison Period</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">Nov 6, 2025 → ${new Date(latestCommonDate + 'T12:00:00').toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}</div>
+                    <div class="update-badge">${days} days of overlapping data</div>
+                </div>
+            `;
+        }
+
+        // Tab handling
+        function setupTabs() {
+            document.getElementById('roiChartTabs').addEventListener('click', e => {
+                if (e.target.classList.contains('tab')) {
+                    document.querySelectorAll('#roiChartTabs .tab').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    renderROIChart(e.target.dataset.period);
+                }
+            });
+
+            document.getElementById('apyChartTabs').addEventListener('click', e => {
+                if (e.target.classList.contains('tab')) {
+                    document.querySelectorAll('#apyChartTabs .tab').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    renderAPYChart(e.target.dataset.period);
+                }
+            });
+        }
+
+        // Render vault metrics from official NAV data
+        function renderVaultMetrics() {
+            if (!historicalData || historicalData.length === 0) {
+                document.getElementById('vaultMetrics').innerHTML = '<div class="metric-card"><div class="metric-value" style="color:#ef4444;">No vault data available</div></div>';
+                return;
+            }
+            const latest = historicalData[historicalData.length - 1];
+            const first = historicalData[0];
+            if (!latest) return;
+
+            const formatCurrency = (value) => {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(value);
+            };
+
+            // Share price is the TRUE performance metric — unaffected by deposits/withdrawals
+            const sharePriceReturn = ((latest.net - first.net) / first.net) * 100;
+            const netShareReturn = sharePriceReturn * (1 - TOTAL_FEE_RATE);
+
+            // TRUE EARNINGS: Public vault (hardcoded) + Private vault (Drift-verified)
+            // Public vault (LOCKED, net of Prime fees): EVd3=$203,650 + Dq95=$8,305 + AV3=$34 = $211,989
+            // Private vault: from Drift UI (2026-02-15): $1,467
+            // TODO: auto-query private vault earnings in daily NAV stamp
+            const PUBLIC_VAULT_EARNINGS = 211989;
+            const PRIVATE_VAULT_EARNINGS = 1467;
+            const strategyEarnings = PUBLIC_VAULT_EARNINGS + PRIVATE_VAULT_EARNINGS;
+            const totalWithdrawals = 1118918; // $519,644 (Feb 6) + $599,274 (Feb 14)
+
+            document.getElementById('vaultMetrics').innerHTML = `
+                <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
+                    <div class="metric-label">Strategy Return (Net)</div>
+                    <div class="metric-value positive">+${netShareReturn.toFixed(2)}%</div>
+                    <div class="update-badge">Share price: $${latest.net.toFixed(4)} (from $${first.net.toFixed(4)})</div>
+                </div>
+                ${latest.tvl ? `
+                <div class="metric-card highlight">
+                    <div class="metric-label">Current Vault TVL</div>
+                    <div class="metric-value">${formatCurrency(latest.tvl)}</div>
+                    <div class="update-badge" style="color: #8b8ba7;">~$1.12M withdrawn by investors (not losses)</div>
+                </div>
+                ${strategyEarnings !== null ? `
+                <div class="metric-card highlight" style="border-color: rgba(34, 197, 94, 0.4);">
+                    <div class="metric-label">Earnings on Current Capital</div>
+                    <div class="metric-value positive">${formatCurrency(strategyEarnings)}</div>
+                    <div class="update-badge">Drift-verified (all wallets + both vaults)</div>
+                </div>` : ''}
+                ` : ''}
+                <div class="metric-card">
+                    <div class="metric-label">Official NAV Date</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(latest.date + 'T17:00:00-05:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' })}</div>
+                    <div class="update-badge">5:00 PM EST daily stamp</div>
+                </div>
+            `;
+        }
+
+        // Initialize
+        async function init() {
+            // Show loading state
+            document.getElementById('metricsGrid').innerHTML = '<div class="metric-card"><div class="metric-value">Loading official NAV data...</div></div>';
+
+            // Fetch historical data from official NAV stamps
+            const success = await fetchHistoricalData();
+            if (!success || historicalData.length === 0) {
+                document.getElementById('metricsGrid').innerHTML = '<div class="metric-card"><div class="metric-value" style="color: #ef4444;">Failed to load NAV data</div></div>';
+                return;
+            }
+
+            // Render everything
+            renderMetrics();
+            renderROIChart('all');
+            renderAPYChart('all');
+            renderComparisonChart();
+            render2025Metrics();
+            render2025ROIChart();
+            render2025APYChart();
+            setupTabs();
+            renderVaultMetrics();
+            updateFetchStatus();
+            // No auto-refresh — data updates daily via NAV stamp system
+        }
+
+        init();
+
+        // Fetch status banner — uses already-loaded historicalData instead of re-fetching
+        function updateFetchStatus() {
+            try {
+                if (!historicalData || historicalData.length === 0) throw new Error('no data');
+                const latest = historicalData[historicalData.length - 1];
+                const navDate = new Date(latest.date + 'T17:00:00-05:00');
+                const fmt = navDate.toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', timeZone: 'America/New_York', timeZoneName:'short' });
+                document.getElementById('fetchStatusBanner').innerHTML =
+                    '✅ Official NAV: <strong style="color:#fff">' + fmt + '</strong>';
+            } catch(e) {
+                document.getElementById('fetchStatusBanner').innerHTML = '⏳ Data freshness unavailable';
+            }
+        }
+    </script>
+</body>
+</html>

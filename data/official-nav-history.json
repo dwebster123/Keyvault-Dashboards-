@@ -1,0 +1,2332 @@
+[
+  {
+    "date": "2025-02-26",
+    "timestamp": "2025-02-26T22:00:00Z",
+    "SharePrice": 0.9626,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-02-27",
+    "timestamp": "2025-02-27T22:00:00Z",
+    "SharePrice": 0.9643,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-02-28",
+    "timestamp": "2025-02-28T22:00:00Z",
+    "SharePrice": 0.9621,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-01",
+    "timestamp": "2025-03-01T22:00:00Z",
+    "SharePrice": 0.9664,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-02",
+    "timestamp": "2025-03-02T22:00:00Z",
+    "SharePrice": 0.9673,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-03",
+    "timestamp": "2025-03-03T22:00:00Z",
+    "SharePrice": 0.9717,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-04",
+    "timestamp": "2025-03-04T22:00:00Z",
+    "SharePrice": 0.9671,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-05",
+    "timestamp": "2025-03-05T22:00:00Z",
+    "SharePrice": 0.9703,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-06",
+    "timestamp": "2025-03-06T22:00:00Z",
+    "SharePrice": 0.9712,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-07",
+    "timestamp": "2025-03-07T22:00:00Z",
+    "SharePrice": 0.9712,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-08",
+    "timestamp": "2025-03-08T22:00:00Z",
+    "SharePrice": 0.97,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-09",
+    "timestamp": "2025-03-09T22:00:00Z",
+    "SharePrice": 0.9706,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-10",
+    "timestamp": "2025-03-10T22:00:00Z",
+    "SharePrice": 0.9686,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-11",
+    "timestamp": "2025-03-11T22:00:00Z",
+    "SharePrice": 0.9682,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-12",
+    "timestamp": "2025-03-12T22:00:00Z",
+    "SharePrice": 0.9682,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-13",
+    "timestamp": "2025-03-13T22:00:00Z",
+    "SharePrice": 0.9676,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-14",
+    "timestamp": "2025-03-14T22:00:00Z",
+    "SharePrice": 0.9684,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-15",
+    "timestamp": "2025-03-15T22:00:00Z",
+    "SharePrice": 0.9719,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-16",
+    "timestamp": "2025-03-16T22:00:00Z",
+    "SharePrice": 0.9722,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-17",
+    "timestamp": "2025-03-17T22:00:00Z",
+    "SharePrice": 0.9723,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-18",
+    "timestamp": "2025-03-18T22:00:00Z",
+    "SharePrice": 0.9718,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-19",
+    "timestamp": "2025-03-19T22:00:00Z",
+    "SharePrice": 0.972,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-20",
+    "timestamp": "2025-03-20T22:00:00Z",
+    "SharePrice": 0.9748,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-21",
+    "timestamp": "2025-03-21T22:00:00Z",
+    "SharePrice": 0.9745,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-22",
+    "timestamp": "2025-03-22T22:00:00Z",
+    "SharePrice": 0.9729,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-23",
+    "timestamp": "2025-03-23T22:00:00Z",
+    "SharePrice": 0.9737,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-24",
+    "timestamp": "2025-03-24T22:00:00Z",
+    "SharePrice": 0.9751,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-25",
+    "timestamp": "2025-03-25T22:00:00Z",
+    "SharePrice": 0.9761,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-26",
+    "timestamp": "2025-03-26T22:00:00Z",
+    "SharePrice": 0.9766,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-27",
+    "timestamp": "2025-03-27T22:00:00Z",
+    "SharePrice": 0.9766,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-28",
+    "timestamp": "2025-03-28T22:00:00Z",
+    "SharePrice": 0.9747,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-29",
+    "timestamp": "2025-03-29T22:00:00Z",
+    "SharePrice": 0.9744,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-30",
+    "timestamp": "2025-03-30T22:00:00Z",
+    "SharePrice": 0.9745,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-03-31",
+    "timestamp": "2025-03-31T22:00:00Z",
+    "SharePrice": 0.9753,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-01",
+    "timestamp": "2025-04-01T22:00:00Z",
+    "SharePrice": 0.9757,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-02",
+    "timestamp": "2025-04-02T22:00:00Z",
+    "SharePrice": 0.975,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-03",
+    "timestamp": "2025-04-03T22:00:00Z",
+    "SharePrice": 0.9741,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-04",
+    "timestamp": "2025-04-04T22:00:00Z",
+    "SharePrice": 0.9702,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-05",
+    "timestamp": "2025-04-05T22:00:00Z",
+    "SharePrice": 0.9717,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-06",
+    "timestamp": "2025-04-06T22:00:00Z",
+    "SharePrice": 0.9727,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-07",
+    "timestamp": "2025-04-07T22:00:00Z",
+    "SharePrice": 0.9696,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-08",
+    "timestamp": "2025-04-08T22:00:00Z",
+    "SharePrice": 0.9718,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-09",
+    "timestamp": "2025-04-09T22:00:00Z",
+    "SharePrice": 0.9723,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-10",
+    "timestamp": "2025-04-10T22:00:00Z",
+    "SharePrice": 0.9748,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-11",
+    "timestamp": "2025-04-11T22:00:00Z",
+    "SharePrice": 0.9757,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-12",
+    "timestamp": "2025-04-12T22:00:00Z",
+    "SharePrice": 0.9788,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-13",
+    "timestamp": "2025-04-13T22:00:00Z",
+    "SharePrice": 0.9818,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-14",
+    "timestamp": "2025-04-14T22:00:00Z",
+    "SharePrice": 0.9821,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-15",
+    "timestamp": "2025-04-15T22:00:00Z",
+    "SharePrice": 0.983,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-16",
+    "timestamp": "2025-04-16T22:00:00Z",
+    "SharePrice": 0.9838,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-17",
+    "timestamp": "2025-04-17T22:00:00Z",
+    "SharePrice": 0.9843,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-18",
+    "timestamp": "2025-04-18T22:00:00Z",
+    "SharePrice": 0.9859,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-19",
+    "timestamp": "2025-04-19T22:00:00Z",
+    "SharePrice": 0.9891,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-20",
+    "timestamp": "2025-04-20T22:00:00Z",
+    "SharePrice": 0.988,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-21",
+    "timestamp": "2025-04-21T22:00:00Z",
+    "SharePrice": 0.9871,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-22",
+    "timestamp": "2025-04-22T22:00:00Z",
+    "SharePrice": 0.9874,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-23",
+    "timestamp": "2025-04-23T22:00:00Z",
+    "SharePrice": 0.9911,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-24",
+    "timestamp": "2025-04-24T22:00:00Z",
+    "SharePrice": 0.9915,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-25",
+    "timestamp": "2025-04-25T22:00:00Z",
+    "SharePrice": 0.9919,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-26",
+    "timestamp": "2025-04-26T22:00:00Z",
+    "SharePrice": 0.9912,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-27",
+    "timestamp": "2025-04-27T22:00:00Z",
+    "SharePrice": 0.9918,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-28",
+    "timestamp": "2025-04-28T22:00:00Z",
+    "SharePrice": 0.9917,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-29",
+    "timestamp": "2025-04-29T22:00:00Z",
+    "SharePrice": 0.9913,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-04-30",
+    "timestamp": "2025-04-30T22:00:00Z",
+    "SharePrice": 0.9906,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-01",
+    "timestamp": "2025-05-01T22:00:00Z",
+    "SharePrice": 0.9909,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-02",
+    "timestamp": "2025-05-02T22:00:00Z",
+    "SharePrice": 0.9931,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-03",
+    "timestamp": "2025-05-03T22:00:00Z",
+    "SharePrice": 0.9926,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-04",
+    "timestamp": "2025-05-04T22:00:00Z",
+    "SharePrice": 0.9925,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-05",
+    "timestamp": "2025-05-05T22:00:00Z",
+    "SharePrice": 0.9928,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-06",
+    "timestamp": "2025-05-06T22:00:00Z",
+    "SharePrice": 0.9906,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-07",
+    "timestamp": "2025-05-07T22:00:00Z",
+    "SharePrice": 0.9942,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-08",
+    "timestamp": "2025-05-08T22:00:00Z",
+    "SharePrice": 0.9943,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-09",
+    "timestamp": "2025-05-09T22:00:00Z",
+    "SharePrice": 0.9997,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-10",
+    "timestamp": "2025-05-10T22:00:00Z",
+    "SharePrice": 1.0033,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-11",
+    "timestamp": "2025-05-11T22:00:00Z",
+    "SharePrice": 1.0047,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-12",
+    "timestamp": "2025-05-12T22:00:00Z",
+    "SharePrice": 1.0049,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-13",
+    "timestamp": "2025-05-13T22:00:00Z",
+    "SharePrice": 1.0043,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-14",
+    "timestamp": "2025-05-14T22:00:00Z",
+    "SharePrice": 1.0096,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-15",
+    "timestamp": "2025-05-15T22:00:00Z",
+    "SharePrice": 1.0087,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-16",
+    "timestamp": "2025-05-16T22:00:00Z",
+    "SharePrice": 1.0095,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-17",
+    "timestamp": "2025-05-17T22:00:00Z",
+    "SharePrice": 1.0093,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-18",
+    "timestamp": "2025-05-18T22:00:00Z",
+    "SharePrice": 1.0084,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-19",
+    "timestamp": "2025-05-19T22:00:00Z",
+    "SharePrice": 1.0084,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-20",
+    "timestamp": "2025-05-20T22:00:00Z",
+    "SharePrice": 1.0092,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-21",
+    "timestamp": "2025-05-21T22:00:00Z",
+    "SharePrice": 1.009,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-22",
+    "timestamp": "2025-05-22T22:00:00Z",
+    "SharePrice": 1.0102,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-23",
+    "timestamp": "2025-05-23T22:00:00Z",
+    "SharePrice": 1.013,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-24",
+    "timestamp": "2025-05-24T22:00:00Z",
+    "SharePrice": 1.0116,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-25",
+    "timestamp": "2025-05-25T22:00:00Z",
+    "SharePrice": 1.0102,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-26",
+    "timestamp": "2025-05-26T22:00:00Z",
+    "SharePrice": 1.0126,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-27",
+    "timestamp": "2025-05-27T22:00:00Z",
+    "SharePrice": 1.0121,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-28",
+    "timestamp": "2025-05-28T22:00:00Z",
+    "SharePrice": 1.0123,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-29",
+    "timestamp": "2025-05-29T22:00:00Z",
+    "SharePrice": 1.0145,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-30",
+    "timestamp": "2025-05-30T22:00:00Z",
+    "SharePrice": 1.0146,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-05-31",
+    "timestamp": "2025-05-31T22:00:00Z",
+    "SharePrice": 1.0112,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-01",
+    "timestamp": "2025-06-01T22:00:00Z",
+    "SharePrice": 1.0127,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-02",
+    "timestamp": "2025-06-02T22:00:00Z",
+    "SharePrice": 1.0111,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-03",
+    "timestamp": "2025-06-03T22:00:00Z",
+    "SharePrice": 1.0133,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-04",
+    "timestamp": "2025-06-04T22:00:00Z",
+    "SharePrice": 1.013,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-05",
+    "timestamp": "2025-06-05T22:00:00Z",
+    "SharePrice": 1.0129,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-06",
+    "timestamp": "2025-06-06T22:00:00Z",
+    "SharePrice": 1.0112,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-07",
+    "timestamp": "2025-06-07T22:00:00Z",
+    "SharePrice": 1.0124,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-08",
+    "timestamp": "2025-06-08T22:00:00Z",
+    "SharePrice": 1.0133,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-09",
+    "timestamp": "2025-06-09T22:00:00Z",
+    "SharePrice": 1.0135,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-10",
+    "timestamp": "2025-06-10T22:00:00Z",
+    "SharePrice": 1.0176,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-11",
+    "timestamp": "2025-06-11T22:00:00Z",
+    "SharePrice": 1.0192,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-12",
+    "timestamp": "2025-06-12T22:00:00Z",
+    "SharePrice": 1.0193,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-13",
+    "timestamp": "2025-06-13T22:00:00Z",
+    "SharePrice": 1.0142,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-14",
+    "timestamp": "2025-06-14T22:00:00Z",
+    "SharePrice": 1.0156,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-15",
+    "timestamp": "2025-06-15T22:00:00Z",
+    "SharePrice": 1.0164,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-16",
+    "timestamp": "2025-06-16T22:00:00Z",
+    "SharePrice": 1.0188,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-17",
+    "timestamp": "2025-06-17T22:00:00Z",
+    "SharePrice": 1.0177,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-18",
+    "timestamp": "2025-06-18T22:00:00Z",
+    "SharePrice": 1.0152,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-19",
+    "timestamp": "2025-06-19T22:00:00Z",
+    "SharePrice": 1.0146,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-20",
+    "timestamp": "2025-06-20T22:00:00Z",
+    "SharePrice": 1.0144,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-21",
+    "timestamp": "2025-06-21T22:00:00Z",
+    "SharePrice": 1.0124,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-22",
+    "timestamp": "2025-06-22T22:00:00Z",
+    "SharePrice": 1.0114,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-23",
+    "timestamp": "2025-06-23T22:00:00Z",
+    "SharePrice": 1.011,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-24",
+    "timestamp": "2025-06-24T22:00:00Z",
+    "SharePrice": 1.0166,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-25",
+    "timestamp": "2025-06-25T22:00:00Z",
+    "SharePrice": 1.0187,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-26",
+    "timestamp": "2025-06-26T22:00:00Z",
+    "SharePrice": 1.0186,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-27",
+    "timestamp": "2025-06-27T22:00:00Z",
+    "SharePrice": 1.0184,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-28",
+    "timestamp": "2025-06-28T22:00:00Z",
+    "SharePrice": 1.0197,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-29",
+    "timestamp": "2025-06-29T22:00:00Z",
+    "SharePrice": 1.0217,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-06-30",
+    "timestamp": "2025-06-30T22:00:00Z",
+    "SharePrice": 1.0232,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-01",
+    "timestamp": "2025-07-01T22:00:00Z",
+    "SharePrice": 1.0231,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-02",
+    "timestamp": "2025-07-02T22:00:00Z",
+    "SharePrice": 1.0257,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-03",
+    "timestamp": "2025-07-03T22:00:00Z",
+    "SharePrice": 1.0284,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-04",
+    "timestamp": "2025-07-04T22:00:00Z",
+    "SharePrice": 1.0281,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-05",
+    "timestamp": "2025-07-05T22:00:00Z",
+    "SharePrice": 1.0264,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-06",
+    "timestamp": "2025-07-06T22:00:00Z",
+    "SharePrice": 1.0259,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-07",
+    "timestamp": "2025-07-07T22:00:00Z",
+    "SharePrice": 1.0271,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-08",
+    "timestamp": "2025-07-08T22:00:00Z",
+    "SharePrice": 1.0271,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-09",
+    "timestamp": "2025-07-09T22:00:00Z",
+    "SharePrice": 1.0285,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-10",
+    "timestamp": "2025-07-10T22:00:00Z",
+    "SharePrice": 1.03,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-11",
+    "timestamp": "2025-07-11T22:00:00Z",
+    "SharePrice": 1.0355,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-12",
+    "timestamp": "2025-07-12T22:00:00Z",
+    "SharePrice": 1.0381,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-13",
+    "timestamp": "2025-07-13T22:00:00Z",
+    "SharePrice": 1.0367,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-14",
+    "timestamp": "2025-07-14T22:00:00Z",
+    "SharePrice": 1.0401,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-15",
+    "timestamp": "2025-07-15T22:00:00Z",
+    "SharePrice": 1.0409,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-16",
+    "timestamp": "2025-07-16T22:00:00Z",
+    "SharePrice": 1.0422,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-17",
+    "timestamp": "2025-07-17T22:00:00Z",
+    "SharePrice": 1.0485,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-18",
+    "timestamp": "2025-07-18T22:00:00Z",
+    "SharePrice": 1.055,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-19",
+    "timestamp": "2025-07-19T22:00:00Z",
+    "SharePrice": 1.053,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-20",
+    "timestamp": "2025-07-20T22:00:00Z",
+    "SharePrice": 1.0537,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-21",
+    "timestamp": "2025-07-21T22:00:00Z",
+    "SharePrice": 1.0609,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-22",
+    "timestamp": "2025-07-22T22:00:00Z",
+    "SharePrice": 1.0674,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-23",
+    "timestamp": "2025-07-23T22:00:00Z",
+    "SharePrice": 1.0696,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-24",
+    "timestamp": "2025-07-24T22:00:00Z",
+    "SharePrice": 1.0686,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-25",
+    "timestamp": "2025-07-25T22:00:00Z",
+    "SharePrice": 1.0694,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-26",
+    "timestamp": "2025-07-26T22:00:00Z",
+    "SharePrice": 1.0735,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-27",
+    "timestamp": "2025-07-27T22:00:00Z",
+    "SharePrice": 1.0747,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-28",
+    "timestamp": "2025-07-28T22:00:00Z",
+    "SharePrice": 1.0778,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-29",
+    "timestamp": "2025-07-29T22:00:00Z",
+    "SharePrice": 1.0777,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-30",
+    "timestamp": "2025-07-30T22:00:00Z",
+    "SharePrice": 1.0769,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-07-31",
+    "timestamp": "2025-07-31T22:00:00Z",
+    "SharePrice": 1.0773,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-01",
+    "timestamp": "2025-08-01T22:00:00Z",
+    "SharePrice": 1.0747,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-02",
+    "timestamp": "2025-08-02T22:00:00Z",
+    "SharePrice": 1.0721,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-03",
+    "timestamp": "2025-08-03T22:00:00Z",
+    "SharePrice": 1.0707,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-04",
+    "timestamp": "2025-08-04T22:00:00Z",
+    "SharePrice": 1.0725,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-05",
+    "timestamp": "2025-08-05T22:00:00Z",
+    "SharePrice": 1.0744,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-06",
+    "timestamp": "2025-08-06T22:00:00Z",
+    "SharePrice": 1.073,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-07",
+    "timestamp": "2025-08-07T22:00:00Z",
+    "SharePrice": 1.0769,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-08",
+    "timestamp": "2025-08-08T22:00:00Z",
+    "SharePrice": 1.08,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-09",
+    "timestamp": "2025-08-09T22:00:00Z",
+    "SharePrice": 1.0811,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-10",
+    "timestamp": "2025-08-10T22:00:00Z",
+    "SharePrice": 1.0831,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-11",
+    "timestamp": "2025-08-11T22:00:00Z",
+    "SharePrice": 1.0856,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-12",
+    "timestamp": "2025-08-12T22:00:00Z",
+    "SharePrice": 1.0866,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-13",
+    "timestamp": "2025-08-13T22:00:00Z",
+    "SharePrice": 1.0977,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-14",
+    "timestamp": "2025-08-14T22:00:00Z",
+    "SharePrice": 1.1041,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-15",
+    "timestamp": "2025-08-15T22:00:00Z",
+    "SharePrice": 1.1017,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-16",
+    "timestamp": "2025-08-16T22:00:00Z",
+    "SharePrice": 1.1007,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-17",
+    "timestamp": "2025-08-17T22:00:00Z",
+    "SharePrice": 1.1001,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-18",
+    "timestamp": "2025-08-18T22:00:00Z",
+    "SharePrice": 1.0992,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-19",
+    "timestamp": "2025-08-19T22:00:00Z",
+    "SharePrice": 1.0969,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-20",
+    "timestamp": "2025-08-20T22:00:00Z",
+    "SharePrice": 1.0967,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-21",
+    "timestamp": "2025-08-21T22:00:00Z",
+    "SharePrice": 1.0986,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-22",
+    "timestamp": "2025-08-22T22:00:00Z",
+    "SharePrice": 1.0985,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-23",
+    "timestamp": "2025-08-23T22:00:00Z",
+    "SharePrice": 1.1036,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-24",
+    "timestamp": "2025-08-24T22:00:00Z",
+    "SharePrice": 1.1061,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-25",
+    "timestamp": "2025-08-25T22:00:00Z",
+    "SharePrice": 1.1065,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-26",
+    "timestamp": "2025-08-26T22:00:00Z",
+    "SharePrice": 1.1037,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-27",
+    "timestamp": "2025-08-27T22:00:00Z",
+    "SharePrice": 1.109,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-28",
+    "timestamp": "2025-08-28T22:00:00Z",
+    "SharePrice": 1.1125,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-29",
+    "timestamp": "2025-08-29T22:00:00Z",
+    "SharePrice": 1.1145,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-30",
+    "timestamp": "2025-08-30T22:00:00Z",
+    "SharePrice": 1.1136,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-08-31",
+    "timestamp": "2025-08-31T22:00:00Z",
+    "SharePrice": 1.1126,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-01",
+    "timestamp": "2025-09-01T22:00:00Z",
+    "SharePrice": 1.1124,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-02",
+    "timestamp": "2025-09-02T22:00:00Z",
+    "SharePrice": 1.1142,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-03",
+    "timestamp": "2025-09-03T22:00:00Z",
+    "SharePrice": 1.1156,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-04",
+    "timestamp": "2025-09-04T22:00:00Z",
+    "SharePrice": 1.1162,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-05",
+    "timestamp": "2025-09-05T22:00:00Z",
+    "SharePrice": 1.1163,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-06",
+    "timestamp": "2025-09-06T22:00:00Z",
+    "SharePrice": 1.1156,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-07",
+    "timestamp": "2025-09-07T22:00:00Z",
+    "SharePrice": 1.1147,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-08",
+    "timestamp": "2025-09-08T22:00:00Z",
+    "SharePrice": 1.1163,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-09",
+    "timestamp": "2025-09-09T22:00:00Z",
+    "SharePrice": 1.1201,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-10",
+    "timestamp": "2025-09-10T22:00:00Z",
+    "SharePrice": 1.1209,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-11",
+    "timestamp": "2025-09-11T22:00:00Z",
+    "SharePrice": 1.1236,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-12",
+    "timestamp": "2025-09-12T22:00:00Z",
+    "SharePrice": 1.1307,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-13",
+    "timestamp": "2025-09-13T22:00:00Z",
+    "SharePrice": 1.1342,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-14",
+    "timestamp": "2025-09-14T22:00:00Z",
+    "SharePrice": 1.1372,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-15",
+    "timestamp": "2025-09-15T22:00:00Z",
+    "SharePrice": 1.138,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-16",
+    "timestamp": "2025-09-16T22:00:00Z",
+    "SharePrice": 1.1373,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-17",
+    "timestamp": "2025-09-17T22:00:00Z",
+    "SharePrice": 1.1383,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-18",
+    "timestamp": "2025-09-18T22:00:00Z",
+    "SharePrice": 1.1408,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-19",
+    "timestamp": "2025-09-19T22:00:00Z",
+    "SharePrice": 1.1426,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-20",
+    "timestamp": "2025-09-20T22:00:00Z",
+    "SharePrice": 1.1414,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-21",
+    "timestamp": "2025-09-21T22:00:00Z",
+    "SharePrice": 1.1412,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-22",
+    "timestamp": "2025-09-22T22:00:00Z",
+    "SharePrice": 1.1382,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-23",
+    "timestamp": "2025-09-23T22:00:00Z",
+    "SharePrice": 1.1382,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-24",
+    "timestamp": "2025-09-24T22:00:00Z",
+    "SharePrice": 1.1378,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-25",
+    "timestamp": "2025-09-25T22:00:00Z",
+    "SharePrice": 1.1368,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-26",
+    "timestamp": "2025-09-26T22:00:00Z",
+    "SharePrice": 1.1377,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-27",
+    "timestamp": "2025-09-27T22:00:00Z",
+    "SharePrice": 1.1405,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-28",
+    "timestamp": "2025-09-28T22:00:00Z",
+    "SharePrice": 1.141,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-29",
+    "timestamp": "2025-09-29T22:00:00Z",
+    "SharePrice": 1.1433,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-09-30",
+    "timestamp": "2025-09-30T22:00:00Z",
+    "SharePrice": 1.1442,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-01",
+    "timestamp": "2025-10-01T22:00:00Z",
+    "SharePrice": 1.1465,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-02",
+    "timestamp": "2025-10-02T22:00:00Z",
+    "SharePrice": 1.1501,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-03",
+    "timestamp": "2025-10-03T22:00:00Z",
+    "SharePrice": 1.1546,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-04",
+    "timestamp": "2025-10-04T22:00:00Z",
+    "SharePrice": 1.1546,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-05",
+    "timestamp": "2025-10-05T22:00:00Z",
+    "SharePrice": 1.1575,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-06",
+    "timestamp": "2025-10-06T22:00:00Z",
+    "SharePrice": 1.1569,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-07",
+    "timestamp": "2025-10-07T22:00:00Z",
+    "SharePrice": 1.1572,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-08",
+    "timestamp": "2025-10-08T22:00:00Z",
+    "SharePrice": 1.1568,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-09",
+    "timestamp": "2025-10-09T22:00:00Z",
+    "SharePrice": 1.1579,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-10",
+    "timestamp": "2025-10-10T22:00:00Z",
+    "SharePrice": 1.1561,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-11",
+    "timestamp": "2025-10-11T22:00:00Z",
+    "SharePrice": 1.152,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-12",
+    "timestamp": "2025-10-12T22:00:00Z",
+    "SharePrice": 1.1537,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-13",
+    "timestamp": "2025-10-13T22:00:00Z",
+    "SharePrice": 1.1549,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-14",
+    "timestamp": "2025-10-14T22:00:00Z",
+    "SharePrice": 1.1544,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-15",
+    "timestamp": "2025-10-15T22:00:00Z",
+    "SharePrice": 1.155,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-16",
+    "timestamp": "2025-10-16T22:00:00Z",
+    "SharePrice": 1.1531,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-17",
+    "timestamp": "2025-10-17T22:00:00Z",
+    "SharePrice": 1.153,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-18",
+    "timestamp": "2025-10-18T22:00:00Z",
+    "SharePrice": 1.1522,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-19",
+    "timestamp": "2025-10-19T22:00:00Z",
+    "SharePrice": 1.1533,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-20",
+    "timestamp": "2025-10-20T22:00:00Z",
+    "SharePrice": 1.1558,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-21",
+    "timestamp": "2025-10-21T22:00:00Z",
+    "SharePrice": 1.1539,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-22",
+    "timestamp": "2025-10-22T22:00:00Z",
+    "SharePrice": 1.1543,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-23",
+    "timestamp": "2025-10-23T22:00:00Z",
+    "SharePrice": 1.1552,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-24",
+    "timestamp": "2025-10-24T22:00:00Z",
+    "SharePrice": 1.1589,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-25",
+    "timestamp": "2025-10-25T22:00:00Z",
+    "SharePrice": 1.1598,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-26",
+    "timestamp": "2025-10-26T22:00:00Z",
+    "SharePrice": 1.161,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-27",
+    "timestamp": "2025-10-27T22:00:00Z",
+    "SharePrice": 1.1636,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-28",
+    "timestamp": "2025-10-28T22:00:00Z",
+    "SharePrice": 1.1635,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-29",
+    "timestamp": "2025-10-29T22:00:00Z",
+    "SharePrice": 1.1641,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-30",
+    "timestamp": "2025-10-30T22:00:00Z",
+    "SharePrice": 1.1634,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-10-31",
+    "timestamp": "2025-10-31T22:00:00Z",
+    "SharePrice": 1.1628,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-01",
+    "timestamp": "2025-11-01T22:00:00Z",
+    "SharePrice": 1.1624,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-02",
+    "timestamp": "2025-11-02T22:00:00Z",
+    "SharePrice": 1.1615,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-03",
+    "timestamp": "2025-11-03T22:00:00Z",
+    "SharePrice": 1.1627,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-04",
+    "timestamp": "2025-11-04T22:00:00Z",
+    "SharePrice": 1.1633,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-05",
+    "timestamp": "2025-11-05T22:00:00Z",
+    "SharePrice": 1.1662,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-06",
+    "timestamp": "2025-11-06T22:00:00Z",
+    "SharePrice": 1.1667,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-07",
+    "timestamp": "2025-11-07T22:00:00Z",
+    "SharePrice": 1.1682,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-08",
+    "timestamp": "2025-11-08T22:00:00Z",
+    "SharePrice": 1.1701,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-09",
+    "timestamp": "2025-11-09T22:00:00Z",
+    "SharePrice": 1.1703,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-10",
+    "timestamp": "2025-11-10T22:00:00Z",
+    "SharePrice": 1.1703,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-11",
+    "timestamp": "2025-11-11T22:00:00Z",
+    "SharePrice": 1.1705,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-12",
+    "timestamp": "2025-11-12T22:00:00Z",
+    "SharePrice": 1.1722,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-13",
+    "timestamp": "2025-11-13T22:00:00Z",
+    "SharePrice": 1.1726,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-14",
+    "timestamp": "2025-11-14T22:00:00Z",
+    "SharePrice": 1.1739,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-15",
+    "timestamp": "2025-11-15T22:00:00Z",
+    "SharePrice": 1.1769,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-16",
+    "timestamp": "2025-11-16T22:00:00Z",
+    "SharePrice": 1.1771,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-17",
+    "timestamp": "2025-11-17T22:00:00Z",
+    "SharePrice": 1.1775,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-18",
+    "timestamp": "2025-11-18T22:00:00Z",
+    "SharePrice": 1.18,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-19",
+    "timestamp": "2025-11-19T22:00:00Z",
+    "SharePrice": 1.18,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-20",
+    "timestamp": "2025-11-20T22:00:00Z",
+    "SharePrice": 1.1803,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-21",
+    "timestamp": "2025-11-21T22:00:00Z",
+    "SharePrice": 1.1809,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-22",
+    "timestamp": "2025-11-22T22:00:00Z",
+    "SharePrice": 1.1805,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-23",
+    "timestamp": "2025-11-23T22:00:00Z",
+    "SharePrice": 1.1802,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-24",
+    "timestamp": "2025-11-24T22:00:00Z",
+    "SharePrice": 1.1809,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-25",
+    "timestamp": "2025-11-25T22:00:00Z",
+    "SharePrice": 1.1825,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-26",
+    "timestamp": "2025-11-26T22:00:00Z",
+    "SharePrice": 1.1821,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-27",
+    "timestamp": "2025-11-27T22:00:00Z",
+    "SharePrice": 1.1808,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-28",
+    "timestamp": "2025-11-28T22:00:00Z",
+    "SharePrice": 1.1798,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-29",
+    "timestamp": "2025-11-29T22:00:00Z",
+    "SharePrice": 1.1793,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-11-30",
+    "timestamp": "2025-11-30T22:00:00Z",
+    "SharePrice": 1.18,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-01",
+    "timestamp": "2025-12-01T22:00:00Z",
+    "SharePrice": 1.1808,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-02",
+    "timestamp": "2025-12-02T22:00:00Z",
+    "SharePrice": 1.1817,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-03",
+    "timestamp": "2025-12-03T22:00:00Z",
+    "SharePrice": 1.183,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-04",
+    "timestamp": "2025-12-04T22:00:00Z",
+    "SharePrice": 1.1826,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-05",
+    "timestamp": "2025-12-05T22:00:00Z",
+    "SharePrice": 1.184,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-06",
+    "timestamp": "2025-12-06T22:00:00Z",
+    "SharePrice": 1.184,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-07",
+    "timestamp": "2025-12-07T22:00:00Z",
+    "SharePrice": 1.1845,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-08",
+    "timestamp": "2025-12-08T22:00:00Z",
+    "SharePrice": 1.1839,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-09",
+    "timestamp": "2025-12-09T22:00:00Z",
+    "SharePrice": 1.1842,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-10",
+    "timestamp": "2025-12-10T22:00:00Z",
+    "SharePrice": 1.1824,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-11",
+    "timestamp": "2025-12-11T22:00:00Z",
+    "SharePrice": 1.1824,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-12",
+    "timestamp": "2025-12-12T22:00:00Z",
+    "SharePrice": 1.1815,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-13",
+    "timestamp": "2025-12-13T22:00:00Z",
+    "SharePrice": 1.1815,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-14",
+    "timestamp": "2025-12-14T22:00:00Z",
+    "SharePrice": 1.1815,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-15",
+    "timestamp": "2025-12-15T22:00:00Z",
+    "SharePrice": 1.1815,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-16",
+    "timestamp": "2025-12-16T22:00:00Z",
+    "SharePrice": 1.1845,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-17",
+    "timestamp": "2025-12-17T22:00:00Z",
+    "SharePrice": 1.1845,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-18",
+    "timestamp": "2025-12-18T22:00:00Z",
+    "SharePrice": 1.1835,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-19",
+    "timestamp": "2025-12-19T22:00:00Z",
+    "SharePrice": 1.1855,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-20",
+    "timestamp": "2025-12-20T22:00:00Z",
+    "SharePrice": 1.1855,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-21",
+    "timestamp": "2025-12-21T22:00:00Z",
+    "SharePrice": 1.1855,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-22",
+    "timestamp": "2025-12-22T22:00:00Z",
+    "SharePrice": 1.1859,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-23",
+    "timestamp": "2025-12-23T22:00:00Z",
+    "SharePrice": 1.1868,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-24",
+    "timestamp": "2025-12-24T22:00:00Z",
+    "SharePrice": 1.1882,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-25",
+    "timestamp": "2025-12-25T22:00:00Z",
+    "SharePrice": 1.1891,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-26",
+    "timestamp": "2025-12-26T22:00:00Z",
+    "SharePrice": 1.1893,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-27",
+    "timestamp": "2025-12-27T22:00:00Z",
+    "SharePrice": 1.1893,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-28",
+    "timestamp": "2025-12-28T22:00:00Z",
+    "SharePrice": 1.1901,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-29",
+    "timestamp": "2025-12-29T22:00:00Z",
+    "SharePrice": 1.1902,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-30",
+    "timestamp": "2025-12-30T22:00:00Z",
+    "SharePrice": 1.1907,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2025-12-31",
+    "timestamp": "2025-12-31T22:00:00Z",
+    "SharePrice": 1.1915,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2026-01-01",
+    "timestamp": "2026-01-01T22:00:00Z",
+    "SharePrice": 1.1915,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2026-01-02",
+    "timestamp": "2026-01-02T22:00:00Z",
+    "SharePrice": 1.1915,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2026-01-03",
+    "timestamp": "2026-01-03T22:00:00Z",
+    "SharePrice": 1.1915,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2026-01-04",
+    "timestamp": "2026-01-04T22:00:00Z",
+    "SharePrice": 1.1915,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2026-01-05",
+    "timestamp": "2026-01-05T22:00:00Z",
+    "SharePrice": 1.1908,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2026-01-06",
+    "timestamp": "2026-01-06T22:00:00Z",
+    "SharePrice": 1.1908,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2026-01-07",
+    "timestamp": "2026-01-07T22:00:00Z",
+    "SharePrice": 1.1917,
+    "source": "public-vault-spreadsheet"
+  },
+  {
+    "date": "2026-01-08",
+    "timestamp": "2026-01-08T22:00:00Z",
+    "SharePrice": 1.1917,
+    "tvl": 2200541.64,
+    "totalShares": 2199063.810625,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.000672,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-09",
+    "timestamp": "2026-01-09T22:00:00Z",
+    "SharePrice": 1.192141,
+    "tvl": 2700421.93,
+    "totalShares": 2697610.408922,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.001042,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-10",
+    "timestamp": "2026-01-10T22:00:00Z",
+    "SharePrice": 1.195006,
+    "tvl": 2706912.59,
+    "totalShares": 2697610.408922,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.003448,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-11",
+    "timestamp": "2026-01-11T22:00:00Z",
+    "SharePrice": 1.190689,
+    "tvl": 3196344.71,
+    "totalShares": 3196911.93881,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 0.999823,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-12",
+    "timestamp": "2026-01-12T22:00:00Z",
+    "SharePrice": 1.192391,
+    "tvl": 3700284.39,
+    "totalShares": 3695659.130005,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.001252,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-13",
+    "timestamp": "2026-01-13T22:00:00Z",
+    "SharePrice": 1.192849,
+    "tvl": 3701710.03,
+    "totalShares": 3695659.130005,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.001637,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-14",
+    "timestamp": "2026-01-14T22:00:00Z",
+    "SharePrice": 1.190737,
+    "tvl": 4453012.35,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 0.999863,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-15",
+    "timestamp": "2026-01-15T22:00:00Z",
+    "SharePrice": 1.192043,
+    "tvl": 4457901.48,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.00096,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-16",
+    "timestamp": "2026-01-16T22:00:00Z",
+    "SharePrice": 1.191171,
+    "tvl": 4454639.66,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.000228,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-17",
+    "timestamp": "2026-01-17T22:00:00Z",
+    "SharePrice": 1.190523,
+    "tvl": 4452216.84,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 0.999684,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-18",
+    "timestamp": "2026-01-18T22:00:00Z",
+    "SharePrice": 1.192239,
+    "tvl": 4458637.1,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.001125,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-19",
+    "timestamp": "2026-01-19T22:00:00Z",
+    "SharePrice": 1.195206,
+    "tvl": 4469728.49,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.003616,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-20",
+    "timestamp": "2026-01-20T22:00:00Z",
+    "SharePrice": 1.193754,
+    "tvl": 4464297.73,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.002397,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-21",
+    "timestamp": "2026-01-21T22:00:00Z",
+    "SharePrice": 1.194291,
+    "tvl": 4466308.91,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.002848,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-22",
+    "timestamp": "2026-01-22T22:00:00Z",
+    "SharePrice": 1.197624,
+    "tvl": 4478770.25,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.005646,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-23",
+    "timestamp": "2026-01-23T22:00:00Z",
+    "SharePrice": 1.200981,
+    "tvl": 4491324.83,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.008465,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-24",
+    "timestamp": "2026-01-24T22:00:00Z",
+    "SharePrice": 1.199768,
+    "tvl": 4486788.83,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.007447,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-25",
+    "timestamp": "2026-01-25T22:00:00Z",
+    "SharePrice": 1.200351,
+    "tvl": 4488967.54,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.007936,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-26",
+    "timestamp": "2026-01-26T22:00:00Z",
+    "SharePrice": 1.199209,
+    "tvl": 4484698.93,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.006977,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-27",
+    "timestamp": "2026-01-27T22:00:00Z",
+    "SharePrice": 1.197909,
+    "tvl": 4479836.55,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.005886,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-28",
+    "timestamp": "2026-01-28T22:00:00Z",
+    "SharePrice": 1.196693,
+    "tvl": 4475293.62,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.004865,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-29",
+    "timestamp": "2026-01-29T22:00:00Z",
+    "SharePrice": 1.197172,
+    "tvl": 4477080.57,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.005267,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-30",
+    "timestamp": "2026-01-30T22:00:00Z",
+    "SharePrice": 1.197631,
+    "tvl": 4478794.34,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.005652,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-01-31",
+    "timestamp": "2026-01-31T22:00:00Z",
+    "SharePrice": 1.200062,
+    "tvl": 4487890.06,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.007694,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-01",
+    "timestamp": "2026-02-01T22:00:00Z",
+    "SharePrice": 1.198695,
+    "tvl": 4482775.95,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.006546,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-02",
+    "timestamp": "2026-02-02T22:00:00Z",
+    "SharePrice": 1.199867,
+    "tvl": 4487162.01,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.00753,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-03",
+    "timestamp": "2026-02-03T22:00:00Z",
+    "SharePrice": 1.19742,
+    "tvl": 4478006.93,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.005475,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-04",
+    "timestamp": "2026-02-04T22:00:00Z",
+    "SharePrice": 1.198916,
+    "tvl": 4483600.9,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.006731,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-05",
+    "timestamp": "2026-02-05T22:00:00Z",
+    "SharePrice": 1.19827,
+    "tvl": 4481190.19,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.006189,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-06",
+    "timestamp": "2026-02-06T22:00:00Z",
+    "SharePrice": 1.201806,
+    "tvl": 4494411.92,
+    "totalShares": 4453624.616476,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.009158,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-07",
+    "timestamp": "2026-02-07T22:00:00Z",
+    "SharePrice": 1.199228,
+    "tvl": 3965146.75,
+    "totalShares": 3937611.470579,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.006993,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-08",
+    "timestamp": "2026-02-08T22:00:00Z",
+    "SharePrice": 1.199849,
+    "tvl": 3967203.69,
+    "totalShares": 3937611.470579,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.007515,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-09",
+    "timestamp": "2026-02-09T22:00:00Z",
+    "SharePrice": 1.196834,
+    "tvl": 3957232.56,
+    "totalShares": 3937611.470579,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.004983,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-10",
+    "timestamp": "2026-02-10T22:00:00Z",
+    "SharePrice": 1.194813,
+    "tvl": 3950550.06,
+    "totalShares": 3937611.470579,
+    "source": "drift-vault-snapshots",
+    "rawPrivateSharePrice": 1.003286,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-11",
+    "timestamp": "2026-02-11T22:00:42.851Z",
+    "SharePrice": 1.198153,
+    "tvl": 3961592.45,
+    "totalShares": 3937611.470579,
+    "totalCollateral": 7260414.45,
+    "health": 30,
+    "leverage": 1.6594,
+    "positions": [
+      {
+        "symbol": "SOL-PERP",
+        "baseAssetAmount": "-4576.320000000",
+        "settledPnl": "682961.579162",
+        "liquidationPrice": "131.559640"
+      },
+      {
+        "symbol": "BTC-PERP",
+        "baseAssetAmount": "-10.666500000",
+        "settledPnl": "439504.690431",
+        "liquidationPrice": "294458.925477"
+      },
+      {
+        "symbol": "ETH-PERP",
+        "baseAssetAmount": "-162.139000000",
+        "settledPnl": "341565.088020",
+        "liquidationPrice": "8202.605418"
+      }
+    ],
+    "driftApys": {
+      "7d": -4.57906640218968,
+      "30d": 4.285101554836568,
+      "90d": 3.480843780727505,
+      "180d": 3.480843780727505,
+      "365d": 3.480843780727505
+    },
+    "source": "drift-onchain",
+    "rawPrivateSharePrice": 1.00609,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-12",
+    "timestamp": "2026-02-12T22:13:38.160Z",
+    "SharePrice": 1.1986588430587448,
+    "tvl": 3963265.437685,
+    "source_update_time": "2026-02-12T22:11:13Z",
+    "rawSharePrice": 1.0065151087906161,
+    "normalizationRatio": 1.1909
+  },
+  {
+    "date": "2026-02-13",
+    "timestamp": "2026-02-14T02:43:16.164Z",
+    "SharePrice": 1.1923167799742571,
+    "rawSharePrice": 1.0011896716552666,
+    "normalizationRatio": 1.1909,
+    "tvl": 3942295.935335,
+    "source_update_time": "2026-02-14T02:42:13Z"
+  },
+  {
+    "date": "2026-02-14",
+    "timestamp": "2026-02-14T22:00:04.512Z",
+    "SharePrice": 1.192657449254013,
+    "rawSharePrice": 1.0014757320127743,
+    "normalizationRatio": 1.1909,
+    "tvl": 3943422.32988,
+    "source_update_time": "2026-02-14T21:53:16Z"
+  },
+  {
+    "date": "2026-02-15",
+    "timestamp": "2026-02-15T22:00:04.250Z",
+    "SharePrice": 1.1924433294598302,
+    "rawSharePrice": 1.0012959353932573,
+    "normalizationRatio": 1.1909,
+    "tvl": 3343674.306254,
+    "source_update_time": "2026-02-15T21:53:13Z"
+  },
+  {
+    "date": "2026-02-16",
+    "timestamp": "2026-02-16T22:00:04.100Z",
+    "SharePrice": 1.1943278501470966,
+    "rawSharePrice": 1.0028783694240462,
+    "normalizationRatio": 1.1909,
+    "tvl": 3348958.602158,
+    "source_update_time": "2026-02-16T21:53:14Z"
+  },
+  {
+    "date": "2026-02-17",
+    "timestamp": "2026-02-17T22:00:04.294Z",
+    "SharePrice": 1.1896984655710985,
+    "rawSharePrice": 0.9989910702587106,
+    "normalizationRatio": 1.1909,
+    "tvl": 3335977.562407,
+    "source_update_time": "2026-02-17T21:53:18Z"
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "timestamp": "2026-02-09T20:07:36.789Z",
+    "date": "2026-02-09",
+    "aumUsd": "1252033340859767",
+    "jlpApyPct": 52.48,
+    "jlpAprPct": 42.21,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-11T14:00:06.950Z",
+    "date": "2026-02-11",
+    "aumUsd": "1188504641072553",
+    "jlpApyPct": 52.48,
+    "jlpAprPct": 42.21,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-12T22:10:08.456Z",
+    "date": "2026-02-12",
+    "aumUsd": "1152891515107671",
+    "jlpApyPct": 52.48,
+    "jlpAprPct": 42.21,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-13T14:00:05.687Z",
+    "date": "2026-02-13",
+    "aumUsd": "1175269486860552",
+    "jlpApyPct": 52.48,
+    "jlpAprPct": 42.21,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-14T14:00:05.587Z",
+    "date": "2026-02-14",
+    "aumUsd": "1223441691260228",
+    "jlpApyPct": 11.55,
+    "jlpAprPct": 10.93,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-15T14:00:06.260Z",
+    "date": "2026-02-15",
+    "aumUsd": "1223679215127076",
+    "jlpApyPct": 11.55,
+    "jlpAprPct": 10.93,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-16T14:00:07.556Z",
+    "date": "2026-02-16",
+    "aumUsd": "1198952412821966",
+    "jlpApyPct": 11.55,
+    "jlpAprPct": 10.93,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-17T14:00:11.508Z",
+    "date": "2026-02-17",
+    "aumUsd": "1191076131198784",
+    "jlpApyPct": 11.55,
+    "jlpAprPct": 10.93,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-19T00:17:03.661Z",
+    "date": "2026-02-18",
+    "aumUsd": "1146692231211677",
+    "jlpApyPct": 11.55,
+    "jlpAprPct": 10.93,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  }
+]

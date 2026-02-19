@@ -1,0 +1,794 @@
+[
+  {
+    "date": "2025-11-22",
+    "total_fees": 878301,
+    "position_fees": 878301,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-11-23",
+    "total_fees": 1381796,
+    "position_fees": 1381796,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-11-24",
+    "total_fees": 1831622,
+    "position_fees": 1831622,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-11-25",
+    "total_fees": 1287374,
+    "position_fees": 1287374,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-11-26",
+    "total_fees": 1737444,
+    "position_fees": 1737444,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-11-27",
+    "total_fees": 925363,
+    "position_fees": 925363,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-11-28",
+    "total_fees": 1643920,
+    "position_fees": 1643920,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-11-29",
+    "total_fees": 713554,
+    "position_fees": 713554,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-11-30",
+    "total_fees": 1044812,
+    "position_fees": 1044812,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-01",
+    "total_fees": 3044080,
+    "position_fees": 3044080,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-02",
+    "total_fees": 1631163,
+    "position_fees": 1631163,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-03",
+    "total_fees": 1683733,
+    "position_fees": 1683733,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-04",
+    "total_fees": 1403771,
+    "position_fees": 1403771,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-05",
+    "total_fees": 2022996,
+    "position_fees": 2022996,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-06",
+    "total_fees": 416470,
+    "position_fees": 416470,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-07",
+    "total_fees": 1681539,
+    "position_fees": 1681539,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-08",
+    "total_fees": 1304229,
+    "position_fees": 1304229,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-09",
+    "total_fees": 1759116,
+    "position_fees": 1759116,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-10",
+    "total_fees": 1703694,
+    "position_fees": 1703694,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-11",
+    "total_fees": 2312867,
+    "position_fees": 2312867,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-12",
+    "total_fees": 1892423,
+    "position_fees": 1892423,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-13",
+    "total_fees": 339059,
+    "position_fees": 339059,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-14",
+    "total_fees": 1545577,
+    "position_fees": 1545577,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-15",
+    "total_fees": 3083079,
+    "position_fees": 3083079,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-16",
+    "total_fees": 1126044,
+    "position_fees": 1126044,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-17",
+    "total_fees": 3053974,
+    "position_fees": 3053974,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-18",
+    "total_fees": 3471508,
+    "position_fees": 3471508,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-19",
+    "total_fees": 1506378,
+    "position_fees": 1506378,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-20",
+    "total_fees": 285251,
+    "position_fees": 285251,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-21",
+    "total_fees": 724983,
+    "position_fees": 724983,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-22",
+    "total_fees": 1580284,
+    "position_fees": 1580284,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-23",
+    "total_fees": 1479640,
+    "position_fees": 1479640,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-24",
+    "total_fees": 1030976,
+    "position_fees": 1030976,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-25",
+    "total_fees": 946495,
+    "position_fees": 946495,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-26",
+    "total_fees": 1127174,
+    "position_fees": 1127174,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-27",
+    "total_fees": 481651,
+    "position_fees": 481651,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-28",
+    "total_fees": 585929,
+    "position_fees": 585929,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-29",
+    "total_fees": 1781499,
+    "position_fees": 1781499,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-30",
+    "total_fees": 904616,
+    "position_fees": 904616,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2025-12-31",
+    "total_fees": 1010572,
+    "position_fees": 1010572,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-01",
+    "total_fees": 594656,
+    "position_fees": 594656,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-02",
+    "total_fees": 1840203,
+    "position_fees": 1840203,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-03",
+    "total_fees": 655817,
+    "position_fees": 655817,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-04",
+    "total_fees": 909883,
+    "position_fees": 909883,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-05",
+    "total_fees": 1945987,
+    "position_fees": 1945987,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-06",
+    "total_fees": 1964323,
+    "position_fees": 1964323,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-07",
+    "total_fees": 1815990,
+    "position_fees": 1815990,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-08",
+    "total_fees": 2048668,
+    "position_fees": 2048668,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-09",
+    "total_fees": 1516901,
+    "position_fees": 1516901,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-10",
+    "total_fees": 282919,
+    "position_fees": 282919,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-11",
+    "total_fees": 810791,
+    "position_fees": 810791,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-12",
+    "total_fees": 2093023,
+    "position_fees": 2093023,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-13",
+    "total_fees": 2056158,
+    "position_fees": 2056158,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-14",
+    "total_fees": 1480140,
+    "position_fees": 1480140,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-15",
+    "total_fees": 1877549,
+    "position_fees": 1877549,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-16",
+    "total_fees": 1121452,
+    "position_fees": 1121452,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-17",
+    "total_fees": 369640,
+    "position_fees": 369640,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-18",
+    "total_fees": 1704679,
+    "position_fees": 1704679,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-19",
+    "total_fees": 1679731,
+    "position_fees": 1679731,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-20",
+    "total_fees": 2848022,
+    "position_fees": 2848022,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-21",
+    "total_fees": 1547573,
+    "position_fees": 1547573,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-22",
+    "total_fees": 711488,
+    "position_fees": 711488,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-23",
+    "total_fees": 1087835,
+    "position_fees": 1087835,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-24",
+    "total_fees": 173037,
+    "position_fees": 173037,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-25",
+    "total_fees": 2772823,
+    "position_fees": 2772823,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-26",
+    "total_fees": 929761,
+    "position_fees": 929761,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-27",
+    "total_fees": 1057191,
+    "position_fees": 1057191,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-28",
+    "total_fees": 1005221,
+    "position_fees": 1005221,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-29",
+    "total_fees": 3290666,
+    "position_fees": 3290666,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-30",
+    "total_fees": 2196957,
+    "position_fees": 2196957,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-01-31",
+    "total_fees": 5847196,
+    "position_fees": 5847196,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-01",
+    "total_fees": 2250672,
+    "position_fees": 2250672,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-02",
+    "total_fees": 2469124,
+    "position_fees": 2469124,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-03",
+    "total_fees": 2418343,
+    "position_fees": 2418343,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-04",
+    "total_fees": 3869549,
+    "position_fees": 3869549,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-05",
+    "total_fees": 7247777,
+    "position_fees": 7247777,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-06",
+    "total_fees": 6276274,
+    "position_fees": 6276274,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-07",
+    "total_fees": 1843214,
+    "position_fees": 1843214,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-08",
+    "total_fees": 952780,
+    "position_fees": 952780,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-09",
+    "total_fees": 1427504,
+    "position_fees": 1427504,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-10",
+    "total_fees": 1166971,
+    "position_fees": 1166971,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-11",
+    "total_fees": 1611157,
+    "position_fees": 1611157,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-12",
+    "total_fees": 1210840,
+    "position_fees": 1210840,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-13",
+    "total_fees": 1295393,
+    "position_fees": 1295393,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-14",
+    "total_fees": 613080,
+    "position_fees": 613080,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-15",
+    "total_fees": 1190032,
+    "position_fees": 1190032,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-16",
+    "total_fees": 1041102,
+    "position_fees": 1041102,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-17",
+    "total_fees": 1119982,
+    "position_fees": 1119982,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  }
+]
