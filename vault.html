@@ -804,12 +804,9 @@
         };
 
         const PRIME_NET_FACTOR = 1 - FEE_CONFIG.primeNumberFeeRate;
-        // NET_INVESTOR_FACTOR = 7/9 ≈ 0.7778
-        // Drift API share price is already net of Prime's 10% fee, so to get net-of-all-fees
-        // we apply (1 - 0.30) / (1 - 0.10) = 0.70 / 0.90 = 7/9.
-        // This differs from index.html which uses *0.70 because its spreadsheet-era data
-        // has fully gross share prices (no fees deducted at all).
-        const NET_INVESTOR_FACTOR = (1 - FEE_CONFIG.totalFeeRate) / PRIME_NET_FACTOR;
+        // Share prices are already net of Prime's 10% fee.
+        // Only apply KV's 20% on top to get net-to-investor return.
+        const NET_INVESTOR_FACTOR = 1 - FEE_CONFIG.performanceFeeRate; // 0.80
 
         function getQuarterEndDates(year) {
             return [
@@ -1074,7 +1071,7 @@
             const endOfYear = new Date(now.getFullYear(), 11, 31, 17, 0, 0);
             const daysRemaining = Math.max(0, Math.ceil((endOfYear - now) / (1000 * 60 * 60 * 24)));
             const projectedTotalReturn = allTimeAPY;
-            const projectedGrossReturn = allTimeAPY / (1 - FEE_CONFIG.totalFeeRate);
+            const projectedGrossReturn = allTimeAPY / (NET_INVESTOR_FACTOR * PRIME_NET_FACTOR); // net / (0.80 * 0.90) = true gross
             const projectedPerformanceFees = (projectedGrossReturn / 100) * FEE_CONFIG.performanceFeeRate * cumulativeNetDeposits;
             const projectedPrimeFees = (projectedGrossReturn / 100) * FEE_CONFIG.primeNumberFeeRate * cumulativeNetDeposits;
             const projectedTotalRevenue = projectedPerformanceFees + projectedPrimeFees + managementFeeDollars;

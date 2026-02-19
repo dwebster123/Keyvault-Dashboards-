@@ -491,8 +491,7 @@
         const PERFORMANCE_FEE_RATE = 0.20;
         const PRIME_NUMBER_FEE_RATE = 0.10;
         const TOTAL_FEE_RATE = PERFORMANCE_FEE_RATE + PRIME_NUMBER_FEE_RATE; // 30%
-        // Share prices in official-nav-history.json are ALREADY net of Prime's 10% fee.
-        // Only apply KV's 20% on top. NET_INVESTOR_FACTOR = 0.80
+        // Share prices are ALREADY net of Prime's 10% fee — only apply KV's 20% on top.
         const NET_INVESTOR_FACTOR = 1 - PERFORMANCE_FEE_RATE; // 0.80
 
         // Prime Number Pro Forma Data - 3x Jupiter JLP (backtested, NOT live results)
