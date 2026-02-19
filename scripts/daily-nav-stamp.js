@@ -3,29 +3,28 @@
  * Daily NAV Stamp — Official 5 PM EST vault valuation
  *
  * Two data sources:
- *   - PUBLIC vault (Drift JLP Hedge Vault): share price / APY / ROI graph
+ *   - PUBLIC vault (Drift JLP Hedge Vault): real equity share price via VaultClient
  *     Address: 2dNSa3fBPMoxcs46NhtdLeTJuLasDt6VYNG4vopa7mWw
  *   - PRIVATE vault (Prime Number KV1): TVL / AUM display only
  *     API: https://app.primenumber.trade/data/PN_KV1.json
  *
- * The public vault represents the full strategy track record (382 days).
+ * The public vault represents the full strategy track record (382+ days).
+ * Share price = vault equity (incl. unrealized P&L) / total shares — net of PM fees.
+ * No PROFIT_PREMIUM fudge factor needed: DriftClient computes real equity directly.
  * The private vault is KV's actual investor capital (~$3.34M).
- *
- * Calibration log (PROFIT_PREMIUM):
- *   2026-02-18: actual TVL $11.4M / netDeposits $10.562M = 1.0795
- *   Recalibrate monthly: check Drift UI TVL, update PROFIT_PREMIUM below.
  */
 
 const fs = require('fs');
 const path = require('path');
 const { Connection, PublicKey, Keypair } = require('@solana/web3.js');
 const { Wallet } = require('@coral-xyz/anchor');
-const { getDriftVaultProgram } = require('@drift-labs/vaults-sdk');
+const { DriftClient } = require('@drift-labs/sdk/lib/node/index.js');
+const { VaultClient, getDriftVaultProgram } = require('@drift-labs/vaults-sdk');
 
 // Public vault (APY / share price / graph)
 const PUBLIC_VAULT_ADDRESS = '2dNSa3fBPMoxcs46NhtdLeTJuLasDt6VYNG4vopa7mWw';
+// Helius WS subscription avoids batch-request restriction on free plan
 const RPC_URL = 'https://mainnet.helius-rpc.com/?api-key=86b538c8-91f4-4ae5-95ec-4392a2fbecaf';
-const PROFIT_PREMIUM = 1.0795; // Recalibrate monthly
 
 // Private vault (TVL / AUM only)
 const PRIVATE_VAULT_URL = 'https://app.primenumber.trade/data/PN_KV1.json';
@@ -48,15 +47,42 @@ function getESTDate(date) {
 async function fetchPublicVaultSharePrice() {
   const connection = new Connection(RPC_URL, 'confirmed');
   const wallet = new Wallet(Keypair.generate());
+
+  // Use WebSocket subscription — avoids batch-request restriction on free Helius plan
+  const driftClient = new DriftClient({
+    connection,
+    wallet,
+    env: 'mainnet-beta',
+    accountSubscription: { type: 'websocket' },
+  });
+
+  await driftClient.subscribe();
+
   const program = getDriftVaultProgram(connection, wallet);
-  const vault = await program.account.vault.fetch(new PublicKey(PUBLIC_VAULT_ADDRESS));
+  const vaultClient = new VaultClient({ driftClient, program });
+  const vaultAddress = new PublicKey(PUBLIC_VAULT_ADDRESS);
 
-  const totalSharesRaw = vault.totalShares.toNumber();
-  const netDepositsRaw = vault.netDeposits.toNumber();
-  const basePriceRaw = netDepositsRaw / totalSharesRaw;
-  const sharePrice = basePriceRaw * PROFIT_PREMIUM;
+  // calculateVaultEquityInDepositAsset returns full equity (USDC, 10^6 precision)
+  // including unrealized P&L from open positions — this is the real share price
+  const [equityBN, vaultAccount] = await Promise.all([
+    vaultClient.calculateVaultEquityInDepositAsset({ address: vaultAddress }),
+    program.account.vault.fetch(vaultAddress),
+  ]);
 
-  return { sharePrice, basePriceRaw, profitPremium: PROFIT_PREMIUM };
+  await driftClient.unsubscribe();
+
+  const USDC_PRECISION = 1_000_000;
+  // Drift vault shares use USDC precision (10^6), not 10^9
+  const SHARE_PRECISION = 1_000_000;
+
+  const equityUSDC = equityBN.toNumber() / USDC_PRECISION;
+  const totalShares = vaultAccount.totalShares.toNumber() / SHARE_PRECISION;
+  const sharePrice = equityUSDC / totalShares;
+
+  const basePriceRaw = (vaultAccount.netDeposits.toNumber() / USDC_PRECISION) / totalShares;
+
+  console.log(`[NAV Stamp] Vault equity: $${equityUSDC.toFixed(2)}, shares: ${totalShares.toFixed(4)}`);
+  return { sharePrice, basePriceRaw, profitPremium: null };
 }
 
 async function fetchPrivateVaultTVL() {
@@ -86,7 +112,7 @@ async function main() {
   const sharePrice = publicVault.sharePrice;
   const tvl = privateVault?.tvl ?? null;
 
-  console.log(`[NAV Stamp] Public vault share price: $${sharePrice.toFixed(6)} (base: $${publicVault.basePriceRaw.toFixed(6)})`);
+  console.log(`[NAV Stamp] Public vault share price: $${sharePrice.toFixed(6)} (baseline: $${publicVault.basePriceRaw.toFixed(6)})`);
   if (tvl) console.log(`[NAV Stamp] Private vault TVL (KV1): $${tvl.toLocaleString()}`);
 
   const now = new Date();
@@ -95,12 +121,11 @@ async function main() {
   const record = {
     date: todayDate,
     timestamp: now.toISOString(),
-    SharePrice: sharePrice,                        // Public vault — used for APY / ROI graph
-    basePriceRaw: publicVault.basePriceRaw,
-    profitPremium: publicVault.profitPremium,
+    SharePrice: sharePrice,                        // Public vault real equity — used for APY / ROI graph
+    basePriceRaw: publicVault.basePriceRaw,        // Net deposits / shares (baseline, no trading P&L)
     tvl: tvl,                                      // Private vault KV1 — used for AUM display
     rawSharePrice: privateVault?.rawSharePrice ?? null,
-    source: 'public-drift-vault + private-kv1-tvl',
+    source: 'public-drift-vault-equity + private-kv1-tvl',
   };
 
   const history = loadHistory();
