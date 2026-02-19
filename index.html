@@ -491,6 +491,9 @@
         const PERFORMANCE_FEE_RATE = 0.20;
         const PRIME_NUMBER_FEE_RATE = 0.10;
         const TOTAL_FEE_RATE = PERFORMANCE_FEE_RATE + PRIME_NUMBER_FEE_RATE; // 30%
+        // Share prices in official-nav-history.json are ALREADY net of Prime's 10% fee.
+        // Only apply KV's 20% on top. NET_INVESTOR_FACTOR = 0.80
+        const NET_INVESTOR_FACTOR = 1 - PERFORMANCE_FEE_RATE; // 0.80
 
         // Prime Number Pro Forma Data - 3x Jupiter JLP (backtested, NOT live results)
         const primeProFormaData = [
@@ -596,7 +599,7 @@
             const grossReturn = latest.realRet;
 
             // Net return (after 30% total fee on gains)
-            const netReturn = grossReturn * (1 - TOTAL_FEE_RATE);
+            const netReturn = grossReturn * NET_INVESTOR_FACTOR;
 
             // Annualized APY
             const annualizedAPY = (netReturn / totalDays) * 365;
@@ -606,7 +609,7 @@
 
             // Sharpe Ratio — annualized (risk-free rate = 5% T-bill proxy)
             const dailyReturns = historicalData.slice(1).map(d => d.pct1d / 100); // decimal daily returns
-            const netDailyReturns = dailyReturns.map(r => r * (1 - TOTAL_FEE_RATE));
+            const netDailyReturns = dailyReturns.map(r => r * NET_INVESTOR_FACTOR);
             const avgDailyReturn = netDailyReturns.reduce((a, b) => a + b, 0) / netDailyReturns.length;
             const dailyStdDev = Math.sqrt(netDailyReturns.reduce((sum, r) => sum + Math.pow(r - avgDailyReturn, 2), 0) / (netDailyReturns.length - 1));
             const riskFreeDaily = 0.05 / 365; // 5% annual risk-free rate
@@ -641,7 +644,7 @@
                 const startData = historicalData[startIndex];
 
                 const periodReturn = ((latest.net - startData.net) / startData.net) * 100;
-                const netPeriodReturn = periodReturn * (1 - TOTAL_FEE_RATE);
+                const netPeriodReturn = periodReturn * NET_INVESTOR_FACTOR;
                 const annualizedAPY = (netPeriodReturn / daysAvailable) * 365;
 
                 return {
@@ -745,7 +748,7 @@
 
             // Calculate 2025 metrics (net of 30% fee)
             const grossReturn2025 = ((end2025.net - start2025.net) / start2025.net) * 100;
-            const netReturn2025 = grossReturn2025 * (1 - TOTAL_FEE_RATE);
+            const netReturn2025 = grossReturn2025 * NET_INVESTOR_FACTOR;
             const apy2025 = (netReturn2025 / days2025) * 365;
 
             // Find best and worst days
@@ -779,12 +782,12 @@
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Best Day</div>
-                    <div class="metric-value positive" style="font-size: 1.1rem;">${formatPercent(bestDay.pct1d * (1 - TOTAL_FEE_RATE), 2)}</div>
+                    <div class="metric-value positive" style="font-size: 1.1rem;">${formatPercent(bestDay.pct1d * NET_INVESTOR_FACTOR, 2)}</div>
                     <div class="update-badge">${new Date(bestDay.date + 'T12:00:00').toLocaleDateString()}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Worst Day</div>
-                    <div class="metric-value negative" style="font-size: 1.1rem;">${formatPercent(worstDay.pct1d * (1 - TOTAL_FEE_RATE), 2)}</div>
+                    <div class="metric-value negative" style="font-size: 1.1rem;">${formatPercent(worstDay.pct1d * NET_INVESTOR_FACTOR, 2)}</div>
                     <div class="update-badge">${new Date(worstDay.date + 'T12:00:00').toLocaleDateString()}</div>
                 </div>
                 <div class="metric-card">
@@ -833,7 +836,7 @@
             // Calculate cumulative ROI for all data points (net of 30% fee)
             const allRoiData = historicalData.map((d, i) => {
                 const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
-                return cumulativeReturn * (1 - TOTAL_FEE_RATE);
+                return cumulativeReturn * NET_INVESTOR_FACTOR;
             });
 
             // Filter to the selected time period
@@ -923,7 +926,7 @@
                 if (i === 0) return 0;
                 const daysSinceStart = i + 1;
                 const cumulativeReturn = ((d.net - firstPrice) / firstPrice) * 100;
-                const netReturn = cumulativeReturn * (1 - TOTAL_FEE_RATE);
+                const netReturn = cumulativeReturn * NET_INVESTOR_FACTOR;
                 return (netReturn / daysSinceStart) * 365;
             });
 
@@ -1000,7 +1003,7 @@
             // Calculate ROI from start of 2025 (net of 30% fee)
             const roiData = data2025.map(d => {
                 const returnVal = ((d.net - start2025.net) / start2025.net) * 100;
-                return returnVal * (1 - TOTAL_FEE_RATE);
+                return returnVal * NET_INVESTOR_FACTOR;
             });
 
             if (roi2025Chart) roi2025Chart.destroy();
@@ -1066,7 +1069,7 @@
                 if (i === 0) return 0;
                 const daysSince2025Start = i + 1;
                 const returnVal = ((d.net - start2025.net) / start2025.net) * 100;
-                const netReturn = returnVal * (1 - TOTAL_FEE_RATE);
+                const netReturn = returnVal * NET_INVESTOR_FACTOR;
                 return (netReturn / daysSince2025Start) * 365;
             });
 
@@ -1142,14 +1145,14 @@
             // Create a map of pro forma data by date (apply 30% fee to get net returns)
             const primeDataMap = {};
             primeProFormaData.forEach(d => {
-                primeDataMap[d.date] = d.roi * (1 - TOTAL_FEE_RATE); // Net of 30% fees
+                primeDataMap[d.date] = d.roi * NET_INVESTOR_FACTOR; // Net of KV's 20% perf fee (share price already net of Prime's 10%)
             });
             
             // Create a map of KeyVault data by date (net of 30% fee)
             const kvDataMap = {};
             kvDataFiltered.forEach(d => {
                 const roi = ((d.net - kvBaseline) / kvBaseline) * 100;
-                kvDataMap[d.date] = roi * (1 - TOTAL_FEE_RATE);
+                kvDataMap[d.date] = roi * NET_INVESTOR_FACTOR;
             });
             
             // Get all unique dates from both datasets
@@ -1362,7 +1365,7 @@
 
             // Share price is the TRUE performance metric — unaffected by deposits/withdrawals
             const sharePriceReturn = ((latest.net - first.net) / first.net) * 100;
-            const netShareReturn = sharePriceReturn * (1 - TOTAL_FEE_RATE);
+            const netShareReturn = sharePriceReturn * NET_INVESTOR_FACTOR;
 
             // TRUE EARNINGS: Public vault (hardcoded) + Private vault (Drift-verified)
             // Public vault (LOCKED, net of Prime fees): EVd3=$203,650 + Dq95=$8,305 + AV3=$34 = $211,989
