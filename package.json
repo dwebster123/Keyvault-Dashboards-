@@ -20,6 +20,7 @@
   "homepage": "https://github.com/dwebster123/Keyvault-Dashboards-#readme",
   "dependencies": {
     "@drift-labs/sdk": "^2.155.0",
+    "@drift-labs/vaults-sdk": "^0.9.266",
     "@solana/web3.js": "^1.98.4"
   }
 }
