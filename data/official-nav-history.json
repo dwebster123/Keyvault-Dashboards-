@@ -2331,11 +2331,12 @@
   },
   {
     "date": "2026-02-18",
-    "timestamp": "2026-02-19T03:00:05.856Z",
-    "SharePrice": 1.1927627822141347,
-    "rawSharePrice": 1.0015641802117177,
-    "normalizationRatio": 1.1909,
-    "tvl": 3344570.068711,
-    "source_update_time": "2026-02-19T02:53:19Z"
+    "timestamp": "2026-02-19T03:03:41.124Z",
+    "SharePrice": 1.1957921909222973,
+    "basePriceRaw": 1.1077278285523828,
+    "profitPremium": 1.0795,
+    "tvl": 11401864,
+    "source": "drift-onchain-public-vault",
+    "vaultAddress": "2dNSa3fBPMoxcs46NhtdLeTJuLasDt6VYNG4vopa7mWw"
   }
 ]
