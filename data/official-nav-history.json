@@ -2346,5 +2346,14 @@
     "tvl": 3337678.95297,
     "rawSharePrice": 0.9995005682837013,
     "source": "public-drift-vault-equity + private-kv1-tvl"
+  },
+  {
+    "date": "2026-02-20",
+    "timestamp": "2026-02-20T14:00:10.300Z",
+    "SharePrice": 1.199185872788988,
+    "basePriceRaw": 1.1081534805251931,
+    "tvl": 3342389.304263,
+    "rawSharePrice": 1.000911128993856,
+    "source": "public-drift-vault-equity + private-kv1-tvl"
   }
 ]
