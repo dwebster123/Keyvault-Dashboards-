@@ -88,5 +88,25 @@
     "traderPnl": null,
     "unrealizedPnl": null,
     "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-20T03:00:05.992Z",
+    "date": "2026-02-19",
+    "aumUsd": "1147687532731238",
+    "jlpApyPct": 11.55,
+    "jlpAprPct": 10.93,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-21T03:00:05.415Z",
+    "date": "2026-02-20",
+    "aumUsd": "1155470934824115",
+    "jlpApyPct": 7.27,
+    "jlpAprPct": 7.02,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
   }
 ]
