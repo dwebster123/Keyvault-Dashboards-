@@ -28,8 +28,25 @@ const NAV_FILE             = path.join(DATA_DIR, 'official-nav-history.json');
 const SCRIPT_TIMEOUT_MS    = 90_000; // 90s hard kill — Drift WS can be slow
 
 // ── Telegram ──────────────────────────────────────────────────────────────────
-const TELEGRAM_TOKEN  = process.env.TELEGRAM_BOT_TOKEN || '8533064388:AAGvDUyYXEiJZhmz0TVboTEEy9M697FyBwo';
+// Load token from env or secrets file — NEVER hardcode
+function loadTelegramToken() {
+  if (process.env.TELEGRAM_BOT_TOKEN) return process.env.TELEGRAM_BOT_TOKEN;
+  try {
+    const secretsPath = require('path').join(process.env.HOME, '.openclaw/secrets.env');
+    const lines = require('fs').readFileSync(secretsPath, 'utf8').split('\n');
+    for (const line of lines) {
+      const m = line.match(/^TELEGRAM_BOT_TOKEN=(.+)$/);
+      if (m) return m[1].trim();
+    }
+  } catch {}
+  return null;
+}
+const TELEGRAM_TOKEN  = loadTelegramToken();
 const TELEGRAM_CHAT   = '6509624622';
+if (!TELEGRAM_TOKEN) {
+  console.error('[NAV Stamp] FATAL: TELEGRAM_BOT_TOKEN not set — cannot send alerts');
+  process.exit(1);
+}
 
 async function sendTelegram(message) {
   try {
