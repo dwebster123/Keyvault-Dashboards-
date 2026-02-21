@@ -21,7 +21,8 @@ const { VaultClient, getDriftVaultProgram } = require('@drift-labs/vaults-sdk');
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const PUBLIC_VAULT_ADDRESS = '2dNSa3fBPMoxcs46NhtdLeTJuLasDt6VYNG4vopa7mWw';
-const RPC_URL              = 'https://mainnet.helius-rpc.com/?api-key=86b538c8-91f4-4ae5-95ec-4392a2fbecaf';
+const _heliusCfg = JSON.parse(require('fs').readFileSync(require('path').join(process.env.HOME, '.openclaw/helius/config.json'), 'utf8'));
+const RPC_URL              = process.env.HELIUS_RPC_URL || _heliusCfg.mainnetRpc;
 const PRIVATE_VAULT_URL    = 'https://app.primenumber.trade/data/PN_KV1.json';
 const DATA_DIR             = path.join(__dirname, '..', 'data');
 const NAV_FILE             = path.join(DATA_DIR, 'official-nav-history.json');
