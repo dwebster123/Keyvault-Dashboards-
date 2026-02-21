@@ -80,9 +80,19 @@
     "poolApy24h": null
   },
   {
-    "timestamp": "2026-02-19T03:00:05.105Z",
-    "date": "2026-02-18",
-    "aumUsd": "1147870501868638",
+    "timestamp": "2026-02-19T14:00:06.700Z",
+    "date": "2026-02-19",
+    "aumUsd": "1128400225025968",
+    "jlpApyPct": 11.55,
+    "jlpAprPct": 10.93,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-20T14:00:08.016Z",
+    "date": "2026-02-20",
+    "aumUsd": "1138572591490827",
     "jlpApyPct": 11.55,
     "jlpAprPct": 10.93,
     "traderPnl": null,

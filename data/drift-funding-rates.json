@@ -54,8 +54,8 @@
       },
       {
         "date": "2026-01-20",
-        "avgRate": 7.3e-7,
-        "annualizedPct": 0.6385
+        "avgRate": -9.3e-7,
+        "annualizedPct": -0.815
       },
       {
         "date": "2026-01-21",
@@ -271,8 +271,8 @@
       },
       {
         "date": "2026-01-20",
-        "avgRate": 0.00000915,
-        "annualizedPct": 8.0187
+        "avgRate": 0.00001134,
+        "annualizedPct": 9.9338
       },
       {
         "date": "2026-01-21",
@@ -488,8 +488,8 @@
       },
       {
         "date": "2026-01-20",
-        "avgRate": 0.00000127,
-        "annualizedPct": 1.1116
+        "avgRate": 0,
+        "annualizedPct": 0.0021
       },
       {
         "date": "2026-01-21",
