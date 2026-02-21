@@ -35,7 +35,7 @@ function loadTelegramToken() {
     const secretsPath = require('path').join(process.env.HOME, '.openclaw/secrets.env');
     const lines = require('fs').readFileSync(secretsPath, 'utf8').split('\n');
     for (const line of lines) {
-      const m = line.match(/^TELEGRAM_BOT_TOKEN=(.+)$/);
+      const m = line.match(/^(?:export\s+)?TELEGRAM_BOT_TOKEN=["']?([^"'\s]+)["']?$/);
       if (m) return m[1].trim();
     }
   } catch {}
