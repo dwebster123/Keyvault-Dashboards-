@@ -164,9 +164,42 @@ async function main() {
   console.log(`Share Price: $${sharePrice.toFixed(6)}  (public vault — APY/graph)`);
   if (tvl) console.log(`TVL (KV1):   $${tvl.toLocaleString()}  (private vault — AUM display)`);
   if (dayChange !== null) console.log(`Day Change:  ${dayChange >= 0 ? '+' : ''}${dayChange.toFixed(4)}%`);
+
+  // Send Telegram confirmation
+  const changeStr = dayChange !== null ? `${dayChange >= 0 ? '+' : ''}${dayChange.toFixed(4)}%` : 'N/A';
+  const tvlStr = tvl ? `$${Number(tvl).toLocaleString('en-US', { maximumFractionDigits: 0 })}` : 'N/A';
+  await sendTelegram(
+    `✅ *KV NAV Stamp — ${todayDate}*\n\n` +
+    `Share Price: \`$${sharePrice.toFixed(6)}\`\n` +
+    `KV1 TVL: \`${tvlStr}\`\n` +
+    `Day Change: \`${changeStr}\``
+  );
+
+  // Force exit — Drift WebSocket keeps event loop alive after unsubscribe
+  process.exit(0);
 }
 
-main().catch(err => {
-  console.error(`[NAV Stamp] FATAL: ${err.message}`);
-  process.exit(1);
-});
+// Telegram alert helper
+async function sendTelegram(message) {
+  const token = process.env.TELEGRAM_BOT_TOKEN || '8533064388:AAGvDUyYXEiJZhmz0TVboTEEy9M697FyBwo';
+  const chatId = '6509624622';
+  try {
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' }),
+    });
+  } catch (e) {
+    console.warn(`[NAV Stamp] Telegram alert failed: ${e.message}`);
+  }
+}
+
+main()
+  .then(() => {
+    // Success alert handled inside main via console — no extra needed
+  })
+  .catch(async err => {
+    console.error(`[NAV Stamp] FATAL: ${err.message}`);
+    await sendTelegram(`🚨 *KV NAV Stamp FAILED* — ${new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' })}\n\nError: ${err.message}\n\nShare price was NOT recorded. Investigate immediately.`);
+    process.exit(1);
+  });
