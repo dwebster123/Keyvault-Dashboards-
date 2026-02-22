@@ -967,7 +967,7 @@
 
                 let officialNav = null;
                 try {
-                    officialNav = await (await fetch('data/official-nav-history.json')).json();
+                    officialNav = await (await fetch('data/official-nav-history.json?t=' + Date.now())).json();
                 } catch (e) { console.warn('No official NAV history'); }
 
                 // Dynamically calculate TOTAL_SHARES from latest NAV entry

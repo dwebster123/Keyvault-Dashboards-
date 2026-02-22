@@ -323,7 +323,7 @@ const PROXY = u => 'https://keyvault.deven-m-webster.workers.dev/?url=' + encode
 const DEFILLAMA_URL = 'https://api.llama.fi/summary/fees/jupiter-perpetual-exchange';
 const COINGECKO_URL = 'https://api.coingecko.com/api/v3/coins/jupiter-perpetuals-liquidity-provider-token/market_chart?vs_currency=usd&days=365';
 // Vault data now comes from official NAV stamps (no live API)
-const OFFICIAL_NAV_URL = 'data/official-nav-history.json';
+const OFFICIAL_NAV_URL = 'data/official-nav-history.json?t=' + Date.now();
 const JLP_INFO_URL = 'https://perps-api.jup.ag/v2/jlp-info';
 const CG_SOL_URL = 'https://api.coingecko.com/api/v3/coins/solana/market_chart?vs_currency=usd&days=365';
 const CG_ETH_URL = 'https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=365';
