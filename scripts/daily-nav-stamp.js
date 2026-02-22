@@ -31,7 +31,7 @@ const SCRIPT_TIMEOUT_MS    = 90_000; // 90s hard kill — Drift WS can be slow
 // ── Telegram ──────────────────────────────────────────────────────────────────
 // Load token from env or secrets file — NEVER hardcode
 function loadTelegramToken() {
-  if (process.env.TELEGRAM_BOT_TOKEN) return process.env.TELEGRAM_BOT_TOKEN;
+  // Prefer secrets file — env var may be stale from launchctl
   try {
     const secretsPath = require('path').join(process.env.HOME, '.openclaw/secrets.env');
     const lines = require('fs').readFileSync(secretsPath, 'utf8').split('\n');
@@ -40,6 +40,8 @@ function loadTelegramToken() {
       if (m) return m[1].trim();
     }
   } catch {}
+  // Fallback to env var
+  if (process.env.TELEGRAM_BOT_TOKEN) return process.env.TELEGRAM_BOT_TOKEN;
   return null;
 }
 const TELEGRAM_TOKEN  = loadTelegramToken();
