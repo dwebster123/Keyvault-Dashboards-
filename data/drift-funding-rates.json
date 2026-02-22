@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-21T03:00:02.761Z",
+  "lastUpdated": "2026-02-22T03:00:03.250Z",
   "markets": {
     "SOL-PERP": [
       {
@@ -69,8 +69,8 @@
       },
       {
         "date": "2026-01-23",
-        "avgRate": -0.000009,
-        "annualizedPct": -7.8867
+        "avgRate": -0.00000895,
+        "annualizedPct": -7.8379
       },
       {
         "date": "2026-01-24",
@@ -204,8 +204,8 @@
       },
       {
         "date": "2026-02-19",
-        "avgRate": -0.00000872,
-        "annualizedPct": -7.6396
+        "avgRate": -0.0000087,
+        "annualizedPct": -7.6227
       },
       {
         "date": "2026-02-20",
@@ -214,8 +214,13 @@
       },
       {
         "date": "2026-02-21",
-        "avgRate": 0.00000841,
-        "annualizedPct": 7.368
+        "avgRate": 0.0000043,
+        "annualizedPct": 3.7635
+      },
+      {
+        "date": "2026-02-22",
+        "avgRate": 0.00000992,
+        "annualizedPct": 8.6907
       }
     ],
     "BTC-PERP": [
@@ -286,8 +291,8 @@
       },
       {
         "date": "2026-01-23",
-        "avgRate": 0.00000239,
-        "annualizedPct": 2.0945
+        "avgRate": 0.00000211,
+        "annualizedPct": 1.8482
       },
       {
         "date": "2026-01-24",
@@ -421,8 +426,8 @@
       },
       {
         "date": "2026-02-19",
-        "avgRate": 0.00000495,
-        "annualizedPct": 4.3378
+        "avgRate": 0.00000481,
+        "annualizedPct": 4.2166
       },
       {
         "date": "2026-02-20",
@@ -431,8 +436,13 @@
       },
       {
         "date": "2026-02-21",
-        "avgRate": 0.00000228,
-        "annualizedPct": 1.9956
+        "avgRate": 0.00000291,
+        "annualizedPct": 2.5528
+      },
+      {
+        "date": "2026-02-22",
+        "avgRate": 0.00000452,
+        "annualizedPct": 3.9556
       }
     ],
     "ETH-PERP": [
@@ -503,8 +513,8 @@
       },
       {
         "date": "2026-01-23",
-        "avgRate": -0.00000304,
-        "annualizedPct": -2.6657
+        "avgRate": -0.00000296,
+        "annualizedPct": -2.5956
       },
       {
         "date": "2026-01-24",
@@ -638,8 +648,8 @@
       },
       {
         "date": "2026-02-19",
-        "avgRate": 0.00001291,
-        "annualizedPct": 11.3069
+        "avgRate": 0.00001327,
+        "annualizedPct": 11.6207
       },
       {
         "date": "2026-02-20",
@@ -648,8 +658,13 @@
       },
       {
         "date": "2026-02-21",
-        "avgRate": 0.00000527,
-        "annualizedPct": 4.6176
+        "avgRate": 0.00000938,
+        "annualizedPct": 8.2152
+      },
+      {
+        "date": "2026-02-22",
+        "avgRate": 0.00002626,
+        "annualizedPct": 23.0057
       }
     ]
   }

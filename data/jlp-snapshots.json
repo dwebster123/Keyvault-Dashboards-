@@ -281,76 +281,6 @@
       "traderPnlLabel": "traders_winning"
     },
     {
-      "timestamp": "2026-02-19T14:00:06.391Z",
-      "date": "2026-02-19",
-      "navPrice": 3.560474,
-      "aum": 1128400225.025968,
-      "jupiterApyPct": 11.55,
-      "fees24h": 1281191,
-      "avgDailyFees7d": 1107374,
-      "realTimeFeeApyPct": 26.86,
-      "traderExposure": {
-        "SOL": {
-          "guaranteedUsd": 19247906.489743,
-          "globalShortSizes": 14566822.377004,
-          "shortPnlDelta": 611049.258496,
-          "shortTradersHasProfit": true,
-          "netPnl": 611049.258496
-        },
-        "ETH": {
-          "guaranteedUsd": 2137747.547935,
-          "globalShortSizes": 1136258.97489,
-          "shortPnlDelta": 59181.268905,
-          "shortTradersHasProfit": true,
-          "netPnl": 59181.268905
-        },
-        "WBTC": {
-          "guaranteedUsd": 9684526.648868,
-          "globalShortSizes": 4786263.737201,
-          "shortPnlDelta": 362022.00236,
-          "shortTradersHasProfit": true,
-          "netPnl": 362022.00236
-        }
-      },
-      "totalTraderPnl": 1032252.53,
-      "traderPnlLabel": "traders_winning"
-    },
-    {
-      "timestamp": "2026-02-20T14:00:07.558Z",
-      "date": "2026-02-20",
-      "navPrice": 3.613122,
-      "aum": 1138572591.490827,
-      "jupiterApyPct": 11.55,
-      "fees24h": 839389,
-      "avgDailyFees7d": 1054310,
-      "realTimeFeeApyPct": 25.35,
-      "traderExposure": {
-        "SOL": {
-          "guaranteedUsd": 18540951.27345,
-          "globalShortSizes": 14258424.836405,
-          "shortPnlDelta": 288526.265098,
-          "shortTradersHasProfit": true,
-          "netPnl": 288526.265098
-        },
-        "ETH": {
-          "guaranteedUsd": 2285547.409904,
-          "globalShortSizes": 1450406.690712,
-          "shortPnlDelta": 49557.906029,
-          "shortTradersHasProfit": true,
-          "netPnl": 49557.906029
-        },
-        "WBTC": {
-          "guaranteedUsd": 8883181.640149,
-          "globalShortSizes": 5559919.744362,
-          "shortPnlDelta": 313749.703178,
-          "shortTradersHasProfit": true,
-          "netPnl": 313749.703178
-        }
-      },
-      "totalTraderPnl": 651833.87,
-      "traderPnlLabel": "traders_winning"
-    },
-    {
       "timestamp": "2026-02-20T03:00:05.690Z",
       "date": "2026-02-19",
       "navPrice": 3.634059,
@@ -419,7 +349,42 @@
       },
       "totalTraderPnl": 146607.56,
       "traderPnlLabel": "traders_winning"
+    },
+    {
+      "timestamp": "2026-02-22T03:00:05.925Z",
+      "date": "2026-02-21",
+      "navPrice": 3.684499,
+      "aum": 1157771059.754402,
+      "jupiterApyPct": 7.27,
+      "fees24h": 639191,
+      "avgDailyFees7d": 1043783,
+      "realTimeFeeApyPct": 24.68,
+      "traderExposure": {
+        "SOL": {
+          "guaranteedUsd": 22852028.105474,
+          "globalShortSizes": 14494477.498158,
+          "shortPnlDelta": 47916.451871,
+          "shortTradersHasProfit": false,
+          "netPnl": -47916.451871
+        },
+        "ETH": {
+          "guaranteedUsd": 3445984.596481,
+          "globalShortSizes": 1712416.081591,
+          "shortPnlDelta": 41341.281573,
+          "shortTradersHasProfit": true,
+          "netPnl": 41341.281573
+        },
+        "WBTC": {
+          "guaranteedUsd": 8815691.556629,
+          "globalShortSizes": 5615539.851548,
+          "shortPnlDelta": 249594.270404,
+          "shortTradersHasProfit": true,
+          "netPnl": 249594.270404
+        }
+      },
+      "totalTraderPnl": 243019.1,
+      "traderPnlLabel": "traders_winning"
     }
   ],
-  "lastUpdated": "2026-02-21T03:00:05.107Z"
+  "lastUpdated": "2026-02-22T03:00:05.925Z"
 }

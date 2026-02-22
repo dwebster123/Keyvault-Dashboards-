@@ -90,16 +90,6 @@
     "poolApy24h": null
   },
   {
-    "timestamp": "2026-02-20T14:00:08.016Z",
-    "date": "2026-02-20",
-    "aumUsd": "1138572591490827",
-    "jlpApyPct": 11.55,
-    "jlpAprPct": 10.93,
-    "traderPnl": null,
-    "unrealizedPnl": null,
-    "poolApy24h": null
-  },
-  {
     "timestamp": "2026-02-20T03:00:05.992Z",
     "date": "2026-02-19",
     "aumUsd": "1147687532731238",
@@ -110,9 +100,29 @@
     "poolApy24h": null
   },
   {
+    "timestamp": "2026-02-20T14:00:08.016Z",
+    "date": "2026-02-20",
+    "aumUsd": "1138572591490827",
+    "jlpApyPct": 11.55,
+    "jlpAprPct": 10.93,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
     "timestamp": "2026-02-21T03:00:05.415Z",
     "date": "2026-02-20",
     "aumUsd": "1155470934824115",
+    "jlpApyPct": 7.27,
+    "jlpAprPct": 7.02,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-02-22T03:00:06.261Z",
+    "date": "2026-02-21",
+    "aumUsd": "1157771059754402",
     "jlpApyPct": 7.27,
     "jlpAprPct": 7.02,
     "traderPnl": null,
