@@ -1,14 +1,5 @@
 [
   {
-    "date": "2025-11-25",
-    "total_fees": 1287374,
-    "position_fees": 1287374,
-    "swap_fees": 0,
-    "close_count": null,
-    "total_txns": null,
-    "source": "defillama"
-  },
-  {
     "date": "2025-11-26",
     "total_fees": 1737444,
     "position_fees": 1737444,
@@ -795,6 +786,15 @@
     "date": "2026-02-21",
     "total_fees": 639191,
     "position_fees": 639191,
+    "swap_fees": 0,
+    "close_count": null,
+    "total_txns": null,
+    "source": "defillama"
+  },
+  {
+    "date": "2026-02-22",
+    "total_fees": 645740,
+    "position_fees": 645740,
     "swap_fees": 0,
     "close_count": null,
     "total_txns": null,
