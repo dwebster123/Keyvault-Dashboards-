@@ -1009,7 +1009,7 @@
                     currentData = {
                         tvl: latestNav.tvl, SharePrice: latestNav.SharePrice,
                         totalShares: latestNav.totalShares,
-                        update_time_utc: latestNav.timestamp, source: 'official-nav',
+                        update_time_utc: latestNav.timestamp, navDate: latestNav.date, source: 'official-nav',
                         health: driftData?.health, leverage: driftData?.leverage,
                         positions: driftData?.positions, driftApys: driftData?.driftApys
                     };
@@ -1267,7 +1267,7 @@
 
             const navSource = currentData.source === 'official-nav' ? 'Official NAV' : 'Live';
             const navDate = currentData.source === 'official-nav'
-                ? new Date(m.updateTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' })
+                ? new Date(currentData.navDate + 'T17:00:00-05:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' })
                 : formatDate(m.updateTime);
             document.getElementById('updateTime').textContent = currentData.source === 'official-nav'
                 ? `${navSource}: ${navDate} — 5:00 PM EST`
