@@ -1,0 +1,6 @@
+[
+  {"id":"nix","name":"Nix","role":"Chief of Staff","emoji":"✴️","status":"active","description":"Main orchestrator — strategy, research, coordination"},
+  {"id":"bb-parser","name":"BB Signal Bot","role":"Signal Intelligence","emoji":"📡","status":"active","description":"Discord → Blofin paper trading bot on EC2"},
+  {"id":"kv-analytics","name":"KV Analytics","role":"Fund Analytics","emoji":"📊","status":"active","description":"Daily NAV stamps, performance tracking"},
+  {"id":"research","name":"Research Agent","role":"Due Diligence","emoji":"🔍","status":"idle","description":"Deep dives on investment opportunities"}
+]

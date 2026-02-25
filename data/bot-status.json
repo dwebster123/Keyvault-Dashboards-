@@ -1,0 +1,19 @@
+{
+  "bb_signal_bot": {
+    "status": "active",
+    "mode": "paper",
+    "model": "claude-haiku-4-5",
+    "note": "LLM parser live"
+  },
+  "blofin_bot": {
+    "status": "active",
+    "mode": "paper",
+    "note": "Scanning, loss limits off"
+  },
+  "kalshi_bot": {
+    "status": "inactive",
+    "mode": "disabled",
+    "note": "Disabled since Feb 12"
+  },
+  "updated_at": "2026-02-25T01:24:25.582972+00:00"
+}

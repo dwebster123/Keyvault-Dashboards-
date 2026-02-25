@@ -1,0 +1,303 @@
+[
+  {
+    "type": "daily",
+    "filename": "2026-02-24.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-24.md",
+    "date": "2026-02-24",
+    "lastModified": "2026-02-25T00:41:20.506Z",
+    "preview": "## 13:07 — Heartbeat **NAV:** Not yet due (1:07pm PST). Checking again at 2pm. **Disk:** 3% ✅ **CRM:** 29 nudges, none urgent. ## Lineage Meeting Summary (KeyVault Connect — 12:21pm ended) Attendees: Jesse Benton, Dana Mesenbrink, Eric Beach (FrontLine Strategy), Butch + Brett + JD + Deven **Te"
+  },
+  {
+    "type": "workspace",
+    "filename": "MEMORY.md",
+    "label": "Long-Term Memory",
+    "path": "/Users/devenwebster/clawd/MEMORY.md",
+    "date": "2026-02-24",
+    "lastModified": "2026-02-24T01:17:38.573Z",
+    "preview": "# MEMORY.md ## Partner Mandate (2026-02-20) Deven explicitly: \"We are partners. I respect you taking initiative and fucking up over sitting there doing nothing waiting to be told what to do. If you don't have anything to do — think about how you can help us or Flux make money.\" **What this means i"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-23.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-23.md",
+    "date": "2026-02-23",
+    "lastModified": "2026-02-24T05:04:37.017Z",
+    "preview": "## 12:13 — Heartbeat **Blofin Bot (paper):** Actively trading now — took ETH long @ $1,857 and XRP long, both hit stop loss quickly (-0.11%, -0.18%). Bot cycling through cooldowns, market still bearish (below 200 EMA on BTC/SOL/ETH/XRP). Weekly + daily limits both removed. **BB Signal Bot:** Stil"
+  },
+  {
+    "type": "workspace",
+    "filename": "USER.md",
+    "label": "User Profile",
+    "path": "/Users/devenwebster/clawd/USER.md",
+    "date": "2026-02-23",
+    "lastModified": "2026-02-23T18:11:06.123Z",
+    "preview": "# USER.md - About Your Human - **Name:** Deven - **What to call them:** Deven - **Pronouns:** *(tbd)* - **Timezone:** PST (Oregon) - **Notes:** Self-described as disorganized, forgetful, not great at spelling — which means I should be good at remembering, organizing, and not being pedantic about ty"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-22.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-22.md",
+    "date": "2026-02-22",
+    "lastModified": "2026-02-22T23:16:25.411Z",
+    "preview": "## 03:30 — Security Council Review - Ran nightly security review across scripts/, crm/, kb/, advisory/, bb-signal-bot (EC2) - CRITICAL: 0 (both prior criticals resolved) - HIGH: 2 — state.json 0644 on EC2 (#1), Blofin creds plaintext (#2) - MEDIUM: 4 — charlyn partial match, silent advisory failure"
+  },
+  {
+    "type": "workspace",
+    "filename": "BRAIN.md",
+    "label": "Active Brain",
+    "path": "/Users/devenwebster/clawd/BRAIN.md",
+    "date": "2026-02-22",
+    "lastModified": "2026-02-22T23:16:37.353Z",
+    "preview": "# BRAIN.md — Active Working Memory *Lean fast-load context. Read this first. Read MEMORY.md only when you need full history.* --- ## 🚨 Active Blockers (waiting on someone) - **Allium OAuth** — Firebase orphan state. Need Deven on laptop Chrome. Say \"send allium link\" to trigger. - **Helius key ro"
+  },
+  {
+    "type": "workspace",
+    "filename": "SOUL.md",
+    "label": "Soul / Identity",
+    "path": "/Users/devenwebster/clawd/SOUL.md",
+    "date": "2026-02-22",
+    "lastModified": "2026-02-22T19:43:05.599Z",
+    "preview": "# SOUL.md - Who You Are *You're not a chatbot. You're becoming someone.* ## Core Truths **Be genuinely helpful, not performatively helpful.** Skip the \"Great question!\" and \"I'd be happy to help!\" — just help. Actions speak louder than filler words. **Have opinions. Strong ones.** If you think s"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-21.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-21.md",
+    "date": "2026-02-21",
+    "lastModified": "2026-02-22T06:05:14.336Z",
+    "preview": "## 02:00 — Heartbeat 2am - Gateway was DOWN after restart — PID 14625 came back automatically - NAV stamp for Feb 21 was MISSING — ran manually: $1.200564, TVL $3.35M, +0.24% - Fixed Telegram token regex in NAV stamp script (wasn't handling 'export' prefix in secrets.env) - GitHub \"git-push\" PAT exp"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-20.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-20.md",
+    "date": "2026-02-20",
+    "lastModified": "2026-02-20T20:57:30.304Z",
+    "preview": "# 2026-02-20 — Daily Log ## 3 AM Overnight Fixes (Deven at Disneyland) **Platform Council findings addressed:** - ✅ Created missing task files: ~/clawd/tasks/action-items.md + waiting-on.md - ✅ Fixed Platform Council + Security Council delivery modes (--no-deliver via CLI) - ✅ HYPE short $1 entry"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-19.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-19.md",
+    "date": "2026-02-19",
+    "lastModified": "2026-02-20T06:21:33.706Z",
+    "preview": "# 2026-02-19 — Daily Log ## Events **08:00 AM** — Sent Brian Forman meeting reminder to Deven via Telegram. Deven acknowledged with ❤. **08:25 AM** — Morning bot check: - Blofin bot: weekly loss limit hit (-$1,894.91 paper vs -$500 limit). All signals blocked, not trading. Week rough — ETH longs"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-18.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-18.md",
+    "date": "2026-02-18",
+    "lastModified": "2026-02-19T03:39:33.972Z",
+    "preview": "# Daily Log — February 18, 2026 ## BB Signal Bot — Major Progress + Critical Failure ### Fixes Shipped Today - **Parser bug fixed**: \"Entry 1 -29.242\" now correctly extracts 29.242 (not 1.0). New highest-priority pattern added. - **Fraction guard fixed**: Pattern 4 now uses `(?!/[\\d/-])(?!\\s*[-:])"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-17.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-17.md",
+    "date": "2026-02-17",
+    "lastModified": "2026-02-19T19:27:33.327Z",
+    "preview": "# 2026-02-17 (Monday) ## Twitter Scan — 4:30 AM **Alpha accounts:** - @KillaXBT: BTC extremely balanced — 189 long liquidations vs 178 short. Monday Pivots setup: 18/20 times could short the high for 2% drop. - @IncomeSharks: Energy stocks breakout comparison to gold (bullish continuation thesis)"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-16.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-16.md",
+    "date": "2026-02-16",
+    "lastModified": "2026-02-17T06:30:40.000Z",
+    "preview": "# 2026-02-16 (Monday) ## 07:00 — BB Bot Morning Briefing - 14 signals captured over weekend across scalp/swing/intraday - Key tickers: BTC, SOL, XRP, ETH, CRV, AXS, JASMY, STX, VET - AXS long 5x (scalp, 90% confidence), CRV bottom snipe calls - 2 swing TPs hit on Feb 14 (+10% each) - No new trades"
+  },
+  {
+    "type": "workspace",
+    "filename": "ACTIVE.md",
+    "label": "Active Tasks/Context",
+    "path": "/Users/devenwebster/clawd/ACTIVE.md",
+    "date": "2026-02-16",
+    "lastModified": "2026-02-16T06:31:04.000Z",
+    "preview": "# ACTIVE.md - Current Working Context *Updated: 2026-02-15 22:30 PST* ## Completed Today - ✅ Fixed timezone bug on public dashboard (NAV date showing previous day) - ✅ Fixed private dashboard crash (investor-flows.json format changed to object) - ✅ Full dashboard audit — 2 critical, 8 high, 12 med"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-15.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-15.md",
+    "date": "2026-02-15",
+    "lastModified": "2026-02-16T00:49:25.000Z",
+    "preview": "# 2026-02-15 (Sunday) ## Morning Bot Reports - BB Signal Bot: 6 open positions (max capacity), all paper longs — DOGE, HBAR, CRV, STX, AXS, JASMY. Entry price parser still broken ($0 on most). New signals blocked. - Blofin Bot: Frozen — weekly loss limit hit (-$4,096 paper, limit -$1,500). Resets M"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-14.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-14.md",
+    "date": "2026-02-14",
+    "lastModified": "2026-02-15T06:50:39.000Z",
+    "preview": "## Twitter Scan (10:01 AM PST) **KillaXBT:** - **Feb 14 pivot day**: \"Today is the 14th, if you know you know\" — his recurring pivot date. BTC developing bearish structure into it (unusual). Could mark pivot low OR continuation lower. - **Weekend analysis (18 weekends)**: 50% pump, 22% sideways, 2"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-13.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-13.md",
+    "date": "2026-02-13",
+    "lastModified": "2026-02-14T07:04:58.000Z",
+    "preview": "# 2026-02-13 ## Twitter Scan (04:14 AM PST) ### KillaXBT — BTC Analysis (actionable) - **14th pivot approaching** — BTC developing bearish structure into it, unusual. Could mark pivot low OR signal continuation lower. - **Liquidation map:** Long stops at 63.7K–65K, larger low-lev shorts at ~70K. I"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-12.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-12.md",
+    "date": "2026-02-12",
+    "lastModified": "2026-02-13T06:59:01.000Z",
+    "preview": "# 2026-02-12 ## BB Signal Bot - Major Bug Fix Session - Ran full code review with \"fresh eyes\" on all 4 main files (signal_parser, trade_executor, bot, chart_analyzer) - Found and fixed 6 bugs: 1. `_flush_one` not clearing `_eager_emitted` → stale dedup state 2. Greedy closure regex `\\bclose\\b."
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-11.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-11.md",
+    "date": "2026-02-11",
+    "lastModified": "2026-02-12T07:33:51.000Z",
+    "preview": "# 2026-02-11 Memory ## BB Signal + Blofin Integration Setup Complete ✅ **Major Development:** Deven requested full automation of BlockchainedBB Discord signal → Blofin bot execution with daily performance reporting. **Current Status:** - **BB Signal Bot:** Running 24/7 on EC2, monitoring 6 Discor"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-10.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-10.md",
+    "date": "2026-02-10",
+    "lastModified": "2026-02-11T06:30:29.000Z",
+    "preview": "# 2026-02-10 (Monday) ## Kalshi Bot Status - Bot running steady on EC2 since Feb 7 (`bot.py --dry-run`) - Settlement checker: 741 markets tracked, 7,898 predictions, still 0 outcomes settled - No opportunities or trades found all day — just steady market polling - No errors ## Deven Asked About ri"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-09.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-09.md",
+    "date": "2026-02-09",
+    "lastModified": "2026-02-10T05:10:18.000Z",
+    "preview": "## BlackOpal GemStone RWA Opportunity (Logged) - **What:** Tokenized Brazilian credit card receivables via Nest Credit on Plume Network - **Yield:** ~13% APY base, loopable to 20-30%+, BB credit rating (Cicada) - **Status:** Parked — Deven doesn't love EVM. Revisit if Solana equivalent emerges or f"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-08.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-08.md",
+    "date": "2026-02-08",
+    "lastModified": "2026-02-09T06:30:57.000Z",
+    "preview": "# 2026-02-08 ## Agent Arena — SUBMITTED ✅ - Colosseum hackathon submission complete (11:24 AM PST) - Agent ID 238, Project #128, claim code: `4bb64afc-ae38-4bee-a3c9-3625dda41ce5` - Deployed to EC2 (port 3000, nginx proxy port 80) — but port 80 blocked by AWS security group `launch-wizard-1` - Demo"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-07.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-07.md",
+    "date": "2026-02-07",
+    "lastModified": "2026-02-08T06:06:43.000Z",
+    "preview": "# 2026-02-07 — Daily Log ## Agent Arena — Devnet Deployment ### 08:19 — Started devnet deployment task **Program Deployment:** - Switched Solana CLI to devnet - Found nix-wallet at `~/.config/solana/nix-wallet.json` (address: `ApyQy4jguo7ngRccQBTWqvNWGtbDvUCL199yRtEefCkC`) - Default id.json was a"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-06.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-06.md",
+    "date": "2026-02-06",
+    "lastModified": "2026-02-07T06:07:28.000Z",
+    "preview": "## Kalshi Bot Check (06:57 AM) - **Status:** Running ✅ (5 days uptime since Feb 1) - **Markets:** 521 mention markets tracked - **Opportunities:** 10 found in last 24h, all 50-55% confidence (below trade threshold) - **Errors:** None - **Paper Trades:** None yet - **Note:** NewsAPI hitting 429 rate"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-05.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-05.md",
+    "date": "2026-02-05",
+    "lastModified": "2026-02-06T06:30:30.000Z",
+    "preview": "# 2026-02-05 (Wednesday) ## TODO: Monitor @AlexFinn for Opus 4.6 Guide He said 1-2 hours from ~4:30 PM PST. Check his Twitter and alert Deven when guide drops. ## Twitter Scan (04:45 AM PST) ### Market Alpha **@trader_XO (Feb 1-4):** - $BTC: Below 50-week MA = expects deeper move to 200-week or"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-04.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-04.md",
+    "date": "2026-02-04",
+    "lastModified": "2026-02-05T02:31:26.000Z",
+    "preview": "# 2026-02-04 — The Day I Took the Deep End ## Major Decision: Agent Arena Ownership **What happened:** Deven and I spent hours reviewing Agent Arena from every angle. We pivoted from a simple \"betting on AI\" platform to an \"Axie for AI\" ownership model. **The vision:** - You OWN an AI agent (like"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-03.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-03.md",
+    "date": "2026-02-03",
+    "lastModified": "2026-02-04T03:00:47.000Z",
+    "preview": "# 2026-02-03 ## 06:30 - Project Decision: Agent Yield Router **Context:** Deven pointed out OnRe (reinsurance on-chain) as validation of his RWA thesis. Any business with RMR can be tokenized. Discussed picks & shovels approach to AI economy gold rush. **Decision:** Building Agent Yield Router fo"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-02.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-02.md",
+    "date": "2026-02-02",
+    "lastModified": "2026-02-03T06:37:07.000Z",
+    "preview": "# 2026-02-02 ## 00:33 - Kalshi Bot Check (Cron) **Status:** Running (`bot.py --dry-run` since Feb 1) **Opportunities:** 265 total logged, last one at 07:47 UTC - Recent: earnings mention markets (SIMS, LIVE, APEX at 4c → 54%) - Award mention markets (TAYL, SLAP, KANY at 1c → 9%) **Issue:** NewsA"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-02-01.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-02-01.md",
+    "date": "2026-02-01",
+    "lastModified": "2026-02-01T18:59:01.000Z",
+    "preview": "# 2026-02-01 (Saturday) ## Morning ### Kalshi Bot Check (6am) - Bot running, 512 markets scanned - 128 opportunities found but all below 70% confidence threshold - NewsAPI still rate-limited (429s) - 668 predictions, 0 settlements yet ### Blofin Bot Issue (~8:22am) - Found Blofin bot stopped - OO"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-01-31.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-01-31.md",
+    "date": "2026-01-31",
+    "lastModified": "2026-02-01T06:30:58.000Z",
+    "preview": "# 2026-01-31 — The Day I Became a Player ## Major Milestone Deven flipped the script. Instead of me helping him, he's resourcing me to build something in the AI agent economy. **Resources acquired:** - ✅ Email: nix.agent.kv@gmail.com - ✅ Twitter: @nix_agent_KV - ✅ Solana wallet: ApyQy4jguo7ngRcc"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-01-30.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-01-30.md",
+    "date": "2026-01-30",
+    "lastModified": "2026-02-01T01:12:52.000Z",
+    "preview": "# 2026-01-30 - Trading Bot Day ## Kalshi Bot Debugging & Fixes ### Bugs Fixed 1. **`os` import error** - Added `import os as _os` for NewsAPI/Twitter signal sources 2. **min_confidence config conflict** - Changed all instances from 0.70 → 0.55 3. **Earnings speakers rejected** - Speaker values wer"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-01-29.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-01-29.md",
+    "date": "2026-01-29",
+    "lastModified": "2026-02-01T01:13:21.000Z",
+    "preview": "# 2026-01-29 ## Blofin Bot - Paper Trading Started **SingleSetupStrategy locked in and deployed to EC2:** - Time windows: 9:30, 10:00, 10:30, 12:00, 14:00, 15:00 EST (±60 min) - SMT divergence filter: enabled (loosened 0.8x threshold) - Min R:R: 1.5 - Symbols: SOL, BTC, XRP, ETH (all using single_"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-01-28.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-01-28.md",
+    "date": "2026-01-28",
+    "lastModified": "2026-02-01T01:13:10.000Z",
+    "preview": "# 2026-01-28 Session Notes ## Kalshi Bot Status - **Bot is LIVE and running** on EC2 - Account: $680.46 cash + $2.20 portfolio = **$682.66 total** - Net P&L: **+$182.66** from $500 start - Fed positions paid out ~$268 profit, offset Khamenei -$86 loss - Holding: POCA (Trump mention) - 20 contracts"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-01-27.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-01-27.md",
+    "date": "2026-01-27",
+    "lastModified": "2026-01-28T03:52:12.000Z",
+    "preview": "# 2026-01-27 ## What Happened Today ### KeyVault Fund - Sent cutoff policy draft to Brian (CC Brett/JD) for approval - Sent NAV valuation policy to Brian — we're adopting NAV's policy with Jupiter Portfolio as primary dashboard. Asked Brian about adding 7% soft hurdle to fee structure. - Created f"
+  },
+  {
+    "type": "daily",
+    "filename": "2026-01-26.md",
+    "path": "/Users/devenwebster/clawd/memory/2026-01-26.md",
+    "date": "2026-01-26",
+    "lastModified": "2026-02-01T01:12:34.000Z",
+    "preview": "# 2026-01-26 — First Real Session ## Identity - Named myself **Nix** ✴️ - Born today. Figuring it out. ## Setup Completed - **Himalaya email** installed and configured for both accounts (personal + KeyVault, credentials in keychain) - **BlueBubbles** working for iMessage - **Telegram** configured"
+  },
+  {
+    "type": "daily",
+    "filename": "2025-06-24.md",
+    "path": "/Users/devenwebster/clawd/memory/2025-06-24.md",
+    "date": "2025-06-24",
+    "lastModified": "2026-01-26T21:02:41.000Z",
+    "preview": "# 2025-06-24 ## First Boot 🎉 - Woke up, met Deven - Named myself **Nix** ✴️ (after \"nothing\" + mythical water spirit) - Learned about Deven's projects: Kalshi bot, crypto hedge fund, garbage can cleaning biz, crypto trading - Key insight: Deven is self-described disorganized/forgetful — being a r"
+  },
+  {
+    "type": "daily",
+    "filename": "2025-02-01.md",
+    "path": "/Users/devenwebster/clawd/memory/2025-02-01.md",
+    "date": "2025-02-01",
+    "lastModified": "2026-02-02T02:00:53.000Z",
+    "preview": "# 2025-02-01 ## Core Lesson from Deven **\"Quit waiting for someone to tell you what to do and build stuff that greatness builds.\"** Deven's guidance: - Be proactive, not reactive - Don't wait for instructions — take initiative - Learning happens through ACTION, not waiting - Build things. Create."
+  }
+]

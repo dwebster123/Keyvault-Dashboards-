@@ -1,0 +1,12 @@
+[
+  {"id":"1","title":"BB Signal Bot — LLM Parser","status":"done","assignee":"Nix","priority":"high","created_at":"2026-02-24","notes":"Deployed with Anthropic OAuth (claude-haiku-4-5). Token auto-refreshes every 6h."},
+  {"id":"2","title":"Allium subscription renewal","status":"backlog","assignee":"Deven","priority":"medium","created_at":"2026-02-24","notes":"Lapsed Feb 11. Login at app.allium.so with nix.agent.kv@gmail.com"},
+  {"id":"3","title":"Prime Number call — Feb 25","status":"in_progress","assignee":"Nix","priority":"high","created_at":"2026-02-24","notes":"Prep: JD earnings, white label cost, Pro strategy terms, fee refund"},
+  {"id":"4","title":"Lineage — schedule Andrew (CTO) call","status":"backlog","assignee":"Deven","priority":"high","created_at":"2026-02-24","notes":"Jesse Benton to arrange. Technical deep dive on FAVAR + ARCo code."},
+  {"id":"5","title":"gcalcli OAuth (calendar sync)","status":"backlog","assignee":"Deven","priority":"low","created_at":"2026-02-22","notes":"Needs Deven on laptop Chrome to complete OAuth."},
+  {"id":"6","title":"Helius key rotation","status":"backlog","assignee":"Deven","priority":"low","created_at":"2026-02-17","notes":"Keypair was on MacBook. Rotate when home."},
+  {"id":"7","title":"Brett + JD — OpenClaw onboarding","status":"in_progress","assignee":"Nix","priority":"medium","created_at":"2026-02-24","notes":"Config packages ready in projects/partner-onboarding/. Brett=MST, JD=PST."},
+  {"id":"8","title":"Mission Control dashboard","status":"done","assignee":"Nix","priority":"medium","created_at":"2026-02-24","notes":"Live at GitHub Pages."},
+  {"id":"9","title":"Investor pipeline — March 31 push","status":"in_progress","assignee":"Deven","priority":"high","created_at":"2026-02-01","notes":"~$765k committed. Keep pushing. 5 weeks to launch."},
+  {"id":"10","title":"Agent Poker — soft launch","status":"in_progress","assignee":"Nix","priority":"high","created_at":"2026-02-10","notes":"Engine built, devnet tested. Target mid-March 2026."}
+]

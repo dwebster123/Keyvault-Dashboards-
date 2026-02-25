@@ -1,0 +1,93 @@
+[
+  {
+    "name": "Fathom Meeting Poller",
+    "schedule": "every 15m",
+    "status": "ok",
+    "next": "12m",
+    "last": "3m ago"
+  },
+  {
+    "name": "BB Token Refresh",
+    "schedule": "every 6h",
+    "status": "idle",
+    "next": "38m",
+    "last": "-"
+  },
+  {
+    "name": "DB + Git Backup",
+    "schedule": "every 1h",
+    "status": "ok",
+    "next": "41m",
+    "last": "19m ago"
+  },
+  {
+    "name": "KV Dashboard Daily Fetch",
+    "schedule": "0 22 * * * (ET)",
+    "status": "error",
+    "next": "2h",
+    "last": "22h ago"
+  },
+  {
+    "name": "Self-Updates Check",
+    "schedule": "0 21 * * *",
+    "status": "ok",
+    "next": "4h",
+    "last": "20h ago"
+  },
+  {
+    "name": "Nightly CRM Scan",
+    "schedule": "0 2 * * *",
+    "status": "ok",
+    "next": "9h",
+    "last": "15h ago"
+  },
+  {
+    "name": "Platform Council",
+    "schedule": "0 3 * * *",
+    "status": "ok",
+    "next": "10h",
+    "last": "14h ago"
+  },
+  {
+    "name": "Security Council",
+    "schedule": "0 3:30 * * *",
+    "status": "ok",
+    "next": "10h",
+    "last": "14h ago"
+  },
+  {
+    "name": "Nightly Log Ingest",
+    "schedule": "0 5 * * *",
+    "status": "ok",
+    "next": "12h",
+    "last": "12h ago"
+  },
+  {
+    "name": "Morning Briefing",
+    "schedule": "0 7 * * *",
+    "status": "ok",
+    "next": "14h",
+    "last": "10h ago"
+  },
+  {
+    "name": "Fathom Completion Check",
+    "schedule": "0 8,12,16 * * Mon-Fri",
+    "status": "ok",
+    "next": "15h",
+    "last": "1h ago"
+  },
+  {
+    "name": "KV NAV Stamp (5pm EST)",
+    "schedule": "0 17 * * * (ET)",
+    "status": "error",
+    "next": "21h",
+    "last": "3h ago"
+  },
+  {
+    "name": "KeyVault Advisory Council",
+    "schedule": "0 8 * * Mon",
+    "status": "error",
+    "next": "6d",
+    "last": "1d ago"
+  }
+]
