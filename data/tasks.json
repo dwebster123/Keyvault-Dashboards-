@@ -105,7 +105,7 @@
     "assignee": "Deven",
     "priority": "high",
     "created_at": "2026-02-24",
-    "notes": "Circle account application \u2014 re-apply now that PPM is finalized. Needed for USDC operations."
+    "notes": "Apply at circle.com/mint-contact. Docs: LLC formation + EIN + PPM + beneficial owner KYC (gov ID) + NAV Consulting agreement (covers AML/KYC) + bank account for wire."
   },
   {
     "id": "13",
@@ -114,6 +114,6 @@
     "assignee": "Deven",
     "priority": "high",
     "created_at": "2026-02-24",
-    "notes": "Coinbase Prime account application \u2014 re-apply now that PPM is finalized. Institutional custody + OTC."
+    "notes": "Apply at prime.coinbase.com. Docs: LLC formation + EIN + PPM + Form ADV/exemption (ask Brian) + NAV Consulting agreement (covers AML/KYC) + authorized user list + bank account for wire."
   }
 ]
