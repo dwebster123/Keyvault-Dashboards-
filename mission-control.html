@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Mission Control · Nix/KV</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:        #0d0d1f;
+      --bg2:       #13132a;
+      --card:      rgba(255,255,255,0.05);
+      --card-h:    rgba(255,255,255,0.08);
+      --border:    rgba(255,255,255,0.10);
+      --border-h:  rgba(255,255,255,0.20);
+      --text:      #e8e8f0;
+      --muted:     #6b6b8d;
+      --accent1:   #00d4ff;
+      --accent2:   #7c3aed;
+      --accent3:   #f472b6;
+      --green:     #22c55e;
+      --red:       #ef4444;
+      --yellow:    #f59e0b;
+      --orange:    #f97316;
+      --radius:    12px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d1f 100%);
+      min-height: 100vh;
+      color: var(--text);
+      padding: 0 0 60px 0;
+    }
+
+    /* ── Header ───────────────────────────────────────────────────── */
+    .header {
+      text-align: center;
+      padding: 40px 20px 28px;
+      position: relative;
+    }
+    .header h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+    .header .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 6px;
+    }
+    .header .refresh-info {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 4px;
+    }
+    #last-refresh { color: var(--accent1); }
+
+    /* ── Top Nav Bar ──────────────────────────────────────────────── */
+    .topnav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 20px 24px;
+    }
+    .topnav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.82rem;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      transition: all 0.2s;
+    }
+    .topnav a:hover { color: var(--text); border-color: var(--border-h); background: var(--card-h); }
+
+    /* ── Section jumps ────────────────────────────────────────────── */
+    .section-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 0 20px 32px;
+    }
+    .section-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.78rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .section-links a:hover { color: var(--accent1); border-color: var(--accent1); }
+
+    /* ── Layout ───────────────────────────────────────────────────── */
+    .main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* ── Section wrapper ──────────────────────────────────────────── */
+    section {
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title span.icon { font-size: 1.2rem; }
+    .section-title .badge {
+      font-size: 0.7rem;
+      background: var(--accent2);
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-left: auto;
+      font-weight: 500;
+    }
+
+    /* ── Card ──────────────────────────────────────────────────────── */
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .card:hover { border-color: var(--border-h); background: var(--card-h); }
+
+    /* ── Status dots ──────────────────────────────────────────────── */
+    .dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot.ok, .dot.active     { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .dot.error, .dot.inactive { background: var(--red);   box-shadow: 0 0 6px var(--red); }
+    .dot.idle, .dot.unknown  { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+
+    /* ── Priority pills ───────────────────────────────────────────── */
+    .pill {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .pill.high   { background: rgba(239,68,68,0.2);  color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+    .pill.medium { background: rgba(245,158,11,0.2); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+    .pill.low    { background: rgba(34,197,94,0.2);  color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+
+    /* ═══════════════════════════════════════════════════════════════
+       §1  TASKS BOARD
+    ══════════════════════════════════════════════════════════════════ */
+    .kanban {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 700px) { .kanban { grid-template-columns: 1fr; } }
+
+    .kanban-col {
+      background: rgba(0,0,0,0.25);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 14px;
+      min-height: 120px;
+    }
+    .kanban-col-header {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .kanban-col-header .count {
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 1px 7px;
+      font-size: 0.72rem;
+      margin-left: auto;
+    }
+    .kanban-col.col-backlog    .kanban-col-header { color: var(--muted); }
+    .kanban-col.col-in_progress .kanban-col-header { color: var(--accent1); }
+    .kanban-col.col-done        .kanban-col-header { color: var(--green); }
+
+    .task-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      cursor: default;
+      transition: border-color 0.2s;
+    }
+    .task-card:hover { border-color: var(--border-h); }
+    .task-card:last-child { margin-bottom: 0; }
+
+    .task-title {
+      font-size: 0.86rem;
+      font-weight: 500;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .task-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .task-assignee {
+      font-size: 0.7rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.06);
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+    .task-date {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       §2  CRON CALENDAR
+    ══════════════════════════════════════════════════════════════════ */
+    .cron-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 600px) { .cron-summary { grid-template-columns: 1fr 1fr; } }
+
+    .cron-stat {
+      background: rgba(0,0,0,0.2);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      text-align: center;
+    }
+    .cron-stat .val {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+    .cron-stat .lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+    .cron-stat.val-ok    .val { color: var(--green); }
+    .cron-stat.val-err   .val { color: var(--red); }
+    .cron-stat.val-total .val { color: var(--accent1); }
+
+    .cron-table { width: 100%; border-collapse: collapse; }
+    .cron-table th {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      text-align: left;
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cron-table td {
+      padding: 9px 10px;
+      font-size: 0.82rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: middle;
+    }
+    .cron-table tr:last-child td { border-bottom: none; }
+    .cron-table tr:hover td { background: rgba(255,255,255,0.03); }
+    .cron-name { font-weight: 500; }
+    .cron-schedule { color: var(--muted); font-size: 0.75rem; font-family: monospace; }
+    .cron-time { color: var(--muted); font-size: 0.78rem; }
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+    .status-chip.ok    { background: rgba(34,197,94,0.15); color: var(--green); }
+    .status-chip.error { background: rgba(239,68,68,0.15); color: var(--red); }
+
+    @media (max-width: 680px) {
+      .cron-table .hide-sm { display: none; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       §3  MEMORY VIEWER
+    ══════════════════════════════════════════════════════════════════ */
+    .memory-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .memory-search {
+      flex: 1;
+      min-width: 180px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .memory-search:focus { border-color: var(--accent1); }
+    .memory-search::placeholder { color: var(--muted); }
+
+    .filter-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--muted);
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      color: var(--accent1);
+      border-color: var(--accent1);
+      background: rgba(0,212,255,0.07);
+    }
+
+    .memory-list { display: flex; flex-direction: column; gap: 8px; }
+    .memory-item {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .memory-item:hover { border-color: var(--border-h); background: rgba(255,255,255,0.04); }
+    .memory-item-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+    .memory-filename {
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: monospace;
+    }
+    .memory-type-chip {
+      font-size: 0.65rem;
+      padding: 1px 7px;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+    .memory-type-chip.daily     { color: var(--accent1); border-color: rgba(0,212,255,0.3); background: rgba(0,212,255,0.08); }
+    .memory-type-chip.workspace { color: var(--accent3); border-color: rgba(244,114,182,0.3); background: rgba(244,114,182,0.08); }
+    .memory-date { font-size: 0.72rem; color: var(--muted); margin-left: auto; }
+    .memory-preview {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.45;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .memory-empty { text-align: center; color: var(--muted); padding: 30px; font-size: 0.85rem; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       §4  KV LIVE METRICS
+    ══════════════════════════════════════════════════════════════════ */
+    .kv-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .kv-metric {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      text-align: center;
+    }
+    .kv-metric .label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .kv-metric .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .kv-metric .sub {
+      font-size: 0.72rem;
+      margin-top: 4px;
+    }
+    .kv-metric .sub.pos { color: var(--green); }
+    .kv-metric .sub.neg { color: var(--red); }
+    .kv-metric .sub.neutral { color: var(--muted); }
+
+    .sparkline-wrap {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+    .sparkline-wrap h4 {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .sparkline-wrap canvas { max-height: 80px; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       §5  TEAM & AGENTS
+    ══════════════════════════════════════════════════════════════════ */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .team-card {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .team-card:hover { border-color: var(--border-h); transform: translateY(-2px); }
+    .team-card-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .team-emoji { font-size: 1.8rem; line-height: 1; }
+    .team-name { font-size: 0.95rem; font-weight: 600; }
+    .team-role { font-size: 0.72rem; color: var(--muted); }
+    .team-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.4; margin-top: 8px; }
+    .team-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-top: 10px;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .team-status.active { background: rgba(34,197,94,0.12); color: var(--green); }
+    .team-status.idle   { background: rgba(245,158,11,0.12); color: var(--yellow); }
+
+    /* ═══════════════════════════════════════════════════════════════
+       §6  SYSTEM HEALTH
+    ══════════════════════════════════════════════════════════════════ */
+    .health-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) { .health-grid { grid-template-columns: 1fr; } }
+
+    .health-block {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+    .health-block h4 {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .health-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.83rem;
+    }
+    .health-row:last-child { border-bottom: none; }
+    .health-row .hl { flex: 1; }
+    .health-val { color: var(--muted); font-size: 0.78rem; }
+
+    /* ── Footer ───────────────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-top: 40px;
+      padding-bottom: 20px;
+    }
+    .footer a { color: var(--accent1); text-decoration: none; }
+
+    /* ── Pulse animation ──────────────────────────────────────────── */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+    .pulsing { animation: pulse 2s ease-in-out infinite; }
+
+    /* ── Scrollbar ────────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────────────────── -->
+<div class="header">
+  <h1>✴️ Mission Control</h1>
+  <div class="subtitle">Nix · KeyVault · Ops Dashboard</div>
+  <div class="refresh-info">
+    Auto-refresh every 60s &nbsp;·&nbsp; Last refresh: <span id="last-refresh">—</span>
+  </div>
+</div>
+
+<!-- ── Top Nav ─────────────────────────────────────────────────────────── -->
+<div class="topnav">
+  <a href="../Keyvault-Dashboards-/index.html" target="_blank">📊 Public Dashboard</a>
+  <a href="../Keyvault-Dashboards-/vault.html" target="_blank">🔒 Private Vault</a>
+  <a href="../Keyvault-Dashboards-/jlp-analytics.html" target="_blank">💎 JLP Analytics</a>
+</div>
+
+<!-- ── Section Nav ─────────────────────────────────────────────────────── -->
+<div class="section-links">
+  <a href="#tasks">📋 Tasks</a>
+  <a href="#crons">⏰ Cron Jobs</a>
+  <a href="#memory">🧠 Memory</a>
+  <a href="#kv-metrics">📈 KV Metrics</a>
+  <a href="#team">👥 Team</a>
+  <a href="#health">🛡 Health</a>
+</div>
+
+<!-- ── Main Content ────────────────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- §1  TASKS BOARD ───────────────────────────────────────────────────── -->
+  <section id="tasks">
+    <div class="section-title">
+      <span class="icon">📋</span> Tasks Board
+      <span class="badge" id="tasks-badge">—</span>
+    </div>
+    <div class="kanban" id="kanban-board">
+      <div class="kanban-col col-backlog">
+        <div class="kanban-col-header">
+          ⬜ Backlog <span class="count" id="cnt-backlog">0</span>
+        </div>
+        <div id="col-backlog"></div>
+      </div>
+      <div class="kanban-col col-in_progress">
+        <div class="kanban-col-header">
+          🔵 In Progress <span class="count" id="cnt-in_progress">0</span>
+        </div>
+        <div id="col-in_progress"></div>
+      </div>
+      <div class="kanban-col col-done">
+        <div class="kanban-col-header">
+          ✅ Done <span class="count" id="cnt-done">0</span>
+        </div>
+        <div id="col-done"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §2  CRON CALENDAR ────────────────────────────────────────────────── -->
+  <section id="crons">
+    <div class="section-title">
+      <span class="icon">⏰</span> Cron Jobs
+      <span class="badge" id="crons-badge">—</span>
+    </div>
+    <div class="cron-summary" id="cron-summary">
+      <!-- populated by JS -->
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="cron-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th class="hide-sm">Schedule</th>
+            <th class="hide-sm">Next</th>
+            <th>Last Run</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="cron-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- §3  MEMORY VIEWER ───────────────────────────────────────────────── -->
+  <section id="memory">
+    <div class="section-title">
+      <span class="icon">🧠</span> Memory Viewer
+      <span class="badge" id="memory-badge">—</span>
+    </div>
+    <div class="memory-controls">
+      <input class="memory-search" id="memory-search" type="text" placeholder="🔍  Search memory files…" oninput="filterMemory()">
+      <button class="filter-btn active" id="filter-all"       onclick="setFilter('all')">All</button>
+      <button class="filter-btn"        id="filter-daily"     onclick="setFilter('daily')">📅 Daily</button>
+      <button class="filter-btn"        id="filter-workspace" onclick="setFilter('workspace')">📂 Workspace</button>
+    </div>
+    <div class="memory-list" id="memory-list"></div>
+  </section>
+
+  <!-- §4  KV LIVE METRICS ─────────────────────────────────────────────── -->
+  <section id="kv-metrics">
+    <div class="section-title">
+      <span class="icon">📈</span> KV Live Metrics
+      <span style="font-size:0.72rem;color:var(--muted);margin-left:auto;">Official NAV · Daily stamps</span>
+    </div>
+    <div class="kv-metrics-grid" id="kv-metrics-grid">
+      <div class="kv-metric"><div class="label">Share Price</div><div class="value" id="kv-price">—</div><div class="sub neutral" id="kv-price-sub">Loading…</div></div>
+      <div class="kv-metric"><div class="label">TVL</div><div class="value" id="kv-tvl">—</div><div class="sub neutral" id="kv-tvl-sub">—</div></div>
+      <div class="kv-metric"><div class="label">Day Change</div><div class="value" id="kv-change">—</div><div class="sub neutral" id="kv-change-sub">—</div></div>
+      <div class="kv-metric"><div class="label">All-Time ROI</div><div class="value" id="kv-roi">—</div><div class="sub neutral" id="kv-roi-sub">since inception</div></div>
+    </div>
+    <div class="sparkline-wrap">
+      <h4>Share Price — Last 30 Days</h4>
+      <canvas id="sparkline" height="80"></canvas>
+    </div>
+  </section>
+
+  <!-- §5  TEAM & AGENTS ───────────────────────────────────────────────── -->
+  <section id="team">
+    <div class="section-title">
+      <span class="icon">👥</span> Team &amp; Agents
+    </div>
+    <div class="team-grid" id="team-grid"></div>
+  </section>
+
+  <!-- §6  SYSTEM HEALTH ───────────────────────────────────────────────── -->
+  <section id="health">
+    <div class="section-title">
+      <span class="icon">🛡</span> System Health
+    </div>
+    <div class="health-grid">
+      <!-- Bots -->
+      <div class="health-block">
+        <h4>Trading Bots (EC2)</h4>
+        <div id="bot-health-rows"><div style="color:var(--muted);font-size:0.82rem;">Loading…</div></div>
+      </div>
+      <!-- Cron health -->
+      <div class="health-block">
+        <h4>Cron Health Summary</h4>
+        <div id="cron-health-rows"><div style="color:var(--muted);font-size:0.82rem;">Loading…</div></div>
+      </div>
+      <!-- Data freshness -->
+      <div class="health-block">
+        <h4>Data Freshness</h4>
+        <div id="data-freshness-rows"><div style="color:var(--muted);font-size:0.82rem;">Loading…</div></div>
+      </div>
+      <!-- Memory summary -->
+      <div class="health-block">
+        <h4>Memory Stats</h4>
+        <div id="memory-health-rows"><div style="color:var(--muted);font-size:0.82rem;">Loading…</div></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /main -->
+
+<div class="footer">
+  Mission Control · Built by Nix ✴️ · 
+  <a href="https://github.com/dwebster123/mission-control" target="_blank">GitHub</a>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+/* ── helpers ─────────────────────────────────────────────────────────── */
+async function fetchJSON(url) {
+  const r = await fetch(url + '?t=' + Date.now());
+  if (!r.ok) throw new Error(`HTTP ${r.status} for ${url}`);
+  return r.json();
+}
+function fmt$(n) { return '$' + (n >= 1e6 ? (n/1e6).toFixed(2)+'M' : n.toFixed(2)); }
+function fmtPct(n, dp=3) { return (n >= 0 ? '+' : '') + n.toFixed(dp) + '%'; }
+function fmtDate(str) {
+  if (!str) return '—';
+  const d = new Date(str);
+  return isNaN(d) ? str : d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   §1  TASKS
+══════════════════════════════════════════════════════════════════════ */
+let allTasks = [];
+
+async function loadTasks() {
+  try {
+    allTasks = await fetchJSON('data/tasks.json');
+    renderTasks();
+  } catch(e) {
+    console.warn('tasks.json load failed', e);
+  }
+}
+
+function renderTasks() {
+  const cols = { backlog: [], in_progress: [], done: [] };
+  for (const t of allTasks) {
+    const col = cols[t.status] || cols.backlog;
+    col.push(t);
+  }
+
+  const total = allTasks.length;
+  document.getElementById('tasks-badge').textContent = total + ' tasks';
+
+  for (const [status, tasks] of Object.entries(cols)) {
+    document.getElementById(`cnt-${status}`).textContent = tasks.length;
+    const el = document.getElementById(`col-${status}`);
+    if (!el) continue;
+    el.innerHTML = tasks.length === 0
+      ? `<div style="color:var(--muted);font-size:0.78rem;padding:8px 0;">Empty</div>`
+      : tasks.map(t => `
+        <div class="task-card">
+          <div class="task-title">${escHtml(t.title)}</div>
+          <div class="task-meta">
+            <span class="pill ${t.priority || 'low'}">${t.priority || 'normal'}</span>
+            <span class="task-assignee">@${escHtml(t.assignee || '—')}</span>
+            <span class="task-date">${fmtDate(t.created_at)}</span>
+          </div>
+        </div>`).join('');
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   §2  CRONS
+══════════════════════════════════════════════════════════════════════ */
+let allCrons = [];
+
+async function loadCrons() {
+  try {
+    allCrons = await fetchJSON('data/crons.json');
+    renderCrons();
+  } catch(e) {
+    console.warn('crons.json load failed', e);
+  }
+}
+
+function renderCrons() {
+  const ok  = allCrons.filter(c => c.status === 'ok').length;
+  const err = allCrons.filter(c => c.status === 'error').length;
+  const total = allCrons.length;
+
+  document.getElementById('crons-badge').textContent = total + ' jobs';
+
+  document.getElementById('cron-summary').innerHTML = `
+    <div class="cron-stat val-total"><div class="val">${total}</div><div class="lbl">Total Jobs</div></div>
+    <div class="cron-stat val-ok"   ><div class="val">${ok}</div>   <div class="lbl">Healthy</div></div>
+    <div class="cron-stat val-err"  ><div class="val">${err}</div>  <div class="lbl">Errors</div></div>
+  `;
+
+  const tbody = document.getElementById('cron-tbody');
+  tbody.innerHTML = allCrons.map(c => `
+    <tr>
+      <td><span class="cron-name">${escHtml(c.name)}</span></td>
+      <td class="hide-sm"><span class="cron-schedule">${escHtml(c.schedule || '—')}</span></td>
+      <td class="hide-sm cron-time">${escHtml(c.next || '—')}</td>
+      <td class="cron-time">${escHtml(c.last || '—')}</td>
+      <td>
+        <span class="status-chip ${c.status}">
+          <span class="dot ${c.status}"></span>
+          ${c.status}
+        </span>
+      </td>
+    </tr>`).join('');
+
+  renderCronHealth();
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   §3  MEMORY VIEWER
+══════════════════════════════════════════════════════════════════════ */
+let allMemory = [];
+let memFilter = 'all';
+let memQuery  = '';
+
+async function loadMemory() {
+  try {
+    allMemory = await fetchJSON('data/memory-index.json');
+    document.getElementById('memory-badge').textContent = allMemory.length + ' files';
+    filterMemory();
+    renderMemoryHealth();
+  } catch(e) {
+    console.warn('memory-index.json load failed', e);
+    document.getElementById('memory-list').innerHTML =
+      '<div class="memory-empty">memory-index.json not found — run scripts/index-memory.js</div>';
+  }
+}
+
+function setFilter(f) {
+  memFilter = f;
+  ['all','daily','workspace'].forEach(id => {
+    document.getElementById('filter-'+id).classList.toggle('active', id === f);
+  });
+  filterMemory();
+}
+
+function filterMemory() {
+  memQuery = document.getElementById('memory-search').value.toLowerCase();
+  const filtered = allMemory.filter(m => {
+    if (memFilter !== 'all' && m.type !== memFilter) return false;
+    if (memQuery && !m.filename.toLowerCase().includes(memQuery) && !m.preview.toLowerCase().includes(memQuery)) return false;
+    return true;
+  });
+
+  const list = document.getElementById('memory-list');
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="memory-empty">No files match.</div>';
+    return;
+  }
+
+  const MAX = 40;
+  const shown = filtered.slice(0, MAX);
+  list.innerHTML = shown.map(m => `
+    <div class="memory-item">
+      <div class="memory-item-header">
+        <span class="memory-filename">${escHtml(m.filename)}</span>
+        <span class="memory-type-chip ${m.type}">${m.type}</span>
+        <span class="memory-date">${fmtDate(m.date)}</span>
+      </div>
+      <div class="memory-preview">${escHtml(m.preview || '(empty)')}</div>
+    </div>`).join('') +
+    (filtered.length > MAX ? `<div class="memory-empty">…and ${filtered.length - MAX} more</div>` : '');
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   §4  KV LIVE METRICS
+══════════════════════════════════════════════════════════════════════ */
+let sparkChart = null;
+
+async function loadKVMetrics() {
+  try {
+    const nav = await fetchJSON('data/official-nav-history.json');
+    if (!nav || nav.length === 0) return;
+
+    // sort asc
+    nav.sort((a, b) => a.date.localeCompare(b.date));
+    const latest = nav[nav.length - 1];
+    const prev   = nav[nav.length - 2];
+    const first  = nav[0];
+
+    // Share price
+    const price = latest.SharePrice;
+    document.getElementById('kv-price').textContent = '$' + price.toFixed(4);
+    document.getElementById('kv-price-sub').textContent = fmtDate(latest.date) + ' (latest stamp)';
+
+    // TVL
+    const tvl = latest.tvl;
+    document.getElementById('kv-tvl').textContent = fmt$(tvl);
+    document.getElementById('kv-tvl-sub').textContent = 'Total Value Locked';
+
+    // Day change
+    if (prev) {
+      const chg = ((price - prev.SharePrice) / prev.SharePrice) * 100;
+      const el  = document.getElementById('kv-change');
+      const sub = document.getElementById('kv-change-sub');
+      el.textContent  = fmtPct(chg, 3);
+      el.style.color  = chg >= 0 ? 'var(--green)' : 'var(--red)';
+      sub.textContent = `vs ${fmtDate(prev.date)}`;
+      sub.className   = 'sub ' + (chg >= 0 ? 'pos' : 'neg');
+    }
+
+    // All-time ROI
+    const roi = ((price - first.SharePrice) / first.SharePrice) * 100;
+    const roiEl = document.getElementById('kv-roi');
+    roiEl.textContent = fmtPct(roi, 2);
+    roiEl.style.color = roi >= 0 ? 'var(--green)' : 'var(--red)';
+    document.getElementById('kv-roi-sub').textContent = `since ${fmtDate(first.date)}`;
+
+    // Sparkline — last 30 entries
+    const last30 = nav.slice(-30);
+    renderSparkline(last30);
+
+  } catch(e) {
+    console.warn('KV metrics load failed', e);
+    document.getElementById('kv-price').textContent = '—';
+    document.getElementById('kv-price').style.color = 'var(--muted)';
+  }
+}
+
+function renderSparkline(data) {
+  const labels = data.map(d => d.date.slice(5)); // MM-DD
+  const values = data.map(d => d.SharePrice);
+  const ctx    = document.getElementById('sparkline').getContext('2d');
+
+  // gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, 80);
+  grad.addColorStop(0, 'rgba(0,212,255,0.3)');
+  grad.addColorStop(1, 'rgba(0,212,255,0.01)');
+
+  if (sparkChart) sparkChart.destroy();
+  sparkChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        borderColor: '#00d4ff',
+        borderWidth: 2,
+        pointRadius: 0,
+        fill: true,
+        backgroundColor: grad,
+        tension: 0.4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      plugins: { legend: { display: false }, tooltip: {
+        backgroundColor: 'rgba(0,0,0,0.8)',
+        titleColor: '#00d4ff',
+        bodyColor: '#e8e8f0',
+        borderColor: 'rgba(0,212,255,0.3)',
+        borderWidth: 1,
+        callbacks: { label: ctx => '$' + ctx.parsed.y.toFixed(4) }
+      }},
+      scales: {
+        x: { display: false },
+        y: {
+          display: true,
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: {
+            color: 'rgba(255,255,255,0.3)',
+            font: { size: 10 },
+            callback: v => '$' + v.toFixed(3),
+            maxTicksLimit: 4,
+          }
+        }
+      }
+    }
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   §5  TEAM
+══════════════════════════════════════════════════════════════════════ */
+async function loadTeam() {
+  try {
+    const team = await fetchJSON('data/team.json');
+    const grid = document.getElementById('team-grid');
+    grid.innerHTML = team.map(m => `
+      <div class="team-card">
+        <div class="team-card-top">
+          <span class="team-emoji">${m.emoji || '🤖'}</span>
+          <div>
+            <div class="team-name">${escHtml(m.name)}</div>
+            <div class="team-role">${escHtml(m.role)}</div>
+          </div>
+        </div>
+        <div class="team-desc">${escHtml(m.description || '')}</div>
+        <div class="team-status ${m.status}">
+          <span class="dot ${m.status}"></span>
+          ${m.status}
+        </div>
+      </div>`).join('');
+  } catch(e) { console.warn('team.json load failed', e); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   §6  SYSTEM HEALTH
+══════════════════════════════════════════════════════════════════════ */
+async function loadBotHealth() {
+  try {
+    const s = await fetchJSON('data/bot-status.json');
+    const updatedAt = s.updated_at ? new Date(s.updated_at).toLocaleString('en-US',{
+      month:'short', day:'numeric', hour:'numeric', minute:'2-digit', hour12:true
+    }) : '—';
+
+    const rows = [
+      { label: 'BB Signal Bot',  val: s.bb_signal_bot },
+      { label: 'Blofin Bot',     val: s.blofin_bot },
+      { label: 'Last Checked',   val: updatedAt, raw: true },
+    ];
+
+    document.getElementById('bot-health-rows').innerHTML = rows.map(r => `
+      <div class="health-row">
+        ${ r.raw ? '' : `<span class="dot ${r.val}"></span>` }
+        <span class="hl">${escHtml(r.label)}</span>
+        <span class="health-val ${r.raw ? '' : (r.val === 'active' ? 'pos' : 'neg')}"
+              style="${r.val === 'active' ? 'color:var(--green)' : r.raw ? '' : 'color:var(--red)'}">
+          ${escHtml(r.val || '—')}
+        </span>
+      </div>`).join('');
+
+    if (s.error) {
+      document.getElementById('bot-health-rows').innerHTML +=
+        `<div style="color:var(--yellow);font-size:0.72rem;margin-top:8px;">⚠️ SSH check failed — data may be stale</div>`;
+    }
+  } catch(e) {
+    document.getElementById('bot-health-rows').innerHTML =
+      '<div style="color:var(--muted);font-size:0.82rem;">bot-status.json not found</div>';
+  }
+}
+
+function renderCronHealth() {
+  if (!allCrons.length) return;
+  const ok    = allCrons.filter(c => c.status === 'ok');
+  const err   = allCrons.filter(c => c.status === 'error');
+  const rows  = [
+    { label: `Healthy (${ok.length})`,  val: ok.length + '/' + allCrons.length + ' ok', green: true },
+    ...err.map(c => ({ label: '⚠️ ' + c.name, val: 'error', red: true })),
+  ];
+  document.getElementById('cron-health-rows').innerHTML = rows.map(r => `
+    <div class="health-row">
+      ${ r.green ? '<span class="dot ok"></span>' : r.red ? '<span class="dot error"></span>' : '' }
+      <span class="hl" style="font-size:0.8rem;">${escHtml(r.label)}</span>
+      <span class="health-val" style="${r.green ? 'color:var(--green)' : r.red ? 'color:var(--red)' : ''}">${escHtml(r.val)}</span>
+    </div>`).join('');
+}
+
+async function loadDataFreshness() {
+  try {
+    const status = await fetchJSON('data/fetch-status.json');
+    const rows   = Object.entries(status).slice(0, 6).map(([key, val]) => {
+      const ts  = val?.lastFetch || val?.timestamp || null;
+      const ok  = val?.ok ?? val?.success ?? true;
+      const ago = ts ? timeSince(new Date(ts)) : '—';
+      return { label: key, val: ago, ok };
+    });
+    document.getElementById('data-freshness-rows').innerHTML = rows.map(r => `
+      <div class="health-row">
+        <span class="dot ${r.ok ? 'ok' : 'error'}"></span>
+        <span class="hl" style="font-size:0.78rem;">${escHtml(r.label)}</span>
+        <span class="health-val">${escHtml(r.val)}</span>
+      </div>`).join('');
+  } catch(e) {
+    document.getElementById('data-freshness-rows').innerHTML =
+      '<div style="color:var(--muted);font-size:0.82rem;">fetch-status.json not found</div>';
+  }
+}
+
+function renderMemoryHealth() {
+  const daily = allMemory.filter(m => m.type === 'daily');
+  const ws    = allMemory.filter(m => m.type === 'workspace');
+  const latest = daily[0];
+  const rows = [
+    { label: 'Daily Notes',       val: daily.length + ' files' },
+    { label: 'Workspace Docs',    val: ws.length + ' files' },
+    { label: 'Latest Entry',      val: latest ? latest.date : '—' },
+    { label: 'Total Files',       val: allMemory.length },
+  ];
+  document.getElementById('memory-health-rows').innerHTML = rows.map(r => `
+    <div class="health-row">
+      <span class="hl">${escHtml(r.label)}</span>
+      <span class="health-val" style="color:var(--accent1);">${escHtml(String(r.val))}</span>
+    </div>`).join('');
+}
+
+/* ── Utilities ──────────────────────────────────────────────────────── */
+function escHtml(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function timeSince(date) {
+  const sec = Math.floor((Date.now() - date) / 1000);
+  if (isNaN(sec) || sec < 0) return '—';
+  if (sec < 60)   return sec + 's ago';
+  if (sec < 3600) return Math.floor(sec/60) + 'm ago';
+  if (sec < 86400) return Math.floor(sec/3600) + 'h ago';
+  return Math.floor(sec/86400) + 'd ago';
+}
+
+/* ── Refresh loop ─────────────────────────────────────────────────── */
+function stamp() {
+  document.getElementById('last-refresh').textContent = new Date().toLocaleTimeString('en-US',{
+    hour:'numeric', minute:'2-digit', second:'2-digit'
+  });
+}
+
+async function loadAll() {
+  await Promise.allSettled([
+    loadTasks(),
+    loadCrons(),
+    loadMemory(),
+    loadKVMetrics(),
+    loadTeam(),
+    loadBotHealth(),
+    loadDataFreshness(),
+  ]);
+  stamp();
+}
+
+// Initial load
+loadAll();
+
+// Auto-refresh every 60s
+setInterval(loadAll, 60_000);
+</script>
+</body>
+</html>
