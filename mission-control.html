@@ -542,6 +542,49 @@
     }
     .pulsing { animation: pulse 2s ease-in-out infinite; }
 
+    /* ── KB Search ────────────────────────────────────────────────── */
+    .kb-search-bar { display: flex; gap: 8px; margin-bottom: 16px; }
+    .kb-search-input {
+      flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 8px; padding: 9px 14px; color: var(--text); font-size: 0.88rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .kb-search-input:focus { border-color: var(--accent1); }
+    .kb-search-input::placeholder { color: var(--muted); }
+    .kb-filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .kb-results { display: flex; flex-direction: column; gap: 8px; }
+    .kb-item {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px; cursor: default;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .kb-item:hover { border-color: var(--border-h); background: rgba(255,255,255,0.05); }
+    .kb-item-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+    .kb-item-title { font-size: 0.88rem; font-weight: 600; flex: 1; color: var(--text); }
+    .kb-item-title a { color: inherit; text-decoration: none; }
+    .kb-item-title a:hover { color: var(--accent1); }
+    .kb-type-chip {
+      font-size: 0.66rem; padding: 2px 7px; border-radius: 10px;
+      border: 1px solid; white-space: nowrap;
+    }
+    .kb-type-chip.article  { color: var(--accent1); border-color: rgba(0,212,255,0.3); background: rgba(0,212,255,0.08); }
+    .kb-type-chip.youtube  { color: #f87171;        border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); }
+    .kb-type-chip.tweet    { color: #60a5fa;        border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.08); }
+    .kb-type-chip.pdf      { color: var(--accent3); border-color: rgba(244,114,182,0.3); background: rgba(244,114,182,0.08); }
+    .kb-item-meta { font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; }
+    .kb-item-summary { font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
+    .kb-empty { text-align: center; color: var(--muted); padding: 30px; font-size: 0.85rem; }
+    .kb-stats { font-size: 0.75rem; color: var(--muted); margin-bottom: 12px; }
+
+    /* ── Team type chips ───────────────────────────────────────────── */
+    .team-type-chip {
+      font-size: 0.65rem; padding: 2px 7px; border-radius: 10px;
+      border: 1px solid; margin-top: 6px; display: inline-block;
+    }
+    .team-type-chip.human    { color: #a3e635; border-color: rgba(163,230,53,0.3); background: rgba(163,230,53,0.08); }
+    .team-type-chip.agent    { color: var(--accent1); border-color: rgba(0,212,255,0.3); background: rgba(0,212,255,0.08); }
+    .team-type-chip.external { color: var(--accent3); border-color: rgba(244,114,182,0.3); background: rgba(244,114,182,0.08); }
+
     /* ── Scrollbar ────────────────────────────────────────────────── */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -573,6 +616,7 @@
   <a href="#memory">🧠 Memory</a>
   <a href="#kv-metrics">📈 KV Metrics</a>
   <a href="#team">👥 Team</a>
+  <a href="#kb">🔍 KB Search</a>
   <a href="#health">🛡 Health</a>
 </div>
 
@@ -673,7 +717,26 @@
     <div class="team-grid" id="team-grid"></div>
   </section>
 
-  <!-- §6  SYSTEM HEALTH ───────────────────────────────────────────────── -->
+  <!-- §6  KB SEARCH ──────────────────────────────────────────────────── -->
+  <section id="kb">
+    <div class="section-title">
+      <span class="icon">🔍</span> Knowledge Pool
+      <span class="badge" id="kb-badge">—</span>
+    </div>
+    <div class="kb-search-bar">
+      <input class="kb-search-input" id="kb-search" type="text" placeholder="Search 142 sources — articles, tweets, YouTube, PDFs…" oninput="filterKB()">
+    </div>
+    <div class="kb-filter-row">
+      <button class="filter-btn active" id="kb-filter-all"     onclick="setKBFilter('all')">All</button>
+      <button class="filter-btn"        id="kb-filter-article" onclick="setKBFilter('article')">📰 Articles</button>
+      <button class="filter-btn"        id="kb-filter-youtube" onclick="setKBFilter('youtube')">▶️ YouTube</button>
+      <button class="filter-btn"        id="kb-filter-tweet"   onclick="setKBFilter('tweet')">🐦 Tweets</button>
+    </div>
+    <div class="kb-stats" id="kb-stats"></div>
+    <div class="kb-results" id="kb-results"><div class="kb-empty">Loading…</div></div>
+  </section>
+
+  <!-- §7  SYSTEM HEALTH ───────────────────────────────────────────────── -->
   <section id="health">
     <div class="section-title">
       <span class="icon">🛡</span> System Health
@@ -1000,8 +1063,74 @@ async function loadTeam() {
           <span class="dot ${m.status}"></span>
           ${m.status}
         </div>
+        <span class="team-type-chip ${m.type || 'agent'}">${m.type === 'human' ? '👤 Human' : m.type === 'external' ? '🔗 External' : '🤖 Agent'}</span>
       </div>`).join('');
   } catch(e) { console.warn('team.json load failed', e); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   §6  KB SEARCH
+══════════════════════════════════════════════════════════════════════ */
+let allKBEntries = [];
+let kbFilter = 'all';
+
+async function loadKB() {
+  try {
+    allKBEntries = await fetchJSON('data/kb-index.json');
+    document.getElementById('kb-badge').textContent = allKBEntries.length;
+    document.querySelector('#kb .kb-search-input').placeholder =
+      `Search ${allKBEntries.length} sources — articles, tweets, YouTube, PDFs…`;
+    filterKB();
+  } catch(e) { document.getElementById('kb-results').innerHTML = '<div class="kb-empty">kb-index.json not found</div>'; }
+}
+
+function setKBFilter(f) {
+  kbFilter = f;
+  document.querySelectorAll('.kb-filter-row .filter-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('kb-filter-' + f);
+  if (btn) btn.classList.add('active');
+  filterKB();
+}
+
+function filterKB() {
+  const q = (document.getElementById('kb-search').value || '').toLowerCase().trim();
+  let results = allKBEntries;
+  if (kbFilter !== 'all') results = results.filter(e => e.type === kbFilter);
+  if (q) results = results.filter(e =>
+    (e.title || '').toLowerCase().includes(q) ||
+    (e.summary || '').toLowerCase().includes(q) ||
+    (e.author || '').toLowerCase().includes(q) ||
+    (e.url || '').toLowerCase().includes(q)
+  );
+  const showing = Math.min(results.length, 50);
+  document.getElementById('kb-stats').textContent =
+    results.length === 0 ? '' :
+    `Showing ${showing} of ${results.length} result${results.length !== 1 ? 's' : ''}`;
+  const container = document.getElementById('kb-results');
+  if (results.length === 0) {
+    container.innerHTML = '<div class="kb-empty">No results found</div>';
+    return;
+  }
+  container.innerHTML = results.slice(0, 50).map(e => {
+    const isLink = e.url && (e.url.startsWith('http://') || e.url.startsWith('https://'));
+    const title = isLink
+      ? `<a href="${escHtml(e.url)}" target="_blank" rel="noopener">${escHtml(e.title || e.url)}</a>`
+      : escHtml(e.title || e.url || 'Untitled');
+    const meta = [
+      e.author ? escHtml(e.author) : null,
+      e.words ? `${e.words.toLocaleString()} words` : null,
+      e.added ? e.added.split('T')[0] : null,
+    ].filter(Boolean).join(' · ');
+    return `
+      <div class="kb-item">
+        <div class="kb-item-header">
+          <div class="kb-item-title">${title}</div>
+          <span class="kb-type-chip ${e.type || 'article'}">${e.type || 'article'}</span>
+        </div>
+        ${meta ? `<div class="kb-item-meta">${meta}</div>` : ''}
+        ${e.summary ? `<div class="kb-item-summary">${escHtml(e.summary)}</div>` : ''}
+      </div>`;
+  }).join('');
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -1122,6 +1251,7 @@ async function loadAll() {
     loadMemory(),
     loadKVMetrics(),
     loadTeam(),
+    loadKB(),
     loadBotHealth(),
     loadDataFreshness(),
   ]);

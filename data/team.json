@@ -1,6 +1,12 @@
 [
-  {"id":"nix","name":"Nix","role":"Chief of Staff","emoji":"✴️","status":"active","description":"Main orchestrator — strategy, research, coordination"},
-  {"id":"bb-parser","name":"BB Signal Bot","role":"Signal Intelligence","emoji":"📡","status":"active","description":"Discord → Blofin paper trading bot on EC2"},
-  {"id":"kv-analytics","name":"KV Analytics","role":"Fund Analytics","emoji":"📊","status":"active","description":"Daily NAV stamps, performance tracking"},
-  {"id":"research","name":"Research Agent","role":"Due Diligence","emoji":"🔍","status":"idle","description":"Deep dives on investment opportunities"}
+  {"id":"deven","name":"Deven Webster","role":"Founder & GP","emoji":"👤","status":"active","description":"KeyVault Fund founder. Drives investor pipeline, strategy, and final decisions.","type":"human"},
+  {"id":"brett","name":"Brett Nielsen","role":"Co-Founder","emoji":"👤","status":"active","description":"KeyVault co-founder. Utah-based. Helps source capital and drive fund operations.","type":"human"},
+  {"id":"jd","name":"JD Beck","role":"Co-Founder","emoji":"👤","status":"active","description":"KeyVault co-founder. Oregon-based. Cattle/ag expert. Deep market knowledge.","type":"human"},
+  {"id":"brian","name":"Brian Forman","role":"Fund Counsel","emoji":"⚖️","status":"active","description":"Morrison Cohen. Handles PPM, legal docs, regulatory. Communications are attorney-privileged.","type":"external"},
+  {"id":"nav","name":"NAV Consulting","role":"Fund Administrator","emoji":"🏦","status":"active","description":"Official fund administrator. NAV calculations, investor records, reporting.","type":"external"},
+  {"id":"nix","name":"Nix","role":"Chief of Staff (AI)","emoji":"✴️","status":"active","description":"Main AI orchestrator — strategy, research, monitoring, automation. Runs 24/7 on Mac mini.","type":"agent"},
+  {"id":"flux","name":"Flux","role":"Trading Agent","emoji":"⚡","status":"active","description":"Autonomous trading wallet. Holds 11.19 JLP (~$40) on Solana. Bankr wallet: 2s7G49AT...","type":"agent"},
+  {"id":"bb-bot","name":"BB Signal Bot","role":"Signal Intelligence (AI)","emoji":"📡","status":"active","description":"Discord → Blofin paper trading bot on EC2. Parses Vivian's signals via claude-haiku-4-5.","type":"agent"},
+  {"id":"blofin-bot","name":"Blofin Bot","role":"Trading Bot (AI)","emoji":"🤖","status":"active","description":"ML-based crypto trading bot on EC2. Paper trading. Wyckoff + Weekly IR strategies.","type":"agent"},
+  {"id":"kalshi-bot","name":"Kalshi Bot","role":"Prediction Markets (AI)","emoji":"🎯","status":"inactive","description":"Prediction market bot on EC2. Currently disabled. Trigger-word strategy.","type":"agent"}
 ]
