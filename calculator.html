@@ -296,7 +296,7 @@ function solveGrossForNet(targetNetAnnual, initial, years, badYear) {
 
 function simulate(annualGross, initial, years, badYear) {
     const quarterlyReturn = annualGross / 4;
-    const quarterlyHurdle = 0.0175; // 7% / 4
+    const quarterlyHurdle = 0.0125; // 5% / 4
     const totalQuarters = years * 4;
 
     let value = initial;
@@ -413,5 +413,343 @@ document.querySelectorAll('.scenario-btn').forEach(btn => {
 // Initial calculation
 calculate();
 </script>
+
+<!-- =============================================
+     DISTRIBUTION ELECTION & HWM IMPACT CALCULATOR
+     ============================================= -->
+<style>
+.dist-section { max-width: 1200px; margin: 40px auto 0; }
+.dist-section .section-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+.dist-section .section-header h2 {
+    font-size: 1.9rem;
+    background: linear-gradient(90deg, #22c55e, #00d4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+}
+.dist-section .section-header p {
+    color: #8b8ba7;
+    font-size: 0.95rem;
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+.dist-controls {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 24px;
+}
+.dist-controls h3 { color: #22c55e; font-size: 1.1rem; margin-bottom: 16px; }
+.dist-control-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+.dist-control-grid .control-group label { color: #8b8ba7; font-size: 0.85rem; display: block; margin-bottom: 6px; }
+.dist-control-grid input[type="number"], .dist-control-grid select {
+    width: 100%; padding: 10px 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px; color: #fff; font-size: 1rem; outline: none;
+}
+.dist-control-grid input:focus, .dist-control-grid select:focus { border-color: #22c55e; }
+
+.scenario-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+@media(max-width:700px) { .scenario-cards { grid-template-columns: 1fr; } }
+
+.scenario-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+.scenario-card:hover { transform: translateY(-3px); }
+.scenario-card.highlight { border-color: #22c55e; background: rgba(34,197,94,0.07); }
+.scenario-card .sc-label { font-size: 0.8rem; color: #8b8ba7; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.scenario-card .sc-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 16px; }
+.scenario-card .sc-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.85rem; }
+.scenario-card .sc-row:last-child { border-bottom: none; }
+.scenario-card .sc-key { color: #8b8ba7; }
+.scenario-card .sc-val { font-weight: 600; }
+.scenario-card .sc-val.green { color: #22c55e; }
+.scenario-card .sc-val.pink { color: #f472b6; }
+.scenario-card .sc-val.cyan { color: #00d4ff; }
+
+.hwm-insight {
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.25);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+    color: #c8f5db;
+    line-height: 1.6;
+}
+.hwm-insight strong { color: #22c55e; }
+
+.dist-table-container {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow-x: auto;
+    margin-bottom: 24px;
+}
+.dist-table-container h3 { font-size: 1.05rem; color: #22c55e; margin-bottom: 8px; }
+.dist-table-container .tbl-sub { color: #8b8ba7; font-size: 0.82rem; margin-bottom: 14px; }
+.dist-table-container table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.dist-table-container th { color: #8b8ba7; text-align: right; padding: 9px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; white-space: nowrap; }
+.dist-table-container th:first-child { text-align: left; }
+.dist-table-container td { padding: 9px 10px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); white-space: nowrap; }
+.dist-table-container td:first-child { text-align: left; color: #7c3aed; font-weight: 600; }
+.dist-table-container tr:hover td { background: rgba(255,255,255,0.03); }
+.dist-table-container .dist-col { color: #00d4ff; }
+.dist-table-container .fee-col { color: #f472b6; }
+.dist-table-container .green-col { color: #22c55e; }
+.dist-table-container .hwm-tag { font-size: 0.75rem; color: #22c55e; }
+</style>
+
+<div class="dist-section">
+    <div class="section-header">
+        <h2>📤 Distribution Election & HWM Impact</h2>
+        <p>Model how investor distribution elections affect the high water mark, fee calculations, and total investor value across different scenarios. Designed for internal review by the KV team.</p>
+    </div>
+
+    <div class="dist-controls">
+        <h3>⚙️ Parameters</h3>
+        <div class="dist-control-grid">
+            <div class="control-group">
+                <label>Initial Investment ($)</label>
+                <input type="number" id="dInvestment" value="1000000" min="10000" step="50000">
+            </div>
+            <div class="control-group">
+                <label>Annual Gross Return (%)</label>
+                <input type="number" id="dGrossReturn" value="26" min="1" max="80" step="0.5">
+            </div>
+            <div class="control-group">
+                <label>Time Horizon</label>
+                <select id="dYears">
+                    <option value="1">1 year (4 quarters)</option>
+                    <option value="2" selected>2 years (8 quarters)</option>
+                    <option value="3">3 years (12 quarters)</option>
+                    <option value="4">4 years (16 quarters)</option>
+                    <option value="5">5 years (20 quarters)</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Detailed View — Distribution Election</label>
+                <select id="dDetailPct">
+                    <option value="0">0% — Full Reinvestment</option>
+                    <option value="0.25">25% of net profit distributed</option>
+                    <option value="0.5" selected>50% of net profit distributed</option>
+                    <option value="0.75">75% of net profit distributed</option>
+                    <option value="1">100% — Full Distribution</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3-Scenario Comparison Cards -->
+    <div class="scenario-cards" id="dScenarioCards">
+        <!-- populated by JS -->
+    </div>
+
+    <div class="hwm-insight" id="dInsight"></div>
+
+    <!-- Detailed quarterly table -->
+    <div class="dist-table-container">
+        <h3>📋 Quarterly Detail — Selected Distribution Election</h3>
+        <p class="tbl-sub">HWM is adjusted downward when distributions are paid. Performance fees apply to total period return (net gain + distribution) per standard hedge fund practice.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Quarter</th>
+                    <th>Start NAV</th>
+                    <th>Gross Gain</th>
+                    <th>Mgmt Fee</th>
+                    <th>Net Gain</th>
+                    <th>Hurdle</th>
+                    <th>Perf Fee</th>
+                    <th>Distribution</th>
+                    <th>End NAV</th>
+                    <th>Adj. HWM</th>
+                    <th>Total Value*</th>
+                </tr>
+            </thead>
+            <tbody id="dDetailTable"></tbody>
+        </table>
+        <p style="color:#6b6b8d;font-size:0.78rem;margin-top:10px;">*Total Value = End NAV + cumulative distributions received. This is what the investor actually has.</p>
+    </div>
+</div>
+
+<script>
+// ── Distribution Calculator Logic ──────────────────────────────────────────
+
+const D = id => document.getElementById(id);
+
+function simulateDist(annualGross, initial, quarters, distributionPct) {
+    const qGross       = annualGross / 4;
+    const qHurdle      = 0.0125; // 5% annual / 4
+    const mgmtFeeRate  = 0.005;  // 0.5% quarterly (2% annual)
+    const basePerfRate = 0.20;
+    const kickerRate   = 0.25;
+    const kickerThresholdPct = 0.05; // 5% quarterly kicker threshold
+
+    let nav           = initial;
+    let hwm           = initial;   // adjusted HWM (reduces when distributions are paid)
+    let cumDist       = 0;
+    let totalMgmt     = 0;
+    let totalPerf     = 0;
+    const rows        = [];
+
+    for (let q = 1; q <= quarters; q++) {
+        const startNAV   = nav;
+
+        // 1. Apply gross return
+        const grossGain  = startNAV * qGross;
+        const afterReturn = startNAV + grossGain;
+
+        // 2. Management fee (on starting NAV)
+        const mgmtFee    = startNAV * mgmtFeeRate;
+        const afterMgmt  = afterReturn - mgmtFee;
+        const netGain    = afterMgmt - startNAV;  // gain after mgmt, before perf
+
+        // 3. Hurdle check (soft — gate on entire gain)
+        const hurdleAmt  = startNAV * qHurdle;
+        const hurdleMet  = netGain > hurdleAmt;
+
+        // 4. HWM check
+        const aboveHWM   = afterMgmt > hwm;
+
+        // 5. Performance fee (on gain eligible above HWM)
+        let perfFee = 0;
+        let hasKicker = false;
+        if (hurdleMet && aboveHWM) {
+            const eligible       = Math.min(netGain, afterMgmt - hwm);
+            const kickerThresh   = startNAV * kickerThresholdPct;
+            const kickerEligible = Math.max(0, Math.min(netGain - kickerThresh, eligible));
+            const baseEligible   = eligible - kickerEligible;
+            perfFee   = baseEligible * basePerfRate + kickerEligible * kickerRate;
+            hasKicker = kickerEligible > 0;
+        }
+
+        // 6. NAV after all fees
+        const navAfterFees = afterMgmt - perfFee;
+
+        // 7. Distribution — % of net profit after all fees (only if profitable quarter)
+        const netProfit = navAfterFees - startNAV;
+        const distAmount = netProfit > 0 ? netProfit * distributionPct : 0;
+
+        // 8. End NAV and update HWM
+        nav = navAfterFees - distAmount;
+        cumDist += distAmount;
+
+        // HWM adjusts down by distribution paid (so next period's bar matches what stayed in fund)
+        const hwmBeforeDist = Math.max(hwm, navAfterFees);
+        hwm = hwmBeforeDist - distAmount;
+
+        totalMgmt += mgmtFee;
+        totalPerf += perfFee;
+
+        rows.push({
+            q,
+            startNAV, grossGain, mgmtFee, netGain, hurdleAmt,
+            hurdleMet, aboveHWM, perfFee, hasKicker,
+            distAmount, endNAV: nav, hwm,
+            cumDist, totalValue: nav + cumDist
+        });
+    }
+
+    return { endNAV: nav, cumDist, totalMgmt, totalPerf, totalValue: nav + cumDist, rows };
+}
+
+function fmtD(v) { return '$' + Math.abs(v).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}); }
+function fmtS(v) { return (v >= 0 ? '+' : '-') + fmtD(v); }
+
+function renderDist() {
+    const initial     = parseFloat(D('dInvestment').value) || 1000000;
+    const annualGross = parseFloat(D('dGrossReturn').value) / 100 || 0.26;
+    const years       = parseInt(D('dYears').value) || 2;
+    const detailPct   = parseFloat(D('dDetailPct').value);
+    const quarters    = years * 4;
+
+    const scenarios = [
+        { label: 'Full Reinvestment', pct: 0, color: '#22c55e' },
+        { label: '50% Distribution',  pct: 0.5, color: '#00d4ff' },
+        { label: 'Full Distribution', pct: 1.0, color: '#f472b6' },
+    ];
+
+    // ── Scenario comparison cards ──────────────────────────────────────────
+    const cards = D('dScenarioCards');
+    cards.innerHTML = scenarios.map((sc, i) => {
+        const r = simulateDist(annualGross, initial, quarters, sc.pct);
+        const netAPY = (Math.pow(r.totalValue / initial, 1 / years) - 1) * 100;
+        const navGain = r.endNAV - initial;
+        return `<div class="scenario-card${i === 1 ? ' highlight' : ''}">
+            <div class="sc-label">Scenario ${i+1}</div>
+            <div class="sc-title" style="color:${sc.color}">${sc.label}</div>
+            <div class="sc-row"><span class="sc-key">End NAV</span><span class="sc-val green">${fmtD(r.endNAV)}</span></div>
+            <div class="sc-row"><span class="sc-key">Distributions Received</span><span class="sc-val cyan">${fmtD(r.cumDist)}</span></div>
+            <div class="sc-row"><span class="sc-key">Total Investor Value</span><span class="sc-val green" style="color:${sc.color}">${fmtD(r.totalValue)}</span></div>
+            <div class="sc-row"><span class="sc-key">Total Value APY</span><span class="sc-val" style="color:${sc.color}">${netAPY.toFixed(1)}%</span></div>
+            <div class="sc-row"><span class="sc-key">Mgmt Fees Paid</span><span class="sc-val pink">${fmtD(r.totalMgmt)}</span></div>
+            <div class="sc-row"><span class="sc-key">Perf Fees Paid</span><span class="sc-val pink">${fmtD(r.totalPerf)}</span></div>
+            <div class="sc-row"><span class="sc-key">Total Fees</span><span class="sc-val pink">${fmtD(r.totalMgmt + r.totalPerf)}</span></div>
+        </div>`;
+    }).join('');
+
+    // ── Insight box ────────────────────────────────────────────────────────
+    const r0 = simulateDist(annualGross, initial, quarters, 0);
+    const r1 = simulateDist(annualGross, initial, quarters, 1);
+    const diff = r0.totalValue - r1.totalValue;
+    D('dInsight').innerHTML = `<strong>Key Takeaway:</strong> At ${D('dGrossReturn').value}% gross annually over ${years} year${years>1?'s':''}, 
+        full reinvestment delivers <strong>${fmtD(r0.totalValue)}</strong> in total value vs 
+        <strong>${fmtD(r1.totalValue)}</strong> taking full quarterly distributions — a difference of 
+        <strong>${fmtD(diff)}</strong> (${((diff/initial)*100).toFixed(1)}% of initial investment). 
+        The HWM adjusts down by each distribution paid, so investors who take distributions aren't disadvantaged 
+        on future fee calculations — their bar is proportionally lower. Performance fees use the same basis either way: 
+        fee applies to total period return (net gain after mgmt fee) per Brian's guidance.`;
+
+    // ── Detail table ───────────────────────────────────────────────────────
+    const dr = simulateDist(annualGross, initial, quarters, detailPct);
+    D('dDetailTable').innerHTML = dr.rows.map(r => `<tr>
+        <td>Q${r.q} (Y${Math.ceil(r.q/4)})</td>
+        <td>${fmtD(r.startNAV)}</td>
+        <td class="green-col">+${fmtD(r.grossGain)}</td>
+        <td class="fee-col">-${fmtD(r.mgmtFee)}</td>
+        <td class="${r.netGain >= 0 ? 'green-col' : 'fee-col'}">${fmtS(r.netGain)}</td>
+        <td>${r.hurdleMet ? '✅' : '❌'} ${fmtD(r.hurdleAmt)}</td>
+        <td class="fee-col">${r.perfFee > 0 ? '-'+fmtD(r.perfFee) : '—'}${r.hasKicker ? ' 🚀' : ''}</td>
+        <td class="dist-col">${r.distAmount > 0 ? fmtD(r.distAmount) : '—'}</td>
+        <td class="green-col" style="font-weight:600">${fmtD(r.endNAV)}</td>
+        <td><span class="hwm-tag">${fmtD(r.hwm)}</span></td>
+        <td class="green-col" style="font-weight:700">${fmtD(r.totalValue)}</td>
+    </tr>`).join('');
+}
+
+// Events
+['dInvestment','dGrossReturn','dYears','dDetailPct'].forEach(id => {
+    D(id).addEventListener('input', renderDist);
+    D(id).addEventListener('change', renderDist);
+});
+
+renderDist();
+</script>
+
 </body>
 </html>
