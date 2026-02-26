@@ -398,6 +398,27 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .memory-item.expanded .memory-preview {
+      white-space: pre-wrap;
+      overflow: visible;
+      text-overflow: unset;
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 10px 12px;
+      margin-top: 8px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .memory-item .expand-icon {
+      font-size: 0.7rem;
+      color: var(--muted);
+      transition: transform 0.2s;
+      margin-left: 6px;
+    }
+    .memory-item.expanded .expand-icon { transform: rotate(90deg); color: var(--accent1); }
+    .memory-item.expanded { border-color: var(--accent1); background: rgba(0,212,255,0.03); }
+    .memory-updated { font-size: 0.68rem; color: var(--muted); margin-left: 8px; font-style: italic; }
     .memory-empty { text-align: center; color: var(--muted); padding: 30px; font-size: 0.85rem; }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -887,7 +908,11 @@ let memQuery  = '';
 async function loadMemory() {
   try {
     allMemory = await fetchJSON('data/memory-index.json');
-    document.getElementById('memory-badge').textContent = allMemory.length + ' files';
+    // sort newest first
+    allMemory.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    const daily = allMemory.filter(m => m.type === 'daily').length;
+    const ws = allMemory.filter(m => m.type === 'workspace').length;
+    document.getElementById('memory-badge').textContent = `${allMemory.length} files (${daily} daily, ${ws} workspace)`;
     filterMemory();
     renderMemoryHealth();
   } catch(e) {
@@ -921,15 +946,21 @@ function filterMemory() {
 
   const MAX = 40;
   const shown = filtered.slice(0, MAX);
-  list.innerHTML = shown.map(m => `
-    <div class="memory-item">
+  list.innerHTML = shown.map((m, i) => {
+    const updated = m.lastModified ? timeSince(new Date(m.lastModified)) : '';
+    return `
+    <div class="memory-item" data-idx="${i}" onclick="toggleMemory(this)">
       <div class="memory-item-header">
+        <span class="expand-icon">▶</span>
         <span class="memory-filename">${escHtml(m.filename)}</span>
+        ${m.label ? `<span style="font-size:0.72rem;color:var(--muted);">— ${escHtml(m.label)}</span>` : ''}
         <span class="memory-type-chip ${m.type}">${m.type}</span>
+        ${updated ? `<span class="memory-updated">${updated}</span>` : ''}
         <span class="memory-date">${fmtDate(m.date)}</span>
       </div>
       <div class="memory-preview">${escHtml(m.preview || '(empty)')}</div>
-    </div>`).join('') +
+    </div>`;
+  }).join('') +
     (filtered.length > MAX ? `<div class="memory-empty">…and ${filtered.length - MAX} more</div>` : '');
 }
 
@@ -1134,7 +1165,7 @@ function filterKB() {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   §6  SYSTEM HEALTH
+   §7  SYSTEM HEALTH
 ══════════════════════════════════════════════════════════════════════ */
 async function loadBotHealth() {
   try {
@@ -1258,8 +1289,28 @@ async function loadAll() {
   stamp();
 }
 
+/* ── Memory expand/collapse ────────────────────────────────────────── */
+function toggleMemory(el) {
+  el.classList.toggle('expanded');
+}
+
+/* ── Hash navigation ──────────────────────────────────────────────── */
+function scrollToHash() {
+  const hash = window.location.hash;
+  if (hash) {
+    const target = document.querySelector(hash);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
 // Initial load
-loadAll();
+loadAll().then(() => {
+  // scroll to hash after data is loaded
+  setTimeout(scrollToHash, 100);
+});
+
+// Also handle hash changes
+window.addEventListener('hashchange', scrollToHash);
 
 // Auto-refresh every 60s
 setInterval(loadAll, 60_000);
