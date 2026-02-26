@@ -1,0 +1,31 @@
+{
+  "bb_signal_bot": {
+    "pnl_daily": 0,
+    "pnl_weekly": 0,
+    "pnl_total": 0,
+    "open_positions": 0,
+    "trades_today": 0,
+    "last_trade": null,
+    "loss_limit_hit": false,
+    "signals_captured": 14
+  },
+  "blofin_bot": {
+    "pnl_daily": -57,
+    "pnl_weekly": -1894.91,
+    "pnl_total": -3594,
+    "open_positions": 0,
+    "trades_today": 0,
+    "last_trade": "2026-02-19T18:45:00Z",
+    "loss_limit_hit": true
+  },
+  "kalshi_bot": {
+    "pnl_daily": 0,
+    "pnl_weekly": 0,
+    "pnl_total": 0,
+    "open_positions": 0,
+    "trades_today": 0,
+    "last_trade": null,
+    "loss_limit_hit": false
+  },
+  "updated_at": "2026-02-26T00:00:00Z"
+}

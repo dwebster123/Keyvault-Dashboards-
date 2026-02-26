@@ -37,7 +37,7 @@
       background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d1f 100%);
       min-height: 100vh;
       color: var(--text);
-      padding: 0 0 60px 0;
+      padding: 0 0 80px 0;
     }
 
     /* ── Header ───────────────────────────────────────────────────── */
@@ -610,9 +610,445 @@
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ALERT BANNER
+    ══════════════════════════════════════════════════════════════════ */
+    .alert-banner {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(239,68,68,0.15);
+      border-bottom: 1px solid rgba(239,68,68,0.3);
+      backdrop-filter: blur(16px);
+      cursor: pointer;
+      transition: all 0.3s;
+      display: none;
+    }
+    .alert-banner.visible { display: block; }
+    .alert-banner.warning {
+      background: rgba(245,158,11,0.12);
+      border-bottom-color: rgba(245,158,11,0.3);
+    }
+    .alert-banner-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .alert-banner-icon { font-size: 1.1rem; }
+    .alert-banner-text {
+      flex: 1;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .alert-banner-count {
+      font-size: 0.7rem;
+      background: rgba(255,255,255,0.15);
+      padding: 2px 8px;
+      border-radius: 999px;
+      color: var(--text);
+    }
+    .alert-banner-toggle {
+      font-size: 0.7rem;
+      color: var(--muted);
+      transition: transform 0.2s;
+    }
+    .alert-banner.expanded .alert-banner-toggle { transform: rotate(180deg); }
+    .alert-list {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 20px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .alert-banner.expanded .alert-list { max-height: 400px; overflow-y: auto; padding-bottom: 12px; }
+    .alert-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      margin-top: 6px;
+      background: rgba(0,0,0,0.25);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.8rem;
+    }
+    .alert-item .severity {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .alert-item .severity.critical { background: rgba(239,68,68,0.25); color: #f87171; }
+    .alert-item .severity.warning  { background: rgba(245,158,11,0.25); color: #fbbf24; }
+    .alert-item .alert-msg { flex: 1; color: var(--text); }
+    .alert-item .alert-dismiss {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0 4px;
+      line-height: 1;
+    }
+    .alert-item .alert-dismiss:hover { color: var(--text); }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SYSTEM STATUS
+    ══════════════════════════════════════════════════════════════════ */
+    .sys-status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .sys-metric {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      text-align: center;
+    }
+    .sys-metric .sys-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .sys-metric .sys-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .sys-bar {
+      height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .sys-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.5s ease, background-color 0.3s;
+    }
+    .sys-bar-fill.green  { background: var(--green); }
+    .sys-bar-fill.yellow { background: var(--yellow); }
+    .sys-bar-fill.red    { background: var(--red); }
+    .sys-metric .sys-sub {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .sys-last-checked {
+      text-align: right;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       NIX ACTIVITY FEED
+    ══════════════════════════════════════════════════════════════════ */
+    .activity-filters {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .activity-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    .activity-entry {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: border-color 0.2s;
+    }
+    .activity-entry:hover { border-color: var(--border-h); }
+    .activity-entry.error-entry {
+      border-color: rgba(239,68,68,0.3);
+      background: rgba(239,68,68,0.05);
+    }
+    .activity-icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+      width: 24px;
+      text-align: center;
+      margin-top: 2px;
+    }
+    .activity-body { flex: 1; min-width: 0; }
+    .activity-msg {
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .activity-meta {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+      font-size: 0.7rem;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+    .activity-session {
+      font-family: monospace;
+      font-size: 0.65rem;
+      background: rgba(255,255,255,0.06);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .activity-empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 30px;
+      font-size: 0.85rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       TRADING BOTS PANEL
+    ══════════════════════════════════════════════════════════════════ */
+    .bot-panel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .bot-card {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+      position: relative;
+    }
+    .bot-card.alert-state { border-color: rgba(239,68,68,0.4); }
+    .bot-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .bot-card-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      flex: 1;
+    }
+    .bot-mode-badge {
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .bot-mode-badge.paper { background: rgba(245,158,11,0.2); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+    .bot-mode-badge.live  { background: rgba(34,197,94,0.2); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+    .bot-alert-badge {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(239,68,68,0.25);
+      color: #f87171;
+      border: 1px solid rgba(239,68,68,0.3);
+    }
+    .bot-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .bot-stat-label {
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .bot-stat-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .bot-stat-value.positive { color: var(--green); }
+    .bot-stat-value.negative { color: var(--red); }
+    .bot-stat-value.neutral  { color: var(--text); }
+    .bot-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       INVESTOR PIPELINE
+    ══════════════════════════════════════════════════════════════════ */
+    .pipeline-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .pipeline-stat {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      text-align: center;
+    }
+    .pipeline-stat .ps-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .pipeline-stat .ps-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .pipeline-stat .ps-sub {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .pipeline-bar-container {
+      background: rgba(0,0,0,0.3);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 18px;
+    }
+    .pipeline-bar {
+      display: flex;
+      height: 40px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .pipeline-segment {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #fff;
+      min-width: 30px;
+      transition: flex 0.5s ease;
+      cursor: default;
+      position: relative;
+    }
+    .pipeline-segment:hover { filter: brightness(1.2); }
+    .pipeline-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+    .pipeline-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .pipeline-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .pipeline-legend-amount {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .pipeline-target-info {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       QUICK ACTIONS BAR
+    ══════════════════════════════════════════════════════════════════ */
+    .quick-actions {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      background: rgba(13,13,31,0.92);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      padding: 10px 20px;
+    }
+    .quick-actions-inner {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      max-width: 1280px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+    .qa-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--muted);
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .qa-btn:hover {
+      color: var(--text);
+      border-color: var(--accent1);
+      background: rgba(0,212,255,0.08);
+    }
+    .qa-btn.copied {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(34,197,94,0.1);
+    }
   </style>
 </head>
 <body>
+
+<!-- ── Alert Banner ────────────────────────────────────────────────────── -->
+<div class="alert-banner" id="alert-banner" onclick="toggleAlertBanner()">
+  <div class="alert-banner-bar">
+    <span class="alert-banner-icon">&#9888;&#65039;</span>
+    <span class="alert-banner-text" id="alert-banner-text">—</span>
+    <span class="alert-banner-count" id="alert-banner-count">0</span>
+    <span class="alert-banner-toggle">&#9660;</span>
+  </div>
+  <div class="alert-list" id="alert-list"></div>
+</div>
 
 <!-- ── Header ──────────────────────────────────────────────────────────── -->
 <div class="header">
@@ -632,10 +1068,14 @@
 
 <!-- ── Section Nav ─────────────────────────────────────────────────────── -->
 <div class="section-links">
+  <a href="#system-status">🖥 System</a>
+  <a href="#activity">✴️ Activity</a>
   <a href="#tasks">📋 Tasks</a>
-  <a href="#crons">⏰ Cron Jobs</a>
+  <a href="#crons">⏰ Crons</a>
+  <a href="#bots">🤖 Bots</a>
   <a href="#memory">🧠 Memory</a>
   <a href="#kv-metrics">📈 KV Metrics</a>
+  <a href="#pipeline">💰 Pipeline</a>
   <a href="#team">👥 Team</a>
   <a href="#kb">🔍 KB Search</a>
   <a href="#health">🛡 Health</a>
@@ -643,6 +1083,66 @@
 
 <!-- ── Main Content ────────────────────────────────────────────────────── -->
 <div class="main">
+
+  <!-- SYSTEM STATUS ────────────────────────────────────────────────────── -->
+  <section id="system-status">
+    <div class="section-title">
+      <span class="icon">🖥</span> System Status
+      <span class="badge" id="sys-status-badge">—</span>
+    </div>
+    <div class="sys-status-grid" id="sys-status-grid">
+      <div class="sys-metric">
+        <div class="sys-label">CPU Load</div>
+        <div class="sys-value" id="sys-cpu">—</div>
+        <div class="sys-bar"><div class="sys-bar-fill green" id="sys-cpu-bar" style="width:0%"></div></div>
+      </div>
+      <div class="sys-metric">
+        <div class="sys-label">Memory</div>
+        <div class="sys-value" id="sys-mem">—</div>
+        <div class="sys-bar"><div class="sys-bar-fill green" id="sys-mem-bar" style="width:0%"></div></div>
+        <div class="sys-sub" id="sys-mem-sub">—</div>
+      </div>
+      <div class="sys-metric">
+        <div class="sys-label">Disk</div>
+        <div class="sys-value" id="sys-disk">—</div>
+        <div class="sys-bar"><div class="sys-bar-fill green" id="sys-disk-bar" style="width:0%"></div></div>
+        <div class="sys-sub" id="sys-disk-sub">—</div>
+      </div>
+      <div class="sys-metric">
+        <div class="sys-label">Uptime</div>
+        <div class="sys-value" id="sys-uptime">—</div>
+        <div class="sys-sub" id="sys-hostname">—</div>
+      </div>
+      <div class="sys-metric">
+        <div class="sys-label">OpenClaw</div>
+        <div class="sys-value" id="sys-openclaw" style="font-size:1.2rem;">—</div>
+        <div class="sys-sub" id="sys-macos">—</div>
+      </div>
+      <div class="sys-metric">
+        <div class="sys-label">Gateway</div>
+        <div class="sys-value" id="sys-gateway">—</div>
+        <div class="sys-sub" id="sys-gateway-sub">—</div>
+      </div>
+    </div>
+    <div class="sys-last-checked" id="sys-last-checked">Last checked: —</div>
+  </section>
+
+  <!-- NIX ACTIVITY FEED ──────────────────────────────────────────────── -->
+  <section id="activity">
+    <div class="section-title">
+      <span class="icon">✴️</span> Nix Activity Feed
+      <span class="badge" id="activity-badge">—</span>
+    </div>
+    <div class="activity-filters">
+      <button class="filter-btn active" id="act-filter-all"      onclick="setActivityFilter('all')">All</button>
+      <button class="filter-btn"        id="act-filter-error"    onclick="setActivityFilter('error')">Errors</button>
+      <button class="filter-btn"        id="act-filter-telegram" onclick="setActivityFilter('telegram')">Telegram</button>
+      <button class="filter-btn"        id="act-filter-cron_run" onclick="setActivityFilter('cron_run')">Crons</button>
+    </div>
+    <div class="activity-timeline" id="activity-timeline">
+      <div class="activity-empty">Loading...</div>
+    </div>
+  </section>
 
   <!-- §1  TASKS BOARD ───────────────────────────────────────────────────── -->
   <section id="tasks">
@@ -697,6 +1197,17 @@
     </div>
   </section>
 
+  <!-- TRADING BOTS PANEL ──────────────────────────────────────────────── -->
+  <section id="bots">
+    <div class="section-title">
+      <span class="icon">🤖</span> Trading Bots
+      <span class="badge" id="bots-badge">—</span>
+    </div>
+    <div class="bot-panel-grid" id="bot-panel-grid">
+      <div style="color:var(--muted);font-size:0.82rem;padding:20px;text-align:center;">Loading...</div>
+    </div>
+  </section>
+
   <!-- §3  MEMORY VIEWER ───────────────────────────────────────────────── -->
   <section id="memory">
     <div class="section-title">
@@ -727,6 +1238,20 @@
     <div class="sparkline-wrap">
       <h4>Share Price — Last 30 Days</h4>
       <canvas id="sparkline" height="80"></canvas>
+    </div>
+  </section>
+
+  <!-- INVESTOR PIPELINE ───────────────────────────────────────────────── -->
+  <section id="pipeline">
+    <div class="section-title">
+      <span class="icon">💰</span> Investor Pipeline
+      <span class="badge" id="pipeline-badge">—</span>
+    </div>
+    <div class="pipeline-summary" id="pipeline-summary"></div>
+    <div class="pipeline-bar-container">
+      <div class="pipeline-bar" id="pipeline-bar"></div>
+      <div class="pipeline-legend" id="pipeline-legend"></div>
+      <div class="pipeline-target-info" id="pipeline-target"></div>
     </div>
   </section>
 
@@ -789,8 +1314,19 @@
 </div><!-- /main -->
 
 <div class="footer">
-  Mission Control · Built by Nix ✴️ · 
+  Mission Control · Built by Nix ✴️ ·
   <a href="https://github.com/dwebster123/mission-control" target="_blank">GitHub</a>
+</div>
+
+<!-- ── Quick Actions Bar ──────────────────────────────────────────────── -->
+<div class="quick-actions">
+  <div class="quick-actions-inner">
+    <button class="qa-btn" onclick="copyCmd(this, 'ssh devenwebster@192.168.1.69 &quot;launchctl kickstart -k system/ai.openclaw.gateway&quot;')">🔄 Restart Gateway</button>
+    <button class="qa-btn" onclick="copyCmd(this, 'ssh devenwebster@192.168.1.69 &quot;cd ~/clawd/keyvault && node scripts/stamp-nav.js&quot;')">📊 NAV Stamp</button>
+    <button class="qa-btn" onclick="copyCmd(this, 'ssh devenwebster@192.168.1.69 &quot;cd ~/clawd/keyvault && node scripts/daily-fetch.js&quot;')">📥 Daily Fetch</button>
+    <button class="qa-btn" onclick="copyCmd(this, 'ssh devenwebster@192.168.1.69 &quot;ps aux | grep openclaw&quot;')">🔍 Check Bots</button>
+    <button class="qa-btn" onclick="copyCmd(this, 'ssh devenwebster@192.168.1.69 &quot;rm ~/.openclaw/agents/main/sessions/*.jsonl&quot;')">🧹 Clear Session</button>
+  </div>
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════════════
@@ -1268,6 +1804,389 @@ function timeSince(date) {
   return Math.floor(sec/86400) + 'd ago';
 }
 
+/* ══════════════════════════════════════════════════════════════════════
+   ALERT BANNER
+══════════════════════════════════════════════════════════════════════ */
+let dismissedAlerts = JSON.parse(localStorage.getItem('mc-dismissed-alerts') || '[]');
+
+function checkAlerts() {
+  const alerts = [];
+
+  // Check cron errors
+  for (const c of allCrons) {
+    if (c.status === 'error') {
+      alerts.push({ id: 'cron-err-' + c.name, severity: 'critical', msg: `Cron "${c.name}" is in error state` });
+    }
+  }
+
+  // Check stale data (system status > 1h old)
+  if (window._sysStatusData) {
+    const age = Date.now() - new Date(window._sysStatusData.updated_at).getTime();
+    if (age > 3600000) {
+      alerts.push({ id: 'sys-stale', severity: 'warning', msg: `System status data is ${Math.floor(age/3600000)}h old` });
+    }
+  }
+
+  // Check bot failures
+  if (window._botPerformance) {
+    const bp = window._botPerformance;
+    for (const [key, bot] of Object.entries(bp)) {
+      if (key === 'updated_at') continue;
+      if (bot.loss_limit_hit) {
+        alerts.push({ id: 'bot-loss-' + key, severity: 'critical', msg: `${key.replace(/_/g,' ')} hit loss limit` });
+      }
+    }
+  }
+
+  // Check bot status
+  if (window._botStatusData) {
+    const bs = window._botStatusData;
+    if (bs.bb_signal_bot === 'inactive') alerts.push({ id: 'bot-bb-off', severity: 'warning', msg: 'BB Signal Bot is inactive' });
+    if (bs.blofin_bot === 'inactive') alerts.push({ id: 'bot-blofin-off', severity: 'warning', msg: 'Blofin Bot is inactive' });
+  }
+
+  // Check activity feed for recent high-severity errors
+  if (window._activityData) {
+    const recent = window._activityData.filter(a =>
+      a.type === 'error' && a.severity === 'high' &&
+      (Date.now() - new Date(a.ts).getTime()) < 3600000
+    );
+    for (const e of recent.slice(0, 3)) {
+      alerts.push({ id: 'act-err-' + e.ts, severity: 'critical', msg: e.message });
+    }
+  }
+
+  // Filter dismissed
+  const active = alerts.filter(a => !dismissedAlerts.includes(a.id));
+  const banner = document.getElementById('alert-banner');
+
+  if (active.length === 0) {
+    banner.classList.remove('visible');
+    return;
+  }
+
+  const hasCritical = active.some(a => a.severity === 'critical');
+  banner.classList.add('visible');
+  banner.classList.toggle('warning', !hasCritical);
+
+  document.getElementById('alert-banner-text').textContent =
+    hasCritical ? 'Critical alerts require attention' : 'Warnings detected';
+  document.getElementById('alert-banner-count').textContent = active.length + ' alert' + (active.length !== 1 ? 's' : '');
+
+  document.getElementById('alert-list').innerHTML = active.map(a => `
+    <div class="alert-item">
+      <span class="severity ${a.severity}">${a.severity}</span>
+      <span class="alert-msg">${escHtml(a.msg)}</span>
+      <button class="alert-dismiss" onclick="dismissAlert(event, '${escHtml(a.id)}')" title="Dismiss">&times;</button>
+    </div>`).join('');
+}
+
+function toggleAlertBanner() {
+  document.getElementById('alert-banner').classList.toggle('expanded');
+}
+
+function dismissAlert(e, id) {
+  e.stopPropagation();
+  dismissedAlerts.push(id);
+  localStorage.setItem('mc-dismissed-alerts', JSON.stringify(dismissedAlerts));
+  checkAlerts();
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SYSTEM STATUS
+══════════════════════════════════════════════════════════════════════ */
+async function loadSystemStatus() {
+  try {
+    const s = await fetchJSON('data/system-status.json');
+    window._sysStatusData = s;
+
+    // CPU
+    const cpuAvg = Array.isArray(s.cpu_load) ? s.cpu_load[0] : 0;
+    const cpuPct = Math.min(100, Math.round(cpuAvg * 25)); // rough scale: 4.0 load = 100%
+    document.getElementById('sys-cpu').textContent = Array.isArray(s.cpu_load) ? s.cpu_load.map(v => v.toFixed(2)).join(' / ') : '—';
+    setBarLevel('sys-cpu-bar', cpuPct);
+
+    // Memory
+    const memPct = s.memory?.used_pct || 0;
+    document.getElementById('sys-mem').textContent = memPct + '%';
+    document.getElementById('sys-mem-sub').textContent = `${s.memory?.used_gb || 0}GB / ${s.memory?.total_gb || 0}GB`;
+    setBarLevel('sys-mem-bar', memPct);
+
+    // Disk
+    const diskPct = s.disk?.used_pct || 0;
+    document.getElementById('sys-disk').textContent = diskPct + '%';
+    document.getElementById('sys-disk-sub').textContent = `${s.disk?.free_gb || 0}GB free of ${s.disk?.total_gb || 0}GB`;
+    setBarLevel('sys-disk-bar', diskPct);
+
+    // Uptime
+    document.getElementById('sys-uptime').textContent = s.uptime || '—';
+    document.getElementById('sys-hostname').textContent = s.hostname || '—';
+
+    // OpenClaw
+    document.getElementById('sys-openclaw').textContent = 'v' + (s.openclaw_version || '—');
+    document.getElementById('sys-macos').textContent = 'macOS ' + (s.macos_version || '—');
+
+    // Gateway
+    const gwStatus = s.gateway_status || 'unknown';
+    document.getElementById('sys-gateway').innerHTML =
+      `<span class="dot ${gwStatus === 'running' ? 'ok' : 'error'}" style="display:inline-block;vertical-align:middle;margin-right:6px;"></span>PID ${s.gateway_pid || '—'}`;
+    document.getElementById('sys-gateway-sub').textContent = gwStatus;
+
+    // Badge
+    document.getElementById('sys-status-badge').textContent = gwStatus === 'running' ? 'Online' : 'Issue';
+    document.getElementById('sys-status-badge').style.background = gwStatus === 'running' ? 'var(--green)' : 'var(--red)';
+
+    // Last checked
+    if (s.updated_at) {
+      document.getElementById('sys-last-checked').textContent = 'Last checked: ' + timeSince(new Date(s.updated_at));
+    }
+  } catch(e) {
+    console.warn('system-status.json load failed', e);
+    document.getElementById('sys-status-badge').textContent = 'Offline';
+    document.getElementById('sys-status-badge').style.background = 'var(--muted)';
+  }
+}
+
+function setBarLevel(id, pct) {
+  const bar = document.getElementById(id);
+  bar.style.width = pct + '%';
+  bar.className = 'sys-bar-fill ' + (pct < 60 ? 'green' : pct < 85 ? 'yellow' : 'red');
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   NIX ACTIVITY FEED
+══════════════════════════════════════════════════════════════════════ */
+let activityFilter = 'all';
+
+async function loadActivity() {
+  try {
+    const data = await fetchJSON('data/nix-activity.json');
+    window._activityData = data;
+    document.getElementById('activity-badge').textContent = data.length + ' entries';
+    renderActivity();
+  } catch(e) {
+    console.warn('nix-activity.json load failed', e);
+    document.getElementById('activity-timeline').innerHTML =
+      '<div class="activity-empty">nix-activity.json not found</div>';
+  }
+}
+
+function setActivityFilter(f) {
+  activityFilter = f;
+  ['all','error','telegram','cron_run'].forEach(id => {
+    const btn = document.getElementById('act-filter-' + id);
+    if (btn) btn.classList.toggle('active', id === f);
+  });
+  renderActivity();
+}
+
+function renderActivity() {
+  const data = window._activityData || [];
+  let filtered = data;
+  if (activityFilter !== 'all') {
+    filtered = data.filter(a => a.type === activityFilter);
+  }
+
+  const timeline = document.getElementById('activity-timeline');
+  if (filtered.length === 0) {
+    timeline.innerHTML = '<div class="activity-empty">No activity to show</div>';
+    return;
+  }
+
+  const icons = { message: '💬', tool_use: '🔧', error: '❌', cron_run: '⏰', telegram: '📨' };
+  const MAX = 30;
+
+  timeline.innerHTML = filtered.slice(0, MAX).map(a => {
+    const icon = icons[a.type] || '📝';
+    const isErr = a.type === 'error';
+    const ts = a.ts ? new Date(a.ts) : null;
+    const timeStr = ts ? timeSince(ts) : '—';
+    const session = a.session ? a.session.split(':').slice(-2).join(':') : '';
+
+    return `
+      <div class="activity-entry${isErr ? ' error-entry' : ''}">
+        <span class="activity-icon">${icon}</span>
+        <div class="activity-body">
+          <div class="activity-msg">${escHtml(a.message || '—')}</div>
+          <div class="activity-meta">
+            <span>${timeStr}</span>
+            <span class="pill ${isErr ? 'high' : 'low'}" style="font-size:0.6rem;">${a.type}</span>
+            ${session ? `<span class="activity-session">${escHtml(session)}</span>` : ''}
+            ${a.severity ? `<span style="color:${a.severity === 'high' ? 'var(--red)' : 'var(--yellow)'};">${a.severity}</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+  }).join('') +
+    (filtered.length > MAX ? `<div class="activity-empty">...and ${filtered.length - MAX} more</div>` : '');
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   TRADING BOTS PANEL
+══════════════════════════════════════════════════════════════════════ */
+async function loadBotPanel() {
+  try {
+    const [status, perf] = await Promise.allSettled([
+      fetchJSON('data/bot-status.json'),
+      fetchJSON('data/bot-performance.json')
+    ]);
+
+    const s = status.status === 'fulfilled' ? status.value : {};
+    const p = perf.status === 'fulfilled' ? perf.value : {};
+    window._botStatusData = s;
+    window._botPerformance = p;
+
+    const bots = [
+      { key: 'bb_signal_bot', name: 'BB Signal Bot', mode: 'paper', statusVal: s.bb_signal_bot },
+      { key: 'blofin_bot',    name: 'Blofin Bot',    mode: 'live',  statusVal: s.blofin_bot },
+      { key: 'kalshi_bot',    name: 'Kalshi Bot',     mode: 'paper', statusVal: s.kalshi_bot },
+    ];
+
+    const activeBots = bots.filter(b => b.statusVal === 'active').length;
+    document.getElementById('bots-badge').textContent = activeBots + '/' + bots.length + ' active';
+
+    const grid = document.getElementById('bot-panel-grid');
+    grid.innerHTML = bots.map(b => {
+      const bp = p[b.key] || {};
+      const isActive = b.statusVal === 'active';
+      const lossHit = bp.loss_limit_hit || false;
+      const pnlDaily = bp.pnl_daily || 0;
+      const pnlTotal = bp.pnl_total || 0;
+      const positions = bp.open_positions || 0;
+      const trades = bp.trades_today || 0;
+      const lastTrade = bp.last_trade ? timeSince(new Date(bp.last_trade)) : 'Never';
+      const signals = bp.signals_captured;
+
+      return `
+        <div class="bot-card${lossHit ? ' alert-state' : ''}">
+          ${lossHit ? '<span class="bot-alert-badge">LOSS LIMIT</span>' : ''}
+          <div class="bot-card-header">
+            <span class="dot ${isActive ? 'ok' : 'error'}"></span>
+            <span class="bot-card-name">${escHtml(b.name)}</span>
+            <span class="bot-mode-badge ${b.mode}">${b.mode}</span>
+          </div>
+          <div class="bot-stats">
+            <div>
+              <div class="bot-stat-label">Daily P&L</div>
+              <div class="bot-stat-value ${pnlDaily > 0 ? 'positive' : pnlDaily < 0 ? 'negative' : 'neutral'}">
+                ${pnlDaily >= 0 ? '+' : ''}$${pnlDaily.toFixed(0)}
+              </div>
+            </div>
+            <div>
+              <div class="bot-stat-label">Total P&L</div>
+              <div class="bot-stat-value ${pnlTotal > 0 ? 'positive' : pnlTotal < 0 ? 'negative' : 'neutral'}">
+                ${pnlTotal >= 0 ? '+' : ''}$${pnlTotal.toFixed(0)}
+              </div>
+            </div>
+            <div>
+              <div class="bot-stat-label">Positions</div>
+              <div class="bot-stat-value neutral">${positions}</div>
+            </div>
+            <div>
+              <div class="bot-stat-label">${signals !== undefined ? 'Signals' : 'Trades Today'}</div>
+              <div class="bot-stat-value neutral">${signals !== undefined ? signals : trades}</div>
+            </div>
+          </div>
+          <div class="bot-footer">
+            <span>Last trade: ${escHtml(lastTrade)}</span>
+            <span class="status-chip ${isActive ? 'ok' : 'error'}">
+              <span class="dot ${isActive ? 'ok' : 'error'}"></span>
+              ${isActive ? 'Running' : b.statusVal || 'Stopped'}
+            </span>
+          </div>
+        </div>`;
+    }).join('');
+
+  } catch(e) {
+    console.warn('Bot panel load failed', e);
+    document.getElementById('bot-panel-grid').innerHTML =
+      '<div style="color:var(--muted);font-size:0.82rem;padding:20px;text-align:center;">Bot data unavailable</div>';
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   INVESTOR PIPELINE
+══════════════════════════════════════════════════════════════════════ */
+async function loadPipeline() {
+  try {
+    const data = await fetchJSON('data/investor-pipeline.json');
+    const target = data.target_amount || 2000000;
+    const stages = data.stages || [];
+    const totalPipeline = stages.reduce((s, st) => s + st.amount, 0);
+    const funded = stages.find(s => s.name === 'Funded');
+    const committed = stages.find(s => s.name === 'Committed');
+    const fundedAmt = funded ? funded.amount : 0;
+    const committedAmt = committed ? committed.amount : 0;
+    const fundedPct = Math.round((fundedAmt / target) * 100);
+
+    document.getElementById('pipeline-badge').textContent = fmt$(totalPipeline) + ' pipeline';
+
+    // Summary cards
+    document.getElementById('pipeline-summary').innerHTML = `
+      <div class="pipeline-stat">
+        <div class="ps-label">Total Pipeline</div>
+        <div class="ps-value" style="color:var(--accent1);">${fmt$(totalPipeline)}</div>
+        <div class="ps-sub">${stages.reduce((s, st) => s + st.count, 0)} investors</div>
+      </div>
+      <div class="pipeline-stat">
+        <div class="ps-label">Committed</div>
+        <div class="ps-value" style="color:var(--accent2);">${fmt$(committedAmt + fundedAmt)}</div>
+        <div class="ps-sub">${(committed?.count || 0) + (funded?.count || 0)} investors</div>
+      </div>
+      <div class="pipeline-stat">
+        <div class="ps-label">Funded</div>
+        <div class="ps-value" style="color:var(--green);">${fmt$(fundedAmt)}</div>
+        <div class="ps-sub">${funded?.count || 0} investors</div>
+      </div>
+      <div class="pipeline-stat">
+        <div class="ps-label">Target</div>
+        <div class="ps-value">${fmt$(target)}</div>
+        <div class="ps-sub">${fundedPct}% funded</div>
+      </div>
+    `;
+
+    // Pipeline bar
+    const maxAmt = Math.max(totalPipeline, target);
+    document.getElementById('pipeline-bar').innerHTML = stages.map(st => {
+      const widthPct = Math.max(2, (st.amount / maxAmt) * 100);
+      return `<div class="pipeline-segment" style="flex:${widthPct};background:${st.color};" title="${st.name}: ${fmt$(st.amount)} (${st.count})">${st.count}</div>`;
+    }).join('');
+
+    // Legend
+    document.getElementById('pipeline-legend').innerHTML = stages.map(st => `
+      <div class="pipeline-legend-item">
+        <span class="pipeline-legend-dot" style="background:${st.color};"></span>
+        <span>${st.name}</span>
+        <span class="pipeline-legend-amount">${fmt$(st.amount)}</span>
+      </div>`).join('');
+
+    // Target info
+    const targetDate = data.target_date ? new Date(data.target_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+    const daysLeft = data.target_date ? Math.ceil((new Date(data.target_date) - Date.now()) / 86400000) : 0;
+    document.getElementById('pipeline-target').textContent =
+      targetDate ? `Target: ${fmt$(target)} by ${targetDate} (${daysLeft}d remaining)` : '';
+
+  } catch(e) {
+    console.warn('investor-pipeline.json load failed', e);
+    document.getElementById('pipeline-summary').innerHTML =
+      '<div style="color:var(--muted);font-size:0.82rem;padding:20px;text-align:center;grid-column:1/-1;">investor-pipeline.json not found</div>';
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   QUICK ACTIONS
+══════════════════════════════════════════════════════════════════════ */
+function copyCmd(btn, cmd) {
+  navigator.clipboard.writeText(cmd).then(() => {
+    btn.classList.add('copied');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '&#10003; Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = orig;
+    }, 2000);
+  });
+}
+
 /* ── Refresh loop ─────────────────────────────────────────────────── */
 function stamp() {
   document.getElementById('last-refresh').textContent = new Date().toLocaleTimeString('en-US',{
@@ -1277,15 +2196,20 @@ function stamp() {
 
 async function loadAll() {
   await Promise.allSettled([
+    loadSystemStatus(),
+    loadActivity(),
     loadTasks(),
     loadCrons(),
+    loadBotPanel(),
     loadMemory(),
     loadKVMetrics(),
+    loadPipeline(),
     loadTeam(),
     loadKB(),
     loadBotHealth(),
     loadDataFreshness(),
   ]);
+  checkAlerts();
   stamp();
 }
 

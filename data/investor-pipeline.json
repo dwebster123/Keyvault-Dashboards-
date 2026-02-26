@@ -1,0 +1,12 @@
+{
+  "target_amount": 2000000,
+  "target_date": "2026-03-31",
+  "stages": [
+    {"name": "Funded", "count": 3, "amount": 403450, "color": "#22c55e"},
+    {"name": "Committed", "count": 3, "amount": 765000, "color": "#00d4ff"},
+    {"name": "LOI Sent", "count": 5, "amount": 1050000, "color": "#7c3aed"},
+    {"name": "Pitched", "count": 4, "amount": 2600000, "color": "#f59e0b"},
+    {"name": "Leads", "count": 31, "amount": 15750000, "color": "#6b6b8d"}
+  ],
+  "updated_at": "2026-02-26T00:00:00Z"
+}

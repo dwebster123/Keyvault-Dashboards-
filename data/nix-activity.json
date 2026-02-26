@@ -1,0 +1,94 @@
+[
+  {
+    "ts": "2026-02-26T21:28:46Z",
+    "type": "error",
+    "session": "agent:main:main",
+    "message": "LLM request rejected: thinking blocks corrupted — session cleared",
+    "severity": "high"
+  },
+  {
+    "ts": "2026-02-26T21:27:36Z",
+    "type": "telegram",
+    "session": "agent:main:telegram:group:-1003729020445:topic:1",
+    "message": "Responded to group message in General topic"
+  },
+  {
+    "ts": "2026-02-26T21:15:00Z",
+    "type": "cron_run",
+    "session": "agent:main:cron:daily-brief",
+    "message": "Daily brief cron completed — sent to topic 33"
+  },
+  {
+    "ts": "2026-02-26T20:45:12Z",
+    "type": "tool_use",
+    "session": "agent:main:main",
+    "message": "Executed bash: npm install -g openclaw@latest"
+  },
+  {
+    "ts": "2026-02-26T20:30:00Z",
+    "type": "telegram",
+    "session": "agent:main:telegram:group:-1003729020445:topic:2",
+    "message": "Sent fund NAV update to Fund Operations topic"
+  },
+  {
+    "ts": "2026-02-26T19:45:22Z",
+    "type": "cron_run",
+    "session": "agent:main:cron:nav-stamp",
+    "message": "NAV stamp cron completed — $1.1219 recorded"
+  },
+  {
+    "ts": "2026-02-26T19:00:01Z",
+    "type": "cron_run",
+    "session": "agent:main:cron:kv-fetch",
+    "message": "KV data fetch cron completed — 6 sources pulled"
+  },
+  {
+    "ts": "2026-02-26T18:30:15Z",
+    "type": "telegram",
+    "session": "agent:main:telegram:group:-1003729020445:topic:1",
+    "message": "Answered question about fund performance"
+  },
+  {
+    "ts": "2026-02-26T17:55:00Z",
+    "type": "message",
+    "session": "agent:main:main",
+    "message": "Memory search: queried 'investor pipeline status'"
+  },
+  {
+    "ts": "2026-02-26T17:30:00Z",
+    "type": "tool_use",
+    "session": "agent:main:main",
+    "message": "Read file: ~/.openclaw/agents/main/memory/daily/2026-02-26.md"
+  },
+  {
+    "ts": "2026-02-26T16:15:33Z",
+    "type": "telegram",
+    "session": "agent:main:telegram:group:-1003729020445:topic:33",
+    "message": "Posted daily market summary to Daily Brief topic"
+  },
+  {
+    "ts": "2026-02-26T15:00:00Z",
+    "type": "cron_run",
+    "session": "agent:main:cron:bot-check",
+    "message": "Bot health check completed — 2/3 bots active"
+  },
+  {
+    "ts": "2026-02-26T14:22:10Z",
+    "type": "error",
+    "session": "agent:main:main",
+    "message": "SSH tunnel to Mac Mini timed out — reconnecting",
+    "severity": "medium"
+  },
+  {
+    "ts": "2026-02-26T13:00:00Z",
+    "type": "message",
+    "session": "agent:main:main",
+    "message": "Started new conversation session"
+  },
+  {
+    "ts": "2026-02-26T12:00:00Z",
+    "type": "cron_run",
+    "session": "agent:main:cron:memory-index",
+    "message": "Memory index updated — 38 files indexed"
+  }
+]

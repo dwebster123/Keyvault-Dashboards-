@@ -1,0 +1,13 @@
+{
+  "cpu_load": [1.0, 1.07, 1.04],
+  "memory": {"used_pct": 45, "used_gb": 10.8, "total_gb": 24},
+  "disk": {"used_pct": 16, "used_gb": 66, "total_gb": 460, "free_gb": 374},
+  "uptime": "3d 14h 22m",
+  "uptime_seconds": 310920,
+  "openclaw_version": "2026.2.25",
+  "gateway_pid": 1514,
+  "gateway_status": "running",
+  "hostname": "Devens-Mac-mini.local",
+  "macos_version": "26.3",
+  "updated_at": "2026-02-26T21:30:00Z"
+}
