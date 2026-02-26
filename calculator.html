@@ -678,8 +678,8 @@ function simulateDist(annualGross, initial, quarters, distributionPct) {
     return { endNAV: nav, cumDist, totalMgmt, totalPerf, totalValue: nav + cumDist, rows };
 }
 
-function fmtD(v) { return '$' + Math.abs(v).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}); }
-function fmtS(v) { return (v >= 0 ? '+' : '-') + fmtD(v); }
+function dFmtD(v) { return '$' + Math.abs(v).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}); }
+function dFmtS(v) { return (v >= 0 ? '+' : '-') + dFmtD(v); }
 
 function renderDist() {
     const initial     = parseFloat(D('dInvestment').value) || 1000000;
@@ -703,13 +703,13 @@ function renderDist() {
         return `<div class="scenario-card${i === 1 ? ' highlight' : ''}">
             <div class="sc-label">Scenario ${i+1}</div>
             <div class="sc-title" style="color:${sc.color}">${sc.label}</div>
-            <div class="sc-row"><span class="sc-key">End NAV</span><span class="sc-val green">${fmtD(r.endNAV)}</span></div>
-            <div class="sc-row"><span class="sc-key">Distributions Received</span><span class="sc-val cyan">${fmtD(r.cumDist)}</span></div>
-            <div class="sc-row"><span class="sc-key">Total Investor Value</span><span class="sc-val green" style="color:${sc.color}">${fmtD(r.totalValue)}</span></div>
+            <div class="sc-row"><span class="sc-key">End NAV</span><span class="sc-val green">${dFmtD(r.endNAV)}</span></div>
+            <div class="sc-row"><span class="sc-key">Distributions Received</span><span class="sc-val cyan">${dFmtD(r.cumDist)}</span></div>
+            <div class="sc-row"><span class="sc-key">Total Investor Value</span><span class="sc-val green" style="color:${sc.color}">${dFmtD(r.totalValue)}</span></div>
             <div class="sc-row"><span class="sc-key">Total Value APY</span><span class="sc-val" style="color:${sc.color}">${netAPY.toFixed(1)}%</span></div>
-            <div class="sc-row"><span class="sc-key">Mgmt Fees Paid</span><span class="sc-val pink">${fmtD(r.totalMgmt)}</span></div>
-            <div class="sc-row"><span class="sc-key">Perf Fees Paid</span><span class="sc-val pink">${fmtD(r.totalPerf)}</span></div>
-            <div class="sc-row"><span class="sc-key">Total Fees</span><span class="sc-val pink">${fmtD(r.totalMgmt + r.totalPerf)}</span></div>
+            <div class="sc-row"><span class="sc-key">Mgmt Fees Paid</span><span class="sc-val pink">${dFmtD(r.totalMgmt)}</span></div>
+            <div class="sc-row"><span class="sc-key">Perf Fees Paid</span><span class="sc-val pink">${dFmtD(r.totalPerf)}</span></div>
+            <div class="sc-row"><span class="sc-key">Total Fees</span><span class="sc-val pink">${dFmtD(r.totalMgmt + r.totalPerf)}</span></div>
         </div>`;
     }).join('');
 
@@ -718,9 +718,9 @@ function renderDist() {
     const r1 = simulateDist(annualGross, initial, quarters, 1);
     const diff = r0.totalValue - r1.totalValue;
     D('dInsight').innerHTML = `<strong>Key Takeaway:</strong> At ${D('dGrossReturn').value}% gross annually over ${years} year${years>1?'s':''}, 
-        full reinvestment delivers <strong>${fmtD(r0.totalValue)}</strong> in total value vs 
-        <strong>${fmtD(r1.totalValue)}</strong> taking full quarterly distributions — a difference of 
-        <strong>${fmtD(diff)}</strong> (${((diff/initial)*100).toFixed(1)}% of initial investment). 
+        full reinvestment delivers <strong>${dFmtD(r0.totalValue)}</strong> in total value vs 
+        <strong>${dFmtD(r1.totalValue)}</strong> taking full quarterly distributions — a difference of 
+        <strong>${dFmtD(diff)}</strong> (${((diff/initial)*100).toFixed(1)}% of initial investment). 
         The HWM adjusts down by each distribution paid, so investors who take distributions aren't disadvantaged 
         on future fee calculations — their bar is proportionally lower. Performance fees use the same basis either way: 
         fee applies to total period return (net gain after mgmt fee) per Brian's guidance.`;
@@ -729,16 +729,16 @@ function renderDist() {
     const dr = simulateDist(annualGross, initial, quarters, detailPct);
     D('dDetailTable').innerHTML = dr.rows.map(r => `<tr>
         <td>Q${r.q} (Y${Math.ceil(r.q/4)})</td>
-        <td>${fmtD(r.startNAV)}</td>
-        <td class="green-col">+${fmtD(r.grossGain)}</td>
-        <td class="fee-col">-${fmtD(r.mgmtFee)}</td>
-        <td class="${r.netGain >= 0 ? 'green-col' : 'fee-col'}">${fmtS(r.netGain)}</td>
-        <td>${r.hurdleMet ? '✅' : '❌'} ${fmtD(r.hurdleAmt)}</td>
-        <td class="fee-col">${r.perfFee > 0 ? '-'+fmtD(r.perfFee) : '—'}${r.hasKicker ? ' 🚀' : ''}</td>
-        <td class="dist-col">${r.distAmount > 0 ? fmtD(r.distAmount) : '—'}</td>
-        <td class="green-col" style="font-weight:600">${fmtD(r.endNAV)}</td>
-        <td><span class="hwm-tag">${fmtD(r.hwm)}</span></td>
-        <td class="green-col" style="font-weight:700">${fmtD(r.totalValue)}</td>
+        <td>${dFmtD(r.startNAV)}</td>
+        <td class="green-col">+${dFmtD(r.grossGain)}</td>
+        <td class="fee-col">-${dFmtD(r.mgmtFee)}</td>
+        <td class="${r.netGain >= 0 ? 'green-col' : 'fee-col'}">${dFmtS(r.netGain)}</td>
+        <td>${r.hurdleMet ? '✅' : '❌'} ${dFmtD(r.hurdleAmt)}</td>
+        <td class="fee-col">${r.perfFee > 0 ? '-'+dFmtD(r.perfFee) : '—'}${r.hasKicker ? ' 🚀' : ''}</td>
+        <td class="dist-col">${r.distAmount > 0 ? dFmtD(r.distAmount) : '—'}</td>
+        <td class="green-col" style="font-weight:600">${dFmtD(r.endNAV)}</td>
+        <td><span class="hwm-tag">${dFmtD(r.hwm)}</span></td>
+        <td class="green-col" style="font-weight:700">${dFmtD(r.totalValue)}</td>
     </tr>`).join('');
 }
 
