@@ -361,6 +361,59 @@
             color: #8b8ba7;
         }
 
+        /* JLP Pool Health Widget */
+        .jlp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 600px) { .jlp-grid { grid-template-columns: 1fr; } }
+        .jlp-asset-row {
+            margin-bottom: 10px;
+        }
+        .jlp-asset-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            color: #b0b0cc;
+            margin-bottom: 4px;
+        }
+        .jlp-bar-track {
+            background: rgba(255,255,255,0.08);
+            border-radius: 6px;
+            height: 10px;
+            overflow: hidden;
+        }
+        .jlp-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.6s ease;
+        }
+        .jlp-bar-green  { background: linear-gradient(90deg, #22c55e, #16a34a); }
+        .jlp-bar-yellow { background: linear-gradient(90deg, #eab308, #ca8a04); }
+        .jlp-bar-orange { background: linear-gradient(90deg, #f97316, #ea580c); }
+        .jlp-bar-red    { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .jlp-apy-badge {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+        .jlp-signal {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 4px;
+        }
+        .jlp-note {
+            font-size: 0.72rem;
+            color: #6b6b8d;
+            margin-top: 12px;
+            font-style: italic;
+        }
+
         /* Charts */
         .charts-row {
             display: grid;
@@ -1325,6 +1378,18 @@
                         `).join('')}
                     </div>
 
+                    <!-- JLP POOL HEALTH WIDGET -->
+                    <div class="section-header" id="jlp-section-header">
+                        <span class="icon">🌊</span>
+                        <h2>JLP Pool Health</h2>
+                        <span class="badge" id="jlp-signal-badge">Loading...</span>
+                    </div>
+                    <div id="jlp-pool-health" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-bottom: 20px;">
+                        <div style="display: flex; align-items: center; justify-content: center; color: #6b6b8d; font-size: 0.9rem;">
+                            <span style="margin-right: 8px;">⏳</span> Loading Jupiter Perps data...
+                        </div>
+                    </div>
+
                     <div class="section-header">
                         <span class="icon">💵</span>
                         <h2>Revenue Summary</h2>
@@ -1700,6 +1765,103 @@
         }
         updateFetchStatus();
         setInterval(updateFetchStatus, 5 * 60 * 1000);
+
+        // ── JLP Pool Health Widget ──────────────────────────────────────────
+        async function loadJlpPoolHealth() {
+            const container = document.getElementById('jlp-pool-health');
+            const badge = document.getElementById('jlp-signal-badge');
+            if (!container) return;
+
+            // Use CORS proxy since Jupiter API doesn't support browser CORS
+            const PROXY = 'https://keyvault-proxy.deven-m-webster.workers.dev';
+            const API   = 'https://perps-api.jup.ag/v2/jlp-info';
+            let data;
+            try {
+                const res = await fetch(`${PROXY}/?url=${encodeURIComponent(API)}`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                data = await res.json();
+            } catch (e) {
+                container.innerHTML = `<div style="color:#ef4444;font-size:0.85rem;">⚠️ Could not load JLP data: ${e.message}</div>`;
+                return;
+            }
+
+            const aumUsd   = parseFloat(data.aumUsdFormatted);
+            const aumLimit = parseFloat(data.aumLimitUsdFormatted);
+            const apyPct   = parseFloat(data.jlpApyPct);
+            const capPct   = (aumUsd / aumLimit) * 100;
+            const custodies = data.custodies || [];
+
+            // Determine signal
+            const maxUtil = Math.max(...custodies.map(c => parseFloat(c.utilizationPct)));
+            let signal, signalColor;
+            if (maxUtil > 70)      { signal = '🔴 Hot — Cap raise likely, fees elevated';          signalColor = '#ef4444'; }
+            else if (maxUtil > 50) { signal = '🟠 High — Elevated fees, watch for cap raise signal'; signalColor = '#f97316'; }
+            else if (maxUtil > 20) { signal = '🟡 Moderate — Normal fee generation';               signalColor = '#eab308'; }
+            else                   { signal = '🟢 Low Activity — Bear market conditions';           signalColor = '#22c55e'; }
+
+            if (badge) {
+                badge.textContent = `APY ${apyPct.toFixed(2)}%`;
+                badge.style.background = 'rgba(0,212,255,0.15)';
+                badge.style.color = '#00d4ff';
+            }
+
+            function barClass(pct) {
+                if (pct >= 80) return 'jlp-bar-red';
+                if (pct >= 60) return 'jlp-bar-orange';
+                if (pct >= 30) return 'jlp-bar-yellow';
+                return 'jlp-bar-green';
+            }
+            function fmtUsd(n) {
+                if (n >= 1e9) return '$' + (n/1e9).toFixed(2) + 'B';
+                if (n >= 1e6) return '$' + (n/1e6).toFixed(0) + 'M';
+                return '$' + n.toFixed(0);
+            }
+
+            const assetBars = custodies.map(c => {
+                const pct = parseFloat(c.utilizationPct);
+                return `
+                <div class="jlp-asset-row">
+                    <div class="jlp-asset-label">
+                        <span><strong>${c.symbol}</strong></span>
+                        <span>${pct.toFixed(2)}% utilized</span>
+                    </div>
+                    <div class="jlp-bar-track">
+                        <div class="jlp-bar-fill ${barClass(pct)}" style="width:${Math.min(pct,100)}%"></div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="jlp-grid">
+                    <div>
+                        <div style="font-size:0.75rem;color:#6b6b8d;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Asset Utilization</div>
+                        ${assetBars}
+                    </div>
+                    <div>
+                        <div style="font-size:0.75rem;color:#6b6b8d;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Pool Capacity</div>
+                        <div class="jlp-asset-row">
+                            <div class="jlp-asset-label">
+                                <span>AUM ${fmtUsd(aumUsd)} / ${fmtUsd(aumLimit)}</span>
+                                <span>${capPct.toFixed(1)}%</span>
+                            </div>
+                            <div class="jlp-bar-track" style="height:14px;">
+                                <div class="jlp-bar-fill ${barClass(capPct)}" style="width:${Math.min(capPct,100)}%; height:14px;"></div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:16px;font-size:0.75rem;color:#6b6b8d;text-transform:uppercase;letter-spacing:0.05em;">Pool APY</div>
+                        <div class="jlp-apy-badge">${apyPct.toFixed(2)}%</div>
+
+                        <div style="margin-top:16px;font-size:0.75rem;color:#6b6b8d;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Signal</div>
+                        <div class="jlp-signal" style="color:${signalColor};border-color:${signalColor}33;">${signal}</div>
+                    </div>
+                </div>
+                <div class="jlp-note">Utilization &gt; 70% on any asset = leading indicator for JLP cap raise and elevated APY</div>
+            `;
+        }
+
+        loadJlpPoolHealth();
+        setInterval(loadJlpPoolHealth, 10 * 60 * 1000); // refresh every 10 min
     </script>
 </body>
 </html>

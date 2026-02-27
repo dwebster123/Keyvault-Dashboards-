@@ -1,0 +1,42 @@
+[
+  {
+    "date": "2026-02-27",
+    "timestamp": 1772154970630,
+    "aumUsd": 1114566642.54,
+    "aumLimitUsd": 3000000000,
+    "apyPct": 7.27,
+    "utilizationCapPct": 37.152221417999996,
+    "custodies": [
+      {
+        "symbol": "SOL",
+        "utilizationPct": 5.19,
+        "weightPct": 46.07,
+        "targetWeightPct": 47
+      },
+      {
+        "symbol": "ETH",
+        "utilizationPct": 3.22,
+        "weightPct": 7.92,
+        "targetWeightPct": 8
+      },
+      {
+        "symbol": "WBTC",
+        "utilizationPct": 6.19,
+        "weightPct": 15.63,
+        "targetWeightPct": 13
+      },
+      {
+        "symbol": "USDC",
+        "utilizationPct": 38.86,
+        "weightPct": 30.4,
+        "targetWeightPct": 32
+      },
+      {
+        "symbol": "USDT",
+        "utilizationPct": 0,
+        "weightPct": 0,
+        "targetWeightPct": 0
+      }
+    ]
+  }
+]
