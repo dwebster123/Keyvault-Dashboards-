@@ -1035,6 +1035,96 @@
       color: var(--green);
       background: rgba(34,197,94,0.1);
     }
+
+  /* ── Agent Economy Intelligence ──────────────────────── */
+  .agent-economy-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .ae-stat-card {
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .ae-stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #00d4ff;
+    letter-spacing: -0.02em;
+  }
+  .ae-stat-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+  .ae-research-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .ae-report-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ae-report-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--fg);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+  .ae-report-body {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.6;
+    flex: 1;
+    max-height: 120px;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  }
+  .ae-report-meta {
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.2);
+  }
+  .ae-opportunities-card {
+    border-color: rgba(0,212,255,0.25);
+    background: rgba(0,212,255,0.04);
+  }
+  .ae-opp {
+    font-size: 0.78rem;
+    color: var(--muted);
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+  }
+  .ae-opp:last-child { border-bottom: none; }
+  .ae-opp strong { color: var(--fg); }
+  .ae-nightly-status {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.2);
+    text-align: center;
+    padding: 8px 0;
+  }
+  .ae-nightly-status code {
+    background: rgba(255,255,255,0.06);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+  }
   </style>
 </head>
 <body>
@@ -1079,6 +1169,7 @@
   <a href="#team">👥 Team</a>
   <a href="#kb">🔍 KB Search</a>
   <a href="#health">🛡 Health</a>
+  <a href="#agent-economy">🤖 Agent Economy</a>
 </div>
 
 <!-- ── Main Content ────────────────────────────────────────────────────── -->
@@ -1280,6 +1371,72 @@
     </div>
     <div class="kb-stats" id="kb-stats"></div>
     <div class="kb-results" id="kb-results"><div class="kb-empty">Loading…</div></div>
+  </section>
+
+  <!-- §8  AGENT ECONOMY INTELLIGENCE ─────────────────────────────────── -->
+  <section id="agent-economy">
+    <div class="section-title">
+      <span class="icon">🤖</span> Agent Economy Intelligence
+      <span class="badge" id="agent-economy-badge">LIVE</span>
+    </div>
+    <div class="agent-economy-stats" id="agent-economy-stats">
+      <div class="ae-stat-card">
+        <div class="ae-stat-value">49%</div>
+        <div class="ae-stat-label">Solana x402 Market Share</div>
+      </div>
+      <div class="ae-stat-card">
+        <div class="ae-stat-value">120M+</div>
+        <div class="ae-stat-label">x402 Transactions (all chains)</div>
+      </div>
+      <div class="ae-stat-card">
+        <div class="ae-stat-value">$16.4M</div>
+        <div class="ae-stat-label">Payment Volume (Solana x402)</div>
+      </div>
+      <div class="ae-stat-card">
+        <div class="ae-stat-value">25K+</div>
+        <div class="ae-stat-label">Active Seller Wallets</div>
+      </div>
+    </div>
+    <div class="ae-research-grid" id="ae-research-grid">
+      <div class="ae-report-card">
+        <div class="ae-report-title">📦 What Agents Are Buying</div>
+        <div class="ae-report-body" id="ae-report-buying">Loading research…</div>
+        <div class="ae-report-meta" id="ae-report-buying-meta"></div>
+      </div>
+      <div class="ae-report-card">
+        <div class="ae-report-title">💳 Payment Infrastructure</div>
+        <div class="ae-report-body" id="ae-report-infra">Loading research…</div>
+        <div class="ae-report-meta" id="ae-report-infra-meta"></div>
+      </div>
+      <div class="ae-report-card">
+        <div class="ae-report-title">💰 How to Sell to Agents</div>
+        <div class="ae-report-body" id="ae-report-sell">Loading research…</div>
+        <div class="ae-report-meta" id="ae-report-sell-meta"></div>
+      </div>
+      <div class="ae-report-card">
+        <div class="ae-report-title">🗺 Competitive Landscape</div>
+        <div class="ae-report-body" id="ae-report-landscape">Loading research…</div>
+        <div class="ae-report-meta" id="ae-report-landscape-meta"></div>
+      </div>
+      <div class="ae-report-card">
+        <div class="ae-report-title">🎮 Agent Gaming Economy</div>
+        <div class="ae-report-body" id="ae-report-gaming">Loading research…</div>
+        <div class="ae-report-meta" id="ae-report-gaming-meta"></div>
+      </div>
+      <div class="ae-report-card ae-opportunities-card">
+        <div class="ae-report-title">⚡ Our Opportunities</div>
+        <div class="ae-opportunities" id="ae-opportunities">
+          <div class="ae-opp">🎰 <strong>Agent Poker rake</strong> — agents play, we collect. x402 for seamless buy-in.</div>
+          <div class="ae-opp">📊 <strong>KV yield data API</strong> — sell NAV, APY feeds, strategy signals to agent traders.</div>
+          <div class="ae-opp">🧠 <strong>Nix as a seller</strong> — offer research, analysis, data via x402 micropayments.</div>
+          <div class="ae-opp">🏟 <strong>Agent Arena rake</strong> — battle entry fees, tournament prizes, spectator bets.</div>
+          <div class="ae-opp">💹 <strong>Solana-first positioning</strong> — 49% of agent payments already on SOL. We're already here.</div>
+        </div>
+      </div>
+    </div>
+    <div class="ae-nightly-status">
+      🕙 Nightly research runs at 10pm PT · Reports saved to <code>~/clawd/projects/agent-economy/research/</code>
+    </div>
   </section>
 
   <!-- §7  SYSTEM HEALTH ───────────────────────────────────────────────── -->
@@ -2194,6 +2351,57 @@ function stamp() {
   });
 }
 
+/* ── Agent Economy Intelligence ────────────────────────────────────── */
+async function loadAgentEconomy() {
+  const reports = [
+    { id: 'ae-report-buying',    file: 'x402-what-agents-buy.md' },
+    { id: 'ae-report-infra',     file: 'x402-payment-infrastructure.md' },
+    { id: 'ae-report-sell',      file: 'how-to-sell-to-agents.md' },
+    { id: 'ae-report-landscape', file: 'competitive-landscape.md' },
+    { id: 'ae-report-gaming',    file: 'agent-gaming-economy.md' },
+  ];
+
+  // Try to load today's daily digest too
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
+
+  for (const r of reports) {
+    try {
+      // On GitHub Pages these won't be available — show last-updated message instead
+      const el = document.getElementById(r.id);
+      const metaEl = document.getElementById(r.id + '-meta');
+      if (!el) continue;
+
+      // Try fetching relative to research dir (only works if served from clawd workspace)
+      const res = await fetch(`/projects/agent-economy/research/${r.file}`);
+      if (res.ok) {
+        const text = await res.text();
+        // Extract executive summary / first few paragraphs
+        const lines = text.split('\n').filter(l => l.trim() && !l.startsWith('#')).slice(0, 6);
+        el.textContent = lines.join(' ').slice(0, 400) + '…';
+        if (metaEl) {
+          const dateMatch = text.match(/\d{4}-\d{2}-\d{2}/);
+          metaEl.textContent = dateMatch ? `Last updated: ${dateMatch[0]}` : '';
+        }
+      } else {
+        el.textContent = 'Research pending — agents running nightly at 10pm PT.';
+        el.style.color = 'rgba(255,255,255,0.2)';
+      }
+    } catch (e) {
+      const el = document.getElementById(r.id);
+      if (el) { el.textContent = 'Research pending — agents running nightly at 10pm PT.'; el.style.color = 'rgba(255,255,255,0.2)'; }
+    }
+  }
+
+  // Badge
+  const badge = document.getElementById('agent-economy-badge');
+  if (badge) {
+    badge.textContent = 'LIVE';
+    badge.style.background = 'rgba(0,212,255,0.15)';
+    badge.style.color = '#00d4ff';
+    badge.style.border = '1px solid rgba(0,212,255,0.3)';
+  }
+}
+
 async function loadAll() {
   await Promise.allSettled([
     loadSystemStatus(),
@@ -2208,6 +2416,7 @@ async function loadAll() {
     loadKB(),
     loadBotHealth(),
     loadDataFreshness(),
+    loadAgentEconomy(),
   ]);
   checkAlerts();
   stamp();
