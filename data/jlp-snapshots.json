@@ -491,40 +491,40 @@
       "traderPnlLabel": "pool_winning"
     },
     {
-      "timestamp": "2026-02-26T14:00:08.513Z",
+      "timestamp": "2026-02-27T03:00:07.020Z",
       "date": "2026-02-26",
-      "navPrice": 3.759503,
-      "aum": 1134172350.89364,
+      "navPrice": 3.728706,
+      "aum": 1122889165.542253,
       "jupiterApyPct": 7.27,
-      "fees24h": 2638815,
-      "avgDailyFees7d": 1285645,
-      "realTimeFeeApyPct": 31.03,
+      "fees24h": 1006714,
+      "avgDailyFees7d": 1309548,
+      "realTimeFeeApyPct": 31.93,
       "traderExposure": {
         "SOL": {
-          "guaranteedUsd": 19317815.894893,
-          "globalShortSizes": 14192142.0099,
-          "shortPnlDelta": 209302.280371,
+          "guaranteedUsd": 19377473.317084,
+          "globalShortSizes": 14920974.053317,
+          "shortPnlDelta": 105817.3513,
           "shortTradersHasProfit": false,
-          "netPnl": -209302.280371
+          "netPnl": -105817.3513
         },
         "ETH": {
-          "guaranteedUsd": 3317896.635714,
-          "globalShortSizes": 1601815.149578,
-          "shortPnlDelta": 15453.726254,
+          "guaranteedUsd": 2490435.356021,
+          "globalShortSizes": 1958540.297947,
+          "shortPnlDelta": 35923.458613,
           "shortTradersHasProfit": true,
-          "netPnl": 15453.726254
+          "netPnl": 35923.458613
         },
         "WBTC": {
-          "guaranteedUsd": 10090806.812937,
-          "globalShortSizes": 7552396.032552,
-          "shortPnlDelta": 185796.142567,
+          "guaranteedUsd": 9316968.491937,
+          "globalShortSizes": 7481551.169274,
+          "shortPnlDelta": 234443.545547,
           "shortTradersHasProfit": true,
-          "netPnl": 185796.142567
+          "netPnl": 234443.545547
         }
       },
-      "totalTraderPnl": -8052.41,
-      "traderPnlLabel": "pool_winning"
+      "totalTraderPnl": 164549.65,
+      "traderPnlLabel": "traders_winning"
     }
   ],
-  "lastUpdated": "2026-02-26T14:00:08.513Z"
+  "lastUpdated": "2026-02-27T03:00:07.020Z"
 }
