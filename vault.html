@@ -974,9 +974,10 @@
             const VAULT_USER = 'X5f4WpDXNHp5svKcsLZSeFrhSvtRN5kQuKdnd5HsZLE';
             const VAULT_ADDRESS = 'G3RT2wdEYCphzcvXEHb8u4Yc4ZRscsQ1KRYywdBjgUZp';
             try {
+                const proxyUrl = u => `https://keyvault-proxy.deven-m-webster.workers.dev/?url=${encodeURIComponent(u)}`;
                 const [userResp, vaultResp] = await Promise.all([
-                    fetch(`https://data.api.drift.trade/user/${VAULT_USER}`),
-                    fetch(`https://app.drift.trade/api/vaults`)
+                    fetch(proxyUrl(`https://data.api.drift.trade/user/${VAULT_USER}`)),
+                    fetch(proxyUrl(`https://app.drift.trade/api/vaults`))
                 ]);
                 const userData = await userResp.json();
                 const vaultsData = await vaultResp.json();
@@ -1012,10 +1013,14 @@
                     console.warn('Local data failed:', e);
                 }
                 if (!primeCurrent || !history) {
-                    [primeCurrent, history] = await Promise.all([
-                        fetchWithFallback('https://app.primenumber.trade/data/PN_KV1.json'),
-                        fetchWithFallback('https://app.primenumber.trade/data/PN_KV1_history.json')
-                    ]);
+                    try {
+                        [primeCurrent, history] = await Promise.all([
+                            fetchWithFallback('https://app.primenumber.trade/data/PN_KV1.json'),
+                            fetchWithFallback('https://app.primenumber.trade/data/PN_KV1_history.json')
+                        ]);
+                    } catch (e) {
+                        console.warn('Prime Number API fallback failed (CORS), using official NAV data instead');
+                    }
                 }
 
                 let officialNav = null;
