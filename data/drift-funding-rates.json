@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-28T03:00:03.112Z",
+  "lastUpdated": "2026-03-01T03:00:02.709Z",
   "markets": {
     "SOL-PERP": [
       {
@@ -104,8 +104,8 @@
       },
       {
         "date": "2026-01-30",
-        "avgRate": -0.00001704,
-        "annualizedPct": -14.9306
+        "avgRate": -0.00001718,
+        "annualizedPct": -15.0505
       },
       {
         "date": "2026-01-31",
@@ -249,8 +249,13 @@
       },
       {
         "date": "2026-02-28",
-        "avgRate": -0.00000483,
-        "annualizedPct": -4.2353
+        "avgRate": -0.00000943,
+        "annualizedPct": -8.2583
+      },
+      {
+        "date": "2026-03-01",
+        "avgRate": -0.00001281,
+        "annualizedPct": -11.2244
       }
     ],
     "BTC-PERP": [
@@ -356,8 +361,8 @@
       },
       {
         "date": "2026-01-30",
-        "avgRate": 0.00000966,
-        "annualizedPct": 8.4651
+        "avgRate": 0.00000892,
+        "annualizedPct": 7.814
       },
       {
         "date": "2026-01-31",
@@ -501,8 +506,13 @@
       },
       {
         "date": "2026-02-28",
-        "avgRate": 0.00000985,
-        "annualizedPct": 8.6276
+        "avgRate": 0.00000343,
+        "annualizedPct": 3.0047
+      },
+      {
+        "date": "2026-03-01",
+        "avgRate": -0.00000848,
+        "annualizedPct": -7.4258
       }
     ],
     "ETH-PERP": [
@@ -608,8 +618,8 @@
       },
       {
         "date": "2026-01-30",
-        "avgRate": 8.2e-7,
-        "annualizedPct": 0.721
+        "avgRate": 2e-7,
+        "annualizedPct": 0.1772
       },
       {
         "date": "2026-01-31",
@@ -753,8 +763,13 @@
       },
       {
         "date": "2026-02-28",
-        "avgRate": -0.00000215,
-        "annualizedPct": -1.8793
+        "avgRate": 0.00000111,
+        "annualizedPct": 0.9712
+      },
+      {
+        "date": "2026-03-01",
+        "avgRate": 0.00000677,
+        "annualizedPct": 5.9341
       }
     ]
   }
