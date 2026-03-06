@@ -227,6 +227,8 @@ async function main() {
     const repoDir = path.join(__dirname, '..');
     execSync(`git -C "${repoDir}" add data/official-nav-history.json`, { stdio: 'pipe' });
     execSync(`git -C "${repoDir}" commit -m "NAV stamp: ${todayDate} $${sharePrice.toFixed(6)} TVL ${tvl ? '$' + Number(tvl).toLocaleString('en-US', { maximumFractionDigits: 0 }) : 'unavailable'}"`, { stdio: 'pipe' });
+    // Pull remote changes first to avoid divergence with GitHub Pages CI commits
+    execSync(`git -C "${repoDir}" pull --rebase origin main`, { stdio: 'pipe' });
     execSync(`git -C "${repoDir}" push`, { stdio: 'pipe' });
     console.log(`[NAV Stamp] ✅ Pushed to GitHub Pages`);
   } catch (e) {
