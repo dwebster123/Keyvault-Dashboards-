@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-05T03:01:07.394Z",
+  "lastUpdated": "2026-03-06T14:00:06.952Z",
   "markets": {
     "SOL-PERP": [
       {
@@ -94,43 +94,43 @@
       },
       {
         "date": "2026-01-28",
-        "avgRate": 0.00000281,
-        "annualizedPct": 2.4597
+        "avgRate": 0.00000305,
+        "annualizedPct": 2.6754
       },
       {
         "date": "2026-01-29",
-        "avgRate": -0.00000431,
-        "annualizedPct": -3.7763
+        "avgRate": -0.000001,
+        "annualizedPct": -0.8763
       },
       {
         "date": "2026-01-30",
-        "avgRate": -0.00001718,
-        "annualizedPct": -15.0505
+        "avgRate": -0.00001704,
+        "annualizedPct": -14.9306
       },
       {
         "date": "2026-01-31",
-        "avgRate": -0.00002647,
-        "annualizedPct": -23.1863
+        "avgRate": -0.00002469,
+        "annualizedPct": -21.6271
       },
       {
         "date": "2026-02-01",
-        "avgRate": -0.00005219,
-        "annualizedPct": -45.7204
+        "avgRate": -0.0000518,
+        "annualizedPct": -45.3755
       },
       {
         "date": "2026-02-02",
-        "avgRate": -0.00002772,
-        "annualizedPct": -24.285
+        "avgRate": -0.00002837,
+        "annualizedPct": -24.8543
       },
       {
         "date": "2026-02-03",
-        "avgRate": -0.00002296,
-        "annualizedPct": -20.1123
+        "avgRate": -0.00001164,
+        "annualizedPct": -10.1974
       },
       {
         "date": "2026-02-04",
-        "avgRate": -0.00003628,
-        "annualizedPct": -31.78
+        "avgRate": -0.00004773,
+        "annualizedPct": -41.8125
       },
       {
         "date": "2026-02-05",
@@ -274,8 +274,13 @@
       },
       {
         "date": "2026-03-05",
-        "avgRate": 0.00000884,
-        "annualizedPct": 7.7475
+        "avgRate": -0.00000363,
+        "annualizedPct": -3.1832
+      },
+      {
+        "date": "2026-03-06",
+        "avgRate": -0.00000358,
+        "annualizedPct": -3.1338
       }
     ],
     "BTC-PERP": [
@@ -371,43 +376,43 @@
       },
       {
         "date": "2026-01-28",
-        "avgRate": 0.00000492,
-        "annualizedPct": 4.3119
+        "avgRate": 0.00000516,
+        "annualizedPct": 4.5225
       },
       {
         "date": "2026-01-29",
-        "avgRate": 0.00001105,
-        "annualizedPct": 9.6812
+        "avgRate": 0.00001004,
+        "annualizedPct": 8.7934
       },
       {
         "date": "2026-01-30",
-        "avgRate": 0.00000892,
-        "annualizedPct": 7.814
+        "avgRate": 0.00000966,
+        "annualizedPct": 8.4651
       },
       {
         "date": "2026-01-31",
-        "avgRate": 0.00000796,
-        "annualizedPct": 6.975
+        "avgRate": 0.00000821,
+        "annualizedPct": 7.1916
       },
       {
         "date": "2026-02-01",
-        "avgRate": 0.00000186,
-        "annualizedPct": 1.6307
+        "avgRate": 0.00000201,
+        "annualizedPct": 1.7599
       },
       {
         "date": "2026-02-02",
-        "avgRate": 0.00000106,
-        "annualizedPct": 0.9261
+        "avgRate": 0.0000016,
+        "annualizedPct": 1.3997
       },
       {
         "date": "2026-02-03",
-        "avgRate": 3.3e-7,
-        "annualizedPct": 0.2928
+        "avgRate": 0.00000686,
+        "annualizedPct": 6.0109
       },
       {
         "date": "2026-02-04",
-        "avgRate": 0.00000549,
-        "annualizedPct": 4.805
+        "avgRate": 0.00000827,
+        "annualizedPct": 7.2436
       },
       {
         "date": "2026-02-05",
@@ -551,8 +556,13 @@
       },
       {
         "date": "2026-03-05",
-        "avgRate": -0.00000298,
-        "annualizedPct": -2.6142
+        "avgRate": -2.7e-7,
+        "annualizedPct": -0.2376
+      },
+      {
+        "date": "2026-03-06",
+        "avgRate": 0.00001079,
+        "annualizedPct": 9.452
       }
     ],
     "ETH-PERP": [
@@ -648,43 +658,43 @@
       },
       {
         "date": "2026-01-28",
-        "avgRate": 0.00000601,
-        "annualizedPct": 5.2638
+        "avgRate": 0.00000594,
+        "annualizedPct": 5.2043
       },
       {
         "date": "2026-01-29",
-        "avgRate": 0.00000838,
-        "annualizedPct": 7.3409
+        "avgRate": 0.00000827,
+        "annualizedPct": 7.2469
       },
       {
         "date": "2026-01-30",
-        "avgRate": 2e-7,
-        "annualizedPct": 0.1772
+        "avgRate": 8.2e-7,
+        "annualizedPct": 0.721
       },
       {
         "date": "2026-01-31",
-        "avgRate": -0.00000127,
-        "annualizedPct": -1.1163
+        "avgRate": -7.8e-7,
+        "annualizedPct": -0.6827
       },
       {
         "date": "2026-02-01",
-        "avgRate": -0.00000874,
-        "annualizedPct": -7.6544
+        "avgRate": -0.00000841,
+        "annualizedPct": -7.3628
       },
       {
         "date": "2026-02-02",
-        "avgRate": -0.00001028,
-        "annualizedPct": -9.0049
+        "avgRate": -0.00001031,
+        "annualizedPct": -9.0348
       },
       {
         "date": "2026-02-03",
-        "avgRate": -0.00001025,
-        "annualizedPct": -8.9803
+        "avgRate": -0.00000767,
+        "annualizedPct": -6.7181
       },
       {
         "date": "2026-02-04",
-        "avgRate": -0.00000493,
-        "annualizedPct": -4.3163
+        "avgRate": -0.00000136,
+        "annualizedPct": -1.188
       },
       {
         "date": "2026-02-05",
@@ -828,8 +838,13 @@
       },
       {
         "date": "2026-03-05",
-        "avgRate": -0.00001163,
-        "annualizedPct": -10.1916
+        "avgRate": -0.00000488,
+        "annualizedPct": -4.2715
+      },
+      {
+        "date": "2026-03-06",
+        "avgRate": -0.00000125,
+        "annualizedPct": -1.0978
       }
     ]
   }
