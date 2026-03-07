@@ -561,40 +561,40 @@
       "traderPnlLabel": "pool_winning"
     },
     {
-      "timestamp": "2026-03-06T14:00:50.218Z",
+      "timestamp": "2026-03-07T03:00:09.846Z",
       "date": "2026-03-06",
-      "navPrice": 3.732945,
-      "aum": 1122780940.978442,
-      "jupiterApyPct": 8.86,
-      "fees24h": 478020,
-      "avgDailyFees7d": 1325324,
-      "realTimeFeeApyPct": 32.31,
+      "navPrice": 3.704226,
+      "aum": 1115232691.262026,
+      "jupiterApyPct": 12.44,
+      "fees24h": 1326057,
+      "avgDailyFees7d": 1342637,
+      "realTimeFeeApyPct": 32.96,
       "traderExposure": {
         "SOL": {
-          "guaranteedUsd": 19308583.838074,
-          "globalShortSizes": 15453896.116609,
-          "shortPnlDelta": 5331.510719,
+          "guaranteedUsd": 19918675.952037,
+          "globalShortSizes": 15017614.599205,
+          "shortPnlDelta": 7636.582463,
           "shortTradersHasProfit": true,
-          "netPnl": 5331.510719
+          "netPnl": 7636.582463
         },
         "ETH": {
-          "guaranteedUsd": 2254802.014146,
-          "globalShortSizes": 2270738.235136,
-          "shortPnlDelta": 77245.094605,
+          "guaranteedUsd": 4440571.207051,
+          "globalShortSizes": 1600528.558294,
+          "shortPnlDelta": 60711.366501,
           "shortTradersHasProfit": true,
-          "netPnl": 77245.094605
+          "netPnl": 60711.366501
         },
         "WBTC": {
-          "guaranteedUsd": 8154390.503122,
-          "globalShortSizes": 9941888.345463,
-          "shortPnlDelta": 311231.556239,
+          "guaranteedUsd": 10553231.334809,
+          "globalShortSizes": 9430717.699889,
+          "shortPnlDelta": 320477.482286,
           "shortTradersHasProfit": true,
-          "netPnl": 311231.556239
+          "netPnl": 320477.482286
         }
       },
-      "totalTraderPnl": 393808.16,
+      "totalTraderPnl": 388825.43,
       "traderPnlLabel": "traders_winning"
     }
   ],
-  "lastUpdated": "2026-03-06T14:00:50.218Z"
+  "lastUpdated": "2026-03-07T03:00:09.846Z"
 }
