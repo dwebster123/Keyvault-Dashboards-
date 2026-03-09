@@ -181,7 +181,7 @@ new Chart(ctx, {
   plugins: [
     {
       afterDatasetsDraw(chart) {
-        const { ctx: c, data, scales } = chart;
+        const { ctx: c, data, scales, chartArea } = chart;
 
         // Value labels after each bar
         data.datasets[0].data.forEach((val, i) => {
@@ -203,8 +203,8 @@ new Chart(ctx, {
         c.lineWidth = 2;
         c.setLineDash([8, 5]);
         c.beginPath();
-        c.moveTo(scales.x.left, yPx);
-        c.lineTo(scales.x.right, yPx);
+        c.moveTo(chartArea.left, yPx);
+        c.lineTo(chartArea.right, yPx);
         c.stroke();
         c.setLineDash([]);
 
@@ -213,7 +213,7 @@ new Chart(ctx, {
         c.font = 'bold 13px -apple-system, Arial';
         c.textAlign = 'right';
         c.textBaseline = 'bottom';
-        c.fillText('Considered Exceptional (3.0)', scales.x.right, yPx - 5);
+        c.fillText('Considered Exceptional (3.0)', chartArea.right, yPx - 5);
         c.restore();
       }
     }
