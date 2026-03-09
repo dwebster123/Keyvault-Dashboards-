@@ -196,24 +196,24 @@ new Chart(ctx, {
           c.restore();
         });
 
-        // "Excellent" threshold line at x=3.0
-        const xPx = scales.x.getPixelForValue(3.0);
+        // Horizontal threshold line at y=3.0
+        const yPx = scales.y.getPixelForValue(3.0);
         c.save();
         c.strokeStyle = '#f59e0b';
         c.lineWidth = 2;
         c.setLineDash([8, 5]);
         c.beginPath();
-        c.moveTo(xPx, scales.y.top);
-        c.lineTo(xPx, scales.y.bottom);
+        c.moveTo(scales.x.left, yPx);
+        c.lineTo(scales.x.right, yPx);
         c.stroke();
         c.setLineDash([]);
 
-        // Label for threshold
+        // Label — right-aligned on the line
         c.fillStyle = '#f59e0b';
         c.font = 'bold 13px -apple-system, Arial';
-        c.textAlign = 'center';
-        c.fillText('Exceptional', xPx, scales.y.top - 12);
-        c.fillText('Threshold (3.0)', xPx, scales.y.top + 4);
+        c.textAlign = 'right';
+        c.textBaseline = 'bottom';
+        c.fillText('Considered Exceptional (3.0)', scales.x.right, yPx - 5);
         c.restore();
       }
     }
