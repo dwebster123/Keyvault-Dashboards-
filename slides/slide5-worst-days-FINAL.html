@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slide 5 — Built to Withstand the Worst Days</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; overflow: hidden; }
+  #slide {
+    width: 1920px; height: 1080px;
+    background: #050508;
+    position: relative; overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  }
+
+  .blob { position: absolute; border-radius: 50%; pointer-events: none; }
+  .blob-tl {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(220,40,40,0.12) 0%, transparent 70%);
+    filter: blur(90px); top: -100px; left: -100px;
+  }
+  .blob-br {
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(140,40,200,0.22) 0%, transparent 70%);
+    filter: blur(80px); bottom: -200px; right: -180px;
+  }
+  .blob-mid {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,200,220,0.10) 0%, transparent 70%);
+    filter: blur(70px); bottom: 200px; left: 600px;
+  }
+
+  .header-bar {
+    position: absolute; top: 44px; left: 72px; right: 72px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .header-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(255,255,255,0.40); white-space: nowrap;
+  }
+  .header-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.20), rgba(255,255,255,0.06));
+  }
+  .header-url {
+    font-size: 11px; letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.40); white-space: nowrap;
+  }
+
+  .content {
+    position: absolute; top: 100px; left: 72px; right: 72px; bottom: 50px;
+    display: flex; flex-direction: column;
+  }
+
+  .title-row {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+  }
+  .title {
+    font-size: 44px; font-weight: 900; text-transform: uppercase;
+    letter-spacing: -0.02em; color: #fff; line-height: 1.05;
+  }
+  .title span { color: #ef4444; }
+  .subtitle {
+    font-size: 16px; color: rgba(255,255,255,0.40);
+    margin-top: 8px; letter-spacing: 0.02em; font-weight: 400;
+  }
+  .strategy-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(0,220,200,0.05);
+    border: 1px solid rgba(0,220,200,0.20);
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-size: 11px; font-weight: 700; color: rgba(0,220,200,0.70);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .strategy-badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #00dcc8;
+  }
+
+  .divider {
+    height: 1px; margin: 16px 0 12px;
+    background: linear-gradient(90deg, rgba(239,68,68,0.25), rgba(255,255,255,0.06), transparent);
+  }
+
+  /* Legend */
+  .legend {
+    display: flex; gap: 32px; margin-bottom: 8px;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.45);
+    letter-spacing: 0.04em;
+  }
+  .legend-swatch {
+    width: 24px; height: 3px; border-radius: 2px;
+  }
+  .legend-swatch.kv { background: #00dcc8; }
+  .legend-swatch.btc { background: rgba(239,68,68,0.60); }
+  .legend-zone {
+    width: 24px; height: 14px; border-radius: 2px;
+    background: rgba(239,68,68,0.20);
+    border: 1px solid rgba(239,68,68,0.35);
+  }
+
+  /* Chart container */
+  .chart-wrap {
+    flex: 1; min-height: 0; position: relative;
+    margin: 0 0 12px;
+  }
+  #timeline {
+    width: 100%; height: 100%;
+    display: block;
+  }
+
+  /* Bottom stats row */
+  .stats-row {
+    display: flex; gap: 16px; align-items: stretch;
+  }
+  .stat-card {
+    flex: 1;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 12px 18px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .stat-label {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.30);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .stat-value {
+    font-size: 26px; font-weight: 900; color: #00dcc8;
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-value.red { color: #ef4444; }
+  .stat-value.white { color: rgba(255,255,255,0.85); }
+  .stat-sub {
+    font-size: 11px; color: rgba(255,255,255,0.25);
+    margin-top: 3px;
+  }
+
+  .tagline-box {
+    background: rgba(0,220,200,0.04);
+    border: 1px solid rgba(0,220,200,0.20);
+    border-radius: 6px;
+    padding: 12px 32px;
+    display: flex; align-items: center;
+    font-size: 20px; font-weight: 900; color: #fff;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .footer {
+    position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+    font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(255,255,255,0.10); white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<div id="slide">
+  <div class="blob blob-tl"></div>
+  <div class="blob blob-br"></div>
+  <div class="blob blob-mid"></div>
+
+  <div class="header-bar">
+    <span class="header-label">Investors Deck</span>
+    <div class="header-line"></div>
+    <span class="header-url">keyvaultfund.com</span>
+  </div>
+
+  <div class="content">
+    <div class="title-row">
+      <div>
+        <div class="title">Built to Withstand the <span>Worst Days</span></div>
+        <div class="subtitle">12 months of real performance. Key Vault vs Bitcoin. Same market — different outcome.</div>
+      </div>
+      <div class="strategy-badge">
+        <div class="strategy-badge-dot"></div>
+        JLP Delta Hedge Live Since Nov 2023
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch kv"></div> Key Vault NAV (indexed to 100)</div>
+      <div class="legend-item"><div class="legend-swatch btc"></div> Bitcoin Price (indexed to 100)</div>
+      <div class="legend-item"><div class="legend-zone"></div> BTC Crash Zone</div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="timeline"></canvas>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Key Vault</div>
+        <div class="stat-value">~20%</div>
+        <div class="stat-sub">Net of fees, 12 months</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Bitcoin</div>
+        <div class="stat-value red">-22.0%</div>
+        <div class="stat-sub">Same period, same market</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Max KV Drawdown</div>
+        <div class="stat-value">-1.01%</div>
+        <div class="stat-sub">While BTC dropped 19%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Crashes Survived</div>
+        <div class="stat-value white">5</div>
+        <div class="stat-sub">BTC drops of 8% to 30%</div>
+      </div>
+      <div class="tagline-box">
+        The hedge works. Every time.
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Confidential — Not For Distribution</div>
+</div>
+
+<script>
+// === KV NAV DATA (normalized to 100 at inception) ===
+const kvDates = [
+  {date:"2025-02-26",val:100.00},{date:"2025-02-27",val:100.18},{date:"2025-02-28",val:99.95},
+  {date:"2025-03-01",val:100.39},{date:"2025-03-02",val:100.49},{date:"2025-03-03",val:100.95},
+  {date:"2025-03-04",val:100.47},{date:"2025-03-05",val:100.80},{date:"2025-03-06",val:100.89},
+  {date:"2025-03-07",val:100.89},{date:"2025-03-08",val:100.77},{date:"2025-03-09",val:100.83},
+  {date:"2025-03-10",val:100.62},{date:"2025-03-11",val:100.58},{date:"2025-03-12",val:100.58},
+  {date:"2025-03-13",val:100.52},{date:"2025-03-14",val:100.60},{date:"2025-03-15",val:100.97},
+  {date:"2025-03-16",val:101.00},{date:"2025-03-17",val:101.01},{date:"2025-03-18",val:100.96},
+  {date:"2025-03-19",val:100.98},{date:"2025-03-20",val:101.27},{date:"2025-03-21",val:101.24},
+  {date:"2025-03-22",val:101.07},{date:"2025-03-23",val:101.15},{date:"2025-03-24",val:101.30},
+  {date:"2025-03-25",val:101.40},{date:"2025-03-26",val:101.45},{date:"2025-03-27",val:101.45},
+  {date:"2025-03-28",val:101.26},{date:"2025-03-29",val:101.23},{date:"2025-03-30",val:101.24},
+  {date:"2025-03-31",val:101.32},{date:"2025-04-01",val:101.36},{date:"2025-04-02",val:101.29},
+  {date:"2025-04-03",val:101.19},{date:"2025-04-04",val:100.79},{date:"2025-04-05",val:100.95},
+  {date:"2025-04-06",val:101.05},{date:"2025-04-07",val:100.73},{date:"2025-04-08",val:100.96},
+  {date:"2025-04-09",val:101.01},{date:"2025-04-10",val:101.27},{date:"2025-04-11",val:101.36},
+  {date:"2025-04-12",val:101.68},{date:"2025-04-13",val:101.99},{date:"2025-04-14",val:102.03},
+  {date:"2025-04-15",val:102.12},{date:"2025-04-16",val:102.20},{date:"2025-04-17",val:102.25},
+  {date:"2025-04-18",val:102.42},{date:"2025-04-19",val:102.75},{date:"2025-04-20",val:102.64},
+  {date:"2025-04-21",val:102.55},{date:"2025-04-22",val:102.58},{date:"2025-04-23",val:102.96},
+  {date:"2025-04-24",val:103.00},{date:"2025-04-25",val:103.04},{date:"2025-04-26",val:102.97},
+  {date:"2025-04-27",val:103.03},{date:"2025-04-28",val:103.02},{date:"2025-04-29",val:102.98},
+  {date:"2025-04-30",val:102.91},{date:"2025-05-01",val:102.94},{date:"2025-05-02",val:103.17},
+  {date:"2025-05-03",val:103.12},{date:"2025-05-04",val:103.11},{date:"2025-05-05",val:103.14},
+  {date:"2025-05-06",val:102.91},{date:"2025-05-07",val:103.28},{date:"2025-05-08",val:103.29},
+  {date:"2025-05-09",val:103.85},{date:"2025-05-10",val:104.23},{date:"2025-05-11",val:104.37},
+  {date:"2025-05-12",val:104.39},{date:"2025-05-13",val:104.33},{date:"2025-05-14",val:104.88},
+  {date:"2025-05-15",val:104.79},{date:"2025-05-16",val:104.87},{date:"2025-05-17",val:104.85},
+  {date:"2025-05-18",val:104.76},{date:"2025-05-19",val:104.76},{date:"2025-05-20",val:104.84},
+  {date:"2025-05-21",val:104.82},{date:"2025-05-22",val:104.94},{date:"2025-05-23",val:105.24},
+  {date:"2025-05-24",val:105.09},{date:"2025-05-25",val:104.94},{date:"2025-05-26",val:105.19},
+  {date:"2025-05-27",val:105.14},{date:"2025-05-28",val:105.16},{date:"2025-05-29",val:105.39},
+  {date:"2025-05-30",val:105.40},{date:"2025-05-31",val:105.05},{date:"2025-06-01",val:105.20},
+  {date:"2025-06-02",val:105.04},{date:"2025-06-03",val:105.27},{date:"2025-06-04",val:105.24},
+  {date:"2025-06-05",val:105.23},{date:"2025-06-06",val:105.05},{date:"2025-06-07",val:105.17},
+  {date:"2025-06-08",val:105.27},{date:"2025-06-09",val:105.29},{date:"2025-06-10",val:105.71},
+  {date:"2025-06-11",val:105.88},{date:"2025-06-12",val:105.89},{date:"2025-06-13",val:105.36},
+  {date:"2025-06-14",val:105.51},{date:"2025-06-15",val:105.59},{date:"2025-06-16",val:105.84},
+  {date:"2025-06-17",val:105.72},{date:"2025-06-18",val:105.46},{date:"2025-06-19",val:105.40},
+  {date:"2025-06-20",val:105.38},{date:"2025-06-21",val:105.17},{date:"2025-06-22",val:105.07},
+  {date:"2025-06-23",val:105.03},{date:"2025-06-24",val:105.61},{date:"2025-06-25",val:105.83},
+  {date:"2025-06-26",val:105.82},{date:"2025-06-27",val:105.80},{date:"2025-06-28",val:105.93},
+  {date:"2025-06-29",val:106.14},{date:"2025-06-30",val:106.30},{date:"2025-07-01",val:106.29},
+  {date:"2025-07-02",val:106.56},{date:"2025-07-03",val:106.84},{date:"2025-07-04",val:106.80},
+  {date:"2025-07-05",val:106.63},{date:"2025-07-06",val:106.58},{date:"2025-07-07",val:106.70},
+  {date:"2025-07-08",val:106.70},{date:"2025-07-09",val:106.85},{date:"2025-07-10",val:107.00},
+  {date:"2025-07-11",val:107.57},{date:"2025-07-12",val:107.84},{date:"2025-07-13",val:107.70},
+  {date:"2025-07-14",val:108.05},{date:"2025-07-15",val:108.13},{date:"2025-07-16",val:108.27},
+  {date:"2025-07-17",val:108.92},{date:"2025-07-18",val:109.60},{date:"2025-07-19",val:109.39},
+  {date:"2025-07-20",val:109.46},{date:"2025-07-21",val:110.21},{date:"2025-07-22",val:110.89},
+  {date:"2025-07-23",val:111.12},{date:"2025-07-24",val:111.01},{date:"2025-07-25",val:111.09},
+  {date:"2025-07-26",val:111.52},{date:"2025-07-27",val:111.65},{date:"2025-07-28",val:111.97},
+  {date:"2025-07-29",val:111.96},{date:"2025-07-30",val:111.87},{date:"2025-07-31",val:111.92},
+  {date:"2025-08-01",val:111.65},{date:"2025-08-02",val:111.38},{date:"2025-08-03",val:111.23},
+  {date:"2025-08-04",val:111.42},{date:"2025-08-05",val:111.61},{date:"2025-08-06",val:111.47},
+  {date:"2025-08-07",val:111.87},{date:"2025-08-08",val:112.20},{date:"2025-08-09",val:112.31},
+  {date:"2025-08-10",val:112.52},{date:"2025-08-11",val:112.78},{date:"2025-08-12",val:112.88},
+  {date:"2025-08-13",val:114.03},{date:"2025-08-14",val:114.70},{date:"2025-08-15",val:114.45},
+  {date:"2025-08-16",val:114.35},{date:"2025-08-17",val:114.28},{date:"2025-08-18",val:114.19},
+  {date:"2025-08-19",val:113.95},{date:"2025-08-20",val:113.93},{date:"2025-08-21",val:114.13},
+  {date:"2025-08-22",val:114.12},{date:"2025-08-23",val:114.65},{date:"2025-08-24",val:114.91},
+  {date:"2025-08-25",val:114.95},{date:"2025-08-26",val:114.66},{date:"2025-08-27",val:115.21},
+  {date:"2025-08-28",val:115.57},{date:"2025-08-29",val:115.78},{date:"2025-08-30",val:115.69},
+  {date:"2025-08-31",val:115.58},{date:"2025-09-01",val:115.56},{date:"2025-09-02",val:115.75},
+  {date:"2025-09-03",val:115.89},{date:"2025-09-04",val:115.96},{date:"2025-09-05",val:115.97},
+  {date:"2025-09-06",val:115.89},{date:"2025-09-07",val:115.80},{date:"2025-09-08",val:115.97},
+  {date:"2025-09-09",val:116.36},{date:"2025-09-10",val:116.45},{date:"2025-09-11",val:116.73},
+  {date:"2025-09-12",val:117.46},{date:"2025-09-13",val:117.83},{date:"2025-09-14",val:118.14},
+  {date:"2025-09-15",val:118.22},{date:"2025-09-16",val:118.15},{date:"2025-09-17",val:118.25},
+  {date:"2025-09-18",val:118.51},{date:"2025-09-19",val:118.70},{date:"2025-09-20",val:118.57},
+  {date:"2025-09-21",val:118.55},{date:"2025-09-22",val:118.24},{date:"2025-09-23",val:118.24},
+  {date:"2025-09-24",val:118.20},{date:"2025-09-25",val:118.10},{date:"2025-09-26",val:118.19},
+  {date:"2025-09-27",val:118.48},{date:"2025-09-28",val:118.53},{date:"2025-09-29",val:118.77},
+  {date:"2025-09-30",val:118.87},{date:"2025-10-01",val:119.10},{date:"2025-10-02",val:119.48},
+  {date:"2025-10-03",val:119.95},{date:"2025-10-04",val:119.95},{date:"2025-10-05",val:120.25},
+  {date:"2025-10-06",val:120.18},{date:"2025-10-07",val:120.22},{date:"2025-10-08",val:120.17},
+  {date:"2025-10-09",val:120.29},{date:"2025-10-10",val:120.10},{date:"2025-10-11",val:119.68},
+  {date:"2025-10-12",val:119.85},{date:"2025-10-13",val:119.98},{date:"2025-10-14",val:119.93},
+  {date:"2025-10-15",val:119.99},{date:"2025-10-16",val:119.79},{date:"2025-10-17",val:119.78},
+  {date:"2025-10-18",val:119.70},{date:"2025-10-19",val:119.81},{date:"2025-10-20",val:120.07},
+  {date:"2025-10-21",val:119.87},{date:"2025-10-22",val:119.91},{date:"2025-10-23",val:120.01},
+  {date:"2025-10-24",val:120.39},{date:"2025-10-25",val:120.49},{date:"2025-10-26",val:120.61},
+  {date:"2025-10-27",val:120.88},{date:"2025-10-28",val:120.87},{date:"2025-10-29",val:120.93},
+  {date:"2025-10-30",val:120.86},{date:"2025-10-31",val:120.80},{date:"2025-11-01",val:120.76},
+  {date:"2025-11-02",val:120.66},{date:"2025-11-03",val:120.79},{date:"2025-11-04",val:120.85},
+  {date:"2025-11-05",val:121.15},{date:"2025-11-06",val:121.20},{date:"2025-11-07",val:121.36},
+  {date:"2025-11-08",val:121.56},{date:"2025-11-09",val:121.58},{date:"2025-11-10",val:121.58},
+  {date:"2025-11-11",val:121.60},{date:"2025-11-12",val:121.77},{date:"2025-11-13",val:121.82},
+  {date:"2025-11-14",val:121.95},{date:"2025-11-15",val:122.26},{date:"2025-11-16",val:122.28},
+  {date:"2025-11-17",val:122.32},{date:"2025-11-18",val:122.58},{date:"2025-11-19",val:122.58},
+  {date:"2025-11-20",val:122.62},{date:"2025-11-21",val:122.68},{date:"2025-11-22",val:122.64},
+  {date:"2025-11-23",val:122.61},{date:"2025-11-24",val:122.68},{date:"2025-11-25",val:122.84},
+  {date:"2025-11-26",val:122.80},{date:"2025-11-27",val:122.67},{date:"2025-11-28",val:122.56},
+  {date:"2025-11-29",val:122.51},{date:"2025-11-30",val:122.58},{date:"2025-12-01",val:122.67},
+  {date:"2025-12-02",val:122.76},{date:"2025-12-03",val:122.90},{date:"2025-12-04",val:122.85},
+  {date:"2025-12-05",val:123.00},{date:"2025-12-06",val:123.00},{date:"2025-12-07",val:123.05},
+  {date:"2025-12-08",val:122.99},{date:"2025-12-09",val:123.02},{date:"2025-12-10",val:122.83},
+  {date:"2025-12-11",val:122.83},{date:"2025-12-12",val:122.74},{date:"2025-12-13",val:122.74},
+  {date:"2025-12-14",val:122.74},{date:"2025-12-15",val:122.74},{date:"2025-12-16",val:123.05},
+  {date:"2025-12-17",val:123.05},{date:"2025-12-18",val:122.95},{date:"2025-12-19",val:123.16},
+  {date:"2025-12-20",val:123.16},{date:"2025-12-21",val:123.16},{date:"2025-12-22",val:123.20},
+  {date:"2025-12-23",val:123.29},{date:"2025-12-24",val:123.44},{date:"2025-12-25",val:123.53},
+  {date:"2025-12-26",val:123.55},{date:"2025-12-27",val:123.55},{date:"2025-12-28",val:123.63},
+  {date:"2025-12-29",val:123.64},{date:"2025-12-30",val:123.70},{date:"2025-12-31",val:123.78},
+  {date:"2026-01-01",val:123.78},{date:"2026-01-02",val:123.78},{date:"2026-01-03",val:123.78},
+  {date:"2026-01-04",val:123.78},{date:"2026-01-05",val:123.71},{date:"2026-01-06",val:123.71},
+  {date:"2026-01-07",val:123.80},{date:"2026-01-08",val:123.80},{date:"2026-01-09",val:123.85},
+  {date:"2026-01-10",val:124.14},{date:"2026-01-11",val:123.70},{date:"2026-01-12",val:123.87},
+  {date:"2026-01-13",val:123.92},{date:"2026-01-14",val:123.70},{date:"2026-01-15",val:123.84},
+  {date:"2026-01-16",val:123.75},{date:"2026-01-17",val:123.68},{date:"2026-01-18",val:123.86},
+  {date:"2026-01-19",val:124.16},{date:"2026-01-20",val:124.01},{date:"2026-01-21",val:124.07},
+  {date:"2026-01-22",val:124.42},{date:"2026-01-23",val:124.76},{date:"2026-01-24",val:124.64},
+  {date:"2026-01-25",val:124.70},{date:"2026-01-26",val:124.58},{date:"2026-01-27",val:124.45},
+  {date:"2026-01-28",val:124.32},{date:"2026-01-29",val:124.37},{date:"2026-01-30",val:124.42},
+  {date:"2026-01-31",val:124.67},{date:"2026-02-01",val:124.53},{date:"2026-02-02",val:124.65},
+  {date:"2026-02-03",val:124.39},{date:"2026-02-04",val:124.55},{date:"2026-02-05",val:124.48},
+  {date:"2026-02-06",val:124.85},{date:"2026-02-07",val:124.58},{date:"2026-02-08",val:124.65},
+  {date:"2026-02-09",val:124.33},{date:"2026-02-10",val:124.12},{date:"2026-02-11",val:124.47},
+  {date:"2026-02-12",val:124.52},{date:"2026-02-13",val:123.86},{date:"2026-02-14",val:123.90},
+  {date:"2026-02-15",val:123.88},{date:"2026-02-16",val:124.07},{date:"2026-02-17",val:123.59},
+  {date:"2026-02-18",val:124.59},{date:"2026-02-19",val:124.57},{date:"2026-02-20",val:124.42},
+  {date:"2026-02-21",val:124.78},{date:"2026-02-22",val:125.08},{date:"2026-02-23",val:124.83},
+  {date:"2026-02-24",val:125.05},{date:"2026-02-25",val:124.69},{date:"2026-02-26",val:124.62},
+];
+
+// === BTC PRICE DATA (normalized to 100 at Mar 1 2025) ===
+const btcDates = [
+  {date:"2025-03-01",val:100.00},{date:"2025-03-02",val:101.85},{date:"2025-03-03",val:111.63},
+  {date:"2025-03-04",val:101.99},{date:"2025-03-05",val:103.40},{date:"2025-03-06",val:107.30},
+  {date:"2025-03-07",val:106.58},{date:"2025-03-08",val:102.76},{date:"2025-03-09",val:102.01},
+  {date:"2025-03-10",val:95.63},{date:"2025-03-11",val:93.30},{date:"2025-03-12",val:98.05},
+  {date:"2025-03-13",val:99.34},{date:"2025-03-14",val:96.04},{date:"2025-03-15",val:99.44},
+  {date:"2025-03-16",val:99.94},{date:"2025-03-17",val:97.83},{date:"2025-03-18",val:99.57},
+  {date:"2025-03-19",val:98.03},{date:"2025-03-20",val:102.81},{date:"2025-03-21",val:99.80},
+  {date:"2025-03-22",val:99.49},{date:"2025-03-23",val:99.23},{date:"2025-03-24",val:101.59},
+  {date:"2025-03-25",val:103.42},{date:"2025-03-26",val:103.65},{date:"2025-03-27",val:102.98},
+  {date:"2025-03-28",val:103.30},{date:"2025-03-29",val:99.90},{date:"2025-03-30",val:97.91},
+  {date:"2025-03-31",val:97.53},{date:"2025-04-01",val:97.72},{date:"2025-04-02",val:100.94},
+  {date:"2025-04-03",val:97.73},{date:"2025-04-04",val:98.49},{date:"2025-04-05",val:99.30},
+  {date:"2025-04-06",val:99.00},{date:"2025-04-07",val:92.62},{date:"2025-04-08",val:93.77},
+  {date:"2025-04-09",val:90.39},{date:"2025-04-10",val:97.84},{date:"2025-04-11",val:94.26},
+  {date:"2025-04-12",val:98.81},{date:"2025-04-13",val:101.02},{date:"2025-04-14",val:99.00},
+  {date:"2025-04-15",val:100.10},{date:"2025-04-16",val:99.07},{date:"2025-04-17",val:99.60},
+  {date:"2025-04-18",val:100.58},{date:"2025-04-19",val:99.99},{date:"2025-04-20",val:100.81},
+  {date:"2025-04-21",val:100.75},{date:"2025-04-22",val:103.56},{date:"2025-04-23",val:110.82},
+  {date:"2025-04-24",val:110.85},{date:"2025-04-25",val:111.17},{date:"2025-04-26",val:112.23},
+  {date:"2025-04-27",val:112.08},{date:"2025-04-28",val:111.09},{date:"2025-04-29",val:112.54},
+  {date:"2025-04-30",val:111.62},{date:"2025-05-01",val:111.60},{date:"2025-05-02",val:114.19},
+  {date:"2025-05-03",val:114.70},{date:"2025-05-04",val:113.60},{date:"2025-05-05",val:111.71},
+  {date:"2025-05-06",val:112.22},{date:"2025-05-07",val:114.70},{date:"2025-05-08",val:114.90},
+  {date:"2025-05-09",val:122.07},{date:"2025-05-10",val:121.93},{date:"2025-05-11",val:123.91},
+  {date:"2025-05-12",val:123.15},{date:"2025-05-13",val:121.83},{date:"2025-05-14",val:123.38},
+  {date:"2025-05-15",val:122.68},{date:"2025-05-16",val:122.82},{date:"2025-05-17",val:122.64},
+  {date:"2025-05-18",val:122.23},{date:"2025-05-19",val:125.57},{date:"2025-05-20",val:125.09},
+  {date:"2025-05-21",val:126.46},{date:"2025-05-22",val:129.87},{date:"2025-05-23",val:132.11},
+  {date:"2025-05-24",val:126.97},{date:"2025-05-25",val:127.70},{date:"2025-05-26",val:128.92},
+  {date:"2025-05-27",val:129.53},{date:"2025-05-28",val:129.16},{date:"2025-05-29",val:127.71},
+  {date:"2025-05-30",val:125.23},{date:"2025-05-31",val:123.17},{date:"2025-06-01",val:123.98},
+  {date:"2025-06-02",val:125.19},{date:"2025-06-03",val:125.39},{date:"2025-06-04",val:124.86},
+  {date:"2025-06-05",val:124.12},{date:"2025-06-06",val:120.38},{date:"2025-06-07",val:123.65},
+  {date:"2025-06-08",val:125.15},{date:"2025-06-09",val:125.17},{date:"2025-06-10",val:130.58},
+  {date:"2025-06-11",val:130.52},{date:"2025-06-12",val:128.70},{date:"2025-06-13",val:125.51},
+  {date:"2025-06-14",val:125.58},{date:"2025-06-15",val:124.92},{date:"2025-06-16",val:125.00},
+  {date:"2025-06-17",val:126.66},{date:"2025-06-18",val:123.97},{date:"2025-06-19",val:124.02},
+  {date:"2025-06-20",val:123.98},{date:"2025-06-21",val:122.32},{date:"2025-06-22",val:120.24},
+  {date:"2025-06-23",val:119.43},{date:"2025-06-24",val:124.95},{date:"2025-06-25",val:125.50},
+  {date:"2025-06-26",val:127.00},{date:"2025-06-27",val:126.70},{date:"2025-06-28",val:126.81},
+  {date:"2025-06-29",val:127.11},{date:"2025-06-30",val:128.37},{date:"2025-07-01",val:126.87},
+  {date:"2025-07-02",val:125.07},{date:"2025-07-03",val:128.87},{date:"2025-07-04",val:129.80},
+  {date:"2025-07-05",val:127.95},{date:"2025-07-06",val:128.16},{date:"2025-07-07",val:129.34},
+  {date:"2025-07-08",val:128.25},{date:"2025-07-09",val:129.03},{date:"2025-07-10",val:131.84},
+  {date:"2025-07-11",val:137.23},{date:"2025-07-12",val:139.23},{date:"2025-07-13",val:139.05},
+  {date:"2025-07-14",val:141.06},{date:"2025-07-15",val:141.91},{date:"2025-07-16",val:139.36},
+  {date:"2025-07-17",val:140.63},{date:"2025-07-18",val:141.45},{date:"2025-07-19",val:139.73},
+  {date:"2025-07-20",val:139.62},{date:"2025-07-21",val:138.86},{date:"2025-07-22",val:139.13},
+  {date:"2025-07-23",val:142.06},{date:"2025-07-24",val:140.49},{date:"2025-07-25",val:140.16},
+  {date:"2025-07-26",val:139.20},{date:"2025-07-27",val:139.69},{date:"2025-07-28",val:141.42},
+  {date:"2025-07-29",val:139.74},{date:"2025-07-30",val:139.57},{date:"2025-07-31",val:139.54},
+  {date:"2025-08-01",val:137.02},{date:"2025-08-02",val:134.10},{date:"2025-08-03",val:133.29},
+  {date:"2025-08-04",val:135.24},{date:"2025-08-05",val:136.35},{date:"2025-08-06",val:135.16},
+  {date:"2025-08-07",val:136.21},{date:"2025-08-08",val:139.11},{date:"2025-08-09",val:138.19},
+  {date:"2025-08-10",val:137.98},{date:"2025-08-11",val:141.24},{date:"2025-08-12",val:140.66},
+  {date:"2025-08-13",val:142.35},{date:"2025-08-14",val:146.33},{date:"2025-08-15",val:140.22},
+  {date:"2025-08-16",val:138.96},{date:"2025-08-17",val:139.15},{date:"2025-08-18",val:139.20},
+  {date:"2025-08-19",val:137.68},{date:"2025-08-20",val:133.56},{date:"2025-08-21",val:135.30},
+  {date:"2025-08-22",val:133.13},{date:"2025-08-23",val:138.36},{date:"2025-08-24",val:136.61},
+  {date:"2025-08-25",val:134.29},{date:"2025-08-26",val:130.49},{date:"2025-08-27",val:132.45},
+  {date:"2025-08-28",val:131.71},{date:"2025-08-29",val:133.26},{date:"2025-08-30",val:128.47},
+  {date:"2025-08-31",val:128.82},{date:"2025-09-01",val:128.20},{date:"2025-09-02",val:129.28},
+  {date:"2025-09-03",val:131.68},{date:"2025-09-04",val:132.29},{date:"2025-09-05",val:131.13},
+  {date:"2025-09-06",val:131.05},{date:"2025-09-07",val:130.51},{date:"2025-09-08",val:131.61},
+  {date:"2025-09-09",val:132.67},{date:"2025-09-10",val:132.10},{date:"2025-09-11",val:134.97},
+  {date:"2025-09-12",val:136.78},{date:"2025-09-13",val:137.56},{date:"2025-09-14",val:137.34},
+  {date:"2025-09-15",val:136.63},{date:"2025-09-16",val:136.66},{date:"2025-09-17",val:138.28},
+  {date:"2025-09-18",val:137.91},{date:"2025-09-19",val:138.73},{date:"2025-09-20",val:136.96},
+  {date:"2025-09-21",val:137.04},{date:"2025-09-22",val:136.55},{date:"2025-09-23",val:133.46},
+  {date:"2025-09-24",val:132.66},{date:"2025-09-25",val:134.20},{date:"2025-09-26",val:129.04},
+  {date:"2025-09-27",val:129.92},{date:"2025-09-28",val:129.86},{date:"2025-09-29",val:132.80},
+  {date:"2025-09-30",val:135.37},{date:"2025-10-01",val:135.03},{date:"2025-10-02",val:140.34},
+  {date:"2025-10-03",val:142.83},{date:"2025-10-04",val:144.77},{date:"2025-10-05",val:144.93},
+  {date:"2025-10-06",val:146.26},{date:"2025-10-07",val:147.76},{date:"2025-10-08",val:143.91},
+  {date:"2025-10-09",val:146.08},{date:"2025-10-10",val:144.12},{date:"2025-10-11",val:134.06},
+  {date:"2025-10-12",val:131.28},{date:"2025-10-13",val:136.41},{date:"2025-10-14",val:136.45},
+  {date:"2025-10-15",val:134.01},{date:"2025-10-16",val:131.11},{date:"2025-10-17",val:127.99},
+  {date:"2025-10-18",val:126.06},{date:"2025-10-19",val:126.90},{date:"2025-10-20",val:128.63},
+  {date:"2025-10-21",val:130.99},{date:"2025-10-22",val:128.47},{date:"2025-10-23",val:127.45},
+  {date:"2025-10-24",val:130.32},{date:"2025-10-25",val:131.45},{date:"2025-10-26",val:132.19},
+  {date:"2025-10-27",val:135.57},{date:"2025-10-28",val:135.22},{date:"2025-10-29",val:133.76},
+  {date:"2025-10-30",val:130.32},{date:"2025-10-31",val:128.18},{date:"2025-11-01",val:129.76},
+  {date:"2025-11-02",val:130.28},{date:"2025-11-03",val:131.04},{date:"2025-11-04",val:126.15},
+  {date:"2025-11-05",val:120.36},{date:"2025-11-06",val:123.02},{date:"2025-11-07",val:119.99},
+  {date:"2025-11-08",val:122.45},{date:"2025-11-09",val:121.14},{date:"2025-11-10",val:124.00},
+  {date:"2025-11-11",val:125.42},{date:"2025-11-12",val:121.93},{date:"2025-11-13",val:120.23},
+  {date:"2025-11-14",val:118.11},{date:"2025-11-15",val:111.86},{date:"2025-11-16",val:113.11},
+  {date:"2025-11-17",val:111.81},{date:"2025-11-18",val:108.99},{date:"2025-11-19",val:109.92},
+  {date:"2025-11-20",val:108.20},{date:"2025-11-21",val:102.61},{date:"2025-11-22",val:100.72},
+  {date:"2025-11-23",val:100.29},{date:"2025-11-24",val:102.77},{date:"2025-11-25",val:104.49},
+  {date:"2025-11-26",val:103.40},{date:"2025-11-27",val:107.14},{date:"2025-11-28",val:108.10},
+  {date:"2025-11-29",val:107.71},{date:"2025-11-30",val:107.58},{date:"2025-12-01",val:107.06},
+  {date:"2025-12-02",val:102.18},{date:"2025-12-03",val:108.17},{date:"2025-12-04",val:110.87},
+  {date:"2025-12-05",val:109.12},{date:"2025-12-06",val:105.76},{date:"2025-12-07",val:105.69},
+  {date:"2025-12-08",val:106.78},{date:"2025-12-09",val:107.31},{date:"2025-12-10",val:109.81},
+  {date:"2025-12-11",val:108.96},{date:"2025-12-12",val:109.54},{date:"2025-12-13",val:106.95},
+  {date:"2025-12-14",val:106.89},{date:"2025-12-15",val:104.49},{date:"2025-12-16",val:102.34},
+  {date:"2025-12-17",val:104.00},{date:"2025-12-18",val:101.92},{date:"2025-12-19",val:101.19},
+  {date:"2025-12-20",val:104.34},{date:"2025-12-21",val:104.63},{date:"2025-12-22",val:104.90},
+  {date:"2025-12-23",val:104.80},{date:"2025-12-24",val:103.51},{date:"2025-12-25",val:103.79},
+  {date:"2025-12-26",val:103.30},{date:"2025-12-27",val:103.39},{date:"2025-12-28",val:103.99},
+  {date:"2025-12-29",val:104.00},{date:"2025-12-30",val:103.21},{date:"2025-12-31",val:104.70},
+  {date:"2026-01-01",val:103.65},{date:"2026-01-02",val:105.08},{date:"2026-01-03",val:106.49},
+  {date:"2026-01-04",val:107.29},{date:"2026-01-05",val:108.21},{date:"2026-01-06",val:111.23},
+  {date:"2026-01-07",val:110.92},{date:"2026-01-08",val:108.07},{date:"2026-01-09",val:107.75},
+  {date:"2026-01-10",val:107.18},{date:"2026-01-11",val:107.11},{date:"2026-01-12",val:107.55},
+  {date:"2026-01-13",val:107.93},{date:"2026-01-14",val:112.81},{date:"2026-01-15",val:114.88},
+  {date:"2026-01-16",val:113.20},{date:"2026-01-17",val:113.11},{date:"2026-01-18",val:112.62},
+  {date:"2026-01-19",val:111.03},{date:"2026-01-20",val:109.61},{date:"2026-01-21",val:104.58},
+  {date:"2026-01-22",val:105.82},{date:"2026-01-23",val:105.92},{date:"2026-01-24",val:105.89},
+  {date:"2026-01-25",val:105.60},{date:"2026-01-26",val:102.49},{date:"2026-01-27",val:104.58},
+  {date:"2026-01-28",val:105.64},{date:"2026-01-29",val:105.59},{date:"2026-01-30",val:100.15},
+  {date:"2026-01-31",val:99.64},{date:"2026-02-01",val:93.23},{date:"2026-02-02",val:91.11},
+  {date:"2026-02-03",val:93.28},{date:"2026-02-04",val:89.58},{date:"2026-02-05",val:86.65},
+  {date:"2026-02-06",val:74.43},{date:"2026-02-07",val:83.52},{date:"2026-02-08",val:82.06},
+  {date:"2026-02-09",val:83.54},{date:"2026-02-10",val:83.01},{date:"2026-02-11",val:81.45},
+  {date:"2026-02-12",val:79.27},{date:"2026-02-13",val:78.38},{date:"2026-02-14",val:81.52},
+  {date:"2026-02-15",val:82.62},{date:"2026-02-16",val:81.38},{date:"2026-02-17",val:81.60},
+  {date:"2026-02-18",val:79.92},{date:"2026-02-19",val:78.70},{date:"2026-02-20",val:79.25},
+  {date:"2026-02-21",val:80.49},{date:"2026-02-22",val:80.50},{date:"2026-02-23",val:80.04},
+  {date:"2026-02-24",val:76.48},{date:"2026-02-25",val:75.88},{date:"2026-02-26",val:80.47},
+];
+
+// === CRASH ZONES ===
+const crashZones = [
+  {start:"2025-03-02",end:"2025-03-11",label:"Tariff Fears",btcDrop:"-8%"},
+  {start:"2025-04-04",end:"2025-04-10",label:"Trump Tariffs",btcDrop:"-12%"},
+  {start:"2025-10-08",end:"2025-10-14",label:"China Tariff",btcDrop:"-8%"},
+  {start:"2025-12-01",end:"2025-12-10",label:"AI Crash",btcDrop:"-30%"},
+  {start:"2026-02-03",end:"2026-02-17",label:"Crypto Winter 2.0",btcDrop:"-19%"},
+];
+
+// === CHART DRAWING ===
+function drawChart() {
+  const canvas = document.getElementById('timeline');
+  const wrap = canvas.parentElement;
+  const dpr = 2;
+  canvas.width = wrap.offsetWidth * dpr;
+  canvas.height = wrap.offsetHeight * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const W = wrap.offsetWidth;
+  const H = wrap.offsetHeight;
+  const pad = { top: 48, right: 80, bottom: 44, left: 52 };
+  const chartW = W - pad.left - pad.right;
+  const chartH = H - pad.top - pad.bottom;
+
+  // Y range: needs to cover BTC low (~74) to BTC high (~148)
+  const minVal = 70;
+  const maxVal = 150;
+  const yRange = maxVal - minVal;
+
+  // Date mapping
+  const firstDate = new Date(kvDates[0].date);
+  const lastDate = new Date(kvDates[kvDates.length - 1].date);
+  const totalMs = lastDate - firstDate;
+
+  function dateToX(dateStr) {
+    const d = new Date(dateStr);
+    return pad.left + ((d - firstDate) / totalMs) * chartW;
+  }
+  function valToY(v) {
+    return pad.top + chartH - ((v - minVal) / yRange) * chartH;
+  }
+
+  // --- Horizontal grid lines ---
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  for (let v = 80; v <= 150; v += 10) {
+    const y = valToY(v);
+    ctx.beginPath();
+    ctx.moveTo(pad.left, y);
+    ctx.lineTo(W - pad.right, y);
+    ctx.stroke();
+  }
+
+  // 100 baseline — stronger
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(pad.left, valToY(100));
+  ctx.lineTo(W - pad.right, valToY(100));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Y-axis labels
+  ctx.font = '600 10px Inter, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = 'rgba(255,255,255,0.20)';
+  for (let v = 80; v <= 150; v += 10) {
+    ctx.fillText(v.toString(), pad.left - 10, valToY(v));
+  }
+
+  // X-axis month labels
+  const months = ['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'];
+  const monthDates = [
+    '2025-03-01','2025-04-01','2025-05-01','2025-06-01',
+    '2025-07-01','2025-08-01','2025-09-01','2025-10-01',
+    '2025-11-01','2025-12-01','2026-01-01','2026-02-01'
+  ];
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  monthDates.forEach((d, i) => {
+    const x = dateToX(d);
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.beginPath();
+    ctx.moveTo(x, pad.top + chartH);
+    ctx.lineTo(x, pad.top + chartH + 6);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.font = '600 10px Inter, sans-serif';
+    const label = months[i] + (i >= 10 ? " '26" : " '25");
+    ctx.fillText(label, x, pad.top + chartH + 10);
+  });
+
+  // --- Crash zones ---
+  crashZones.forEach(zone => {
+    const x1 = dateToX(zone.start);
+    const x2 = dateToX(zone.end);
+    const zoneW = x2 - x1;
+
+    const gradient = ctx.createLinearGradient(x1, pad.top, x1, pad.top + chartH);
+    gradient.addColorStop(0, 'rgba(239,68,68,0.14)');
+    gradient.addColorStop(1, 'rgba(239,68,68,0.03)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(x1, pad.top, zoneW, chartH);
+
+    ctx.strokeStyle = 'rgba(239,68,68,0.22)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(x1, pad.top); ctx.lineTo(x1, pad.top + chartH);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x2, pad.top); ctx.lineTo(x2, pad.top + chartH);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Label
+    const cx = (x1 + x2) / 2;
+    ctx.font = '900 11px Inter, sans-serif';
+    ctx.fillStyle = 'rgba(239,68,68,0.85)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText('BTC ' + zone.btcDrop, cx, pad.top - 14);
+    ctx.font = '600 9px Inter, sans-serif';
+    ctx.fillStyle = 'rgba(239,68,68,0.50)';
+    ctx.fillText(zone.label, cx, pad.top - 3);
+  });
+
+  // --- BTC line (draw first, behind KV) ---
+  // Gradient fill under BTC
+  const btcFillGrad = ctx.createLinearGradient(0, valToY(150), 0, valToY(70));
+  btcFillGrad.addColorStop(0, 'rgba(239,68,68,0.06)');
+  btcFillGrad.addColorStop(1, 'rgba(239,68,68,0.0)');
+
+  ctx.beginPath();
+  ctx.moveTo(dateToX(btcDates[0].date), valToY(btcDates[0].val));
+  btcDates.forEach(p => ctx.lineTo(dateToX(p.date), valToY(p.val)));
+  ctx.lineTo(dateToX(btcDates[btcDates.length-1].date), pad.top + chartH);
+  ctx.lineTo(dateToX(btcDates[0].date), pad.top + chartH);
+  ctx.closePath();
+  ctx.fillStyle = btcFillGrad;
+  ctx.fill();
+
+  // BTC line
+  ctx.beginPath();
+  ctx.moveTo(dateToX(btcDates[0].date), valToY(btcDates[0].val));
+  btcDates.forEach(p => ctx.lineTo(dateToX(p.date), valToY(p.val)));
+  ctx.strokeStyle = 'rgba(239,68,68,0.50)';
+  ctx.lineWidth = 2;
+  ctx.shadowColor = 'rgba(239,68,68,0.20)';
+  ctx.shadowBlur = 6;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // --- KV line (on top) ---
+  // Gradient fill under KV
+  const kvFillGrad = ctx.createLinearGradient(0, valToY(130), 0, valToY(95));
+  kvFillGrad.addColorStop(0, 'rgba(0,220,200,0.15)');
+  kvFillGrad.addColorStop(1, 'rgba(0,220,200,0.0)');
+
+  ctx.beginPath();
+  ctx.moveTo(dateToX(kvDates[0].date), valToY(kvDates[0].val));
+  kvDates.forEach(p => ctx.lineTo(dateToX(p.date), valToY(p.val)));
+  ctx.lineTo(dateToX(kvDates[kvDates.length-1].date), pad.top + chartH);
+  ctx.lineTo(dateToX(kvDates[0].date), pad.top + chartH);
+  ctx.closePath();
+  ctx.fillStyle = kvFillGrad;
+  ctx.fill();
+
+  // KV line
+  ctx.beginPath();
+  ctx.moveTo(dateToX(kvDates[0].date), valToY(kvDates[0].val));
+  kvDates.forEach(p => ctx.lineTo(dateToX(p.date), valToY(p.val)));
+  ctx.strokeStyle = '#00dcc8';
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = 'rgba(0,220,200,0.40)';
+  ctx.shadowBlur = 10;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // --- End labels (right side) ---
+  const kvLast = kvDates[kvDates.length - 1];
+  const btcLast = btcDates[btcDates.length - 1];
+
+  // KV end label
+  const kvEndY = valToY(kvLast.val);
+  ctx.font = '900 14px Inter, sans-serif';
+  ctx.fillStyle = '#00dcc8';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  // Line from last point to label
+  ctx.strokeStyle = 'rgba(0,220,200,0.30)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(dateToX(kvLast.date), kvEndY);
+  ctx.lineTo(W - pad.right + 8, kvEndY);
+  ctx.stroke();
+  ctx.fillText('~+20%', W - pad.right + 12, kvEndY);
+  ctx.font = '700 10px Inter, sans-serif';
+  ctx.fillStyle = 'rgba(0,220,200,0.60)';
+  ctx.fillText('Key Vault', W - pad.right + 12, kvEndY + 16);
+
+  // BTC end label
+  const btcEndY = valToY(btcLast.val);
+  ctx.font = '900 14px Inter, sans-serif';
+  ctx.fillStyle = '#ef4444';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.strokeStyle = 'rgba(239,68,68,0.30)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(dateToX(btcLast.date), btcEndY);
+  ctx.lineTo(W - pad.right + 8, btcEndY);
+  ctx.stroke();
+  ctx.fillText('-22.0%', W - pad.right + 12, btcEndY);
+  ctx.font = '700 10px Inter, sans-serif';
+  ctx.fillStyle = 'rgba(239,68,68,0.50)';
+  ctx.fillText('Bitcoin', W - pad.right + 12, btcEndY + 16);
+
+  // --- Start dots ---
+  // KV start
+  ctx.beginPath();
+  ctx.arc(dateToX(kvDates[0].date), valToY(kvDates[0].val), 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#00dcc8';
+  ctx.fill();
+
+  // KV end dot with glow
+  ctx.beginPath();
+  ctx.arc(dateToX(kvLast.date), kvEndY, 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#00dcc8';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(dateToX(kvLast.date), kvEndY, 8, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(0,220,200,0.30)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // BTC end dot
+  ctx.beginPath();
+  ctx.arc(dateToX(btcLast.date), btcEndY, 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#ef4444';
+  ctx.fill();
+
+  // --- "Both indexed to 100" label near start ---
+  ctx.font = '600 11px Inter, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.30)';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('Both indexed to 100', pad.left + 8, valToY(100) - 6);
+
+  // Period labels
+  ctx.font = '600 10px Inter, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.18)';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Feb 2025', pad.left, pad.top + chartH + 26);
+  ctx.textAlign = 'right';
+  ctx.fillText('Feb 2026', W - pad.right, pad.top + chartH + 26);
+}
+
+// === SCALING ===
+function scale() {
+  const s = document.getElementById('slide');
+  const r = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  s.style.transform = `scale(${r})`;
+  s.style.transformOrigin = 'top left';
+  document.body.style.width = (1920*r)+'px';
+  document.body.style.height = (1080*r)+'px';
+}
+
+scale();
+window.addEventListener('resize', () => { scale(); drawChart(); });
+document.fonts.ready.then(() => setTimeout(drawChart, 50));
+</script>
+</body>
+</html>

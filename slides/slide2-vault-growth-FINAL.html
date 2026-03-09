@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Slide 2 — Vault Growth</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; overflow: hidden; }
+  #slide {
+    width: 1920px; height: 1080px;
+    background: #050508;
+    position: relative; overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Arial Black', 'Helvetica Neue', sans-serif;
+  }
+  .blob { position: absolute; border-radius: 50%; pointer-events: none; }
+  .blob-left {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,200,220,0.3) 0%, transparent 70%);
+    filter: blur(70px); top: 200px; left: -80px;
+  }
+  .blob-right {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(160,40,200,0.38) 0%, transparent 70%);
+    filter: blur(60px); top: -100px; right: -100px;
+  }
+  .header {
+    position: absolute; top: 52px; left: 80px; right: 80px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .header-label { font-size: 11px; font-variant: small-caps; letter-spacing: 0.22em; color: rgba(255,255,255,0.45); }
+  .header-line { flex: 1; height: 1px; background: rgba(255,255,255,0.15); }
+  .header-url { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.45); }
+
+  .content {
+    position: absolute; top: 108px; left: 80px; right: 80px; bottom: 40px;
+    display: flex; flex-direction: column;
+  }
+  .title { font-size: 68px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #fff; line-height: 1; }
+  .subtitle { font-size: 17px; color: rgba(255,255,255,0.5); margin-top: 10px; letter-spacing: 0.04em; }
+
+  /* Two side-by-side chart panels */
+  .panels {
+    display: flex; gap: 32px; flex: 1; margin-top: 28px; min-height: 0;
+  }
+
+  .panel {
+    flex: 1; display: flex; flex-direction: column;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 24px 28px 20px;
+    position: relative;
+  }
+  .panel-left {
+    border-top: 3px solid #00d4ff;
+  }
+  .panel-right {
+    border-top: 3px solid rgba(255,255,255,0.25);
+  }
+
+  .panel-badge {
+    font-size: 10px; font-variant: small-caps; letter-spacing: 0.18em;
+    padding: 4px 10px; border-radius: 2px; display: inline-block;
+    margin-bottom: 10px; width: fit-content;
+  }
+  .panel-left .panel-badge {
+    background: rgba(0,212,255,0.12); color: #00d4ff;
+    border: 1px solid rgba(0,212,255,0.3);
+  }
+  .panel-right .panel-badge {
+    background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .panel-title {
+    font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 4px; letter-spacing: -0.01em;
+  }
+  .panel-desc {
+    font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 16px; line-height: 1.4;
+  }
+
+  .chart-wrap { flex: 1; min-height: 0; position: relative; }
+
+  .divider {
+    width: 1px;
+    background: rgba(255,255,255,0.08);
+    flex-shrink: 0;
+    margin: 0 0;
+  }
+
+  .footer {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; letter-spacing: 0.2em; color: rgba(255,255,255,0.1); white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<div id="slide">
+  <div class="blob blob-left"></div>
+  <div class="blob blob-right"></div>
+
+  <div class="header">
+    <span class="header-label">Investors Deck</span>
+    <div class="header-line"></div>
+    <span class="header-url">keyvaultfund.com</span>
+  </div>
+
+  <div class="content">
+    <div class="title">PERFORMANCE THAT STANDS APART</div>
+    <div class="subtitle">Annualized returns vs. traditional asset classes</div>
+
+    <div class="panels">
+
+      <!-- LEFT PANEL: vs Traditional benchmarks -->
+      <div class="panel panel-left" style="flex:1;max-width:100%;">
+        <div class="panel-badge">Primary Comparison</div>
+        <div class="panel-title">KeyVault vs. Traditional Asset Classes</div>
+        <div class="panel-desc">Head-to-head against stocks, real estate, private equity, gold, and bonds</div>
+        <div class="chart-wrap">
+          <canvas id="chart-left"></canvas>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+
+  <div class="footer">CONFIDENTIAL — NOT FOR DISTRIBUTION</div>
+</div>
+
+<script>
+function scale() {
+  const s = document.getElementById('slide');
+  const r = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  s.style.transform = `scale(${r})`;
+  s.style.transformOrigin = 'top left';
+  document.body.style.width = (1920*r)+'px';
+  document.body.style.height = (1080*r)+'px';
+}
+scale(); window.addEventListener('resize', scale);
+
+// Helper: value label plugin
+const valueLabelPlugin = (isKVIndex, suffix) => ({
+  afterDatasetsDraw(chart) {
+    const { ctx, data, scales } = chart;
+    data.datasets[0].data.forEach((val, i) => {
+      const bar = chart.getDatasetMeta(0).data[i];
+      ctx.save();
+      const isKV = i === isKVIndex;
+      ctx.fillStyle = isKV ? '#00d4ff' : '#ef4444';
+      ctx.font = `bold ${isKV ? 17 : 14}px -apple-system, Arial`;
+      ctx.textBaseline = 'bottom'; ctx.textAlign = 'center';
+      ctx.fillText(val + suffix, bar.x, bar.y - 6);
+      ctx.restore();
+    });
+  }
+});
+
+// ─── LEFT CHART: KeyVault vs Traditional Markets ───
+const ctxL = document.getElementById('chart-left').getContext('2d');
+
+const kvGradL = ctxL.createLinearGradient(0, 300, 0, 0);
+kvGradL.addColorStop(0, 'rgba(0,212,255,0.5)');
+kvGradL.addColorStop(1, 'rgba(0,212,255,0.95)');
+
+new Chart(ctxL, {
+  type: 'bar',
+  data: {
+    labels: ['Key Vault\n(Hedged JLP)', 'Private Equity\n(Cambridge Assoc.)', 'S&P 500\n(10Y avg)', 'Real Estate\n(REITs avg)', 'Commercial RE\n(NCREIF avg)', 'Hedge Funds\n(HFRI avg)', 'Gold\n(10Y CAGR)', 'High Yield\nBonds (HYG)'],
+    datasets: [{
+      data: [18, 14.2, 11.3, 8.8, 7.5, 6.4, 5.2, 5.2],
+      backgroundColor: [
+        kvGradL,
+        'rgba(239,68,68,0.80)',
+        'rgba(239,68,68,0.72)',
+        'rgba(239,68,68,0.64)',
+        'rgba(239,68,68,0.57)',
+        'rgba(239,68,68,0.50)',
+        'rgba(239,68,68,0.43)',
+        'rgba(239,68,68,0.36)'
+      ],
+      borderWidth: 0,
+      borderRadius: 3,
+      barThickness: 52
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: { padding: { top: 48, bottom: 8, left: 8, right: 8 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: 'rgba(5,5,8,0.9)',
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+        titleColor: '#fff',
+        bodyColor: 'rgba(255,255,255,0.7)',
+        callbacks: { label: ctx => ' ' + ctx.raw + '% annualized' }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: {
+          color: (ctx) => ctx.index === 0 ? '#00d4ff' : '#ef4444',
+          font: { size: 13, weight: '600' }
+        }
+      },
+      y: {
+        grid: { color: 'rgba(255,255,255,0.06)' },
+        ticks: { color: 'rgba(255,255,255,0.55)', font: { size: 13 }, callback: v => v + '%' },
+        min: 0, max: 22
+      }
+    }
+  },
+  plugins: [valueLabelPlugin(0, '%')]
+});
+</script>
+</div>
+</body>
+</html>

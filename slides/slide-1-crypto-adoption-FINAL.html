@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slide 1 — Crypto Adoption</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; overflow: hidden; }
+  #slide {
+    width: 1920px; height: 1080px;
+    background: #050508;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  }
+
+  /* Gradient blobs matching Canva deck */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .blob-tl {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(0,200,220,0.30) 0%, transparent 70%);
+    filter: blur(80px);
+    top: -150px; left: -120px;
+  }
+  .blob-br {
+    width: 850px; height: 850px;
+    background: radial-gradient(circle, rgba(160,40,200,0.35) 0%, transparent 70%);
+    filter: blur(70px);
+    bottom: -250px; right: -180px;
+  }
+  .blob-mid {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(100,60,180,0.15) 0%, transparent 70%);
+    filter: blur(60px);
+    top: 300px; right: 200px;
+  }
+
+  /* Header bar */
+  .header-bar {
+    position: absolute; top: 44px; left: 72px; right: 72px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .header-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(255,255,255,0.40); white-space: nowrap;
+  }
+  .header-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.20), rgba(255,255,255,0.06));
+  }
+  .header-url {
+    font-size: 11px; letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.40); white-space: nowrap;
+  }
+
+  /* Content area */
+  .content {
+    position: absolute; top: 100px; left: 72px; right: 72px; bottom: 50px;
+    display: flex; flex-direction: column;
+  }
+
+  /* Title */
+  .title {
+    font-size: 52px; font-weight: 900; text-transform: uppercase;
+    letter-spacing: -0.02em; color: #ffffff; line-height: 1.05;
+    max-width: 1500px;
+  }
+  .subtitle {
+    font-size: 17px; color: rgba(255,255,255,0.45);
+    margin-top: 10px; letter-spacing: 0.02em; font-weight: 400;
+  }
+
+  /* Charts row */
+  .charts-row {
+    flex: 1; display: flex; gap: 0;
+    margin-top: 24px; min-height: 0;
+  }
+  .panel {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 0 16px; min-width: 0;
+  }
+  .panel.wide { flex: 1.4; }
+  .panel-title {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.35);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 6px; flex-shrink: 0;
+  }
+  .panel-chart { flex: 1; position: relative; min-height: 0; }
+  .divider {
+    width: 1px; flex-shrink: 0; align-self: stretch;
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,0.10), transparent);
+    margin: 0 4px;
+  }
+
+  /* Callout row */
+  .callout-row {
+    display: flex; gap: 10px;
+    padding: 12px 0 0; flex-shrink: 0;
+    width: 100%; justify-content: space-between;
+  }
+  .callout {
+    flex: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 4px;
+    padding: 12px 16px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .callout-val {
+    font-size: 22px; font-weight: 900;
+    letter-spacing: -0.03em;
+  }
+  .callout-label {
+    font-size: 10px; color: rgba(255,255,255,0.35);
+    line-height: 1.4; font-weight: 400;
+  }
+
+  /* Source + footer */
+  .source {
+    font-size: 9px; color: rgba(255,255,255,0.12);
+    margin-top: 8px; flex-shrink: 0;
+  }
+  .footer {
+    position: absolute; bottom: 18px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(255,255,255,0.10); white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<div id="slide">
+  <div class="blob blob-tl"></div>
+  <div class="blob blob-br"></div>
+  <div class="blob blob-mid"></div>
+
+  <div class="header-bar">
+    <span class="header-label">Investors Deck</span>
+    <div class="header-line"></div>
+    <span class="header-url">keyvaultfund.com</span>
+  </div>
+
+  <div class="content">
+    <div class="title">Crypto Is Outpacing the Internet's<br>Adoption Curve</div>
+    <div class="subtitle">From the consumer inflection point, crypto is running 2–3 years ahead of where the internet was at the same stage</div>
+
+    <div class="charts-row">
+      <div class="panel wide">
+        <div class="panel-title">Users From "Consumer Moment" — Internet (1994) vs. Crypto (2017)</div>
+        <div class="panel-chart"><canvas id="realChart"></canvas></div>
+      </div>
+      <div class="divider"></div>
+      <div class="panel">
+        <div class="panel-title">Stablecoin Settlement vs. Visa ($T)</div>
+        <div class="panel-chart"><canvas id="stablecoinChart"></canvas></div>
+      </div>
+      <div class="divider"></div>
+      <div class="panel">
+        <div class="panel-title">Crypto Trading Volume — Spot + Perpetuals ($T)</div>
+        <div class="panel-chart"><canvas id="volumeChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="callout-row">
+      <div class="callout">
+        <span class="callout-val" style="color:#e879a0">1B</span>
+        <span class="callout-label">Projected crypto users by 2027<br>Internet took until 2005 to hit 1B</span>
+      </div>
+      <div class="callout">
+        <span class="callout-val" style="color:#00dcc8">+63%</span>
+        <span class="callout-label">Crypto users vs. internet at Year 8<br>(650M vs. 400M)</span>
+      </div>
+      <div class="callout">
+        <span class="callout-val" style="color:#ffffff">600M+</span>
+        <span class="callout-label">Global crypto users today<br>Coinbase hit 100M accounts in 2022</span>
+      </div>
+      <div class="callout">
+        <span class="callout-val" style="color:#f59e0b">$27T+</span>
+        <span class="callout-label">Stablecoin on-chain settlement 2024<br>Now matching Visa's annual volume</span>
+      </div>
+
+    </div>
+
+    <div class="source">Sources: Statista, ITU, World Bank, Chainalysis 2024 Global Adoption Index, a16z State of Crypto 2024, Coinbase, Circle, Grayscale, Visa Annual Report</div>
+  </div>
+
+  <div class="footer">Confidential — Not For Distribution</div>
+</div>
+
+<script>
+function scale() {
+  const s = document.getElementById('slide');
+  const r = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  s.style.transform = `scale(${r})`;
+  s.style.transformOrigin = 'top left';
+  document.body.style.width = (1920*r)+'px';
+  document.body.style.height = (1080*r)+'px';
+}
+scale(); window.addEventListener('resize', scale);
+
+const gridColor = 'rgba(255,255,255,0.05)';
+const tickColor = 'rgba(255,255,255,0.35)';
+const ttStyle = {
+  backgroundColor:'rgba(5,5,8,0.92)',
+  titleColor:'#fff',
+  bodyColor:'rgba(255,255,255,0.65)',
+  borderColor:'rgba(255,255,255,0.08)',
+  borderWidth:1,
+  titleFont:{ weight:'600' },
+  padding: 10,
+  cornerRadius: 4
+};
+const legendStyle = {
+  position:'top', align:'end',
+  labels:{ color:'rgba(255,255,255,0.45)', font:{size:10, family:'Inter'}, boxWidth:10, padding:14, usePointStyle:true, pointStyleWidth:8 }
+};
+
+// ── CHART 1: Adoption comparison ──
+const yearLabels = ['Y0','Y1','Y2','Y3','Y4','Y5','Y6','Y7','Y8','Y9'];
+const internetFrom94 = [25, 50, 80, 120, 170, 250, 360, 500, 650, 800];
+const cryptoFrom17 = [10, 35, 65, 100, 200, 300, 425, 580, 650, null];
+const cryptoProjected = [null,null,null,null,null,null,null,null,650,1000];
+
+const ctx1 = document.getElementById('realChart').getContext('2d');
+const gradCyan = ctx1.createLinearGradient(0, 0, 0, 380);
+gradCyan.addColorStop(0, 'rgba(0,220,200,0.15)');
+gradCyan.addColorStop(1, 'rgba(0,220,200,0)');
+const gradAmber = ctx1.createLinearGradient(0, 0, 0, 380);
+gradAmber.addColorStop(0, 'rgba(245,158,11,0.10)');
+gradAmber.addColorStop(1, 'rgba(245,158,11,0)');
+
+new Chart(ctx1, {
+  type:'line',
+  data:{ labels: yearLabels, datasets:[
+    {
+      label:'Internet from 1994',
+      data: internetFrom94,
+      borderColor:'#f59e0b', backgroundColor: gradAmber,
+      fill:true, tension:0.4, pointRadius:2.5, pointBackgroundColor:'#f59e0b', borderWidth:2, spanGaps:false
+    },
+    {
+      label:'Crypto from 2017',
+      data: cryptoFrom17,
+      borderColor:'#00dcc8', backgroundColor: gradCyan,
+      fill:true, tension:0.4, pointRadius:2.5, pointBackgroundColor:'#00dcc8', borderWidth:2, spanGaps:false
+    },
+    {
+      label:'Projected',
+      data: cryptoProjected,
+      borderColor:'#a78bfa', backgroundColor:'transparent',
+      fill:false, tension:0.4, pointRadius:2.5, pointBackgroundColor:'#a78bfa',
+      borderWidth:1.5, borderDash:[6,4], spanGaps:false
+    }
+  ]},
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend: legendStyle,
+      tooltip:{ ...ttStyle, callbacks:{ label:c=>c.parsed.y!=null?`${c.dataset.label}: ${c.parsed.y.toLocaleString()}M`:null } },
+      annotation:{ annotations:{
+        youAreHere:{
+          type:'line', xMin:8, xMax:8,
+          borderColor:'rgba(255,255,255,0.30)', borderWidth:1, borderDash:[5,4],
+          label:{ display:true, content:'YOU ARE HERE', color:'rgba(255,255,255,0.7)',
+            backgroundColor:'rgba(5,5,8,0.85)', font:{size:9,weight:'700',family:'Inter'}, position:'end', yAdjust:-6, padding:4 }
+        },
+        gapLabel:{
+          type:'label', xValue:'Y8', yValue:540,
+          content:['650M vs 400M','↑ +63% ahead'],
+          color:'#00dcc8', backgroundColor:'rgba(5,5,8,0.85)',
+          font:{size:9, weight:'700', family:'Inter'}, padding:{x:6,y:4},
+          xAdjust:-65
+        }
+      }}
+    },
+    scales:{
+      x:{ grid:{color:gridColor}, ticks:{ color:tickColor, font:{size:9, family:'Inter'},
+        callback:(v,i)=>{
+          const iYear = [1994,1995,1996,1997,1998,1999,2000,2001,2002,2003][i];
+          const cYear = [2017,2018,2019,2020,2021,2022,2023,2024,2025,'26-27'][i];
+          return [`Y${i}`, `${iYear}/${cYear}`];
+        }
+      }},
+      y:{ grid:{color:gridColor},
+        ticks:{ color:tickColor, font:{size:9, family:'Inter'}, callback:v=>v>=1000?(v/1000).toFixed(1)+'B':v+'M' },
+        title:{ display:true, text:'Cumulative Users (M)', color:'rgba(255,255,255,0.25)', font:{size:9, family:'Inter'} }
+      }
+    }
+  }
+});
+
+// ── CHART 2: Stablecoin vs Visa ──
+const ctx2 = document.getElementById('stablecoinChart').getContext('2d');
+const gradGreen = ctx2.createLinearGradient(0, 0, 0, 380);
+gradGreen.addColorStop(0, 'rgba(0,220,200,0.6)');
+gradGreen.addColorStop(1, 'rgba(0,220,200,0.15)');
+
+new Chart(ctx2, {
+  type:'bar',
+  data:{ labels:['2019','2020','2021','2022','2023','2024'],
+    datasets:[
+      { label:'Stablecoin ($T)', data:[0.1,0.4,5.8,11.6,10.9,27.6],
+        backgroundColor: gradGreen, borderColor:'rgba(0,220,200,0.8)', borderWidth:1, borderRadius:3, order:1 },
+      { label:'Visa ($T)', data:[11.3,9.0,10.4,11.6,12.3,14.0],
+        type:'line', borderColor:'#f59e0b', backgroundColor:'transparent',
+        borderWidth:1.5, borderDash:[6,3], pointRadius:2.5, pointBackgroundColor:'#f59e0b', tension:0.2, order:0 }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend: legendStyle,
+      tooltip:{ ...ttStyle, callbacks:{ label:c=>`${c.dataset.label}: $${c.parsed.y.toFixed(1)}T` } },
+      annotation:{ annotations:{
+        cross:{ type:'label', xValue:'2024', yValue:22,
+          content:['Stablecoins ≈ Visa'], color:'#00dcc8',
+          backgroundColor:'rgba(5,5,8,0.85)', font:{size:9,weight:'700',family:'Inter'}, padding:4 }
+      }}
+    },
+    scales:{
+      x:{ grid:{color:gridColor}, ticks:{ color:tickColor, font:{size:9, family:'Inter'} } },
+      y:{ grid:{color:gridColor}, ticks:{ color:tickColor, font:{size:9, family:'Inter'}, callback:v=>'$'+v+'T' } }
+    }
+  }
+});
+
+// ── CHART 3: Volume ──
+const ctx3 = document.getElementById('volumeChart').getContext('2d');
+const gradPurp = ctx3.createLinearGradient(0, 0, 0, 380);
+gradPurp.addColorStop(0, 'rgba(167,139,250,0.65)');
+gradPurp.addColorStop(1, 'rgba(167,139,250,0.20)');
+const gradBlue = ctx3.createLinearGradient(0, 0, 0, 380);
+gradBlue.addColorStop(0, 'rgba(0,180,220,0.55)');
+gradBlue.addColorStop(1, 'rgba(0,180,220,0.15)');
+
+new Chart(ctx3, {
+  type:'bar',
+  data:{ labels:['2018','2019','2020','2021','2022','2023','2024','2025E'],
+    datasets:[
+      {
+        label:'Perpetuals ($T)',
+        data:[2.5, 7.0, 15.0, 52.0, 38.0, 22.0, 42.0, 65.0],
+        backgroundColor: gradPurp, borderColor:'rgba(167,139,250,0.7)',
+        borderWidth:1, borderRadius:0, stack:'vol'
+      },
+      {
+        label:'Spot ($T)',
+        data:[8.2, 5.0, 14.0, 28.3, 22.0, 12.5, 21.0, 30.0],
+        backgroundColor: gradBlue, borderColor:'rgba(0,180,220,0.6)',
+        borderWidth:1, borderRadius:3, stack:'vol'
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend: legendStyle,
+      tooltip:{ ...ttStyle, callbacks:{
+        label:c=>`${c.dataset.label}: $${c.parsed.y.toFixed(1)}T`,
+        footer: items => `Total: $${items.reduce((s,i)=>s+i.parsed.y,0).toFixed(1)}T`
+      }},
+      annotation:{ annotations:{
+        totalLabel:{
+          type:'label', xValue:'2025E', yValue:102,
+          content:['$95T total'], color:'rgba(255,255,255,0.7)',
+          backgroundColor:'rgba(5,5,8,0.85)', font:{size:9,weight:'700',family:'Inter'}, padding:4
+        }
+      }}
+    },
+    scales:{
+      x:{ grid:{color:gridColor}, ticks:{ color:tickColor, font:{size:9, family:'Inter'} } },
+      y:{ stacked:true, grid:{color:gridColor}, ticks:{ color:tickColor, font:{size:9, family:'Inter'}, callback:v=>'$'+v+'T' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
