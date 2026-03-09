@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Slide 3 — Sharpe Ratio</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; overflow: hidden; }
+  #slide {
+    width: 1920px; height: 1080px;
+    background: #050508;
+    position: relative; overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Arial Black', 'Helvetica Neue', sans-serif;
+  }
+  .blob { position: absolute; border-radius: 50%; pointer-events: none; }
+  .blob-left {
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(0,200,220,0.3) 0%, transparent 70%);
+    filter: blur(70px); bottom: -200px; left: -100px;
+  }
+  .blob-right {
+    width: 650px; height: 650px;
+    background: radial-gradient(circle, rgba(160,40,200,0.42) 0%, transparent 70%);
+    filter: blur(65px); top: -50px; right: -80px;
+  }
+  .header {
+    position: absolute; top: 52px; left: 80px; right: 80px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .header-label { font-size: 11px; font-variant: small-caps; letter-spacing: 0.22em; color: rgba(255,255,255,0.45); }
+  .header-line { flex: 1; height: 1px; background: rgba(255,255,255,0.15); }
+  .header-url { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.45); }
+
+  .content {
+    position: absolute; top: 108px; left: 80px; right: 80px; bottom: 40px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .title {
+    font-size: 80px; font-weight: 900; text-transform: uppercase;
+    letter-spacing: -0.02em; color: #fff; line-height: 1; text-align: center;
+  }
+  .subtitle { font-size: 18px; color: rgba(255,255,255,0.5); margin-top: 12px; text-align: center; letter-spacing: 0.04em; }
+
+  .chart-wrap { width: 100%; flex: 1; margin-top: 28px; min-height: 0; position: relative; }
+
+  .cards-row {
+    display: flex; gap: 24px; width: 100%; margin-top: 28px;
+  }
+  .card {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.09);
+    padding: 22px 26px;
+  }
+  .card-icon { font-size: 26px; margin-bottom: 10px; }
+  .card-title { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: 0.03em; margin-bottom: 8px; }
+  .card-body { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.55; }
+  .card-kv { border-color: rgba(0,212,255,0.35); background: rgba(0,212,255,0.05); }
+  .card-kv .card-title { color: #00d4ff; }
+
+  .footer {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; letter-spacing: 0.2em; color: rgba(255,255,255,0.1); white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<div id="slide">
+  <div class="blob blob-left"></div>
+  <div class="blob blob-right"></div>
+
+  <div class="header">
+    <span class="header-label">Investors Deck</span>
+    <div class="header-line"></div>
+    <span class="header-url">keyvaultfund.com</span>
+  </div>
+
+  <div class="content">
+    <div class="title">SHARPE RATIO-ADJUSTED RETURNS</div>
+    <div class="subtitle">Return earned per unit of risk — higher is always better</div>
+
+    <div class="chart-wrap">
+      <canvas id="chart"></canvas>
+    </div>
+
+    <div class="cards-row">
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">What is Sharpe Ratio?</div>
+        <div class="card-body">Measures how much return you earn per unit of risk taken. A higher number means better returns with less volatility — the gold standard for institutional investment evaluation.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">3.0 = Exceptional</div>
+        <div class="card-body">Most mutual funds and ETFs score between 0.5–1.5. Anything above 3.0 is considered exceptional by institutional standards and is rarely achieved consistently.</div>
+      </div>
+      <div class="card card-kv">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Key Vault: 4.14</div>
+        <div class="card-body">Our hedged vault strategy delivers outsized returns with tightly managed downside — placing us in a league above traditional asset classes.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">CONFIDENTIAL — NOT FOR DISTRIBUTION</div>
+</div>
+
+<script>
+function scale() {
+  const s = document.getElementById('slide');
+  const r = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  s.style.transform = `scale(${r})`;
+  s.style.transformOrigin = 'top left';
+  document.body.style.width = (1920*r)+'px';
+  document.body.style.height = (1080*r)+'px';
+}
+scale(); window.addEventListener('resize', scale);
+
+const ctx = document.getElementById('chart').getContext('2d');
+
+// Traditional benchmarks only — no crypto-specific items
+// Removed: "Unhedged YLP", "ETH Staking" — not meaningful to traditional investors
+const labels = ['Bonds\n(AGG, 10Y avg)', 'S&P 500\n(10Y avg)', 'Hedge Funds\n(HFRI avg)', 'Key Vault'];
+const values = [0.3, 0.72, 0.9, 4.14];
+
+const kvGrad = ctx.createLinearGradient(0, 300, 0, 0);
+kvGrad.addColorStop(0, 'rgba(0,212,255,0.6)');
+kvGrad.addColorStop(1, 'rgba(0,212,255,0.95)');
+
+const colors = [
+  'rgba(239,68,68,0.75)',
+  'rgba(239,68,68,0.75)',
+  'rgba(239,68,68,0.75)',
+  kvGrad
+];
+
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{
+      data: values,
+      backgroundColor: colors,
+      borderWidth: 0,
+      borderRadius: 3,
+      barThickness: 68
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: { padding: { top: 48, bottom: 8, left: 16, right: 16 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: 'rgba(5,5,8,0.9)',
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+        titleColor: '#fff',
+        bodyColor: 'rgba(255,255,255,0.7)',
+        callbacks: { label: ctx => ' Sharpe Ratio: ' + ctx.raw }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: {
+          color: (ctx) => ctx.index === 3 ? '#00d4ff' : 'rgba(255,255,255,0.7)',
+          font: { size: 15, weight: '700' }
+        }
+      },
+      y: {
+        grid: { color: 'rgba(255,255,255,0.06)' },
+        ticks: { color: 'rgba(255,255,255,0.6)', font: { size: 13 } },
+        max: 7,
+        min: 0
+      }
+    }
+  },
+  plugins: [
+    {
+      afterDatasetsDraw(chart) {
+        const { ctx: c, data, scales } = chart;
+
+        // Value labels after each bar
+        data.datasets[0].data.forEach((val, i) => {
+          const bar = chart.getDatasetMeta(0).data[i];
+          c.save();
+          const isKV = i === 3;
+          c.fillStyle = isKV ? '#00d4ff' : '#ef4444';
+          c.font = `bold ${isKV ? 24 : 17}px -apple-system, Arial`;
+          c.textBaseline = 'bottom';
+          c.textAlign = 'center';
+          c.fillText(val.toFixed(2), bar.x, bar.y - 6);
+          c.restore();
+        });
+
+        // "Excellent" threshold line at x=3.0
+        const xPx = scales.x.getPixelForValue(3.0);
+        c.save();
+        c.strokeStyle = '#f59e0b';
+        c.lineWidth = 2;
+        c.setLineDash([8, 5]);
+        c.beginPath();
+        c.moveTo(xPx, scales.y.top);
+        c.lineTo(xPx, scales.y.bottom);
+        c.stroke();
+        c.setLineDash([]);
+
+        // Label for threshold
+        c.fillStyle = '#f59e0b';
+        c.font = 'bold 13px -apple-system, Arial';
+        c.textAlign = 'center';
+        c.fillText('Exceptional', xPx, scales.y.top - 12);
+        c.fillText('Threshold (3.0)', xPx, scales.y.top + 4);
+        c.restore();
+      }
+    }
+  ]
+});
+</script>
+</body>
+</html>
