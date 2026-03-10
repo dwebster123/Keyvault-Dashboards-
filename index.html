@@ -399,14 +399,18 @@
         </div>
 
         <!-- Pro Forma Comparison Section -->
-        <h2 class="section-title">Pro Forma Comparison: Current Strategy vs Cross-Platform JLP</h2>
+        <h2 class="section-title">Strategy Comparison: Current Strategy vs Cross-Platform JLP</h2>
         <div class="info-box">
-            <strong>Note:</strong> The KeyVault Pro Cross-Platform JLP Strategy data is <em>pro forma backtested performance</em>, not live trading results. 
-            KeyVault (Current) performance is actual live results. Both shown net of fees. Past performance does not guarantee future results.
+            <strong>Note:</strong> Cross-Platform JLP Strategy data is <em>pro forma backtested performance</em> throughout. KeyVault (Current) reflects <em>pro forma performance through Jan 15, 2026</em>, and <em>live trading results thereafter</em>. Both shown net of fees. Past performance does not guarantee future results.
         </div>
         <div class="chart-container">
             <div class="chart-header">
-                <h3 class="chart-title">Cumulative ROI Comparison - Net of Fees (Nov 6, 2025 → Present)</h3>
+                <h3 class="chart-title">Cumulative ROI Comparison - Net of Fees</h3>
+                <div class="tabs-container" id="comparisonChartTabs">
+                    <div class="tab active" data-period="all">All Time</div>
+                    <div class="tab" data-period="180">180 Days</div>
+                    <div class="tab" data-period="90">90 Days</div>
+                </div>
             </div>
             <div class="chart-wrapper" style="height: 400px;">
                 <canvas id="comparisonChart"></canvas>
@@ -840,6 +844,8 @@
         let roi2025Chart = null;
         let apy2025Chart = null;
         let comparisonChart = null;
+        let comparisonPeriod = 'all';
+        const LIVE_TRADING_CUTOFF = '2026-01-15'; // Before this date = pro forma; on/after = live
         let activeRoiPeriod = 'all';
         let activeApyPeriod = 'all';
 
@@ -1155,76 +1161,119 @@
         }
 
         // Comparison Chart - KeyVault vs Prime Number Pro Forma
-        function renderComparisonChart() {
+        function renderComparisonChart(period) {
+            period = period || comparisonPeriod;
             const ctx = document.getElementById('comparisonChart').getContext('2d');
-            
-            // Get KeyVault data starting from Nov 6, 2025 (when pro forma starts)
-            const comparisonStartDate = '2025-11-06';
-            const kvDataFiltered = historicalData.filter(d => d.date >= comparisonStartDate);
-            
+
+            // Determine window start date based on period
+            const today = new Date();
+            let windowStart;
+            if (period === 'all' || period === undefined) {
+                windowStart = '2025-11-06';
+            } else {
+                const d = new Date(today);
+                d.setDate(d.getDate() - parseInt(period));
+                windowStart = d.toISOString().slice(0, 10);
+            }
+
+            // Filter KV data to the period window
+            const kvDataFiltered = historicalData.filter(d => d.date >= windowStart);
+
             if (kvDataFiltered.length === 0) {
                 console.warn('No KeyVault data available for comparison period');
                 return;
             }
-            
-            // Get the KeyVault share price on Nov 6, 2025 as baseline
+
+            // Get the KeyVault share price at the start of the window as baseline
             const kvBaseline = kvDataFiltered[0].net;
-            
-            // Build aligned datasets
-            const labels = [];
-            const kvRoiData = [];
-            const primeRoiData = [];
-            
-            // Create a map of pro forma data by date (apply 30% fee to get net returns)
+
+            // Create a map of pro forma data by date (net of KV's 20% perf fee)
             const primeDataMap = {};
-            primeProFormaData.forEach(d => {
-                primeDataMap[d.date] = d.roi * NET_INVESTOR_FACTOR; // Net of KV's 20% perf fee (share price already net of Prime's 10%)
+            primeProFormaData.filter(d => d.date >= windowStart).forEach(d => {
+                primeDataMap[d.date] = d.roi * NET_INVESTOR_FACTOR;
             });
-            
-            // Create a map of KeyVault data by date (net of 30% fee)
-            const kvDataMap = {};
+
+            // Rebase pro forma data to the window start (subtract starting value so both lines start at 0)
+            const primeStartDate = Object.keys(primeDataMap).sort()[0];
+            const primeBaseline = primeStartDate ? primeDataMap[primeStartDate] : 0;
+            Object.keys(primeDataMap).forEach(d => {
+                primeDataMap[d] = primeDataMap[d] - primeBaseline;
+            });
+
+            // Create maps of KV data split into pro forma and live segments
+            const kvProFormaMap = {};
+            const kvLiveMap = {};
             kvDataFiltered.forEach(d => {
-                const roi = ((d.net - kvBaseline) / kvBaseline) * 100;
-                kvDataMap[d.date] = roi * NET_INVESTOR_FACTOR;
+                const roi = ((d.net - kvBaseline) / kvBaseline) * 100 * NET_INVESTOR_FACTOR;
+                if (d.date <= LIVE_TRADING_CUTOFF) {
+                    kvProFormaMap[d.date] = roi;
+                } else {
+                    kvLiveMap[d.date] = roi;
+                }
             });
-            
-            // Get all unique dates from both datasets
+            // Bridge: include the cutoff date in both so the lines connect seamlessly
+            const bridgeDate = LIVE_TRADING_CUTOFF;
+            const bridgeEntry = kvDataFiltered.find(d => d.date === bridgeDate) ||
+                                kvDataFiltered.find(d => d.date > bridgeDate);
+            if (bridgeEntry && kvLiveMap[bridgeEntry.date] !== undefined && !kvProFormaMap[bridgeDate]) {
+                const roi = ((bridgeEntry.net - kvBaseline) / kvBaseline) * 100 * NET_INVESTOR_FACTOR;
+                kvProFormaMap[bridgeEntry.date] = roi;
+            }
+            if (bridgeEntry && kvProFormaMap[bridgeDate] !== undefined) {
+                kvLiveMap[bridgeDate] = kvProFormaMap[bridgeDate];
+            }
+
+            // Combined kvDataMap for metrics calculation
+            const kvDataMap = { ...kvProFormaMap, ...kvLiveMap };
+
+            // Build sorted date labels from all sources
             const allDates = new Set([
                 ...kvDataFiltered.map(d => d.date),
-                ...primeProFormaData.map(d => d.date)
+                ...Object.keys(primeDataMap)
             ]);
-            
-            // Sort dates and build aligned arrays
             const sortedDates = Array.from(allDates).sort();
-            
-            sortedDates.forEach(date => {
-                labels.push(date);
-                kvRoiData.push(kvDataMap[date] !== undefined ? kvDataMap[date] : null);
-                primeRoiData.push(primeDataMap[date] !== undefined ? primeDataMap[date] : null);
-            });
-            
+
+            const kvProFormaArr = sortedDates.map(d => kvProFormaMap[d] !== undefined ? kvProFormaMap[d] : null);
+            const kvLiveArr = sortedDates.map(d => kvLiveMap[d] !== undefined ? kvLiveMap[d] : null);
+            const primeArr = sortedDates.map(d => primeDataMap[d] !== undefined ? primeDataMap[d] : null);
+
             if (comparisonChart) comparisonChart.destroy();
-            
+
             comparisonChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: labels,
+                    labels: sortedDates,
                     datasets: [
                         {
-                            label: 'KeyVault Current Strategy (Actual)',
-                            data: kvRoiData,
+                            label: 'KeyVault — Pro Forma (through Jan 15, 2026)',
+                            data: kvProFormaArr,
+                            borderColor: 'rgba(34, 197, 94, 0.5)',
+                            backgroundColor: 'transparent',
+                            borderDash: [5, 4],
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 0,
+                            pointHoverRadius: 5,
+                            borderWidth: 2,
+                            order: 3,
+                            spanGaps: false
+                        },
+                        {
+                            label: 'KeyVault — Live Trading (Jan 15, 2026+)',
+                            data: kvLiveArr,
                             borderColor: '#22c55e',
-                            backgroundColor: 'rgba(34, 197, 94, 0.15)',
+                            backgroundColor: 'rgba(34, 197, 94, 0.12)',
                             fill: true,
                             tension: 0.3,
                             pointRadius: 0,
                             pointHoverRadius: 5,
                             borderWidth: 2.5,
-                            order: 2
+                            order: 2,
+                            spanGaps: false
                         },
                         {
-                            label: 'KeyVault Pro Cross-Platform JLP (Pro Forma)',
-                            data: primeRoiData,
+                            label: 'Cross-Platform JLP (Pro Forma)',
+                            data: primeArr,
                             borderColor: '#f472b6',
                             backgroundColor: 'rgba(244, 114, 182, 0.08)',
                             fill: true,
@@ -1232,7 +1281,8 @@
                             pointRadius: 0,
                             pointHoverRadius: 5,
                             borderWidth: 2.5,
-                            order: 1
+                            order: 1,
+                            spanGaps: false
                         }
                     ]
                 },
@@ -1289,7 +1339,7 @@
                     }
                 }
             });
-            
+
             // Render comparison metrics
             renderComparisonMetrics(kvDataMap, primeDataMap);
         }
@@ -1309,7 +1359,7 @@
             }
             
             const latestCommonDate = commonDates[commonDates.length - 1];
-            const startDate = new Date('2025-11-06T12:00:00');
+            const startDate = new Date(commonDates[0] + 'T12:00:00');
             const endDate = new Date(latestCommonDate + 'T12:00:00');
             const days = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
             
@@ -1373,6 +1423,15 @@
                     document.querySelectorAll('#apyChartTabs .tab').forEach(t => t.classList.remove('active'));
                     e.target.classList.add('active');
                     renderAPYChart(e.target.dataset.period);
+                }
+            });
+
+            document.getElementById('comparisonChartTabs').addEventListener('click', e => {
+                if (e.target.classList.contains('tab')) {
+                    document.querySelectorAll('#comparisonChartTabs .tab').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    comparisonPeriod = e.target.dataset.period;
+                    renderComparisonChart(comparisonPeriod);
                 }
             });
         }
