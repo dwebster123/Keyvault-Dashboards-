@@ -505,6 +505,12 @@
             </div>
         </div>
 
+        <!-- 2026 YTD Performance Section -->
+        <h2 class="section-title">2026 YTD Performance</h2>
+        <div class="metrics-grid" id="metrics2026Grid">
+            <!-- Populated by JS -->
+        </div>
+
         </div><!-- /page-main -->
 
         <!-- ═══ PAGE: Strategy Comparison ═══ -->
@@ -948,6 +954,79 @@
                 <div class="metric-card">
                     <div class="metric-label">Ending Share Price</div>
                     <div class="metric-value" style="font-size: 1.1rem;">$${end2025.net.toFixed(4)}</div>
+                </div>
+            `;
+        }
+
+        // Render 2026 YTD metrics
+        function render2026Metrics() {
+            const data2026 = historicalData.filter(d => d.date >= '2026-01-01' && d.date <= '2026-12-31');
+
+            if (data2026.length === 0) {
+                document.getElementById('metrics2026Grid').innerHTML = `
+                    <div class="metric-card">
+                        <div class="metric-label">No 2026 Data Available</div>
+                        <div class="metric-value">--</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const start2026 = data2026[0];
+            const end2026 = data2026[data2026.length - 1];
+            const days2026 = data2026.length;
+
+            // Calculate 2026 YTD metrics (net of 30% fee)
+            const grossReturn2026 = ((end2026.net - start2026.net) / start2026.net) * 100;
+            const netReturn2026 = grossReturn2026 * NET_INVESTOR_FACTOR;
+            const apy2026 = (netReturn2026 / days2026) * 365;
+
+            // Find best and worst days
+            let bestDay = data2026[0];
+            let worstDay = data2026[0];
+            data2026.forEach(d => {
+                if (d.pct1d > bestDay.pct1d) bestDay = d;
+                if (d.pct1d < worstDay.pct1d) worstDay = d;
+            });
+
+            document.getElementById('metrics2026Grid').innerHTML = `
+                <div class="metric-card highlight">
+                    <div class="metric-label">2026 YTD ROI (Net)</div>
+                    <div class="metric-value ${netReturn2026 >= 0 ? 'positive' : 'negative'}">${formatPercent(netReturn2026)}</div>
+                </div>
+                <div class="metric-card highlight">
+                    <div class="metric-label">2026 YTD APY</div>
+                    <div class="metric-value ${apy2026 >= 0 ? 'positive' : 'negative'}">${formatPercent(apy2026)}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Trading Days in 2026</div>
+                    <div class="metric-value">${days2026}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Start Date</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(start2026.date + 'T12:00:00').toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Latest Date</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(end2026.date + 'T12:00:00').toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Best Day</div>
+                    <div class="metric-value positive" style="font-size: 1.1rem;">${formatPercent(bestDay.pct1d * NET_INVESTOR_FACTOR, 2)}</div>
+                    <div class="update-badge">${new Date(bestDay.date + 'T12:00:00').toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Worst Day</div>
+                    <div class="metric-value negative" style="font-size: 1.1rem;">${formatPercent(worstDay.pct1d * NET_INVESTOR_FACTOR, 2)}</div>
+                    <div class="update-badge">${new Date(worstDay.date + 'T12:00:00').toLocaleDateString()}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Starting Share Price</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">$${start2026.net.toFixed(4)}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Current Share Price</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">$${end2026.net.toFixed(4)}</div>
                 </div>
             `;
         }
@@ -1623,6 +1702,7 @@
             render2025APYChart();
             setupTabs();
             renderVaultMetrics();
+            render2026Metrics();
             updateFetchStatus();
             // No auto-refresh — data updates daily via NAV stamp system
         }
