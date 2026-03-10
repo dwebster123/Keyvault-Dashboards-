@@ -331,115 +331,13 @@
             50% { opacity: 0.5; }
         }
 
-        /* ── Hamburger ── */
-        .hamburger {
-            position: fixed;
-            top: 18px;
-            left: 18px;
-            z-index: 1000;
-            background: rgba(26, 26, 62, 0.85);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: background 0.2s;
-        }
-        .hamburger:hover { background: rgba(40, 40, 90, 0.95); }
-        .hamburger span {
-            display: block;
-            width: 20px;
-            height: 2px;
-            background: #a0a0c0;
-            border-radius: 2px;
-            transition: all 0.25s;
-        }
-        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        .hamburger.open span:nth-child(2) { opacity: 0; }
-        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-        /* ── Nav Drawer ── */
-        .nav-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            z-index: 998;
-        }
-        .nav-overlay.open { display: block; }
-        .nav-drawer {
-            position: fixed;
-            top: 0;
-            left: -280px;
-            width: 260px;
-            height: 100vh;
-            background: #12122a;
-            border-right: 1px solid rgba(255,255,255,0.08);
-            z-index: 999;
-            padding: 80px 0 30px;
-            transition: left 0.28s cubic-bezier(.4,0,.2,1);
-            display: flex;
-            flex-direction: column;
-        }
-        .nav-drawer.open { left: 0; }
-        .nav-drawer-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #4a4a6a;
-            padding: 0 24px 10px;
-        }
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 13px 24px;
-            color: #8b8ba7;
-            font-size: 0.92rem;
-            cursor: pointer;
-            border-left: 3px solid transparent;
-            transition: all 0.15s;
-            text-decoration: none;
-        }
-        .nav-item:hover { background: rgba(255,255,255,0.04); color: #c0c0e0; }
-        .nav-item.active {
-            color: #22c55e;
-            border-left-color: #22c55e;
-            background: rgba(34, 197, 94, 0.06);
-        }
-        .nav-item .nav-icon { font-size: 1.1rem; width: 20px; text-align: center; }
-
-        /* ── Pages ── */
+        /* ── Pages (hash-routed — main always visible, others via #hash) ── */
         .page { display: none; }
         .page.active { display: block; }
     </style>
 </head>
 <body>
-    <!-- Hamburger -->
-    <button class="hamburger" id="hamburger" aria-label="Open navigation">
-        <span></span><span></span><span></span>
-    </button>
 
-    <!-- Nav Drawer -->
-    <div class="nav-overlay" id="navOverlay"></div>
-    <nav class="nav-drawer" id="navDrawer">
-        <div class="nav-drawer-title">Navigation</div>
-        <a class="nav-item active" data-page="main" href="#">
-            <span class="nav-icon">📊</span> Performance Dashboard
-        </a>
-        <a class="nav-item" data-page="comparison" href="#">
-            <span class="nav-icon">⚖️</span> Cross Platform JLP Strategy
-        </a>
-        <a class="nav-item" data-page="2025" href="#">
-            <span class="nav-icon">📅</span> 2025 Performance
-        </a>
-    </nav>
 
     <div class="header">
         <img src="logo.png" alt="KeyVault" class="logo">
@@ -505,8 +403,8 @@
             </div>
         </div>
 
-        <!-- 2026 YTD Performance Section -->
-        <h2 class="section-title">2026 YTD Performance</h2>
+        <!-- Rolling 12 Month Performance Section -->
+        <h2 class="section-title">Rolling 12 Month Performance</h2>
         <div class="metrics-grid" id="metrics2026Grid">
             <!-- Populated by JS -->
         </div>
@@ -977,57 +875,62 @@
             `;
         }
 
-        // Render 2026 YTD metrics
+        // Render rolling 12-month metrics
         function render2026Metrics() {
-            const data2026 = historicalData.filter(d => d.date >= '2026-01-01' && d.date <= '2026-12-31');
+            const latest = historicalData[historicalData.length - 1];
+            const cutoffDate = new Date(latest.date + 'T12:00:00');
+            cutoffDate.setFullYear(cutoffDate.getFullYear() - 1);
+            const cutoff = cutoffDate.toISOString().slice(0, 10);
 
-            if (data2026.length === 0) {
+            const data12m = historicalData.filter(d => d.date >= cutoff);
+
+            if (data12m.length === 0) {
                 document.getElementById('metrics2026Grid').innerHTML = `
                     <div class="metric-card">
-                        <div class="metric-label">No 2026 Data Available</div>
+                        <div class="metric-label">No Data Available</div>
                         <div class="metric-value">--</div>
                     </div>
                 `;
                 return;
             }
 
-            const start2026 = data2026[0];
-            const end2026 = data2026[data2026.length - 1];
-            const days2026 = data2026.length;
+            const start12m = data12m[0];
+            const end12m = data12m[data12m.length - 1];
+            const days12m = data12m.length;
 
-            // Calculate 2026 YTD metrics (net of 30% fee)
-            const grossReturn2026 = ((end2026.net - start2026.net) / start2026.net) * 100;
-            const netReturn2026 = grossReturn2026 * NET_INVESTOR_FACTOR;
-            const apy2026 = (netReturn2026 / days2026) * 365;
+            // Calculate rolling 12m metrics (net of fees)
+            const grossReturn12m = ((end12m.net - start12m.net) / start12m.net) * 100;
+            const netReturn12m = grossReturn12m * NET_INVESTOR_FACTOR;
+            const apy12m = (netReturn12m / days12m) * 365;
 
             // Find best and worst days
-            let bestDay = data2026[0];
-            let worstDay = data2026[0];
-            data2026.forEach(d => {
+            let bestDay = data12m[0];
+            let worstDay = data12m[0];
+            data12m.forEach(d => {
                 if (d.pct1d > bestDay.pct1d) bestDay = d;
                 if (d.pct1d < worstDay.pct1d) worstDay = d;
             });
 
             document.getElementById('metrics2026Grid').innerHTML = `
                 <div class="metric-card highlight">
-                    <div class="metric-label">2026 YTD ROI (Net)</div>
-                    <div class="metric-value ${netReturn2026 >= 0 ? 'positive' : 'negative'}">${formatPercent(netReturn2026)}</div>
+                    <div class="metric-label">Rolling 12M ROI (Net)</div>
+                    <div class="metric-value ${netReturn12m >= 0 ? 'positive' : 'negative'}">${formatPercent(netReturn12m)}</div>
                 </div>
                 <div class="metric-card highlight">
-                    <div class="metric-label">2026 YTD APY</div>
-                    <div class="metric-value ${apy2026 >= 0 ? 'positive' : 'negative'}">${formatPercent(apy2026)}</div>
+                    <div class="metric-label">Rolling 12M APY</div>
+                    <div class="metric-value ${apy12m >= 0 ? 'positive' : 'negative'}">${formatPercent(apy12m)}</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">Trading Days in 2026</div>
-                    <div class="metric-value">${days2026}</div>
+                    <div class="metric-label">Trading Days</div>
+                    <div class="metric-value">${days12m}</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">Start Date</div>
-                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(start2026.date + 'T12:00:00').toLocaleDateString()}</div>
+                    <div class="metric-label">Period Start</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(start12m.date + 'T12:00:00').toLocaleDateString()}</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">Latest Date</div>
-                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(end2026.date + 'T12:00:00').toLocaleDateString()}</div>
+                    <div class="metric-label">Period End</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">${new Date(end12m.date + 'T12:00:00').toLocaleDateString()}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Best Day</div>
@@ -1041,11 +944,11 @@
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Starting Share Price</div>
-                    <div class="metric-value" style="font-size: 1.1rem;">$${start2026.net.toFixed(4)}</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">$${start12m.net.toFixed(4)}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Current Share Price</div>
-                    <div class="metric-value" style="font-size: 1.1rem;">$${end2026.net.toFixed(4)}</div>
+                    <div class="metric-value" style="font-size: 1.1rem;">$${end12m.net.toFixed(4)}</div>
                 </div>
             `;
         }
@@ -1731,45 +1634,33 @@
 
         init();
 
-        // ── Nav / Hamburger ──
+        // ── Hash-based routing (for private dashboard deep links) ──
         let comparisonInitialized = false;
         let stats2025Initialized = false;
-        const hamburger = document.getElementById('hamburger');
-        const navDrawer = document.getElementById('navDrawer');
-        const navOverlay = document.getElementById('navOverlay');
 
-        function toggleNav(open) {
-            hamburger.classList.toggle('open', open);
-            navDrawer.classList.toggle('open', open);
-            navOverlay.classList.toggle('open', open);
+        function activatePage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('page-' + page);
+            if (target) target.classList.add('active');
+            if (page === 'comparison' && !comparisonInitialized) {
+                comparisonInitialized = true;
+                renderComparisonChart('all');
+            }
+            if (page === '2025' && !stats2025Initialized) {
+                stats2025Initialized = true;
+                render2025Metrics();
+                render2025ROIChart();
+                render2025APYChart();
+            }
         }
-        hamburger.addEventListener('click', () => toggleNav(!navDrawer.classList.contains('open')));
-        navOverlay.addEventListener('click', () => toggleNav(false));
 
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', e => {
-                e.preventDefault();
-                const page = item.dataset.page;
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                const targetPage = document.getElementById('page-' + page);
-                if (targetPage) targetPage.classList.add('active');
-                // Render comparison chart on first visit
-                if (page === 'comparison' && !comparisonInitialized) {
-                    comparisonInitialized = true;
-                    renderComparisonChart('all');
-                }
-                // Render 2025 charts on first visit
-                if (page === '2025' && !stats2025Initialized) {
-                    stats2025Initialized = true;
-                    render2025Metrics();
-                    render2025ROIChart();
-                    render2025APYChart();
-                }
-                toggleNav(false);
-            });
-        });
+        function routeFromHash() {
+            const hash = location.hash.replace('#', '') || 'main';
+            activatePage(hash);
+        }
+
+        window.addEventListener('hashchange', routeFromHash);
+        routeFromHash();
 
         // Fetch status banner — uses already-loaded historicalData instead of re-fetching
         function updateFetchStatus() {
