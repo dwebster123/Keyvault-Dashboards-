@@ -401,7 +401,7 @@
         <!-- Pro Forma Comparison Section -->
         <h2 class="section-title">Strategy Comparison: Current Strategy vs Cross-Platform JLP</h2>
         <div class="info-box">
-            <strong>Note:</strong> Cross-Platform JLP Strategy data is <em>pro forma backtested performance</em> throughout. KeyVault (Current) reflects <em>pro forma performance through Jan 15, 2026</em>, and <em>live trading results thereafter</em>. Both shown net of fees. Past performance does not guarantee future results.
+            <strong>Note:</strong> Cross-Platform JLP Strategy reflects <em>pro forma backtested performance through Jan 15, 2026</em>, and <em>live trading results thereafter</em>. KeyVault (Current) reflects actual live results throughout. Both shown net of fees. Past performance does not guarantee future results.
         </div>
         <div class="chart-container">
             <div class="chart-header">
@@ -1200,31 +1200,28 @@
                 primeDataMap[d] = primeDataMap[d] - primeBaseline;
             });
 
-            // Create maps of KV data split into pro forma and live segments
-            const kvProFormaMap = {};
-            const kvLiveMap = {};
+            // KV data — all actual live results, single map
+            const kvDataMap = {};
             kvDataFiltered.forEach(d => {
                 const roi = ((d.net - kvBaseline) / kvBaseline) * 100 * NET_INVESTOR_FACTOR;
-                if (d.date <= LIVE_TRADING_CUTOFF) {
-                    kvProFormaMap[d.date] = roi;
+                kvDataMap[d.date] = roi;
+            });
+
+            // Split Cross-Platform JLP into pro forma (through Jan 15) and live (after)
+            const primeProFormaMap = {};
+            const primeLiveMap = {};
+            Object.entries(primeDataMap).forEach(([date, val]) => {
+                if (date <= LIVE_TRADING_CUTOFF) {
+                    primeProFormaMap[date] = val;
                 } else {
-                    kvLiveMap[d.date] = roi;
+                    primeLiveMap[date] = val;
                 }
             });
-            // Bridge: include the cutoff date in both so the lines connect seamlessly
-            const bridgeDate = LIVE_TRADING_CUTOFF;
-            const bridgeEntry = kvDataFiltered.find(d => d.date === bridgeDate) ||
-                                kvDataFiltered.find(d => d.date > bridgeDate);
-            if (bridgeEntry && kvLiveMap[bridgeEntry.date] !== undefined && !kvProFormaMap[bridgeDate]) {
-                const roi = ((bridgeEntry.net - kvBaseline) / kvBaseline) * 100 * NET_INVESTOR_FACTOR;
-                kvProFormaMap[bridgeEntry.date] = roi;
-            }
-            if (bridgeEntry && kvProFormaMap[bridgeDate] !== undefined) {
-                kvLiveMap[bridgeDate] = kvProFormaMap[bridgeDate];
-            }
-
-            // Combined kvDataMap for metrics calculation
-            const kvDataMap = { ...kvProFormaMap, ...kvLiveMap };
+            // Bridge point so lines connect
+            const bridgeDate = Object.keys(primeDataMap).filter(d => d <= LIVE_TRADING_CUTOFF).sort().pop();
+            if (bridgeDate) primeLiveMap[bridgeDate] = primeProFormaMap[bridgeDate];
+            const nextDate = Object.keys(primeDataMap).filter(d => d > LIVE_TRADING_CUTOFF).sort()[0];
+            if (nextDate) primeProFormaMap[nextDate] = primeLiveMap[nextDate];
 
             // Build sorted date labels from all sources
             const allDates = new Set([
@@ -1233,9 +1230,9 @@
             ]);
             const sortedDates = Array.from(allDates).sort();
 
-            const kvProFormaArr = sortedDates.map(d => kvProFormaMap[d] !== undefined ? kvProFormaMap[d] : null);
-            const kvLiveArr = sortedDates.map(d => kvLiveMap[d] !== undefined ? kvLiveMap[d] : null);
-            const primeArr = sortedDates.map(d => primeDataMap[d] !== undefined ? primeDataMap[d] : null);
+            const kvArr = sortedDates.map(d => kvDataMap[d] !== undefined ? kvDataMap[d] : null);
+            const primeProFormaArr = sortedDates.map(d => primeProFormaMap[d] !== undefined ? primeProFormaMap[d] : null);
+            const primeLiveArr = sortedDates.map(d => primeLiveMap[d] !== undefined ? primeLiveMap[d] : null);
 
             if (comparisonChart) comparisonChart.destroy();
 
@@ -1245,22 +1242,8 @@
                     labels: sortedDates,
                     datasets: [
                         {
-                            label: 'KeyVault — Pro Forma (through Jan 15, 2026)',
-                            data: kvProFormaArr,
-                            borderColor: 'rgba(34, 197, 94, 0.5)',
-                            backgroundColor: 'transparent',
-                            borderDash: [5, 4],
-                            fill: false,
-                            tension: 0.3,
-                            pointRadius: 0,
-                            pointHoverRadius: 5,
-                            borderWidth: 2,
-                            order: 3,
-                            spanGaps: false
-                        },
-                        {
-                            label: 'KeyVault — Live Trading (Jan 15, 2026+)',
-                            data: kvLiveArr,
+                            label: 'KeyVault Current Strategy (Actual)',
+                            data: kvArr,
                             borderColor: '#22c55e',
                             backgroundColor: 'rgba(34, 197, 94, 0.12)',
                             fill: true,
@@ -1272,8 +1255,22 @@
                             spanGaps: false
                         },
                         {
-                            label: 'Cross-Platform JLP (Pro Forma)',
-                            data: primeArr,
+                            label: 'Cross-Platform JLP — Pro Forma (through Jan 15, 2026)',
+                            data: primeProFormaArr,
+                            borderColor: 'rgba(244, 114, 182, 0.5)',
+                            backgroundColor: 'transparent',
+                            borderDash: [5, 4],
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 0,
+                            pointHoverRadius: 5,
+                            borderWidth: 2,
+                            order: 1,
+                            spanGaps: false
+                        },
+                        {
+                            label: 'Cross-Platform JLP — Live Trading (Jan 15, 2026+)',
+                            data: primeLiveArr,
                             borderColor: '#f472b6',
                             backgroundColor: 'rgba(244, 114, 182, 0.08)',
                             fill: true,
@@ -1381,7 +1378,7 @@
                     <div class="update-badge">Net of fees • ${days} days</div>
                 </div>
                 <div class="metric-card" style="border-color: rgba(244, 114, 182, 0.4);">
-                    <div class="metric-label">Cross-Platform JLP ROI (Pro Forma)</div>
+                    <div class="metric-label">Cross-Platform JLP ROI</div>
                     <div class="metric-value" style="color: #f472b6;">${formatPercent(primeRoi)}</div>
                     <div class="update-badge">Net of fees • ${days} days</div>
                 </div>
@@ -1391,12 +1388,12 @@
                     <div class="update-badge">Annualized, net of fees</div>
                 </div>
                 <div class="metric-card" style="border-color: rgba(244, 114, 182, 0.4);">
-                    <div class="metric-label">Cross-Platform JLP APY (Pro Forma)</div>
+                    <div class="metric-label">Cross-Platform JLP APY</div>
                     <div class="metric-value" style="color: #f472b6;">${formatPercent(primeAPY)}</div>
                     <div class="update-badge">Annualized, net of fees</div>
                 </div>
                 <div class="metric-card" style="border-color: rgba(124, 58, 237, 0.4); grid-column: span 2;">
-                    <div class="metric-label">Pro Forma Outperformance</div>
+                    <div class="metric-label">Cross-Platform JLP Outperformance</div>
                     <div class="metric-value" style="color: #a78bfa;">${formatPercent(outperformance)}</div>
                     <div class="update-badge">Additional return vs current strategy (same period)</div>
                 </div>
