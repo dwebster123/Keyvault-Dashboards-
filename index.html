@@ -436,6 +436,9 @@
         <a class="nav-item" data-page="comparison" href="#">
             <span class="nav-icon">⚖️</span> Cross Platform JLP Strategy
         </a>
+        <a class="nav-item" data-page="2025" href="#">
+            <span class="nav-icon">📅</span> 2025 Performance
+        </a>
     </nav>
 
     <div class="header">
@@ -502,7 +505,34 @@
             </div>
         </div>
 
-        <!-- 2025 Year Performance Section -->
+        </div><!-- /page-main -->
+
+        <!-- ═══ PAGE: Strategy Comparison ═══ -->
+        <div class="page" id="page-comparison">
+        <h2 class="section-title">Strategy Comparison: Current Strategy vs Cross-Platform JLP</h2>
+        <div class="info-box">
+            <strong>Note:</strong> Cross-Platform JLP Strategy reflects <em>pro forma backtested performance through Jan 15, 2026</em>, and <em>live trading results thereafter</em>. KeyVault (Current) reflects actual live results throughout. Both shown net of fees. Past performance does not guarantee future results.
+        </div>
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Cumulative ROI Comparison - Net of Fees</h3>
+                <div class="tabs-container" id="comparisonChartTabs">
+                    <div class="tab active" data-period="all">All Time</div>
+                    <div class="tab" data-period="180">180 Days</div>
+                    <div class="tab" data-period="90">90 Days</div>
+                </div>
+            </div>
+            <div class="chart-wrapper" style="height: 400px;">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </div>
+        <div class="metrics-grid" id="comparisonMetrics">
+            <!-- Populated by JS -->
+        </div>
+        </div><!-- /page-comparison -->
+
+        <!-- ═══ PAGE: 2025 Performance ═══ -->
+        <div class="page" id="page-2025">
         <h2 class="section-title">2025 Year Performance</h2>
         <div class="metrics-grid" id="metrics2025Grid">
             <!-- Populated by JS -->
@@ -529,32 +559,7 @@
                 </div>
             </div>
         </div>
-
-        </div><!-- /page-main -->
-
-        <!-- ═══ PAGE: Strategy Comparison ═══ -->
-        <div class="page" id="page-comparison">
-        <h2 class="section-title">Strategy Comparison: Current Strategy vs Cross-Platform JLP</h2>
-        <div class="info-box">
-            <strong>Note:</strong> Cross-Platform JLP Strategy reflects <em>pro forma backtested performance through Jan 15, 2026</em>, and <em>live trading results thereafter</em>. KeyVault (Current) reflects actual live results throughout. Both shown net of fees. Past performance does not guarantee future results.
-        </div>
-        <div class="chart-container">
-            <div class="chart-header">
-                <h3 class="chart-title">Cumulative ROI Comparison - Net of Fees</h3>
-                <div class="tabs-container" id="comparisonChartTabs">
-                    <div class="tab active" data-period="all">All Time</div>
-                    <div class="tab" data-period="180">180 Days</div>
-                    <div class="tab" data-period="90">90 Days</div>
-                </div>
-            </div>
-            <div class="chart-wrapper" style="height: 400px;">
-                <canvas id="comparisonChart"></canvas>
-            </div>
-        </div>
-        <div class="metrics-grid" id="comparisonMetrics">
-            <!-- Populated by JS -->
-        </div>
-        </div><!-- /page-comparison -->
+        </div><!-- /page-2025 -->
 
     </div><!-- /dashboard -->
 
@@ -1626,6 +1631,7 @@
 
         // ── Nav / Hamburger ──
         let comparisonInitialized = false;
+        let stats2025Initialized = false;
         const hamburger = document.getElementById('hamburger');
         const navDrawer = document.getElementById('navDrawer');
         const navOverlay = document.getElementById('navOverlay');
@@ -1651,6 +1657,13 @@
                 if (page === 'comparison' && !comparisonInitialized) {
                     comparisonInitialized = true;
                     renderComparisonChart('all');
+                }
+                // Render 2025 charts on first visit
+                if (page === '2025' && !stats2025Initialized) {
+                    stats2025Initialized = true;
+                    render2025Metrics();
+                    render2025ROIChart();
+                    render2025APYChart();
                 }
                 toggleNav(false);
             });
