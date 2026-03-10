@@ -608,6 +608,24 @@
             }
         }
 
+        // Fetch the latest JLP 3x Mixed strategy data point and extend primeProFormaData
+        async function fetchJlpStrategyLatest() {
+            try {
+                const res = await fetch('data/jlp-strategy-latest.json?t=' + Date.now());
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const latest = await res.json();
+                // latest = { endDate, cumulative, annualized, fetchedAt }
+                if (!latest.endDate || isNaN(latest.cumulative)) return;
+                const lastHardcoded = primeProFormaData[primeProFormaData.length - 1];
+                if (latest.endDate > lastHardcoded.date) {
+                    primeProFormaData.push({ date: latest.endDate, roi: latest.cumulative });
+                    console.log(`[JLP Strategy] Extended to ${latest.endDate} (+${latest.cumulative}%)`);
+                }
+            } catch (e) {
+                console.warn('[JLP Strategy] Could not fetch latest data:', e.message);
+            }
+        }
+
         // Fee structure (20% KeyVault performance + 10% Prime Number manager = 30% total)
         // Spreadsheet data: share prices are fully gross (no fees deducted) → apply full 30%
         // Vault API data: share prices are net of Prime's 10% only → ideally 7/9 factor
@@ -619,7 +637,8 @@
         const NET_INVESTOR_FACTOR = 1 - PERFORMANCE_FEE_RATE; // 0.80
 
         // Prime Number Pro Forma Data - 3x Jupiter JLP (backtested, NOT live results)
-        const primeProFormaData = [
+        // Tail end gets extended at runtime by fetchJlpStrategyLatest()
+        let primeProFormaData = [
             {date: "2025-11-06", roi: 0.06},
             {date: "2025-11-07", roi: 0.17},
             {date: "2025-11-08", roi: 0.23},
@@ -1691,6 +1710,9 @@
                 document.getElementById('metricsGrid').innerHTML = '<div class="metric-card"><div class="metric-value" style="color: #ef4444;">Failed to load NAV data</div></div>';
                 return;
             }
+
+            // Extend JLP strategy data with latest from daily-fetched file
+            await fetchJlpStrategyLatest();
 
             // Render everything
             renderMetrics();

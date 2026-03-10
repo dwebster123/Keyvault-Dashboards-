@@ -54,10 +54,19 @@ echo ""
 echo "[4/5] Fetching Prime Number vault data (CORS-free)..."
 if curl -sf "https://app.primenumber.trade/data/PN_KV1.json" -o data/pn-kv1-current.json && \
    curl -sf "https://app.primenumber.trade/data/PN_KV1_history.json" -o data/pn-kv1-history.json; then
-  echo "  ✅ Prime Number data OK"
+  echo "  ✅ Prime Number vault data OK"
 else
-  echo "  ❌ Prime Number data FAILED"
+  echo "  ❌ Prime Number vault data FAILED"
   ERRORS=$((ERRORS + 1))
+fi
+
+# 4b. Fetch JLP Strategy report (3x Mixed) — for Cross Platform comparison chart
+echo ""
+echo "[4b] Fetching JLP Strategy report (3x Mixed Funding)..."
+if node scripts/fetch-jlp-strategy.js 2>&1; then
+  echo "  ✅ JLP strategy report OK"
+else
+  echo "  ⚠️  JLP strategy report FAILED (non-blocking)"
 fi
 
 # 5. Stamp official NAV (share price snapshot at 5 PM EST)
