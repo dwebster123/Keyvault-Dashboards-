@@ -160,7 +160,7 @@ function drawChart(){
   const pad={top:48,right:80,bottom:44,left:52};
   const cW=W-pad.left-pad.right, cH=H-pad.top-pad.bottom;
 
-  const minVal=50, maxVal=135;
+  const minVal=50, maxVal=140;
   const yRange=maxVal-minVal;
 
   function dayToX(d){return pad.left+(d/totalDays)*cW;}
@@ -216,19 +216,24 @@ function drawChart(){
   ctx.fillText('$68k ATH',dayToX(athDay),valToY(athVal)-10);
 
   // BTC area + line
+  // BTC area fill
   ctx.beginPath();
-  for(let i=0;i<N;i++){const d=i*totalDays/(N-1); const v=lerp(btcAnchors,d);
-    i===0?ctx.moveTo(dayToX(d),valToY(v)):ctx.lineTo(dayToX(d),valToY(v));}
+  for(let i=0;i<btcPrices.length;i++){
+    const x=dayToX(i*totalDays/(btcPrices.length-1)), y=valToY(btcPrices[i]);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
   ctx.lineTo(dayToX(totalDays),pad.top+cH); ctx.lineTo(dayToX(0),pad.top+cH); ctx.closePath();
-  const bf=ctx.createLinearGradient(0,valToY(130),0,valToY(50));
+  const bf=ctx.createLinearGradient(0,valToY(136),0,valToY(85));
   bf.addColorStop(0,'rgba(239,68,68,0.08)'); bf.addColorStop(1,'rgba(239,68,68,0.0)');
   ctx.fillStyle=bf; ctx.fill();
-
+  // BTC line
   ctx.beginPath();
-  for(let i=0;i<N;i++){const d=i*totalDays/(N-1); const v=lerp(btcAnchors,d);
-    i===0?ctx.moveTo(dayToX(d),valToY(v)):ctx.lineTo(dayToX(d),valToY(v));}
-  ctx.strokeStyle='rgba(239,68,68,0.50)'; ctx.lineWidth=2;
-  ctx.shadowColor='rgba(239,68,68,0.20)'; ctx.shadowBlur=6; ctx.stroke(); ctx.shadowBlur=0;
+  for(let i=0;i<btcPrices.length;i++){
+    const x=dayToX(i*totalDays/(btcPrices.length-1)), y=valToY(btcPrices[i]);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.strokeStyle='rgba(239,68,68,0.65)'; ctx.lineWidth=2;
+  ctx.shadowColor='rgba(239,68,68,0.25)'; ctx.shadowBlur=6; ctx.stroke(); ctx.shadowBlur=0;
 
   // KV area + line
   ctx.beginPath();
