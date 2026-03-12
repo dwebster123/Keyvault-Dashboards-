@@ -257,23 +257,19 @@
         <div class="pillar-items">
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Manager can trade but cannot withdraw.</strong> The vault smart contract enforces strict permissioning — fund managers execute trades within the vault but are cryptographically barred from moving investor capital to any external address.</div>
+            <div class="pillar-item-text"><strong>Manager can trade but cannot withdraw.</strong> The vault smart contract enforces this — no exceptions.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Only you withdraw your funds.</strong> Redemptions are initiated directly by each investor via on-chain transaction — no intermediary, no approval queue, no counterparty risk in the exit process.</div>
+            <div class="pillar-item-text"><strong>Only you withdraw your funds.</strong> Depositors initiate their own redemptions directly on-chain.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>100% on-chain verifiable at all times.</strong> Every position, every trade, and every balance is publicly visible on Solscan. No black box — investors can independently verify holdings without relying on manager reporting.</div>
+            <div class="pillar-item-text"><strong>100% on-chain verifiable.</strong> Check vault holdings anytime via Solscan — no trust required.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Zero commingling of funds.</strong> Investor capital lives entirely within the vault smart contract and is never co-mingled with operating funds, manager accounts, or any third-party balance. Separation is enforced at the protocol level.</div>
-          </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Permissioned role architecture.</strong> Vault roles — manager, depositor, administrator — each carry cryptographically scoped permissions. No single key can both trade and withdraw. A compromised manager key cannot access investor principal.</div>
+            <div class="pillar-item-text"><strong>No commingling.</strong> Investor capital is never mixed with operating funds or personal accounts.</div>
           </div>
         </div>
         <div class="pillar-badge">No Single Point of Failure</div>
@@ -289,23 +285,19 @@
         <div class="pillar-items">
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Drift Protocol</strong> — independently audited by Trail of Bits, Neodyme, and OtterSec, three of the most respected security firms in crypto. Backed by a $25M Series B from Multicoin Capital and Blockchain Capital.</div>
+            <div class="pillar-item-text"><strong>Drift Protocol</strong> — audited by Trail of Bits, Neodyme, and OtterSec. $25M Series B from Multicoin, Blockchain Capital.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Jupiter / JLP</strong> — $2.5B+ TVL, the largest perpetuals liquidity pool on Solana. Yield is generated from trader fees and borrowing costs — not directional market bets — providing structural return consistency regardless of market conditions.</div>
+            <div class="pillar-item-text"><strong>Jupiter / JLP</strong> — $2.5B+ TVL. Largest perpetuals LP pool on Solana. Revenue from trading fees, not direction.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Pyth + Switchboard dual-oracle pricing</strong> with cross-validation and automated circuit breakers. If oracle feeds diverge beyond threshold, positions are paused and alerts fire — preventing manipulation or stale-price liquidations.</div>
+            <div class="pillar-item-text"><strong>Pyth + Switchboard oracles</strong> with multi-oracle validation and circuit breakers for price integrity.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>24/7 automated risk monitoring</strong> tracks leverage, margin utilization, liquidation thresholds, and delta-hedge ratios in real time. Alerts trigger instant review; critical deviations trigger automated de-risking before human intervention is required.</div>
-          </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Battle-tested in live markets.</strong> The underlying protocols have operated through multiple high-volatility events — FTX collapse, March 2023 banking stress, August 2024 crypto drawdown — without loss of funds or smart contract failure.</div>
+            <div class="pillar-item-text"><strong>24/7 automated monitoring</strong> of leverage, margin, liquidation thresholds, and hedge ratios with real-time alerts.</div>
           </div>
         </div>
         <div class="pillar-badge">3 Independent Audits</div>
@@ -321,23 +313,19 @@
         <div class="pillar-items">
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Morrison Cohen LLP</strong> — one of New York's premier financial services law firms — oversees fund structure, SEC Regulation D compliance, investor documentation, and ongoing regulatory monitoring as the digital asset landscape evolves.</div>
+            <div class="pillar-item-text"><strong>Morrison Cohen LLP</strong> — New York law firm overseeing fund structure, SEC compliance, and regulatory monitoring.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>NAV Consulting</strong> serves as the independent fund administrator, computing and publishing official Net Asset Values daily at 5 PM EST. Every NAV stamp is timestamped, signed, and stored with a full auditable trail — the same standard used by traditional hedge funds.</div>
+            <div class="pillar-item-text"><strong>NAV Consulting</strong> — independent fund administrator. Daily NAV stamps at 5 PM EST with auditable trail.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Full KYC/AML compliance via NAV Consulting.</strong> Every investor is identity-verified and screened against global watchlists before capital is accepted. The fund is restricted to accredited investors under SEC Regulation D — no exceptions.</div>
+            <div class="pillar-item-text"><strong>Full KYC/AML compliance.</strong> All investors verified. Accredited investors only (SEC Reg D).</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Institutional fiat on/off ramp</strong> via Circle and Coinbase Prime. Investors subscribe and redeem in USD through regulated, bank-grade rails — no crypto wallet required, no bridge risk, no stablecoin counterparty exposure at the entry and exit points.</div>
-          </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Annual financial audit commitment.</strong> The fund is structured for full annual audits by an independent CPA firm, with audited financials provided to all investors — the same transparency standard required of registered investment advisors.</div>
+            <div class="pillar-item-text"><strong>Fiat on/off ramp</strong> via Circle and Coinbase Prime. USD in, USD out — institutional rails.</div>
           </div>
         </div>
         <div class="pillar-badge">SEC-Compliant Structure</div>

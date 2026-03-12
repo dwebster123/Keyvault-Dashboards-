@@ -107,7 +107,7 @@
 
   <div class="content">
     <div class="title">PERFORMANCE THAT STANDS APART</div>
-    <div class="subtitle">Annualized returns (APY) vs. traditional asset classes — all figures shown as annual percentage yield</div>
+    <div class="subtitle">Annualized returns vs. traditional asset classes</div>
 
     <div class="panels">
 
@@ -169,7 +169,7 @@ new Chart(ctxL, {
   data: {
     labels: ['Key Vault\n(Hedged JLP)', 'Private Equity\n(Cambridge Assoc.)', 'S&P 500\n(10Y avg)', 'Real Estate\n(REITs avg)', 'Commercial RE\n(NCREIF avg)', 'Hedge Funds\n(HFRI avg)', 'Gold\n(10Y CAGR)', 'High Yield\nBonds (HYG)'],
     datasets: [{
-      data: [20, 14.2, 11.3, 8.8, 7.5, 6.4, 5.2, 5.2],
+      data: [18, 14.2, 11.3, 8.8, 7.5, 6.4, 5.2, 5.2],
       backgroundColor: [
         kvGradL,
         'rgba(239,68,68,0.80)',
@@ -211,7 +211,7 @@ new Chart(ctxL, {
       y: {
         grid: { color: 'rgba(255,255,255,0.06)' },
         ticks: { color: 'rgba(255,255,255,0.55)', font: { size: 13 }, callback: v => v + '%' },
-        min: 0, max: 24
+        min: 0, max: 22
       }
     }
   },

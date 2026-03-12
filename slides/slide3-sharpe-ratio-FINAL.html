@@ -5,85 +5,45 @@
 <title>Slide 3 — Sharpe Ratio</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #000; overflow: hidden; }
-  #slide {
-    width: 1920px; height: 1080px;
-    background: #050508;
-    position: relative; overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, 'Arial Black', 'Helvetica Neue', sans-serif;
-  }
-  .blob { position: absolute; border-radius: 50%; pointer-events: none; }
-  .blob-left {
-    width: 800px; height: 800px;
-    background: radial-gradient(circle, rgba(0,200,220,0.3) 0%, transparent 70%);
-    filter: blur(70px); bottom: -200px; left: -100px;
-  }
-  .blob-right {
-    width: 650px; height: 650px;
-    background: radial-gradient(circle, rgba(160,40,200,0.42) 0%, transparent 70%);
-    filter: blur(65px); top: -50px; right: -80px;
-  }
-  .header {
-    position: absolute; top: 52px; left: 80px; right: 80px;
-    display: flex; align-items: center; gap: 24px;
-  }
-  .header-label { font-size: 11px; font-variant: small-caps; letter-spacing: 0.22em; color: rgba(255,255,255,0.45); }
-  .header-line { flex: 1; height: 1px; background: rgba(255,255,255,0.15); }
-  .header-url { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.45); }
-
-  .content {
-    position: absolute; top: 108px; left: 80px; right: 80px; bottom: 40px;
-    display: flex; flex-direction: column; align-items: center;
-  }
-  .title {
-    font-size: 80px; font-weight: 900; text-transform: uppercase;
-    letter-spacing: -0.02em; color: #fff; line-height: 1; text-align: center;
-  }
-  .subtitle { font-size: 18px; color: rgba(255,255,255,0.5); margin-top: 12px; text-align: center; letter-spacing: 0.04em; }
-
-  .chart-wrap { width: 100%; flex: 1; margin-top: 28px; min-height: 0; position: relative; }
-
-  .cards-row {
-    display: flex; gap: 24px; width: 100%; margin-top: 28px;
-  }
-  .card {
-    flex: 1;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.09);
-    padding: 22px 26px;
-  }
-  .card-icon { font-size: 26px; margin-bottom: 10px; }
-  .card-title { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: 0.03em; margin-bottom: 8px; }
-  .card-body { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.55; }
-  .card-kv { border-color: rgba(0,212,255,0.35); background: rgba(0,212,255,0.05); }
-  .card-kv .card-title { color: #00d4ff; }
-
-  .footer {
-    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
-    font-size: 10px; letter-spacing: 0.2em; color: rgba(255,255,255,0.1); white-space: nowrap;
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; overflow: hidden; }
+#slide { width: 1920px; height: 1080px; background: #050508; position: relative; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Arial Black', 'Helvetica Neue', sans-serif; }
+.blob { position: absolute; border-radius: 50%; pointer-events: none; }
+.blob-left { width: 800px; height: 800px; background: radial-gradient(circle, rgba(0,200,220,0.3) 0%, transparent 70%); filter: blur(70px); bottom: -200px; left: -100px; }
+.blob-right { width: 650px; height: 650px; background: radial-gradient(circle, rgba(160,40,200,0.42) 0%, transparent 70%); filter: blur(65px); top: -50px; right: -80px; }
+.header { position: absolute; top: 52px; left: 80px; right: 80px; display: flex; align-items: center; gap: 24px; }
+.header-label { font-size: 11px; font-variant: small-caps; letter-spacing: 0.22em; color: rgba(255,255,255,0.45); }
+.header-line { flex: 1; height: 1px; background: rgba(255,255,255,0.15); }
+.header-url { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.45); }
+.content { position: absolute; top: 108px; left: 80px; right: 80px; bottom: 40px; display: flex; flex-direction: column; align-items: center; }
+.title { font-size: 80px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #fff; line-height: 1; text-align: center; }
+.subtitle { font-size: 18px; color: rgba(255,255,255,0.5); margin-top: 12px; text-align: center; letter-spacing: 0.04em; }
+.chart-wrap { width: 100%; flex: 1; margin-top: 28px; min-height: 0; position: relative; }
+.cards-row { display: flex; gap: 24px; width: 100%; margin-top: 28px; }
+.card { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); padding: 22px 26px; }
+.card-icon { font-size: 26px; margin-bottom: 10px; }
+.card-title { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: 0.03em; margin-bottom: 8px; }
+.card-body { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.55; }
+.card-kv { border-color: rgba(0,212,255,0.35); background: rgba(0,212,255,0.05); }
+.card-kv .card-title { color: #00d4ff; }
+.footer { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); font-size: 10px; letter-spacing: 0.2em; color: rgba(255,255,255,0.1); white-space: nowrap; }
 </style>
 </head>
 <body>
 <div id="slide">
   <div class="blob blob-left"></div>
   <div class="blob blob-right"></div>
-
   <div class="header">
     <span class="header-label">Investors Deck</span>
     <div class="header-line"></div>
     <span class="header-url">keyvaultfund.com</span>
   </div>
-
   <div class="content">
     <div class="title">SHARPE RATIO-ADJUSTED RETURNS</div>
     <div class="subtitle">Return earned per unit of risk — higher is always better</div>
-
     <div class="chart-wrap">
       <canvas id="chart"></canvas>
     </div>
-
     <div class="cards-row">
       <div class="card">
         <div class="card-icon">🎯</div>
@@ -97,15 +57,13 @@
       </div>
       <div class="card card-kv">
         <div class="card-icon">⚡</div>
-        <div class="card-title">Key Vault: 4.14</div>
+        <div class="card-title">Key Vault: 5.89</div>
         <div class="card-body">Our hedged vault strategy delivers outsized returns with tightly managed downside — placing us in a league above traditional asset classes.</div>
       </div>
     </div>
   </div>
-
   <div class="footer">CONFIDENTIAL — NOT FOR DISTRIBUTION</div>
 </div>
-
 <script>
 function scale() {
   const s = document.getElementById('slide');
@@ -115,19 +73,15 @@ function scale() {
   document.body.style.width = (1920*r)+'px';
   document.body.style.height = (1080*r)+'px';
 }
-scale(); window.addEventListener('resize', scale);
+scale();
+window.addEventListener('resize', scale);
 
 const ctx = document.getElementById('chart').getContext('2d');
-
-// Traditional benchmarks only — no crypto-specific items
-// Removed: "Unhedged YLP", "ETH Staking" — not meaningful to traditional investors
 const labels = ['Bonds\n(AGG, 10Y avg)', 'S&P 500\n(10Y avg)', 'Hedge Funds\n(HFRI avg)', 'Key Vault'];
-const values = [0.3, 0.72, 0.9, 4.14];
-
+const values = [0.3, 0.72, 0.9, 5.89];
 const kvGrad = ctx.createLinearGradient(0, 300, 0, 0);
 kvGrad.addColorStop(0, 'rgba(0,212,255,0.6)');
 kvGrad.addColorStop(1, 'rgba(0,212,255,0.95)');
-
 const colors = [
   'rgba(239,68,68,0.75)',
   'rgba(239,68,68,0.75)',
@@ -139,13 +93,7 @@ new Chart(ctx, {
   type: 'bar',
   data: {
     labels,
-    datasets: [{
-      data: values,
-      backgroundColor: colors,
-      borderWidth: 0,
-      borderRadius: 3,
-      barThickness: 68
-    }]
+    datasets: [{ data: values, backgroundColor: colors, borderWidth: 0, borderRadius: 3, barThickness: 68 }]
   },
   options: {
     responsive: true,
@@ -181,9 +129,9 @@ new Chart(ctx, {
   plugins: [
     {
       afterDatasetsDraw(chart) {
-        const { ctx: c, data, scales, chartArea } = chart;
+        const { ctx: c, data, scales } = chart;
 
-        // Value labels after each bar
+        // Value labels above each bar
         data.datasets[0].data.forEach((val, i) => {
           const bar = chart.getDatasetMeta(0).data[i];
           c.save();
@@ -196,24 +144,27 @@ new Chart(ctx, {
           c.restore();
         });
 
-        // Horizontal threshold line at y=3.0
+        // FIXED: "Exceptional" threshold — HORIZONTAL line at y=3.0
         const yPx = scales.y.getPixelForValue(3.0);
+        const xLeft = scales.x.left;
+        const xRight = scales.x.right;
+
         c.save();
         c.strokeStyle = '#f59e0b';
         c.lineWidth = 2;
         c.setLineDash([8, 5]);
         c.beginPath();
-        c.moveTo(chartArea.left, yPx);
-        c.lineTo(chartArea.right, yPx);
+        c.moveTo(xLeft, yPx);
+        c.lineTo(xRight, yPx);
         c.stroke();
         c.setLineDash([]);
 
-        // Label — right-aligned on the line
+        // Label at right end of line
         c.fillStyle = '#f59e0b';
         c.font = 'bold 13px -apple-system, Arial';
         c.textAlign = 'right';
         c.textBaseline = 'bottom';
-        c.fillText('Considered Exceptional (3.0)', chartArea.right, yPx - 5);
+        c.fillText('Exceptional Threshold (3.0)', xRight, yPx - 6);
         c.restore();
       }
     }
