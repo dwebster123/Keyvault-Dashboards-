@@ -8,15 +8,13 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #000; overflow: hidden; }
   #slide {
-    width: 1920px; height: 1080px;
-    background: #050508;
+    width: 1920px; height: 1080px; background: #050508;
     position: relative; overflow: hidden;
     font-family: 'Inter', -apple-system, sans-serif;
   }
   .blob { position: absolute; border-radius: 50%; pointer-events: none; }
-  .blob-tl { width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,200,220,0.10) 0%, transparent 70%); filter: blur(90px); top: -100px; left: -100px; }
-  .blob-br { width: 800px; height: 800px; background: radial-gradient(circle, rgba(140,40,200,0.20) 0%, transparent 70%); filter: blur(80px); bottom: -200px; right: -180px; }
-  .blob-mid { width: 500px; height: 500px; background: radial-gradient(circle, rgba(251,191,36,0.05) 0%, transparent 70%); filter: blur(70px); top: 300px; left: 700px; }
+  .blob-tl { width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,200,220,0.08) 0%, transparent 70%); filter: blur(90px); top: -100px; left: -100px; }
+  .blob-br { width: 800px; height: 800px; background: radial-gradient(circle, rgba(140,40,200,0.15) 0%, transparent 70%); filter: blur(80px); bottom: -200px; right: -180px; }
 
   /* HEADER */
   .header-bar { position: absolute; top: 44px; left: 72px; right: 72px; display: flex; align-items: center; gap: 20px; }
@@ -25,329 +23,213 @@
   .header-url { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.40); }
 
   /* TITLE */
-  .title-area { position: absolute; top: 92px; left: 72px; right: 72px; display: flex; align-items: flex-end; justify-content: space-between; }
-  .main-title { font-size: 42px; font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: -0.02em; line-height: 1.0; }
+  .title-section { position: absolute; top: 92px; left: 72px; right: 72px; text-align: center; }
+  .main-title { font-size: 46px; font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: -0.02em; }
   .main-title .teal { color: #00dcc8; }
-  .main-sub { font-size: 14px; color: rgba(255,255,255,0.35); margin-top: 7px; }
-  .title-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,220,200,0.06); border: 1px solid rgba(0,220,200,0.20); border-radius: 4px; padding: 7px 16px; font-size: 11px; font-weight: 700; color: rgba(0,220,200,0.65); letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; }
-  .title-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #00dcc8; }
+  .main-sub { font-size: 15px; color: rgba(255,255,255,0.35); margin-top: 6px; }
+  .divider { margin: 18px auto 0; width: 120px; height: 2px; background: linear-gradient(90deg, transparent, rgba(0,220,200,0.40), transparent); }
 
-  .divider { position: absolute; top: 174px; left: 72px; right: 72px; height: 1px; background: linear-gradient(90deg, rgba(0,220,200,0.25), rgba(255,255,255,0.06), transparent); }
+  /* FLOW */
+  .flow { position: absolute; top: 210px; left: 100px; right: 100px; bottom: 200px; display: flex; align-items: center; justify-content: center; gap: 0; }
 
-  /* DIAGRAM AREA */
-  .diagram { position: absolute; top: 187px; left: 72px; right: 72px; bottom: 128px; display: flex; align-items: stretch; gap: 0; }
+  /* COLUMNS */
+  .col { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .col-input { width: 300px; }
+  .col-engine { width: 640px; }
+  .col-output { width: 300px; }
 
-  /* SIDE NODES */
-  .side-node { width: 218px; flex-shrink: 0; border-radius: 12px; padding: 26px 20px; display: flex; flex-direction: column; }
-  .investor-node { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); }
-  .returns-node { background: rgba(0,220,200,0.04); border: 1px solid rgba(0,220,200,0.20); }
-  .sn-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 12px; }
-  .sn-title { font-size: 15px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1.2; margin-bottom: 18px; }
-  .sn-items { display: flex; flex-direction: column; gap: 10px; flex: 1; }
-  .sn-item { font-size: 12px; color: rgba(255,255,255,0.36); display: flex; gap: 8px; align-items: flex-start; line-height: 1.4; }
-  .sn-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.22); flex-shrink: 0; margin-top: 5px; }
-  .big-return { font-size: 58px; font-weight: 900; color: #00dcc8; letter-spacing: -0.04em; line-height: 1.0; margin: 10px 0 2px; }
-  .big-return-lbl { font-size: 11px; color: rgba(0,220,200,0.50); margin-bottom: 18px; }
-  .ret-divider { height: 1px; background: rgba(0,220,200,0.10); margin: 12px 0; }
-  .ret-stats { display: flex; flex-direction: column; gap: 12px; }
-  .ret-stat-val { font-size: 20px; font-weight: 900; color: rgba(255,255,255,0.80); }
-  .ret-stat-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.22); margin-top: 2px; }
-  .tagline-sm { margin-top: auto; padding-top: 16px; font-size: 13px; font-weight: 900; color: rgba(0,220,200,0.70); line-height: 1.4; }
+  /* BOXES */
+  .box { border-radius: 16px; padding: 36px 32px; text-align: center; width: 100%; }
+  .box-input { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+  .box-engine { background: rgba(0,220,200,0.03); border: 1px solid rgba(0,220,200,0.15); }
+  .box-output { background: rgba(0,220,200,0.06); border: 1px solid rgba(0,220,200,0.25); }
+
+  .box-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 18px; }
+  .box-badge-teal { color: rgba(0,220,200,0.50); }
+  .box-title { font-size: 22px; font-weight: 900; color: #fff; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 0.01em; }
+
+  /* Asset list (input box) */
+  .asset-list { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+  .asset-row { display: flex; align-items: center; gap: 12px; width: 200px; }
+  .asset-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; flex-shrink: 0; }
+  .icon-sol { background: linear-gradient(135deg, #9945ff, #14f195); }
+  .icon-btc { background: linear-gradient(135deg, #f7931a, #fbbf24); }
+  .icon-eth { background: linear-gradient(135deg, #627eea, #a78bfa); }
+  .icon-usdc { background: linear-gradient(135deg, #2775ca, #5ba3e6); }
+  .asset-name { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.70); }
+  .asset-pct { margin-left: auto; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.30); }
+
+  /* Engine sub-boxes */
+  .engine-rows { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+  .engine-row { border-radius: 12px; padding: 22px 28px; display: flex; align-items: center; gap: 18px; }
+  .row-earn { background: rgba(0,220,200,0.08); border: 1px solid rgba(0,220,200,0.18); }
+  .row-hedge { background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.15); }
+  .engine-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .icon-earn { background: rgba(0,220,200,0.15); }
+  .icon-hedge { background: rgba(251,191,36,0.12); }
+  .engine-icon svg { width: 22px; height: 22px; }
+  .engine-text { text-align: left; }
+  .engine-label { font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 4px; }
+  .label-teal { color: #00dcc8; }
+  .label-amber { color: #fbbf24; }
+  .engine-desc { font-size: 12.5px; color: rgba(255,255,255,0.35); line-height: 1.5; }
+
+  /* Output big number */
+  .big-apy { font-size: 72px; font-weight: 900; color: #00dcc8; letter-spacing: -0.04em; line-height: 1.0; margin-bottom: 4px; }
+  .big-apy-label { font-size: 12px; color: rgba(0,220,200,0.50); letter-spacing: 0.04em; margin-bottom: 22px; }
+  .out-stats { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+  .out-stat { text-align: center; }
+  .out-stat-val { font-size: 22px; font-weight: 900; color: rgba(255,255,255,0.75); }
+  .out-stat-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.22); margin-top: 2px; }
 
   /* ARROWS */
-  .arrow-gap { width: 52px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
-  .arrow-lbl { font-size: 8px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: rgba(0,220,200,0.32); white-space: nowrap; text-align: center; }
+  .arrow { width: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; flex-shrink: 0; }
+  .arrow-label { font-size: 8px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(0,220,200,0.35); }
 
-  /* VAULT */
-  .vault-box { flex: 1; border: 1px solid rgba(0,220,200,0.15); border-radius: 12px; background: rgba(0,220,200,0.025); display: flex; flex-direction: column; overflow: hidden; }
-  .vault-hdr { padding: 15px 22px; border-bottom: 1px solid rgba(0,220,200,0.10); flex-shrink: 0; display: flex; align-items: center; gap: 14px; }
-  .vault-hdr-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.15em; color: rgba(0,220,200,0.55); text-transform: uppercase; background: rgba(0,220,200,0.08); padding: 3px 10px; border-radius: 20px; }
-  .vault-hdr-title { font-size: 16px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 0.02em; }
-  .vault-hdr-sub { margin-left: auto; font-size: 11px; color: rgba(255,255,255,0.20); }
+  /* BOTTOM BANNER */
+  .banner { position: absolute; bottom: 80px; left: 200px; right: 200px; background: rgba(0,220,200,0.04); border: 1px solid rgba(0,220,200,0.15); border-radius: 10px; padding: 22px 40px; text-align: center; }
+  .banner-text { font-size: 20px; font-weight: 900; color: #fff; letter-spacing: 0.01em; }
+  .banner-text .teal { color: #00dcc8; }
+  .banner-sub { font-size: 13px; color: rgba(255,255,255,0.28); margin-top: 6px; }
 
-  /* 2×2 GRID */
-  .vault-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; padding: 14px; }
-  .cell { border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; position: relative; }
-  .cell-1 { background: rgba(255,255,255,0.028); border: 1px solid rgba(255,255,255,0.07); }
-  .cell-2 { background: rgba(0,220,200,0.04); border: 1px solid rgba(0,220,200,0.14); }
-  .cell-3 { background: rgba(251,191,36,0.04); border: 1px solid rgba(251,191,36,0.14); }
-  .cell-4 { background: rgba(0,220,200,0.07); border: 1px solid rgba(0,220,200,0.24); }
-
-  .cell-step { position: absolute; top: 14px; right: 14px; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
-  .step-1 { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.40); }
-  .step-2 { background: rgba(0,220,200,0.15); color: rgba(0,220,200,0.80); }
-  .step-3 { background: rgba(251,191,36,0.15); color: rgba(251,191,36,0.80); }
-  .step-4 { background: rgba(0,220,200,0.20); color: #00dcc8; }
-
-  .cell-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; }
-  .ct-neutral { color: rgba(255,255,255,0.65); }
-  .ct-teal { color: #00dcc8; }
-  .ct-amber { color: #fbbf24; }
-  .cell-desc { font-size: 12px; color: rgba(255,255,255,0.33); line-height: 1.55; flex: 1; }
-
-  /* Asset bars in cell 1 */
-  .asset-bars { display: flex; flex-direction: column; gap: 7px; margin-top: 2px; }
-  .ab-row { display: flex; align-items: center; gap: 8px; }
-  .ab-name { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.45); width: 38px; }
-  .ab-track { flex: 1; height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-  .ab-fill { height: 100%; border-radius: 3px; }
-  .fill-sol { background: linear-gradient(90deg,#9945ff,#14f195); }
-  .fill-btc { background: linear-gradient(90deg,#f7931a,#fbbf24); }
-  .fill-eth { background: linear-gradient(90deg,#627eea,#a78bfa); }
-  .fill-stable { background: rgba(255,255,255,0.28); }
-  .ab-pct { font-size: 10px; color: rgba(255,255,255,0.28); width: 28px; text-align: right; }
-
-  /* Fee cell */
-  .fee-big { font-size: 28px; font-weight: 900; color: #00dcc8; letter-spacing: -0.02em; margin-top: 2px; }
-  .fee-sub { font-size: 11px; color: rgba(0,220,200,0.45); margin-bottom: 4px; }
-  .fee-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
-  .fee-tag { font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 3px; background: rgba(0,220,200,0.08); color: rgba(0,220,200,0.55); border: 1px solid rgba(0,220,200,0.12); }
-
-  /* Hedge cell */
-  .hedge-table { display: flex; flex-direction: column; gap: 6px; flex: 1; }
-  .ht-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; align-items: center; }
-  .ht-header { grid-template-columns: 1fr 1fr 1fr 1fr; }
-  .ht-cell { font-size: 11px; padding: 5px 6px; border-radius: 4px; text-align: center; }
-  .ht-head { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.22); text-align: center; }
-  .ht-event { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.50); font-weight: 600; }
-  .ht-jlp-up { background: rgba(0,220,200,0.08); color: rgba(0,220,200,0.70); font-weight: 700; }
-  .ht-jlp-dn { background: rgba(239,68,68,0.08); color: rgba(239,68,68,0.70); font-weight: 700; }
-  .ht-jlp-fee { background: rgba(0,220,200,0.08); color: rgba(0,220,200,0.70); font-weight: 700; }
-  .ht-hedge-dn { background: rgba(239,68,68,0.08); color: rgba(239,68,68,0.60); font-weight: 700; }
-  .ht-hedge-up { background: rgba(0,220,200,0.08); color: rgba(0,220,200,0.60); font-weight: 700; }
-  .ht-hedge-n { background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.25); font-weight: 600; }
-  .ht-net-0 { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.40); font-weight: 700; }
-  .ht-net-yield { background: rgba(0,220,200,0.15); color: #00dcc8; font-weight: 900; }
-
-  /* Result cell */
-  .result-content { display: flex; flex-direction: column; gap: 8px; flex: 1; justify-content: center; }
-  .eq-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .eq-box { padding: 5px 12px; border-radius: 5px; font-size: 12px; font-weight: 700; white-space: nowrap; }
-  .eq-fee { background: rgba(0,220,200,0.10); color: rgba(0,220,200,0.80); border: 1px solid rgba(0,220,200,0.18); }
-  .eq-cost { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.40); border: 1px solid rgba(255,255,255,0.08); }
-  .eq-op { font-size: 18px; font-weight: 900; color: rgba(255,255,255,0.22); }
-  .eq-equals { font-size: 18px; font-weight: 900; color: rgba(255,255,255,0.22); }
-  .result-big { font-size: 38px; font-weight: 900; color: #00dcc8; letter-spacing: -0.03em; line-height: 1.0; margin-top: 4px; }
-  .result-sub { font-size: 11px; color: rgba(0,220,200,0.45); margin-top: 2px; }
-  .result-note { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 6px; line-height: 1.4; }
-
-  /* BOTTOM STRIP */
-  .bottom-strip { position: absolute; bottom: 20px; left: 72px; right: 72px; display: flex; gap: 16px; }
-  .bs-card { flex: 1; background: rgba(255,255,255,0.018); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 12px 18px; }
-  .bs-label { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 5px; }
-  .bs-text { font-size: 11.5px; color: rgba(255,255,255,0.35); line-height: 1.55; }
-  .bs-text strong { color: rgba(255,255,255,0.60); font-weight: 700; }
-
-  .footer { position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.08); white-space: nowrap; }
+  .footer { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.08); }
 </style>
 </head>
 <body>
 <div id="slide">
   <div class="blob blob-tl"></div>
   <div class="blob blob-br"></div>
-  <div class="blob blob-mid"></div>
 
-  <!-- HEADER -->
   <div class="header-bar">
     <span class="header-label">Investors Deck</span>
     <div class="header-line"></div>
     <span class="header-url">keyvaultfund.com</span>
   </div>
 
-  <!-- TITLE -->
-  <div class="title-area">
-    <div>
-      <div class="main-title">How <span class="teal">The Vault</span> Generates Yield</div>
-      <div class="main-sub">Fee-based returns. Market-neutral position. Stable compounding — regardless of where crypto goes.</div>
-    </div>
-    <div class="title-badge"><div class="title-badge-dot"></div>Delta-Neutral Strategy · Solana Ecosystem</div>
+  <div class="title-section">
+    <div class="main-title">How <span class="teal">The Vault</span> Generates Yield</div>
+    <div class="main-sub">Income from market activity — not asset appreciation</div>
+    <div class="divider"></div>
   </div>
-  <div class="divider"></div>
 
-  <!-- MAIN DIAGRAM -->
-  <div class="diagram">
+  <div class="flow">
 
-    <!-- INVESTOR NODE -->
-    <div class="side-node investor-node">
-      <div class="sn-badge">Step 0</div>
-      <div class="sn-title">Your Capital</div>
-      <div class="sn-items">
-        <div class="sn-item"><div class="sn-dot"></div>Accredited investors only</div>
-        <div class="sn-item"><div class="sn-dot"></div>USDC or USD accepted</div>
-        <div class="sn-item"><div class="sn-dot"></div>Quarterly liquidity windows</div>
-        <div class="sn-item"><div class="sn-dot"></div>Professional fund structure (3(c)(1) LP)</div>
-        <div class="sn-item"><div class="sn-dot"></div>Third-party fund admin &amp; audit</div>
+    <!-- COL 1: CAPITAL IN -->
+    <div class="col col-input">
+      <div class="box box-input">
+        <div class="box-badge">Capital Allocation</div>
+        <div class="box-title">Liquidity Pool</div>
+        <div class="asset-list">
+          <div class="asset-row">
+            <div class="asset-icon icon-sol">S</div>
+            <div class="asset-name">Solana</div>
+            <div class="asset-pct">47%</div>
+          </div>
+          <div class="asset-row">
+            <div class="asset-icon icon-btc">₿</div>
+            <div class="asset-name">Bitcoin</div>
+            <div class="asset-pct">13%</div>
+          </div>
+          <div class="asset-row">
+            <div class="asset-icon icon-eth">Ξ</div>
+            <div class="asset-name">Ethereum</div>
+            <div class="asset-pct">8%</div>
+          </div>
+          <div class="asset-row">
+            <div class="asset-icon icon-usdc">$</div>
+            <div class="asset-name">Stablecoins</div>
+            <div class="asset-pct">32%</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- ARROW 1 -->
-    <div class="arrow-gap">
-      <svg width="52" height="24" viewBox="0 0 52 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <line x1="0" y1="12" x2="40" y2="12" stroke="rgba(0,220,200,0.45)" stroke-width="2"/>
-        <polygon points="38,6 52,12 38,18" fill="rgba(0,220,200,0.55)"/>
+    <div class="arrow">
+      <svg width="60" height="30" viewBox="0 0 60 30" fill="none">
+        <path d="M0 11 H40 L40 4 L58 15 L40 26 L40 19 H0 Z" fill="rgba(0,220,200,0.25)"/>
       </svg>
-      <div class="arrow-lbl">DEPOSIT</div>
+      <div class="arrow-label">Deployed</div>
     </div>
 
-    <!-- VAULT BOX -->
-    <div class="vault-box">
-      <div class="vault-hdr">
-        <div class="vault-hdr-badge">THE ENGINE</div>
-        <div class="vault-hdr-title">The Vault Mechanism</div>
-        <div class="vault-hdr-sub">Jupiter Perpetuals · Delta-Neutral · On-chain &amp; verifiable</div>
-      </div>
-
-      <div class="vault-grid">
-
-        <!-- CELL 1: JLP POSITION -->
-        <div class="cell cell-1">
-          <div class="cell-step step-1">1</div>
-          <div class="cell-title ct-neutral">JLP Position</div>
-          <div class="cell-desc">Capital is deposited into the <strong style="color:rgba(255,255,255,0.65)">Jupiter Liquidity Pool (JLP)</strong> — the counterparty to all leveraged traders on Solana's #1 perps exchange.</div>
-          <div class="asset-bars">
-            <div class="ab-row"><div class="ab-name">SOL</div><div class="ab-track"><div class="ab-fill fill-sol" style="width:47%"></div></div><div class="ab-pct">47%</div></div>
-            <div class="ab-row"><div class="ab-name">BTC</div><div class="ab-track"><div class="ab-fill fill-btc" style="width:13%"></div></div><div class="ab-pct">13%</div></div>
-            <div class="ab-row"><div class="ab-name">ETH</div><div class="ab-track"><div class="ab-fill fill-eth" style="width:8%"></div></div><div class="ab-pct">8%</div></div>
-            <div class="ab-row"><div class="ab-name">Stable</div><div class="ab-track"><div class="ab-fill fill-stable" style="width:32%"></div></div><div class="ab-pct">32%</div></div>
+    <!-- COL 2: THE ENGINE -->
+    <div class="col col-engine">
+      <div class="box box-engine">
+        <div class="box-badge box-badge-teal">Jupiter Perpetuals · Solana</div>
+        <div class="box-title">The Strategy Engine</div>
+        <div class="engine-rows">
+          <div class="engine-row row-earn">
+            <div class="engine-icon icon-earn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00dcc8" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10l4-4 4 4M8 14l4 4 4-4"/></svg>
+            </div>
+            <div class="engine-text">
+              <div class="engine-label label-teal">Earn Trading Fees &amp; Yield</div>
+              <div class="engine-desc">Traders pay fees every time they open, hold, or close leveraged positions. As the liquidity provider, the fund collects those fees — regardless of whether traders win or lose.</div>
+            </div>
           </div>
-        </div>
-
-        <!-- CELL 2: FEE INCOME -->
-        <div class="cell cell-2">
-          <div class="cell-step step-2">2</div>
-          <div class="cell-title ct-teal">Fee Income from Traders</div>
-          <div class="cell-desc">Every time a trader opens, holds, or closes a leveraged position, they pay fees directly to JLP holders — regardless of whether they profit or lose.</div>
-          <div class="fee-big">$500M+</div>
-          <div class="fee-sub">average daily trading volume</div>
-          <div class="fee-tags">
-            <span class="fee-tag">Trading Fee</span>
-            <span class="fee-tag">Borrow Rate</span>
-            <span class="fee-tag">Spread</span>
-            <span class="fee-tag">Liquidation Fee</span>
-          </div>
-        </div>
-
-        <!-- CELL 3: HEDGE -->
-        <div class="cell cell-3">
-          <div class="cell-step step-3">3</div>
-          <div class="cell-title ct-amber">Hedge — Price Risk Neutralized</div>
-          <div class="cell-desc">JLP holds BTC, ETH &amp; SOL. We short those same assets in equal weight. Every price move cancels out. Only fees remain.</div>
-          <div class="hedge-table">
-            <div class="ht-row ht-header">
-              <div class="ht-head">Market Event</div>
-              <div class="ht-head">JLP</div>
-              <div class="ht-head">Hedge</div>
-              <div class="ht-head">Net</div>
+          <div class="engine-row row-hedge">
+            <div class="engine-icon icon-hedge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"><path d="M12 2l8 4v6c0 5.25-3.38 9.95-8 11.2C7.38 21.95 4 17.25 4 12V6l8-4z"/></svg>
             </div>
-            <div class="ht-row">
-              <div class="ht-cell ht-event">BTC ↑</div>
-              <div class="ht-cell ht-jlp-up">+Gains</div>
-              <div class="ht-cell ht-hedge-dn">−Loses</div>
-              <div class="ht-cell ht-net-0">≈ 0</div>
-            </div>
-            <div class="ht-row">
-              <div class="ht-cell ht-event">BTC ↓</div>
-              <div class="ht-cell ht-jlp-dn">−Loses</div>
-              <div class="ht-cell ht-hedge-up">+Profits</div>
-              <div class="ht-cell ht-net-0">≈ 0</div>
-            </div>
-            <div class="ht-row">
-              <div class="ht-cell ht-event">Fees</div>
-              <div class="ht-cell ht-jlp-fee">+Always</div>
-              <div class="ht-cell ht-hedge-n">—</div>
-              <div class="ht-cell ht-net-yield">YIELD</div>
+            <div class="engine-text">
+              <div class="engine-label label-amber">Hedge Price Risk</div>
+              <div class="engine-desc">The pool holds crypto assets. We short those same assets in equal weight. Price moves up? Cancels out. Price moves down? Cancels out. Only the fee income remains.</div>
             </div>
           </div>
         </div>
-
-        <!-- CELL 4: NET RESULT -->
-        <div class="cell cell-4">
-          <div class="cell-step step-4">4</div>
-          <div class="cell-title ct-teal">Net Yield</div>
-          <div class="result-content">
-            <div class="eq-line">
-              <div class="eq-box eq-fee">Fee Income</div>
-              <div class="eq-op">−</div>
-              <div class="eq-box eq-cost">Hedge Cost</div>
-              <div class="eq-equals">=</div>
-            </div>
-            <div class="result-big">~26% Gross</div>
-            <div class="result-sub">Annual yield to the fund (before performance fee)</div>
-            <div class="result-note">After 30% performance fee on returns above the 7% hurdle → <strong style="color:rgba(255,255,255,0.55)">~18% net APY</strong> delivered to investors</div>
-          </div>
-        </div>
-
       </div>
     </div>
 
     <!-- ARROW 2 -->
-    <div class="arrow-gap">
-      <svg width="52" height="24" viewBox="0 0 52 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <line x1="0" y1="12" x2="40" y2="12" stroke="rgba(0,220,200,0.45)" stroke-width="2"/>
-        <polygon points="38,6 52,12 38,18" fill="rgba(0,220,200,0.55)"/>
+    <div class="arrow">
+      <svg width="60" height="30" viewBox="0 0 60 30" fill="none">
+        <path d="M0 11 H40 L40 4 L58 15 L40 26 L40 19 H0 Z" fill="rgba(0,220,200,0.25)"/>
       </svg>
-      <div class="arrow-lbl">RETURNS</div>
+      <div class="arrow-label">Returns</div>
     </div>
 
-    <!-- RETURNS NODE -->
-    <div class="side-node returns-node">
-      <div class="sn-badge">Investor Returns</div>
-      <div class="sn-title">Fund Performance</div>
-      <div class="big-return">~18%</div>
-      <div class="big-return-lbl">Net APY · 12-month live track record</div>
-      <div class="ret-divider"></div>
-      <div class="ret-stats">
-        <div>
-          <div class="ret-stat-val">−1.01%</div>
-          <div class="ret-stat-lbl">Maximum Drawdown</div>
-        </div>
-        <div>
-          <div class="ret-stat-val">0</div>
-          <div class="ret-stat-lbl">Negative Months</div>
-        </div>
-        <div>
-          <div class="ret-stat-val">7% Hurdle</div>
-          <div class="ret-stat-lbl">Soft hurdle · No fee below 7%</div>
+    <!-- COL 3: YIELD OUT -->
+    <div class="col col-output">
+      <div class="box box-output">
+        <div class="box-badge box-badge-teal">Investor Returns</div>
+        <div class="box-title">Cash Flow</div>
+        <div class="big-apy">~18%</div>
+        <div class="big-apy-label">Net APY · 12-Month Live Track Record</div>
+        <div class="out-stats">
+          <div class="out-stat">
+            <div class="out-stat-val">−1.01%</div>
+            <div class="out-stat-lbl">Maximum Drawdown</div>
+          </div>
+          <div class="out-stat">
+            <div class="out-stat-val">0</div>
+            <div class="out-stat-lbl">Negative Months</div>
+          </div>
+          <div class="out-stat">
+            <div class="out-stat-val">Market-Neutral</div>
+            <div class="out-stat-lbl">Reduced Volatility</div>
+          </div>
         </div>
       </div>
-      <div class="tagline-sm">The hedge works.<br>Every time.</div>
     </div>
 
   </div>
 
-  <!-- BOTTOM STRIP -->
-  <div class="bottom-strip">
-    <div class="bs-card">
-      <div class="bs-label">Why It's Stable</div>
-      <div class="bs-text">Returns come from <strong>trader fees, not price speculation.</strong> When BTC crashed 76% in 2022, traders kept trading — and fees kept flowing. The fund posted zero negative months.</div>
-    </div>
-    <div class="bs-card">
-      <div class="bs-label">Why It's Real</div>
-      <div class="bs-text">Every dollar of yield is earned from live on-chain activity on <strong>Jupiter Perpetuals</strong> — the #1 derivatives exchange on Solana. $500M+ in daily volume. Transparent and verifiable.</div>
-    </div>
-    <div class="bs-card">
-      <div class="bs-label">The Advantage</div>
-      <div class="bs-text">Most funds take directional crypto bets. We remove market risk entirely and <strong>pocket the spread between fee income and hedging cost.</strong> Stable returns in any market condition.</div>
-    </div>
-    <div class="bs-card">
-      <div class="bs-label">The Fee Structure</div>
-      <div class="bs-text"><strong>7% soft hurdle</strong> — we earn zero performance fee below 7%. Above 7%: 20% performance fee. Above 20%: 25% on the excess. Fund admin &amp; audit by third-party professionals.</div>
-    </div>
+  <!-- BOTTOM BANNER -->
+  <div class="banner">
+    <div class="banner-text">Income from <span class="teal">Market Activity</span> — Not Asset Appreciation</div>
+    <div class="banner-sub">Traders trade. We collect fees. The hedge removes the risk. What's left is yield.</div>
   </div>
 
   <div class="footer">Confidential — Not For Distribution · KeyVault Fund LP · For Accredited Investors Only</div>
 </div>
 <script>
-function scale() {
-  const s = document.getElementById('slide');
-  const r = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
-  s.style.transform = `scale(${r})`;
-  s.style.transformOrigin = 'top left';
-  document.body.style.width = (1920 * r) + 'px';
-  document.body.style.height = (1080 * r) + 'px';
+function scale(){
+  const s=document.getElementById('slide');
+  const r=Math.min(window.innerWidth/1920,window.innerHeight/1080);
+  s.style.transform=`scale(${r})`; s.style.transformOrigin='top left';
+  document.body.style.width=(1920*r)+'px'; document.body.style.height=(1080*r)+'px';
 }
-scale();
-window.addEventListener('resize', scale);
+scale(); window.addEventListener('resize',scale);
 </script>
 </body>
 </html>
