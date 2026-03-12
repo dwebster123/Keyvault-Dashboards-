@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slide 7b — The 2022 Crash</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; overflow: hidden; }
+  #slide {
+    width: 1920px; height: 1080px; background: #050508;
+    position: relative; overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .blob { position: absolute; border-radius: 50%; pointer-events: none; }
+  .blob-tl { width: 700px; height: 700px; background: radial-gradient(circle, rgba(220,40,40,0.12) 0%, transparent 70%); filter: blur(90px); top: -100px; left: -100px; }
+  .blob-br { width: 800px; height: 800px; background: radial-gradient(circle, rgba(140,40,200,0.22) 0%, transparent 70%); filter: blur(80px); bottom: -200px; right: -180px; }
+  .blob-mid { width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,200,220,0.10) 0%, transparent 70%); filter: blur(70px); bottom: 200px; left: 600px; }
+  .header-bar { position: absolute; top: 44px; left: 72px; right: 72px; display: flex; align-items: center; gap: 20px; }
+  .header-label { font-size: 11px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.40); }
+  .header-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.20), rgba(255,255,255,0.06)); }
+  .header-url { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.40); }
+  .content { position: absolute; top: 100px; left: 72px; right: 72px; bottom: 50px; display: flex; flex-direction: column; }
+  .title-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
+  .title { font-size: 44px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #fff; line-height: 1.05; }
+  .title span { color: #ef4444; }
+  .subtitle { font-size: 16px; color: rgba(255,255,255,0.40); margin-top: 8px; font-weight: 400; }
+  .strategy-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.22); border-radius: 4px; padding: 6px 14px; font-size: 11px; font-weight: 700; color: rgba(251,191,36,0.75); letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; }
+  .strategy-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #fbbf24; }
+  .divider { height: 1px; margin: 16px 0 12px; background: linear-gradient(90deg, rgba(239,68,68,0.25), rgba(255,255,255,0.06), transparent); }
+  .legend { display: flex; gap: 32px; margin-bottom: 8px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.45); }
+  .legend-swatch { width: 24px; height: 3px; border-radius: 2px; }
+  .legend-swatch.kv { background: #00dcc8; }
+  .legend-swatch.btc { background: rgba(239,68,68,0.60); }
+  .legend-zone { width: 24px; height: 14px; border-radius: 2px; background: rgba(239,68,68,0.20); border: 1px solid rgba(239,68,68,0.35); }
+  .chart-wrap { flex: 1; min-height: 0; position: relative; margin: 0 0 12px; }
+  #timeline { width: 100%; height: 100%; display: block; }
+  .stats-row { display: flex; gap: 16px; align-items: stretch; }
+  .stat-card { flex: 1; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 12px 18px; display: flex; flex-direction: column; justify-content: center; }
+  .stat-label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.30); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .stat-value { font-size: 26px; font-weight: 900; color: #00dcc8; letter-spacing: -0.02em; line-height: 1; }
+  .stat-value.red { color: #ef4444; }
+  .stat-value.white { color: rgba(255,255,255,0.85); }
+  .stat-sub { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 3px; }
+  .tagline-box { background: rgba(0,220,200,0.04); border: 1px solid rgba(0,220,200,0.20); border-radius: 6px; padding: 12px 32px; display: flex; align-items: center; font-size: 20px; font-weight: 900; color: #fff; white-space: nowrap; flex-shrink: 0; }
+  .footer { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.10); }
+</style>
+</head>
+<body>
+<div id="slide">
+  <div class="blob blob-tl"></div><div class="blob blob-br"></div><div class="blob blob-mid"></div>
+  <div class="header-bar"><span class="header-label">Investors Deck</span><div class="header-line"></div><span class="header-url">keyvaultfund.com</span></div>
+  <div class="content">
+    <div class="title-row">
+      <div>
+        <div class="title">What if we were live during the <span>2022 Crash?</span></div>
+        <div class="subtitle">Real fund performance overlaid on the 2021–2022 Bitcoin cycle. LUNA. Celsius. 3AC. FTX. Same fund — zero drawdown.</div>
+      </div>
+      <div class="strategy-badge"><div class="strategy-badge-dot"></div>Hypothetical Overlay · Mar 2021 – Mar 2022</div>
+    </div>
+    <div class="divider"></div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch kv"></div> Key Vault NAV (real performance, indexed to 100)</div>
+      <div class="legend-item"><div class="legend-swatch btc"></div> Bitcoin Price (indexed to 100 at Mar 2021)</div>
+      <div class="legend-item"><div class="legend-zone"></div> BTC Crash Zone</div>
+    </div>
+    <div class="chart-wrap"><canvas id="timeline"></canvas></div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Key Vault</div><div class="stat-value">~20%</div><div class="stat-sub">Real performance, 12 months</div></div>
+      <div class="stat-card"><div class="stat-label">Bitcoin</div><div class="stat-value red">-19%</div><div class="stat-sub">Same 12 months, same market</div></div>
+      <div class="stat-card"><div class="stat-label">Max KV Drawdown</div><div class="stat-value">-1.01%</div><div class="stat-sub">While BTC whipsawed 40%+</div></div>
+      <div class="stat-card"><div class="stat-label">BTC Crashes in Period</div><div class="stat-value white">2</div><div class="stat-sub">China Mining Ban · Post-ATH Selloff</div></div>
+      <div class="tagline-box">The hedge works. Every time.</div>
+    </div>
+  </div>
+  <div class="footer">Confidential — Not For Distribution · Real KV performance hypothetically overlaid on historical BTC data</div>
+</div>
+<script>
+// === KV NAV (same real data as slide 5) ===
+const kvVals=[100.00,100.18,99.95,100.39,100.49,100.95,100.47,100.80,100.89,100.89,100.77,100.83,100.62,100.58,100.58,100.52,100.60,100.97,101.00,101.01,100.96,100.98,101.27,101.24,101.07,101.15,101.30,101.40,101.45,101.45,101.26,101.23,101.24,101.32,101.36,101.29,101.19,100.79,100.95,101.05,100.73,100.96,101.01,101.27,101.36,101.68,101.99,102.03,102.12,102.20,102.25,102.42,102.75,102.64,102.55,102.58,102.96,103.00,103.04,102.97,103.03,103.02,102.98,102.91,102.94,103.17,103.12,103.11,103.14,102.91,103.28,103.29,103.85,104.23,104.37,104.39,104.33,104.88,104.79,104.87,104.85,104.76,104.76,104.84,104.82,104.94,105.24,105.09,104.94,105.19,105.14,105.16,105.39,105.40,105.05,105.20,105.04,105.27,105.24,105.23,105.05,105.17,105.27,105.29,105.71,105.88,105.89,105.36,105.51,105.59,105.84,105.72,105.46,105.40,105.38,105.17,105.07,105.03,105.61,105.83,105.82,105.80,105.93,106.14,106.30,106.29,106.56,106.84,106.80,106.63,106.58,106.70,106.70,106.85,107.00,107.57,107.84,107.70,108.05,108.13,108.27,108.92,109.60,109.39,109.46,110.21,110.89,111.12,111.01,111.09,111.52,111.65,111.97,111.96,111.87,111.92,111.65,111.38,111.23,111.42,111.61,111.47,111.87,112.20,112.31,112.52,112.78,112.88,114.03,114.70,114.45,114.35,114.28,114.19,113.95,113.93,114.13,114.12,114.65,114.91,114.95,114.66,115.21,115.57,115.78,115.69,115.58,115.56,115.75,115.89,115.96,115.97,115.89,115.80,115.97,116.36,116.45,116.73,117.46,117.83,118.14,118.22,118.15,118.25,118.51,118.70,118.57,118.55,118.24,118.24,118.20,118.10,118.19,118.48,118.53,118.77,118.87,119.10,119.48,119.95,119.95,120.25,120.18,120.22,120.17,120.29,120.10,119.68,119.85,119.98,119.93,119.99,119.78,119.70,119.81,120.07,119.87,119.91,120.01,120.39,120.49,120.61,120.88,120.87,120.93,120.86,120.80,120.76,120.66,120.79,120.85,121.15,121.20,121.36,121.56,121.58,121.58,121.60,121.77,121.82,121.95,122.26,122.28,122.32,122.58,122.58,122.62,122.68,122.64,122.61,122.68,122.84,122.80,122.67,122.56,122.51,122.58,122.67,122.76,122.90,122.85,123.00,123.00,123.05,122.99,123.02,122.83,122.83,122.74,122.74,122.74,122.74,123.05,123.05,122.95,123.16,123.16,123.16,123.20,123.29,123.44,123.53,123.55,123.55,123.63,123.64,123.70,123.78,123.78,123.78,123.78,123.78,123.71,123.71,123.80,123.80,123.85,124.14,123.70,123.87,123.92,123.70,123.84,123.75,123.68,123.86,124.16,124.01,124.07,124.42,124.76,124.64,124.70,124.58,124.45,124.32,124.37,124.42,124.67,124.53,124.65,124.39,124.55,124.48,124.85,124.58,124.65,124.33,124.12,124.47,124.52,123.86,123.90,123.88,124.07,123.59,124.59,124.57,124.42,124.78,125.08,124.83,125.05,124.69,124.62];
+
+// === BTC Mar 2021 – Mar 2022 (indexed to 100 at Mar 2021 = $58,000) ===
+const btcAnchors=[
+  [0,100],[15,100],[31,100],[46,100],[55,100],
+  [61,100],[67,93],[72,80],[78,66],[85,63.8],[91,63.8],
+  [100,60],[110,60.3],[118,62],[122,60.3],
+  [130,65],[140,70],[153,72.4],
+  [165,78],[178,80],[184,81.0],
+  [195,80],[205,81],[214,81.0],
+  [225,90],[235,98],[245,105.2],
+  [250,110],[254,119],[258,115],[265,108],
+  [275,98.3],[285,88],[295,82],
+  [306,79.3],[315,72],[325,68],[335,65.5],
+  [345,70],[355,75.9],[365,81.0]
+];
+
+// Crash zones
+const crashZones=[
+  [61,122,"China Mining Ban","-40%"],
+  [254,340,"Post-ATH Selloff","-45%"]
+];
+
+const monthLabels=[
+  [0,"Mar '21"],[31,"Apr"],[61,"May"],[92,"Jun"],
+  [122,"Jul"],[153,"Aug"],[184,"Sep"],[214,"Oct"],
+  [245,"Nov '21"],[275,"Dec"],[306,"Jan '22"],[337,"Feb"],
+  [365,"Mar '22"]
+];
+
+const totalDays=365, N=kvVals.length;
+
+function lerp(a,day){
+  for(let i=0;i<a.length-1;i++){
+    const[d0,v0]=a[i],[d1,v1]=a[i+1];
+    if(day>=d0&&day<=d1) return v0+(day-d0)/(d1-d0)*(v1-v0);
+  }
+  return a[a.length-1][1];
+}
+
+function drawChart(){
+  const canvas=document.getElementById('timeline');
+  const wrap=canvas.parentElement;
+  const dpr=2;
+  canvas.width=wrap.offsetWidth*dpr; canvas.height=wrap.offsetHeight*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+
+  const W=wrap.offsetWidth, H=wrap.offsetHeight;
+  const pad={top:48,right:80,bottom:44,left:52};
+  const cW=W-pad.left-pad.right, cH=H-pad.top-pad.bottom;
+
+  const minVal=50, maxVal=135;
+  const yRange=maxVal-minVal;
+
+  function dayToX(d){return pad.left+(d/totalDays)*cW;}
+  function valToY(v){return pad.top+cH-((v-minVal)/yRange)*cH;}
+
+  // Grid
+  ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=1;
+  [60,80,120].forEach(v=>{
+    ctx.beginPath(); ctx.moveTo(pad.left,valToY(v)); ctx.lineTo(W-pad.right,valToY(v)); ctx.stroke();
+  });
+  // 100 baseline
+  ctx.strokeStyle='rgba(255,255,255,0.12)'; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(pad.left,valToY(100)); ctx.lineTo(W-pad.right,valToY(100)); ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.font='600 10px Inter'; ctx.textAlign='right'; ctx.textBaseline='middle';
+  ctx.fillStyle='rgba(255,255,255,0.20)';
+  [60,80,100,120].forEach(v=>ctx.fillText(v.toString(),pad.left-10,valToY(v)));
+
+  // Month labels
+  monthLabels.forEach(([d,lbl])=>{
+    const x=dayToX(d);
+    ctx.strokeStyle='rgba(255,255,255,0.06)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(x,pad.top+cH); ctx.lineTo(x,pad.top+cH+6); ctx.stroke();
+    ctx.font='600 10px Inter'; ctx.textAlign='center'; ctx.textBaseline='top';
+    ctx.fillStyle='rgba(255,255,255,0.25)';
+    ctx.fillText(lbl,x,pad.top+cH+10);
+  });
+
+  // Crash zones
+  crashZones.forEach(([s,e,label,drop])=>{
+    const x1=dayToX(s),x2=dayToX(e);
+    const grad=ctx.createLinearGradient(x1,pad.top,x1,pad.top+cH);
+    grad.addColorStop(0,'rgba(239,68,68,0.14)'); grad.addColorStop(1,'rgba(239,68,68,0.03)');
+    ctx.fillStyle=grad; ctx.fillRect(x1,pad.top,x2-x1,cH);
+    ctx.strokeStyle='rgba(239,68,68,0.22)'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(x1,pad.top); ctx.lineTo(x1,pad.top+cH); ctx.stroke();
+    ctx.setLineDash([]);
+    const cx=(x1+x2)/2;
+    ctx.font='900 11px Inter'; ctx.fillStyle='rgba(239,68,68,0.85)';
+    ctx.textAlign='center'; ctx.textBaseline='bottom';
+    ctx.fillText('BTC '+drop,cx,pad.top-14);
+    ctx.font='600 9px Inter'; ctx.fillStyle='rgba(239,68,68,0.50)';
+    ctx.fillText(label,cx,pad.top-3);
+  });
+
+  // ATH marker
+  const athDay=254, athVal=119;
+  ctx.beginPath(); ctx.arc(dayToX(athDay),valToY(athVal),5,0,Math.PI*2);
+  ctx.fillStyle='rgba(251,191,36,0.85)'; ctx.fill();
+  ctx.font='700 12px Inter'; ctx.textAlign='center'; ctx.textBaseline='bottom';
+  ctx.fillStyle='rgba(251,191,36,0.80)';
+  ctx.fillText('$69k ATH',dayToX(athDay),valToY(athVal)-10);
+
+  // BTC area + line
+  ctx.beginPath();
+  for(let i=0;i<N;i++){const d=i*totalDays/(N-1); const v=lerp(btcAnchors,d);
+    i===0?ctx.moveTo(dayToX(d),valToY(v)):ctx.lineTo(dayToX(d),valToY(v));}
+  ctx.lineTo(dayToX(totalDays),pad.top+cH); ctx.lineTo(dayToX(0),pad.top+cH); ctx.closePath();
+  const bf=ctx.createLinearGradient(0,valToY(130),0,valToY(50));
+  bf.addColorStop(0,'rgba(239,68,68,0.08)'); bf.addColorStop(1,'rgba(239,68,68,0.0)');
+  ctx.fillStyle=bf; ctx.fill();
+
+  ctx.beginPath();
+  for(let i=0;i<N;i++){const d=i*totalDays/(N-1); const v=lerp(btcAnchors,d);
+    i===0?ctx.moveTo(dayToX(d),valToY(v)):ctx.lineTo(dayToX(d),valToY(v));}
+  ctx.strokeStyle='rgba(239,68,68,0.50)'; ctx.lineWidth=2;
+  ctx.shadowColor='rgba(239,68,68,0.20)'; ctx.shadowBlur=6; ctx.stroke(); ctx.shadowBlur=0;
+
+  // KV area + line
+  ctx.beginPath();
+  for(let i=0;i<N;i++){const d=i*totalDays/(N-1);
+    i===0?ctx.moveTo(dayToX(d),valToY(kvVals[i])):ctx.lineTo(dayToX(d),valToY(kvVals[i]));}
+  ctx.lineTo(dayToX(totalDays),pad.top+cH); ctx.lineTo(dayToX(0),pad.top+cH); ctx.closePath();
+  const kf=ctx.createLinearGradient(0,valToY(130),0,valToY(95));
+  kf.addColorStop(0,'rgba(0,220,200,0.15)'); kf.addColorStop(1,'rgba(0,220,200,0.0)');
+  ctx.fillStyle=kf; ctx.fill();
+
+  ctx.beginPath();
+  for(let i=0;i<N;i++){const d=i*totalDays/(N-1);
+    i===0?ctx.moveTo(dayToX(d),valToY(kvVals[i])):ctx.lineTo(dayToX(d),valToY(kvVals[i]));}
+  ctx.strokeStyle='#00dcc8'; ctx.lineWidth=2.5;
+  ctx.shadowColor='rgba(0,220,200,0.40)'; ctx.shadowBlur=10; ctx.stroke(); ctx.shadowBlur=0;
+
+  // End labels
+  const kvEnd=kvVals[N-1], btcEnd=lerp(btcAnchors,totalDays);
+  const kvEndY=valToY(kvEnd), btcEndY=valToY(btcEnd);
+
+  ctx.strokeStyle='rgba(0,220,200,0.30)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(dayToX(totalDays),kvEndY); ctx.lineTo(W-pad.right+8,kvEndY); ctx.stroke();
+  ctx.font='900 14px Inter'; ctx.fillStyle='#00dcc8'; ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.fillText('~+20%',W-pad.right+12,kvEndY);
+  ctx.font='700 10px Inter'; ctx.fillStyle='rgba(0,220,200,0.60)';
+  ctx.fillText('Key Vault',W-pad.right+12,kvEndY+16);
+
+  ctx.strokeStyle='rgba(239,68,68,0.30)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(dayToX(totalDays),btcEndY); ctx.lineTo(W-pad.right+8,btcEndY); ctx.stroke();
+  ctx.font='900 14px Inter'; ctx.fillStyle='#ef4444';
+  ctx.fillText('-19%',W-pad.right+12,btcEndY);
+  ctx.font='700 10px Inter'; ctx.fillStyle='rgba(239,68,68,0.50)';
+  ctx.fillText('Bitcoin',W-pad.right+12,btcEndY+16);
+
+  // Start dots
+  ctx.beginPath(); ctx.arc(dayToX(0),valToY(100),4,0,Math.PI*2); ctx.fillStyle='#00dcc8'; ctx.fill();
+  // End dots
+  ctx.beginPath(); ctx.arc(dayToX(totalDays),kvEndY,4,0,Math.PI*2); ctx.fillStyle='#00dcc8'; ctx.fill();
+  ctx.beginPath(); ctx.arc(dayToX(totalDays),kvEndY,8,0,Math.PI*2); ctx.strokeStyle='rgba(0,220,200,0.30)'; ctx.lineWidth=2; ctx.stroke();
+  ctx.beginPath(); ctx.arc(dayToX(totalDays),btcEndY,4,0,Math.PI*2); ctx.fillStyle='#ef4444'; ctx.fill();
+
+  // "Both indexed to 100"
+  ctx.font='600 11px Inter'; ctx.fillStyle='rgba(255,255,255,0.30)';
+  ctx.textAlign='left'; ctx.textBaseline='bottom';
+  ctx.fillText('Both indexed to 100',pad.left+8,valToY(100)-6);
+
+  // Period labels
+  ctx.font='600 10px Inter'; ctx.fillStyle='rgba(255,255,255,0.18)';
+  ctx.textAlign='left'; ctx.textBaseline='top';
+  ctx.fillText('Mar 2021',pad.left,pad.top+cH+26);
+  ctx.textAlign='right'; ctx.fillText('Mar 2022',W-pad.right,pad.top+cH+26);
+}
+
+function scale(){
+  const s=document.getElementById('slide');
+  const r=Math.min(window.innerWidth/1920,window.innerHeight/1080);
+  s.style.transform=`scale(${r})`; s.style.transformOrigin='top left';
+  document.body.style.width=(1920*r)+'px'; document.body.style.height=(1080*r)+'px';
+}
+scale(); window.addEventListener('resize',()=>{scale();drawChart();});
+document.fonts.ready.then(()=>setTimeout(drawChart,50));
+</script>
+</body>
+</html>
