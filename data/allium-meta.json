@@ -1,7 +1,7 @@
 {
-  "lastFetch": "2026-03-12T01:27:34.269Z",
+  "lastFetch": "2026-03-12T13:00:19.994Z",
   "source": "defillama",
-  "feeDays": 88,
+  "feeDays": 89,
   "traderPnlAvailable": false,
   "warning": "Allium subscription expired. Trader P&L data is stale."
 }
