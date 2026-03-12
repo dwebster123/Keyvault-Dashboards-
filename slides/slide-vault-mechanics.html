@@ -13,8 +13,8 @@
     font-family: 'Inter', -apple-system, sans-serif;
   }
   .blob { position: absolute; border-radius: 50%; pointer-events: none; }
-  .blob-tl { width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,200,220,0.08) 0%, transparent 70%); filter: blur(90px); top: -100px; left: -100px; }
-  .blob-br { width: 800px; height: 800px; background: radial-gradient(circle, rgba(140,40,200,0.15) 0%, transparent 70%); filter: blur(80px); bottom: -200px; right: -180px; }
+  .blob-tl { width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,200,220,0.07) 0%, transparent 70%); filter: blur(90px); top: -100px; left: -100px; }
+  .blob-br { width: 800px; height: 800px; background: radial-gradient(circle, rgba(140,40,200,0.14) 0%, transparent 70%); filter: blur(80px); bottom: -200px; right: -180px; }
 
   .header-bar { position: absolute; top: 44px; left: 72px; right: 72px; display: flex; align-items: center; gap: 20px; }
   .header-label { font-size: 11px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.40); }
@@ -22,81 +22,96 @@
   .header-url { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.40); }
 
   .title-section { position: absolute; top: 88px; left: 72px; }
-  .main-title { font-size: 44px; font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: -0.02em; }
+  .main-title { font-size: 42px; font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: -0.02em; }
   .main-title .teal { color: #00dcc8; }
-  .main-sub { font-size: 14px; color: rgba(255,255,255,0.32); margin-top: 6px; }
+  .main-sub { font-size: 13px; color: rgba(255,255,255,0.30); margin-top: 5px; }
 
-  /* === FLOW === */
-  .flow { position: absolute; top: 175px; left: 72px; right: 72px; bottom: 36px; display: flex; gap: 20px; align-items: stretch; }
+  /* ===== DIAGRAM ===== */
+  .diagram { position: absolute; top: 162px; left: 72px; right: 72px; bottom: 28px; }
 
-  /* STEP CARDS */
-  .step { flex: 1; border-radius: 14px; padding: 24px 24px 20px; display: flex; flex-direction: column; position: relative; }
+  /* ===== ROW 1: ECOSYSTEM ===== */
+  .eco-row { display: flex; align-items: center; gap: 0; height: 210px; }
 
-  .step-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; margin-bottom: 14px; flex-shrink: 0; }
-  .step-title { font-size: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 10px; line-height: 1.25; }
-  .step-body { font-size: 13px; line-height: 1.65; flex: 1; }
-  .step-body strong { font-weight: 700; }
+  .eco-box { border-radius: 12px; padding: 20px 22px; display: flex; flex-direction: column; justify-content: center; }
+  .eco-title { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+  .eco-body { font-size: 12.5px; line-height: 1.55; }
 
-  /* Step colors */
-  .s1 { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); }
-  .s1 .step-num { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.50); }
-  .s1 .step-title { color: rgba(255,255,255,0.80); }
-  .s1 .step-body { color: rgba(255,255,255,0.38); }
+  /* JLP Token */
+  .box-jlp-token { width: 220px; flex-shrink: 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+  .box-jlp-token .eco-title { color: rgba(255,255,255,0.50); }
+  .box-jlp-token .eco-body { color: rgba(255,255,255,0.35); }
+  .token-badge { display: inline-block; margin-top: 10px; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.08); }
 
-  .s2 { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); }
-  .s2 .step-num { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.50); }
-  .s2 .step-title { color: rgba(255,255,255,0.80); }
-  .s2 .step-body { color: rgba(255,255,255,0.38); }
+  /* JLP Pool */
+  .box-jlp-pool { flex: 1; background: rgba(0,220,200,0.04); border: 1px solid rgba(0,220,200,0.20); }
+  .box-jlp-pool .eco-title { color: rgba(0,220,200,0.70); }
+  .box-jlp-pool .eco-body { color: rgba(255,255,255,0.38); }
+  .pool-assets { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .pool-asset { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 4px; background: rgba(0,220,200,0.08); color: rgba(0,220,200,0.60); border: 1px solid rgba(0,220,200,0.14); }
 
-  .s3 { background: rgba(0,220,200,0.03); border: 1px solid rgba(0,220,200,0.14); }
-  .s3 .step-num { background: rgba(0,220,200,0.15); color: rgba(0,220,200,0.80); }
-  .s3 .step-title { color: #00dcc8; }
-  .s3 .step-body { color: rgba(255,255,255,0.38); }
-  .s3 .step-body strong { color: rgba(0,220,200,0.70); }
+  /* Jup Perps */
+  .box-jup { width: 280px; flex-shrink: 0; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); }
+  .box-jup .eco-title { color: rgba(255,255,255,0.50); }
+  .box-jup .eco-body { color: rgba(255,255,255,0.35); }
 
-  .s4 { background: rgba(0,220,200,0.03); border: 1px solid rgba(0,220,200,0.14); }
-  .s4 .step-num { background: rgba(0,220,200,0.15); color: rgba(0,220,200,0.80); }
-  .s4 .step-title { color: #00dcc8; }
-  .s4 .step-body { color: rgba(255,255,255,0.38); }
-  .s4 .step-body strong { color: rgba(0,220,200,0.70); }
+  /* People Pay Fees */
+  .box-fees { width: 220px; flex-shrink: 0; background: rgba(251,191,36,0.04); border: 1px solid rgba(251,191,36,0.16); }
+  .box-fees .eco-title { color: rgba(251,191,36,0.70); }
+  .box-fees .eco-body { color: rgba(255,255,255,0.35); }
+  .fees-big { font-size: 26px; font-weight: 900; color: #fbbf24; margin-top: 6px; }
 
-  .s5 { background: rgba(251,191,36,0.04); border: 1px solid rgba(251,191,36,0.16); }
-  .s5 .step-num { background: rgba(251,191,36,0.15); color: rgba(251,191,36,0.80); }
-  .s5 .step-title { color: #fbbf24; }
-  .s5 .step-body { color: rgba(255,255,255,0.38); }
-  .s5 .step-body strong { color: rgba(251,191,36,0.70); }
+  /* Arrows in eco row */
+  .eco-arrow { width: 64px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+  .eco-arrow-lbl { font-size: 8px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: rgba(255,255,255,0.22); text-align: center; white-space: nowrap; }
 
-  .s6 { background: rgba(0,220,200,0.06); border: 1px solid rgba(0,220,200,0.24); }
-  .s6 .step-num { background: rgba(0,220,200,0.22); color: #00dcc8; }
-  .s6 .step-title { color: #00dcc8; }
-  .s6 .step-body { color: rgba(255,255,255,0.38); }
+  /* ===== MIDDLE SECTION (problem statement + connector) ===== */
+  .middle-section { display: flex; align-items: stretch; gap: 0; height: 80px; margin-top: 12px; }
 
-  /* Arrow between steps */
-  .arrow-col { width: 28px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-  .arrow-col svg { width: 28px; height: 20px; }
+  .problem-bar { flex: 1; display: flex; align-items: center; background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.12); border-radius: 10px; padding: 0 28px; gap: 16px; }
+  .problem-icon { font-size: 18px; flex-shrink: 0; }
+  .problem-text { font-size: 13.5px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+  .problem-text strong { color: rgba(239,68,68,0.75); font-weight: 700; }
+  .problem-solution { margin-left: auto; font-size: 13px; font-weight: 700; color: rgba(0,220,200,0.55); white-space: nowrap; }
 
-  /* Bottom result banner */
-  .result-strip { position: absolute; bottom: 126px; left: 72px; right: 72px; display: flex; align-items: center; gap: 0; }
-  .result-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,220,200,0.25), rgba(0,220,200,0.25), transparent); }
-  .result-pill { background: rgba(0,220,200,0.06); border: 1px solid rgba(0,220,200,0.22); border-radius: 50px; padding: 10px 36px; display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
-  .result-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.30); }
-  .result-value { font-size: 28px; font-weight: 900; color: #00dcc8; letter-spacing: -0.02em; }
-  .result-sub { font-size: 11px; color: rgba(255,255,255,0.25); }
+  /* Down arrow from problem to vault */
+  .down-arrow-col { width: 80px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 
-  /* Bottom tagline */
-  .bottom-banner { position: absolute; bottom: 52px; left: 72px; right: 72px; text-align: center; }
-  .banner-text { font-size: 18px; font-weight: 900; color: rgba(255,255,255,0.75); }
-  .banner-text .teal { color: #00dcc8; }
+  /* ===== ROW 2: THE VAULT ===== */
+  .vault-row { display: flex; align-items: stretch; gap: 24px; margin-top: 12px; height: 310px; }
 
-  .footer { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.08); }
+  .vault-box { flex: 1; border-radius: 14px; border: 1px solid rgba(0,220,200,0.22); background: rgba(0,220,200,0.03); overflow: hidden; display: flex; flex-direction: column; }
+  .vault-hdr { padding: 14px 24px; border-bottom: 1px solid rgba(0,220,200,0.12); display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+  .vault-hdr-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(0,220,200,0.55); background: rgba(0,220,200,0.10); padding: 3px 12px; border-radius: 20px; }
+  .vault-hdr-title { font-size: 18px; font-weight: 900; color: #fff; text-transform: uppercase; }
+  .vault-hdr-sub { margin-left: auto; font-size: 11px; color: rgba(255,255,255,0.20); }
 
-  /* Subtle highlight box inside steps */
-  .highlight { background: rgba(0,220,200,0.06); border-radius: 8px; padding: 10px 14px; margin-top: 12px; font-size: 12px; color: rgba(0,220,200,0.60); line-height: 1.5; }
-  .highlight-amber { background: rgba(251,191,36,0.06); color: rgba(251,191,36,0.60); }
+  .vault-inner { flex: 1; display: flex; }
+  .vault-col { flex: 1; padding: 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+  .vault-col + .vault-col { border-left: 1px solid rgba(255,255,255,0.05); }
+  .vault-col-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+  .vc-long .vault-col-title { color: rgba(255,255,255,0.35); }
+  .vc-short .vault-col-title { color: rgba(251,191,36,0.55); }
+  .vc-earn .vault-col-title { color: rgba(0,220,200,0.55); }
 
-  /* Asset mini list */
-  .asset-mini { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-  .asset-tag { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 4px; background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.08); }
+  .vault-item { font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.70); display: flex; align-items: center; gap: 10px; }
+  .vault-item-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot-neutral { background: rgba(255,255,255,0.25); }
+  .dot-amber { background: #fbbf24; }
+  .dot-teal { background: #00dcc8; }
+
+  .vault-col-desc { font-size: 12px; color: rgba(255,255,255,0.28); line-height: 1.55; margin-top: 4px; }
+
+  .algo-note { margin-top: auto; font-size: 11px; color: rgba(251,191,36,0.45); background: rgba(251,191,36,0.05); border: 1px solid rgba(251,191,36,0.10); border-radius: 6px; padding: 8px 12px; line-height: 1.5; }
+
+  /* Result box */
+  .result-box { width: 380px; flex-shrink: 0; background: rgba(0,220,200,0.06); border: 1px solid rgba(0,220,200,0.25); border-radius: 14px; padding: 28px 32px; display: flex; flex-direction: column; justify-content: center; }
+  .result-apy { font-size: 72px; font-weight: 900; color: #00dcc8; letter-spacing: -0.04em; line-height: 1.0; }
+  .result-apy-lbl { font-size: 12px; color: rgba(0,220,200,0.45); margin-bottom: 20px; }
+  .result-tags { display: flex; flex-direction: column; gap: 10px; }
+  .result-tag { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.65); display: flex; align-items: center; gap: 10px; }
+  .result-tag-dot { width: 6px; height: 6px; border-radius: 50%; background: #00dcc8; flex-shrink: 0; }
+
+  .footer { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.08); white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -112,118 +127,132 @@
 
   <div class="title-section">
     <div class="main-title">How <span class="teal">The Vault</span> Works</div>
-    <div class="main-sub">The complete flow — from your dollar to yield and back</div>
+    <div class="main-sub">From investor dollars to stable yield — the complete flow</div>
   </div>
 
-  <div class="flow">
+  <div class="diagram">
 
-    <!-- STEP 1 -->
-    <div class="step s1">
-      <div class="step-num">1</div>
-      <div class="step-title">Investor Deposits USD</div>
-      <div class="step-body">
-        You wire US dollars into the fund. We convert those dollars into <strong style="color:rgba(255,255,255,0.65)">USDC</strong> — a dollar-pegged stablecoin. 1 USDC = $1, always.
-        <div class="highlight" style="background:rgba(255,255,255,0.03); color:rgba(255,255,255,0.40);">
-          Think of it as putting your dollars on-chain. Same value, now programmable.
+    <!-- ROW 1: ECOSYSTEM -->
+    <div class="eco-row">
+
+      <!-- JLP Token -->
+      <div class="eco-box box-jlp-token">
+        <div class="eco-title">JLP Token</div>
+        <div class="eco-body">Represents your ownership in the JLP Pool. Redeemable at par anytime.</div>
+        <div class="token-badge">Virtual price · swap anywhere</div>
+      </div>
+
+      <!-- Arrow: redeem -->
+      <div class="eco-arrow">
+        <svg width="64" height="20" viewBox="0 0 64 20" fill="none"><path d="M0 8H50L50 2L63 10L50 18L50 12H0Z" fill="rgba(255,255,255,0.12)"/></svg>
+        <div class="eco-arrow-lbl">Redeem<br>/ buys</div>
+      </div>
+
+      <!-- JLP Pool -->
+      <div class="eco-box box-jlp-pool">
+        <div class="eco-title">JLP Pool</div>
+        <div class="eco-body">A large on-chain liquidity pool. Investors' SOL, BTC, ETH &amp; USDC sits here earning yield from trading activity.</div>
+        <div class="pool-assets">
+          <span class="pool-asset">SOL 47%</span>
+          <span class="pool-asset">BTC 13%</span>
+          <span class="pool-asset">ETH 8%</span>
+          <span class="pool-asset">USDC 32%</span>
         </div>
+      </div>
+
+      <!-- Arrow: liquidity -->
+      <div class="eco-arrow">
+        <svg width="64" height="20" viewBox="0 0 64 20" fill="none"><path d="M0 8H50L50 2L63 10L50 18L50 12H0Z" fill="rgba(0,220,200,0.20)"/></svg>
+        <div class="eco-arrow-lbl">Provides<br>liquidity</div>
+      </div>
+
+      <!-- Jup Perps -->
+      <div class="eco-box box-jup">
+        <div class="eco-title">Jup Perps</div>
+        <div class="eco-body">Traders log on and bet on crypto prices with leverage. They borrow from and trade against the JLP Pool.</div>
+      </div>
+
+      <!-- Arrow: fees back -->
+      <div class="eco-arrow">
+        <svg width="64" height="20" viewBox="0 0 64 20" fill="none"><path d="M63 8H14L14 2L1 10L14 18L14 12H63Z" fill="rgba(251,191,36,0.30)"/></svg>
+        <div class="eco-arrow-lbl">Fees flow<br>back</div>
+      </div>
+
+      <!-- People Pay Fees -->
+      <div class="eco-box box-fees">
+        <div class="eco-title">People Pay Fees</div>
+        <div class="eco-body">Every trade, every open position, every hour — fees &amp; interest paid back to the pool.</div>
+        <div class="fees-big">$$</div>
+      </div>
+
+    </div>
+
+    <!-- MIDDLE: PROBLEM BAR -->
+    <div class="middle-section">
+      <div class="problem-bar">
+        <div class="problem-icon">⚡</div>
+        <div class="problem-text">
+          <strong>The problem:</strong> Holding JLP is like holding an index fund of SOL, BTC &amp; ETH with yield. Great returns — but your balance moves up and down with crypto prices. Most investors don't want that volatility.
+        </div>
+        <div class="problem-solution">↓ The vault solves this</div>
       </div>
     </div>
 
-    <div class="arrow-col">
-      <svg viewBox="0 0 28 20" fill="none"><path d="M0 8H18L18 2L27 10L18 18L18 12H0Z" fill="rgba(255,255,255,0.12)"/></svg>
-    </div>
+    <!-- ROW 2: VAULT + RESULT -->
+    <div class="vault-row">
 
-    <!-- STEP 2 -->
-    <div class="step s2">
-      <div class="step-num">2</div>
-      <div class="step-title">USDC Enters the Vault</div>
-      <div class="step-body">
-        The USDC is deposited into a <strong style="color:rgba(255,255,255,0.65)">decentralized vault</strong> — a smart contract with predefined rules written in code. No middleman. The rules govern exactly how the money is deployed.
-      </div>
-    </div>
-
-    <div class="arrow-col">
-      <svg viewBox="0 0 28 20" fill="none"><path d="M0 8H18L18 2L27 10L18 18L18 12H0Z" fill="rgba(0,220,200,0.20)"/></svg>
-    </div>
-
-    <!-- STEP 3 -->
-    <div class="step s3">
-      <div class="step-num">3</div>
-      <div class="step-title">Vault Buys JLP</div>
-      <div class="step-body">
-        The vault converts USDC into <strong>JLP</strong> — a token representing ownership in Jupiter's liquidity pool, composed of:
-        <div class="asset-mini">
-          <span class="asset-tag">SOL 47%</span>
-          <span class="asset-tag">BTC 13%</span>
-          <span class="asset-tag">ETH 8%</span>
-          <span class="asset-tag">USDC 32%</span>
+      <!-- THE VAULT -->
+      <div class="vault-box">
+        <div class="vault-hdr">
+          <div class="vault-hdr-badge">The Solution</div>
+          <div class="vault-hdr-title">The Vault</div>
+          <div class="vault-hdr-sub">Smart contract · predefined rules · no middleman</div>
         </div>
-        <div class="highlight">
-          JLP is redeemable at par anytime. You can always get the underlying assets back.
-        </div>
-      </div>
-    </div>
+        <div class="vault-inner">
 
-    <div class="arrow-col">
-      <svg viewBox="0 0 28 20" fill="none"><path d="M0 8H18L18 2L27 10L18 18L18 12H0Z" fill="rgba(0,220,200,0.20)"/></svg>
-    </div>
+          <!-- Long JLP -->
+          <div class="vault-col vc-long">
+            <div class="vault-col-title">Long Position</div>
+            <div class="vault-item"><div class="vault-item-dot dot-neutral"></div>Spot JLP</div>
+            <div class="vault-col-desc">The vault holds JLP and earns the trading fee yield automatically. This is the income engine.</div>
+          </div>
 
-    <!-- STEP 4 -->
-    <div class="step s4">
-      <div class="step-num">4</div>
-      <div class="step-title">Traders Pay Fees → Yield</div>
-      <div class="step-body">
-        <strong>Jupiter's Perp Exchange</strong> lets users bet on crypto with leverage. They borrow from and trade against this pool. In exchange, they pay fees and interest — paid back to the pool as yield.
-        <div class="highlight">
-          Anyone holding JLP earns yield just by holding it. $500M+ trades through this pool daily.
+          <!-- Shorts -->
+          <div class="vault-col vc-short">
+            <div class="vault-col-title">Hedge — Price Risk Cancelled</div>
+            <div class="vault-item"><div class="vault-item-dot dot-amber"></div>SOL Short</div>
+            <div class="vault-item"><div class="vault-item-dot dot-amber"></div>ETH Short</div>
+            <div class="vault-item"><div class="vault-item-dot dot-amber"></div>BTC Short</div>
+            <div class="vault-col-desc">JLP uses JLP as collateral to short the same assets it holds. Price moves? Cancels out. Every time.</div>
+            <div class="algo-note">An algorithm continuously rebalances the hedge as prices move — keeping the position delta-neutral at all times.</div>
+          </div>
+
+          <!-- Earn -->
+          <div class="vault-col vc-earn">
+            <div class="vault-col-title">What Remains</div>
+            <div class="vault-item"><div class="vault-item-dot dot-teal"></div>Farm yield</div>
+            <div class="vault-item"><div class="vault-item-dot dot-teal"></div>USDC fees</div>
+            <div class="vault-col-desc">With price risk hedged out, only the USDC fee income remains. Stable. Predictable. Market-neutral.</div>
+          </div>
+
         </div>
       </div>
-    </div>
 
-    <div class="arrow-col">
-      <svg viewBox="0 0 28 20" fill="none"><path d="M0 8H18L18 2L27 10L18 18L18 12H0Z" fill="rgba(251,191,36,0.20)"/></svg>
-    </div>
-
-    <!-- STEP 5 -->
-    <div class="step s5">
-      <div class="step-num">5</div>
-      <div class="step-title">The Problem → The Hedge</div>
-      <div class="step-body">
-        JLP holds SOL, BTC, and ETH — so it moves up and down with crypto prices. That's fine if you don't mind volatility. <strong>We do.</strong>
-        <br><br>
-        The vault uses JLP as collateral to <strong>short BTC, SOL, and ETH</strong> in equal weight. Price up? Cancels out. Price down? Cancels out. Only the fee income remains.
-        <div class="highlight highlight-amber">
-          An algorithm continuously rebalances the hedge as prices move, keeping the position delta-neutral at all times.
+      <!-- RESULT -->
+      <div class="result-box">
+        <div class="result-apy">~18%</div>
+        <div class="result-apy-lbl">Net APY · 12-month live track record</div>
+        <div class="result-tags">
+          <div class="result-tag"><div class="result-tag-dot"></div>Low volatility</div>
+          <div class="result-tag"><div class="result-tag-dot"></div>Passive investor income</div>
+          <div class="result-tag"><div class="result-tag-dot"></div>Market-neutral</div>
+          <div class="result-tag"><div class="result-tag-dot"></div>−1.01% max drawdown</div>
+          <div class="result-tag"><div class="result-tag-dot"></div>Zero negative months</div>
         </div>
       </div>
+
     </div>
 
-    <div class="arrow-col">
-      <svg viewBox="0 0 28 20" fill="none"><path d="M0 8H18L18 2L27 10L18 18L18 12H0Z" fill="rgba(0,220,200,0.30)"/></svg>
-    </div>
-
-    <!-- STEP 6 -->
-    <div class="step s6">
-      <div class="step-num">✓</div>
-      <div class="step-title">What's Left: Pure Fee Income</div>
-      <div class="step-body">
-        Crypto volatility? <strong style="color:#00dcc8">Hedged out.</strong>
-        <br>
-        Trader fees? <strong style="color:#00dcc8">Kept.</strong>
-        <br><br>
-        The result is stable, consistent yield from market activity — not from betting on prices going up or down.
-        <div style="margin-top: 18px; text-align: center;">
-          <div style="font-size: 42px; font-weight: 900; color: #00dcc8; letter-spacing: -0.03em;">~18% APY</div>
-          <div style="font-size: 11px; color: rgba(0,220,200,0.45); margin-top: 4px;">Net to investors · 12-month live track record</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- BOTTOM BANNER -->
-  <div class="bottom-banner">
-    <div class="banner-text">Income from <span class="teal">market activity</span> — not asset appreciation</div>
   </div>
 
   <div class="footer">Confidential — Not For Distribution · KeyVault Fund LP · For Accredited Investors Only</div>
