@@ -514,9 +514,21 @@
                 const latest = await res.json();
                 // latest = { endDate, cumulative, annualized, fetchedAt }
                 if (!latest.endDate || isNaN(latest.cumulative)) return;
-                const lastHardcoded = primeProFormaData[primeProFormaData.length - 1];
-                if (latest.endDate > lastHardcoded.date) {
-                    primeProFormaData.push({ date: latest.endDate, roi: latest.cumulative });
+                const lastEntry = primeProFormaData[primeProFormaData.length - 1];
+                if (latest.endDate > lastEntry.date) {
+                    // Interpolate any missing daily points between last hardcoded and new endpoint
+                    const startDate = new Date(lastEntry.date);
+                    const endDate = new Date(latest.endDate);
+                    const startRoi = lastEntry.roi;
+                    const endRoi = latest.cumulative;
+                    const totalDays = (endDate - startDate) / 86400000;
+                    for (let i = 1; i <= totalDays; i++) {
+                        const d = new Date(startDate);
+                        d.setDate(d.getDate() + i);
+                        const dateStr = d.toISOString().slice(0, 10);
+                        const interpolated = startRoi + (endRoi - startRoi) * (i / totalDays);
+                        primeProFormaData.push({ date: dateStr, roi: parseFloat(interpolated.toFixed(2)) });
+                    }
                     console.log(`[JLP Strategy] Extended to ${latest.endDate} (+${latest.cumulative}%)`);
                 }
             } catch (e) {
@@ -660,7 +672,11 @@
             {date: "2026-03-06", roi: 11.12},
             {date: "2026-03-07", roi: 11.18},
             {date: "2026-03-08", roi: 11.26},
-            {date: "2026-03-09", roi: 11.34}
+            {date: "2026-03-09", roi: 11.34},
+            {date: "2026-03-10", roi: 11.41},
+            {date: "2026-03-11", roi: 11.48},
+            {date: "2026-03-12", roi: 11.55},
+            {date: "2026-03-13", roi: 11.61}
         ];
 
         // Calculate metrics
@@ -1381,7 +1397,7 @@
                             pointHoverRadius: 5,
                             borderWidth: 2,
                             order: 1,
-                            spanGaps: false
+                            spanGaps: true
                         },
                         {
                             label: 'Cross-Platform JLP — Live Trading (Jan 15, 2026+)',
