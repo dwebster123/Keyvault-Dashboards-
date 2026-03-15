@@ -719,6 +719,9 @@
         <div class="nav-menu-item" data-tab="flows" onclick="switchTab('flows')">
             <span class="nav-icon">🌊</span> Fund Flows
         </div>
+        <div class="nav-menu-item" data-tab="crossplatform" onclick="switchTab('crossplatform')">
+            <span class="nav-icon">⚡</span> Cross-Platform JLP
+        </div>
     </nav>
 
     <div class="header">
@@ -1552,6 +1555,11 @@
                     </div>
                 </div>
 
+                <!-- CROSS-PLATFORM JLP TAB -->
+                <div class="tab-content ${activeTab === 'crossplatform' ? 'active' : ''}" id="tab-crossplatform">
+                    <div class="loading"><div class="loading-spinner"></div><p>Loading cross-platform data...</p></div>
+                </div>
+
                 <!-- FUND FLOWS TAB -->
                 <div class="tab-content ${activeTab === 'flows' ? 'active' : ''}" id="tab-flows">
                     <div class="section-header">
@@ -1649,6 +1657,7 @@
             // Render charts for active tab
             if (activeTab === 'projections') renderCharts(m);
             if (activeTab === 'flows') renderFlowChart();
+            if (activeTab === 'crossplatform') renderCrossPlatformTab();
         }
 
         function renderCharts(m) {
@@ -1867,6 +1876,145 @@
 
         loadJlpPoolHealth();
         setInterval(loadJlpPoolHealth, 10 * 60 * 1000); // refresh every 10 min
+
+        // ── Cross-Platform JLP Tab ─────────────────────────────────────────
+        let cpChartInstance = null;
+
+        async function renderCrossPlatformTab() {
+            const container = document.getElementById('tab-crossplatform');
+            if (!container) return;
+
+            // Load static strategy data
+            let strategy = null;
+            let history = [];
+            try {
+                strategy = await (await fetch('data/jlp-strategy-latest.json?t=' + Date.now())).json();
+            } catch(e) { console.warn('No cross-platform strategy data'); }
+            try {
+                const h = await (await fetch('data/pn-kv1-history.json?t=' + Date.now())).json();
+                if (Array.isArray(h)) history = h;
+            } catch(e) { console.warn('No cross-platform history'); }
+
+            const startDate = strategy?.startDate || '2025-11-06';
+            const endDate   = strategy?.endDate   || new Date().toISOString().split('T')[0];
+            const cumReturn = strategy?.cumulative ?? null;
+            const annReturn = strategy?.annualized ?? null;
+            const days = Math.round((new Date(endDate) - new Date(startDate)) / 86400000);
+
+            const latestPrice = history.length > 0 ? history[history.length - 1].SharePrice : null;
+            const firstPrice  = history.length > 0 ? history[0].SharePrice : null;
+            const liveReturn  = (latestPrice && firstPrice) ? ((latestPrice - firstPrice) / firstPrice * 100) : null;
+            const liveDays    = history.length > 0
+                ? Math.round((new Date(history[history.length-1].update_time_utc) - new Date(history[0].update_time_utc)) / 86400000)
+                : 0;
+            const liveAPY     = (liveReturn !== null && liveDays > 0) ? (liveReturn / liveDays * 365) : null;
+            const latestTvl   = history.length > 0 ? history[history.length - 1].tvl : null;
+
+            container.innerHTML = `
+                <div class="section-header">
+                    <span class="icon">⚡</span>
+                    <h2>Cross-Platform JLP Strategy</h2>
+                    <span class="badge" style="background:rgba(124,58,237,0.2);color:#a78bfa;border:1px solid rgba(124,58,237,0.3);">In Development · Prime Number</span>
+                </div>
+
+                <div class="metric-card" style="margin-bottom:24px;background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(0,212,255,0.12));border-color:rgba(124,58,237,0.3);">
+                    <div class="metric-label"><span class="icon">ℹ️</span> Strategy Overview</div>
+                    <p style="color:#c8c8e0;font-size:0.9rem;line-height:1.7;margin-top:8px;">
+                        3× leveraged JLP position built by borrowing SOL across multiple platforms (Drift + Kamino + Marginfi). 
+                        Captures JLP trading fee yield at amplified scale while managing borrow costs with mixed funding rate arbitrage. 
+                        Being built by <strong style="color:#a78bfa">Prime Number</strong> (Hong Kong). 
+                        Not yet in production — live data reflects Prime Number's vault tracking.
+                    </p>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card realized">
+                        <div class="metric-label"><span class="icon">📈</span> Backtest APY</div>
+                        <div class="metric-value realized">${annReturn !== null ? '+' + annReturn.toFixed(2) + '%' : '—'}</div>
+                        <div class="metric-subtext">${startDate} → ${endDate} (${days}d)</div>
+                    </div>
+                    <div class="metric-card realized">
+                        <div class="metric-label"><span class="icon">💰</span> Backtest Cumulative</div>
+                        <div class="metric-value realized">${cumReturn !== null ? '+' + cumReturn.toFixed(2) + '%' : '—'}</div>
+                        <div class="metric-subtext">Net of fees</div>
+                    </div>
+                    <div class="metric-card highlight">
+                        <div class="metric-label"><span class="icon">💵</span> Current TVL Tracked</div>
+                        <div class="metric-value">${latestTvl ? formatCurrency(latestTvl) : '—'}</div>
+                        <div class="metric-subtext">Prime Number vault</div>
+                    </div>
+                    <div class="metric-card pending">
+                        <div class="metric-label"><span class="icon">📊</span> Live Share Price</div>
+                        <div class="metric-value pending">${latestPrice ? '$' + latestPrice.toFixed(6) : '—'}</div>
+                        <div class="metric-subtext">${history.length} data points</div>
+                    </div>
+                    <div class="metric-card ${liveReturn >= 0 ? 'realized' : ''}">
+                        <div class="metric-label"><span class="icon">🔄</span> Live Return</div>
+                        <div class="metric-value ${liveReturn >= 0 ? 'realized' : ''}">${liveReturn !== null ? formatPercent(liveReturn) : '—'}</div>
+                        <div class="metric-subtext">${liveDays}d since tracking started</div>
+                    </div>
+                    <div class="metric-card ${liveAPY >= 0 ? 'realized' : ''}">
+                        <div class="metric-label"><span class="icon">⚡</span> Live Annualized APY</div>
+                        <div class="metric-value ${liveAPY >= 0 ? 'realized' : ''}">${liveAPY !== null ? formatPercent(liveAPY) : '—'}</div>
+                        <div class="metric-subtext">Based on ${liveDays}d live track</div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <span class="icon">🗺️</span>
+                    <h2>Strategy Mechanics</h2>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+                    ${[
+                        ['🏦','Leverage','3× JLP position via multi-protocol SOL borrowing'],
+                        ['🔄','Platforms','Drift · Kamino · Marginfi — borrow costs arbitraged across all three'],
+                        ['💸','Yield Source','JLP trading fees × leverage factor, minus blended borrow rate'],
+                        ['⚖️','Hedge','Delta-neutral via short positions same as Vault 1'],
+                        ['📋','Status','In development — Prime Number ETA TBD'],
+                        ['🎯','Target APY','25–35% net (vs 14–22% KV target range'],
+                    ].map(([icon, label, desc]) => `
+                        <div class="metric-card" style="padding:16px;">
+                            <div class="metric-label"><span class="icon">${icon}</span> ${label}</div>
+                            <div style="color:#c8c8e0;font-size:0.85rem;margin-top:6px;">${desc}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="chart-card">
+                    <h3><span class="icon">📊</span> Prime Number Vault — Share Price History</h3>
+                    <div class="chart-wrapper tall">
+                        <canvas id="cpChart"></canvas>
+                    </div>
+                </div>
+            `;
+
+            // Render chart
+            if (cpChartInstance) { cpChartInstance.destroy(); cpChartInstance = null; }
+            const ctx = document.getElementById('cpChart')?.getContext('2d');
+            if (ctx && history.length > 0) {
+                cpChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: history.map(h => new Date(h.update_time_utc).toLocaleDateString('en-US', { month:'short', day:'numeric' })),
+                        datasets: [{
+                            label: 'Share Price',
+                            data: history.map(h => h.SharePrice),
+                            borderColor: '#a78bfa',
+                            backgroundColor: 'rgba(124,58,237,0.1)',
+                            fill: true, tension: 0.4, pointRadius: 0, borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b6b8d', maxTicksLimit: 10 } },
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#a78bfa', callback: v => '$' + v.toFixed(4) } }
+                        }
+                    }
+                });
+            }
+        }
     </script>
 </body>
 </html>
