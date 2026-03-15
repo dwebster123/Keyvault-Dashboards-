@@ -1899,7 +1899,28 @@
 
         loadJlpPoolHealth();
         setInterval(loadJlpPoolHealth, 10 * 60 * 1000); // refresh every 10 min
-
+        async function renderCrossPlatformTab() {
+            try {
+                const res = await fetch('data/jlp-strategy-latest.json?t=' + Date.now());
+                if (res.ok) {
+                    const latest = await res.json();
+                    const lastEntry = primeProFormaData[primeProFormaData.length - 1];
+                    if (latest && latest.endDate && latest.endDate > lastEntry.date) {
+                        const dailyRate = (latest.annualized / 100) / 365;
+                        const daysDiff = Math.floor((new Date(latest.endDate) - new Date(lastEntry.date)) / 86400000);
+                        for (let i = 1; i <= daysDiff; i++) {
+                            const d = new Date(lastEntry.date + 'T12:00:00');
+                            d.setDate(d.getDate() + i);
+                            const dateStr = d.toISOString().slice(0, 10);
+                            if (!primeProFormaData.find(e => e.date === dateStr)) {
+                                primeProFormaData.push({ date: dateStr, roi: parseFloat((lastEntry.roi * (1 + dailyRate * i)).toFixed(2)) });
+                            }
+                        }
+                    }
+                }
+            } catch(e) { console.warn('Could not extend prime data:', e); }
+            renderCPComparisonChart(cpCompPeriod);
+        }
 
         // ── Cross-Platform Comparison Tab ──────────────────────────────────
         const LIVE_TRADING_CUTOFF = '2026-01-15';
