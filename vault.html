@@ -1560,7 +1560,27 @@
 
                 <!-- CROSS-PLATFORM JLP TAB -->
                 <div class="tab-content ${activeTab === 'crossplatform' ? 'active' : ''}" id="tab-crossplatform">
-                    <div class="loading"><div class="loading-spinner"></div><p>Loading cross-platform data...</p></div>
+                    <div class="section-header">
+                        <span class="icon">⚡</span>
+                        <h2>Strategy Comparison: Current vs Cross-Platform JLP</h2>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:0.82rem;color:#8b8ba7;line-height:1.6;">
+                        <strong style="color:#c8c8e0;">Note:</strong> Cross-Platform JLP reflects <em>pro forma backtested performance through Jan 15, 2026</em>, and <em>live trading results thereafter</em>. KeyVault (Current) reflects actual live results throughout. Both shown net of fees.
+                    </div>
+                    <div class="chart-card">
+                        <h3 style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                            <span><span class="icon">📊</span> Cumulative ROI Comparison — Net of Fees</span>
+                            <div style="display:flex;gap:8px;">
+                                <button onclick="switchCompPeriod('all', this)" style="padding:4px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:rgba(0,212,255,0.2);color:#00d4ff;font-size:0.75rem;cursor:pointer;" class="comp-tab active">All Time</button>
+                                <button onclick="switchCompPeriod('180', this)" style="padding:4px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:#8b8ba7;font-size:0.75rem;cursor:pointer;" class="comp-tab">180 Days</button>
+                                <button onclick="switchCompPeriod('90', this)" style="padding:4px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:#8b8ba7;font-size:0.75rem;cursor:pointer;" class="comp-tab">90 Days</button>
+                            </div>
+                        </h3>
+                        <div class="chart-wrapper tall">
+                            <canvas id="comparisonChartVault"></canvas>
+                        </div>
+                    </div>
+                    <div class="metrics-grid" id="comparisonMetricsVault" style="margin-top:20px;"></div>
                 </div>
 
                 <!-- FUND FLOWS TAB -->
@@ -1880,134 +1900,324 @@
         loadJlpPoolHealth();
         setInterval(loadJlpPoolHealth, 10 * 60 * 1000); // refresh every 10 min
 
-        // ── Cross-Platform JLP Tab ─────────────────────────────────────────
-        let cpChartInstance = null;
 
-        async function renderCrossPlatformTab() {
-            const container = document.getElementById('tab-crossplatform');
-            if (!container) return;
+        // ── Cross-Platform Comparison Tab ──────────────────────────────────
+        const LIVE_TRADING_CUTOFF = '2026-01-15';
+        const NET_INVESTOR_FACTOR_CP = 1 - 0.20; // 0.80
+        let cpCompChartInstance = null;
+        let cpCompPeriod = 'all';
 
-            // Load static strategy data
-            let strategy = null;
-            let history = [];
+        let primeProFormaData = [
+            {date: "2025-11-06", roi: 0.06},
+            {date: "2025-11-07", roi: 0.17},
+            {date: "2025-11-08", roi: 0.23},
+            {date: "2025-11-09", roi: 0.3},
+            {date: "2025-11-10", roi: 0.36},
+            {date: "2025-11-11", roi: 0.46},
+            {date: "2025-11-12", roi: 0.52},
+            {date: "2025-11-13", roi: 0.71},
+            {date: "2025-11-14", roi: 0.94},
+            {date: "2025-11-15", roi: 1.04},
+            {date: "2025-11-16", roi: 1.1},
+            {date: "2025-11-17", roi: 1.33},
+            {date: "2025-11-18", roi: 1.5},
+            {date: "2025-11-19", roi: 1.6},
+            {date: "2025-11-20", roi: 1.72},
+            {date: "2025-11-21", roi: 2.04},
+            {date: "2025-11-22", roi: 2.11},
+            {date: "2025-11-23", roi: 2.2},
+            {date: "2025-11-24", roi: 2.24},
+            {date: "2025-11-25", roi: 2.32},
+            {date: "2025-11-26", roi: 2.37},
+            {date: "2025-11-27", roi: 2.44},
+            {date: "2025-11-28", roi: 2.47},
+            {date: "2025-11-29", roi: 2.51},
+            {date: "2025-11-30", roi: 2.55},
+            {date: "2025-12-01", roi: 2.65},
+            {date: "2025-12-02", roi: 2.76},
+            {date: "2025-12-03", roi: 2.81},
+            {date: "2025-12-04", roi: 2.87},
+            {date: "2025-12-05", roi: 2.91},
+            {date: "2025-12-06", roi: 2.95},
+            {date: "2025-12-07", roi: 3.01},
+            {date: "2025-12-08", roi: 3.08},
+            {date: "2025-12-09", roi: 3.14},
+            {date: "2025-12-10", roi: 3.23},
+            {date: "2025-12-11", roi: 3.27},
+            {date: "2025-12-12", roi: 3.32},
+            {date: "2025-12-13", roi: 3.3},
+            {date: "2025-12-14", roi: 3.37},
+            {date: "2025-12-15", roi: 3.45},
+            {date: "2025-12-16", roi: 3.55},
+            {date: "2025-12-17", roi: 3.66},
+            {date: "2025-12-18", roi: 3.81},
+            {date: "2025-12-19", roi: 3.87},
+            {date: "2025-12-20", roi: 3.92},
+            {date: "2025-12-21", roi: 3.92},
+            {date: "2025-12-22", roi: 3.95},
+            {date: "2025-12-23", roi: 3.97},
+            {date: "2025-12-24", roi: 4.02},
+            {date: "2025-12-25", roi: 4.04},
+            {date: "2025-12-26", roi: 4.12},
+            {date: "2025-12-27", roi: 4.13},
+            {date: "2025-12-28", roi: 4.17},
+            {date: "2025-12-29", roi: 4.2},
+            {date: "2025-12-30", roi: 4.24},
+            {date: "2025-12-31", roi: 4.25},
+            {date: "2026-01-01", roi: 4.27},
+            {date: "2026-01-02", roi: 4.33},
+            {date: "2026-01-03", roi: 4.38},
+            {date: "2026-01-04", roi: 4.42},
+            {date: "2026-01-05", roi: 4.55},
+            {date: "2026-01-06", roi: 4.65},
+            {date: "2026-01-07", roi: 4.72},
+            {date: "2026-01-08", roi: 4.79},
+            {date: "2026-01-09", roi: 4.87},
+            {date: "2026-01-10", roi: 4.88},
+            {date: "2026-01-11", roi: 4.96},
+            {date: "2026-01-12", roi: 5.03},
+            {date: "2026-01-13", roi: 5.15},
+            {date: "2026-01-14", roi: 5.21},
+            {date: "2026-01-15", roi: 5.28},
+            {date: "2026-01-16", roi: 5.3},
+            {date: "2026-01-17", roi: 5.35},
+            {date: "2026-01-18", roi: 5.36},
+            {date: "2026-01-19", roi: 5.47},
+            {date: "2026-01-20", roi: 5.56},
+            {date: "2026-01-21", roi: 5.67},
+            {date: "2026-01-22", roi: 5.69},
+            {date: "2026-01-23", roi: 5.76},
+            {date: "2026-01-24", roi: 5.78},
+            {date: "2026-01-25", roi: 5.94},
+            {date: "2026-01-26", roi: 5.98},
+            {date: "2026-01-27", roi: 6.05},
+            {date: "2026-01-28", roi: 6.1},
+            {date: "2026-01-29", roi: 6.24},
+            {date: "2026-01-30", roi: 6.38},
+            {date: "2026-01-31", roi: 6.79},
+            {date: "2026-02-01", roi: 6.95},
+            {date: "2026-02-02", roi: 7.11},
+            {date: "2026-02-03", roi: 7.21},
+            {date: "2026-02-04", roi: 7.46},
+            {date: "2026-02-05", roi: 7.93},
+            {date: "2026-02-06", roi: 8.78},
+            {date: "2026-02-07", roi: 9.04},
+            {date: "2026-02-08", roi: 9.11},
+            {date: "2026-02-09", roi: 9.24},
+            {date: "2026-02-10", roi: 9.29},
+            {date: "2026-02-11", roi: 9.41},
+            {date: "2026-02-12", roi: 9.48},
+            {date: "2026-02-13", roi: 9.58},
+            {date: "2026-02-14", roi: 9.59},
+            {date: "2026-02-15", roi: 9.68},
+            {date: "2026-02-16", roi: 9.74},
+            {date: "2026-02-17", roi: 9.82},
+            {date: "2026-02-18", roi: 9.88},
+            {date: "2026-02-19", roi: 9.94},
+            {date: "2026-02-20", roi: 9.98},
+            {date: "2026-02-21", roi: 10.01},
+            {date: "2026-02-22", roi: 10.02},
+            {date: "2026-02-23", roi: 10.13},
+            {date: "2026-02-24", roi: 10.21},
+            {date: "2026-02-25", roi: 10.35},
+            {date: "2026-02-26", roi: 10.41},
+            {date: "2026-02-27", roi: 10.5},
+            {date: "2026-02-28", roi: 10.59},
+            {date: "2026-03-01", roi: 10.72},
+            {date: "2026-03-02", roi: 10.78},
+            {date: "2026-03-03", roi: 10.89},
+            {date: "2026-03-04", roi: 10.99},
+            {date: "2026-03-05", roi: 11.06},
+            {date: "2026-03-06", roi: 11.12},
+            {date: "2026-03-07", roi: 11.18},
+            {date: "2026-03-08", roi: 11.26},
+            {date: "2026-03-09", roi: 11.34},
+            {date: "2026-03-10", roi: 11.41},
+            {date: "2026-03-11", roi: 11.48},
+            {date: "2026-03-12", roi: 11.55},
+            {date: "2026-03-13", roi: 11.61}
+        ];
+
+        // Fetch the latest JLP 3x Mixed strategy data point and extend primeProFormaData
+        async function fetchJlpStrategyLatest() {
             try {
-                strategy = await (await fetch('data/jlp-strategy-latest.json?t=' + Date.now())).json();
-            } catch(e) { console.warn('No cross-platform strategy data'); }
-            try {
-                const h = await (await fetch('data/pn-kv1-history.json?t=' + Date.now())).json();
-                if (Array.isArray(h)) history = h;
-            } catch(e) { console.warn('No cross-platform history'); }
+                const res = await fetch('data/jlp-strategy-latest.json?t=' + Date.now());
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const latest = await res.json();
+                // latest = { endDate, cumulative, annualized, fetchedAt }
+                if (!latest.endDate || isNaN(latest.cumulative)) return;
+                const lastEntry = primeProFormaData[primeProFormaData.length - 1];
+                if (latest.endDate > lastEntry.date) {
+                    // Interpolate any missing daily points between last hardcoded and new endpoint
+                    const startDate = new Date(lastEntry.date);
+                    const endDate = new Date(latest.endDate);
+                    const startRoi = lastEntry.roi;
+                    const endRoi = latest.cumulative;
+                    const totalDays = (endDate - startDate) / 86400000;
+                    for (let i = 1; i <= totalDays; i++) {
+                        const d = new Date(startDate);
+                        d.setDate(d.getDate() + i);
+                        const dateStr = d.toISOString().slice(0, 10);
+                        const interpolated = startRoi + (endRoi - startRoi) * (i / totalDays);
+                        primeProFormaData.push({ date: dateStr, roi: parseFloat(interpolated.toFixed(2)) });
+                    }
+                    console.log(`[JLP Strategy] Extended to ${latest.endDate} (+${latest.cumulative}%)`);
+                }
+            }
 
-            const startDate = strategy?.startDate || '2025-11-06';
-            const endDate   = strategy?.endDate   || new Date().toISOString().split('T')[0];
-            const cumReturn = strategy?.cumulative ?? null;
-            const annReturn = strategy?.annualized ?? null;
-            const days = Math.round((new Date(endDate) - new Date(startDate)) / 86400000);
+        function switchCompPeriod(period, btn) {
+            cpCompPeriod = period;
+            document.querySelectorAll('.comp-tab').forEach(b => {
+                b.style.background = 'transparent';
+                b.style.color = '#8b8ba7';
+                b.style.borderColor = 'rgba(255,255,255,0.08)';
+            });
+            btn.style.background = 'rgba(0,212,255,0.2)';
+            btn.style.color = '#00d4ff';
+            btn.style.borderColor = 'rgba(0,212,255,0.3)';
+            renderCPComparisonChart(period);
+        }
 
-            const latestPrice = history.length > 0 ? history[history.length - 1].SharePrice : null;
-            const firstPrice  = history.length > 0 ? history[0].SharePrice : null;
-            const liveReturn  = (latestPrice && firstPrice) ? ((latestPrice - firstPrice) / firstPrice * 100) : null;
-            const liveDays    = history.length > 0
-                ? Math.round((new Date(history[history.length-1].update_time_utc) - new Date(history[0].update_time_utc)) / 86400000)
-                : 0;
-            const liveAPY     = (liveReturn !== null && liveDays > 0) ? (liveReturn / liveDays * 365) : null;
-            const latestTvl   = history.length > 0 ? history[history.length - 1].tvl : null;
+        function renderCPComparisonChart(period) {
+            period = period || cpCompPeriod;
+            const ctx = document.getElementById('comparisonChartVault')?.getContext('2d');
+            if (!ctx || !historicalData) return;
 
-            container.innerHTML = `
-                <div class="section-header">
-                    <span class="icon">⚡</span>
-                    <h2>Cross-Platform JLP Strategy</h2>
-                    <span class="badge" style="background:rgba(124,58,237,0.2);color:#a78bfa;border:1px solid rgba(124,58,237,0.3);">In Development · Prime Number</span>
-                </div>
+            const today = new Date();
+            let windowStart;
+            if (period === 'all' || period === undefined) {
+                windowStart = '2025-11-06';
+            } else {
+                const d = new Date(today);
+                d.setDate(d.getDate() - parseInt(period));
+                windowStart = d.toISOString().slice(0, 10);
+            }
 
-                <div class="metrics-grid">
-                    <div class="metric-card realized">
-                        <div class="metric-label"><span class="icon">📈</span> Backtest APY</div>
-                        <div class="metric-value realized">${annReturn !== null ? '+' + annReturn.toFixed(2) + '%' : '—'}</div>
-                        <div class="metric-subtext">${startDate} → ${endDate} (${days}d)</div>
-                    </div>
-                    <div class="metric-card realized">
-                        <div class="metric-label"><span class="icon">💰</span> Backtest Cumulative</div>
-                        <div class="metric-value realized">${cumReturn !== null ? '+' + cumReturn.toFixed(2) + '%' : '—'}</div>
-                        <div class="metric-subtext">Net of fees</div>
-                    </div>
-                    <div class="metric-card highlight">
-                        <div class="metric-label"><span class="icon">💵</span> Current TVL Tracked</div>
-                        <div class="metric-value">${latestTvl ? formatCurrency(latestTvl) : '—'}</div>
-                        <div class="metric-subtext">Prime Number vault</div>
-                    </div>
-                    <div class="metric-card pending">
-                        <div class="metric-label"><span class="icon">📊</span> Live Share Price</div>
-                        <div class="metric-value pending">${latestPrice ? '$' + latestPrice.toFixed(6) : '—'}</div>
-                        <div class="metric-subtext">${history.length} data points</div>
-                    </div>
-                    <div class="metric-card ${liveReturn >= 0 ? 'realized' : ''}">
-                        <div class="metric-label"><span class="icon">🔄</span> Live Return</div>
-                        <div class="metric-value ${liveReturn >= 0 ? 'realized' : ''}">${liveReturn !== null ? formatPercent(liveReturn) : '—'}</div>
-                        <div class="metric-subtext">${liveDays}d since tracking started</div>
-                    </div>
-                    <div class="metric-card ${liveAPY >= 0 ? 'realized' : ''}">
-                        <div class="metric-label"><span class="icon">⚡</span> Live Annualized APY</div>
-                        <div class="metric-value ${liveAPY >= 0 ? 'realized' : ''}">${liveAPY !== null ? formatPercent(liveAPY) : '—'}</div>
-                        <div class="metric-subtext">Based on ${liveDays}d live track</div>
-                    </div>
-                </div>
+            // Build KV data from official NAV history
+            const kvFiltered = historicalData.filter(h => {
+                const d = (h.update_time_utc || h.timestamp || '').slice(0, 10);
+                return d >= windowStart;
+            });
+            if (kvFiltered.length === 0) return;
 
-                <div class="section-header">
-                    <span class="icon">🗺️</span>
-                    <h2>Strategy Mechanics</h2>
-                </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
-                    ${[
-                        ['🏦','Leverage','3× JLP position via multi-protocol SOL borrowing'],
-                        ['🔄','Platforms','Drift · Kamino · Marginfi — borrow costs arbitraged across all three'],
-                        ['💸','Yield Source','JLP trading fees × leverage factor, minus blended borrow rate'],
-                        ['⚖️','Hedge','Delta-neutral via short positions same as Vault 1'],
-                        ['📋','Status','In development — Prime Number ETA TBD'],
-                        ['🎯','Target APY','25–35% net (vs 14–22% KV target range'],
-                    ].map(([icon, label, desc]) => `
-                        <div class="metric-card" style="padding:16px;">
-                            <div class="metric-label"><span class="icon">${icon}</span> ${label}</div>
-                            <div style="color:#c8c8e0;font-size:0.85rem;margin-top:6px;">${desc}</div>
-                        </div>
-                    `).join('')}
-                </div>
+            const kvBaseline = kvFiltered[0].SharePrice;
+            const kvDataMap = {};
+            kvFiltered.forEach(h => {
+                const d = (h.update_time_utc || h.timestamp || '').slice(0, 10);
+                const roi = ((h.SharePrice - kvBaseline) / kvBaseline) * 100 * NET_INVESTOR_FACTOR_CP;
+                kvDataMap[d] = roi;
+            });
 
-                <div class="chart-card">
-                    <h3><span class="icon">📊</span> Prime Number Vault — Share Price History</h3>
-                    <div class="chart-wrapper tall">
-                        <canvas id="cpChart"></canvas>
-                    </div>
-                </div>
-            `;
+            // Build prime data map
+            const primeDataMap = {};
+            primeProFormaData.filter(d => d.date >= windowStart).forEach(d => {
+                primeDataMap[d.date] = d.roi * NET_INVESTOR_FACTOR_CP;
+            });
+            const primeStartDate = Object.keys(primeDataMap).sort()[0];
+            const primeBaseline = primeStartDate ? primeDataMap[primeStartDate] : 0;
+            Object.keys(primeDataMap).forEach(d => {
+                primeDataMap[d] = primeDataMap[d] - primeBaseline;
+            });
 
-            // Render chart
-            if (cpChartInstance) { cpChartInstance.destroy(); cpChartInstance = null; }
-            const ctx = document.getElementById('cpChart')?.getContext('2d');
-            if (ctx && history.length > 0) {
-                cpChartInstance = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: history.map(h => new Date(h.update_time_utc).toLocaleDateString('en-US', { month:'short', day:'numeric' })),
-                        datasets: [{
-                            label: 'Share Price',
-                            data: history.map(h => h.SharePrice),
-                            borderColor: '#a78bfa',
-                            backgroundColor: 'rgba(124,58,237,0.1)',
-                            fill: true, tension: 0.4, pointRadius: 0, borderWidth: 2
-                        }]
+            // Split pro forma vs live
+            const primeProFormaMap = {};
+            const primeLiveMap = {};
+            Object.entries(primeDataMap).forEach(([date, val]) => {
+                if (date <= LIVE_TRADING_CUTOFF) primeProFormaMap[date] = val;
+                else primeLiveMap[date] = val;
+            });
+            const bridgeDate = Object.keys(primeDataMap).filter(d => d <= LIVE_TRADING_CUTOFF).sort().pop();
+            if (bridgeDate) primeLiveMap[bridgeDate] = primeProFormaMap[bridgeDate];
+            const nextDate = Object.keys(primeDataMap).filter(d => d > LIVE_TRADING_CUTOFF).sort()[0];
+            if (nextDate) primeProFormaMap[nextDate] = primeLiveMap[nextDate];
+
+            const allDates = new Set([...Object.keys(kvDataMap), ...Object.keys(primeDataMap)]);
+            const sortedDates = Array.from(allDates).sort();
+            const kvArr = sortedDates.map(d => kvDataMap[d] !== undefined ? kvDataMap[d] : null);
+            const proFormaArr = sortedDates.map(d => primeProFormaMap[d] !== undefined ? primeProFormaMap[d] : null);
+            const liveArr = sortedDates.map(d => primeLiveMap[d] !== undefined ? primeLiveMap[d] : null);
+
+            if (cpCompChartInstance) { cpCompChartInstance.destroy(); cpCompChartInstance = null; }
+
+            cpCompChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: sortedDates,
+                    datasets: [
+                        {
+                            label: 'KeyVault Current Strategy (Actual)',
+                            data: kvArr,
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34,197,94,0.1)',
+                            fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2.5, spanGaps: false, order: 2
+                        },
+                        {
+                            label: 'Cross-Platform JLP — Pro Forma (through Jan 15)',
+                            data: proFormaArr,
+                            borderColor: 'rgba(244,114,182,0.5)',
+                            backgroundColor: 'transparent',
+                            borderDash: [5, 4],
+                            fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2, spanGaps: true, order: 1
+                        },
+                        {
+                            label: 'Cross-Platform JLP — Live (Jan 15+)',
+                            data: liveArr,
+                            borderColor: '#f472b6',
+                            backgroundColor: 'rgba(244,114,182,0.08)',
+                            fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2.5, spanGaps: false, order: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: {
+                            display: true, position: 'top',
+                            labels: { color: '#8b8ba7', usePointStyle: true, padding: 15, font: { size: 12 } }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26,26,62,0.95)',
+                            titleColor: '#fff', bodyColor: '#8b8ba7',
+                            callbacks: {
+                                label: ctx => ctx.parsed.y === null ? null : `${ctx.dataset.label}: ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%`
+                            }
+                        }
                     },
-                    options: {
-                        responsive: true, maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b6b8d', maxTicksLimit: 10 } },
-                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#a78bfa', callback: v => '$' + v.toFixed(4) } }
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b6b8d', maxTicksLimit: 10 } },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#8b8ba7', callback: v => v.toFixed(0) + '%' },
+                            title: { display: true, text: 'Cumulative ROI %', color: '#6b6b8d' }
                         }
                     }
-                });
-            }
+                }
+            });
+
+            // Metrics
+            const kvDates = Object.keys(kvDataMap).sort();
+            const primeDatesArr = Object.keys(primeDataMap).sort();
+            const kvSet = new Set(kvDates);
+            const common = primeDatesArr.filter(d => kvSet.has(d)).sort();
+            if (common.length === 0) return;
+            const latest = common[common.length - 1];
+            const days = Math.floor((new Date(latest + 'T12:00:00') - new Date(common[0] + 'T12:00:00')) / 86400000);
+            const kvRoi = kvDataMap[latest] || 0;
+            const primeRoi = primeDataMap[latest] || 0;
+            const kvAPY = days > 0 ? (kvRoi / days) * 365 : 0;
+            const primeAPY = days > 0 ? (primeRoi / days) * 365 : 0;
+            const outperf = primeRoi - kvRoi;
+
+            document.getElementById('comparisonMetricsVault').innerHTML = `
+                <div class="metric-card realized"><div class="metric-label">Current Strategy ROI (Actual)</div><div class="metric-value realized">+${kvRoi.toFixed(2)}%</div><div class="metric-subtext">Net of fees · ${days} days</div></div>
+                <div class="metric-card" style="border-color:rgba(244,114,182,0.4)"><div class="metric-label">Cross-Platform JLP ROI</div><div class="metric-value" style="color:#f472b6">+${primeRoi.toFixed(2)}%</div><div class="metric-subtext">Net of fees · ${days} days</div></div>
+                <div class="metric-card realized"><div class="metric-label">Current Strategy APY</div><div class="metric-value realized">+${kvAPY.toFixed(2)}%</div><div class="metric-subtext">Annualized, net of fees</div></div>
+                <div class="metric-card" style="border-color:rgba(244,114,182,0.4)"><div class="metric-label">Cross-Platform APY</div><div class="metric-value" style="color:#f472b6">+${primeAPY.toFixed(2)}%</div><div class="metric-subtext">Annualized, net of fees</div></div>
+                <div class="metric-card highlight" style="grid-column:span 2"><div class="metric-label">Cross-Platform Outperformance</div><div class="metric-value" style="color:#a78bfa">${outperf >= 0 ? '+' : ''}${outperf.toFixed(2)}%</div><div class="metric-subtext">Additional return vs current strategy (same period)</div></div>
+            `;
         }
+
     </script>
 </body>
 </html>
