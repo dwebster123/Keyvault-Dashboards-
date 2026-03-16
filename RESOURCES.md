@@ -88,3 +88,23 @@ A curated list of open-source repos, tools, and reference material for KV tradin
 **Keys needed:** New BLOFIN_API_KEY + BLOFIN_SECRET_KEY + BLOFIN_PASSPHRASE (current keys returning 403)
 
 *Last updated: 2026-03-15*
+
+---
+
+## 📊 Market Analysis Tools
+
+### MMT (Market Maker Tools) — Free
+**What:** Professional-grade Hyperliquid order flow terminal. Went fully free March 15, 2026.
+
+**Tools included:**
+- Market Profile / TPO — price distribution (institutional-grade)
+- Aggregated & HD Heatmaps — where liquidity is stacked
+- Liquidation Heatmap — where stop hunts and cascades will happen
+- Hyperliquid TP Heatmap — shows where take-profit orders cluster (on-chain only possible on HL)
+- Hyperliquid MBO Profile, Stop Loss visualization
+
+**Why relevant:** Signal generation for Senpi FOX/WOLF strategies. Liquidation + TP heatmaps show exactly where momentum will accelerate — key for leaderboard front-running strategies.
+
+**Twitter:** [@MMT_Official_](https://x.com/mmt_official_)
+
+*Last updated: 2026-03-15*
