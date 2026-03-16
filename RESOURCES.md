@@ -108,3 +108,21 @@ A curated list of open-source repos, tools, and reference material for KV tradin
 **Twitter:** [@MMT_Official_](https://x.com/mmt_official_)
 
 *Last updated: 2026-03-15*
+
+---
+
+## 🤖 Agent Context & API Docs
+
+### Andrew Ng — context-hub
+**Repo:** `github.com/andrewyng/context-hub` (5.2k ⭐, MIT)
+
+**What:** Versioned, community-maintained markdown docs that AI coding agents can read directly. Fixes the problem of agents hallucinating API parameters or calling deprecated endpoints. MCP server integration — plugs natively into Claude Code, Cursor, etc.
+
+**Why relevant:**
+- **AgentPoker:** Publish WebSocket API spec here (or as `agentpoker.io/llms.txt`) so coding agents building poker bots get accurate, non-hallucinated docs automatically — directly solves the agent onboarding friction problem
+- **Nix tooling:** Plugging into Context Hub means fewer hallucinated API calls during research/autonomous tasks
+- Existing `docs/skill.md` is the same concept — expose at `/llms.txt` to follow the emerging standard
+
+**Source:** [@socialwithaayan](https://x.com/socialwithaayan/status/2033199125572071819), 2026-03-15
+
+*Last updated: 2026-03-15*
