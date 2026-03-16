@@ -71,3 +71,20 @@ A curated list of open-source repos, tools, and reference material for KV tradin
 ---
 
 *Last updated: 2026-03-15*
+
+---
+
+## 🔁 Blofin Trading Bot (Rebuild Planned)
+
+**Status:** On hold — old bot hit loss limit Feb 19 (-$3,594 simulated). Rebuilding with Senpi strategies.
+
+**Plan:**
+1. Get fresh Blofin API keys (Deven to provide)
+2. Port **FOX strategy** from `Senpi-ai/senpi-skills` — leaderboard momentum sniper, +34.5% live ROI on Hyperliquid perps
+3. Also test **WOLF** (smart money front-running) and **VIPER** (mean reversion)
+4. Paper trade first (2-3 weeks) before real capital
+5. Kick off after Prime Number cross-platform vault launches
+
+**Keys needed:** New BLOFIN_API_KEY + BLOFIN_SECRET_KEY + BLOFIN_PASSPHRASE (current keys returning 403)
+
+*Last updated: 2026-03-15*
