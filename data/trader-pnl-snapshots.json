@@ -348,5 +348,15 @@
     "traderPnl": null,
     "unrealizedPnl": null,
     "poolApy24h": null
+  },
+  {
+    "timestamp": "2026-03-17T21:00:06.917Z",
+    "date": "2026-03-17",
+    "aumUsd": "1204619029009083",
+    "jlpApyPct": 7.83,
+    "jlpAprPct": 7.54,
+    "traderPnl": null,
+    "unrealizedPnl": null,
+    "poolApy24h": null
   }
 ]
