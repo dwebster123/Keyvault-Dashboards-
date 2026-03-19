@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-17T21:00:03.474Z",
+  "lastUpdated": "2026-03-19T21:00:04.651Z",
   "markets": {
     "SOL-PERP": [
       {
@@ -194,8 +194,8 @@
       },
       {
         "date": "2026-02-17",
-        "avgRate": -0.00001821,
-        "annualizedPct": -15.9561
+        "avgRate": -0.00001336,
+        "annualizedPct": -11.7022
       },
       {
         "date": "2026-02-18",
@@ -334,8 +334,18 @@
       },
       {
         "date": "2026-03-17",
-        "avgRate": -0.00002692,
-        "annualizedPct": -23.5859
+        "avgRate": -0.00002708,
+        "annualizedPct": -23.723
+      },
+      {
+        "date": "2026-03-18",
+        "avgRate": -0.00001546,
+        "annualizedPct": -13.5387
+      },
+      {
+        "date": "2026-03-19",
+        "avgRate": -0.00000174,
+        "annualizedPct": -1.5246
       }
     ],
     "BTC-PERP": [
@@ -531,8 +541,8 @@
       },
       {
         "date": "2026-02-17",
-        "avgRate": 0.00000172,
-        "annualizedPct": 1.505
+        "avgRate": -0.00000103,
+        "annualizedPct": -0.9016
       },
       {
         "date": "2026-02-18",
@@ -671,8 +681,18 @@
       },
       {
         "date": "2026-03-17",
-        "avgRate": -0.00001705,
-        "annualizedPct": -14.9374
+        "avgRate": -0.00001672,
+        "annualizedPct": -14.6446
+      },
+      {
+        "date": "2026-03-18",
+        "avgRate": 0.00000813,
+        "annualizedPct": 7.1176
+      },
+      {
+        "date": "2026-03-19",
+        "avgRate": 0.00001995,
+        "annualizedPct": 17.4747
       }
     ],
     "ETH-PERP": [
@@ -868,8 +888,8 @@
       },
       {
         "date": "2026-02-17",
-        "avgRate": 0.00001641,
-        "annualizedPct": 14.3752
+        "avgRate": 0.00002465,
+        "annualizedPct": 21.5964
       },
       {
         "date": "2026-02-18",
@@ -1008,8 +1028,18 @@
       },
       {
         "date": "2026-03-17",
-        "avgRate": 0.0000056,
-        "annualizedPct": 4.9096
+        "avgRate": 0.00000502,
+        "annualizedPct": 4.3973
+      },
+      {
+        "date": "2026-03-18",
+        "avgRate": 0.00001361,
+        "annualizedPct": 11.9199
+      },
+      {
+        "date": "2026-03-19",
+        "avgRate": 0.00000815,
+        "annualizedPct": 7.1409
       }
     ]
   }
