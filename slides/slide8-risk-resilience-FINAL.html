@@ -5,14 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Slide 8 — Built to Survive</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #000; overflow: hidden; }
   #slide {
     width: 1920px; height: 1080px;
     background: #050508;
     position: relative; overflow: hidden;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
   }
 
   .blob { position: absolute; border-radius: 50%; pointer-events: none; }
@@ -26,18 +25,13 @@
     background: radial-gradient(circle, rgba(0,200,220,0.14) 0%, transparent 70%);
     filter: blur(80px); bottom: -200px; right: -180px;
   }
-  .blob-mid {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 70%);
-    filter: blur(70px); top: 300px; left: 800px;
-  }
 
   .header-bar {
     position: absolute; top: 44px; left: 72px; right: 72px;
     display: flex; align-items: center; gap: 20px;
   }
   .header-label {
-    font-size: 11px; font-weight: 600;
+    font-size: 12px; font-weight: 600;
     letter-spacing: 0.25em; text-transform: uppercase;
     color: rgba(255,255,255,0.40); white-space: nowrap;
   }
@@ -46,7 +40,7 @@
     background: linear-gradient(90deg, rgba(255,255,255,0.20), rgba(255,255,255,0.06));
   }
   .header-url {
-    font-size: 11px; letter-spacing: 0.12em;
+    font-size: 12px; letter-spacing: 0.12em;
     color: rgba(255,255,255,0.40); white-space: nowrap;
   }
 
@@ -55,151 +49,106 @@
     display: flex; flex-direction: column;
   }
 
-  .title-row {
-    display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
-    margin-bottom: 6px;
-  }
   .title {
-    font-size: 44px; font-weight: 900; text-transform: uppercase;
-    letter-spacing: -0.02em; color: #fff; line-height: 1.05;
+    font-size: 52px; font-weight: 900; text-transform: uppercase;
+    letter-spacing: -0.02em; color: #fff; line-height: 1.0;
+    margin-bottom: 6px;
   }
   .title span { color: #00dcc8; }
   .subtitle {
-    font-size: 15px; color: rgba(255,255,255,0.38);
-    margin-top: 8px; letter-spacing: 0.02em; font-weight: 400;
+    font-size: 18px; color: rgba(255,255,255,0.40);
+    letter-spacing: 0.01em; font-weight: 400;
   }
 
   .divider {
-    height: 1px; margin: 16px 0 20px;
-    background: linear-gradient(90deg, rgba(220,80,80,0.35), rgba(255,255,255,0.06), transparent);
+    height: 1px; margin: 20px 0 24px;
+    background: linear-gradient(90deg, rgba(220,80,80,0.40), rgba(255,255,255,0.06), transparent);
   }
 
-  /* 3 Column Layout */
   .pillars {
-    display: flex; gap: 20px; flex: 1; min-height: 0;
+    display: flex; gap: 24px; flex: 1; min-height: 0;
   }
 
   .pillar {
     flex: 1;
     background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 10px;
-    padding: 26px 26px 20px;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 32px 32px 28px;
     display: flex; flex-direction: column;
     position: relative; overflow: hidden;
   }
   .pillar::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0;
-    height: 3px; border-radius: 10px 10px 0 0;
+    height: 4px; border-radius: 12px 12px 0 0;
   }
-  .pillar.systemic::before { background: #ef4444; box-shadow: 0 0 12px rgba(239,68,68,0.5); }
-  .pillar.infra::before    { background: #f59e0b; box-shadow: 0 0 12px rgba(245,158,11,0.5); }
-  .pillar.protocol::before { background: #00dcc8; box-shadow: 0 0 12px rgba(0,220,200,0.5); }
+  .pillar.systemic::before { background: #ef4444; box-shadow: 0 0 16px rgba(239,68,68,0.6); }
+  .pillar.infra::before    { background: #f59e0b; box-shadow: 0 0 16px rgba(245,158,11,0.6); }
+  .pillar.protocol::before { background: #00dcc8; box-shadow: 0 0 16px rgba(0,220,200,0.6); }
 
-  /* Risk event header */
-  .risk-events {
-    display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap;
+  .risk-tags {
+    display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
   }
   .risk-tag {
-    font-size: 9px; font-weight: 800; letter-spacing: 0.1em;
-    text-transform: uppercase; padding: 3px 8px; border-radius: 3px;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 4px;
   }
   .pillar.systemic .risk-tag { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
   .pillar.infra .risk-tag    { background: rgba(245,158,11,0.12); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
   .pillar.protocol .risk-tag { background: rgba(0,220,200,0.10); color: #00dcc8; border: 1px solid rgba(0,220,200,0.20); }
 
   .pillar-title {
-    font-size: 19px; font-weight: 900; color: #fff;
-    letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 4px;
+    font-size: 24px; font-weight: 900; color: #fff;
+    letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 6px;
   }
   .pillar-tagline {
-    font-size: 11.5px; color: rgba(255,255,255,0.33);
-    margin-bottom: 16px; line-height: 1.45;
+    font-size: 14px; color: rgba(255,255,255,0.35);
+    margin-bottom: 24px; line-height: 1.4;
   }
 
-  /* What happened callout */
-  .what-happened {
-    border-radius: 6px; padding: 10px 14px; margin-bottom: 16px;
-    font-size: 12px; line-height: 1.5;
-  }
-  .pillar.systemic .what-happened { background: rgba(239,68,68,0.06); border-left: 2px solid rgba(239,68,68,0.4); }
-  .pillar.infra .what-happened    { background: rgba(245,158,11,0.06); border-left: 2px solid rgba(245,158,11,0.4); }
-  .pillar.protocol .what-happened { background: rgba(0,220,200,0.06); border-left: 2px solid rgba(0,220,200,0.3); }
-  .what-label {
-    font-size: 9px; font-weight: 800; letter-spacing: 0.12em;
-    text-transform: uppercase; margin-bottom: 4px;
-  }
-  .pillar.systemic .what-label { color: #f87171; }
-  .pillar.infra .what-label    { color: #fbbf24; }
-  .pillar.protocol .what-label { color: #00dcc8; }
-  .what-text { color: rgba(255,255,255,0.45); font-size: 12px; }
-
-  /* Protection items */
-  .protect-label {
-    font-size: 9px; font-weight: 800; letter-spacing: 0.12em;
-    text-transform: uppercase; color: rgba(255,255,255,0.30);
-    margin-bottom: 10px;
-  }
   .pillar-items {
-    display: flex; flex-direction: column; gap: 11px; flex: 1;
+    display: flex; flex-direction: column; gap: 20px; flex: 1;
   }
   .pillar-item {
-    display: flex; gap: 10px; align-items: flex-start;
+    display: flex; gap: 14px; align-items: flex-start;
   }
   .pillar-item-dot {
-    width: 5px; height: 5px; border-radius: 50%;
-    margin-top: 7px; flex-shrink: 0;
+    width: 7px; height: 7px; border-radius: 50%;
+    margin-top: 8px; flex-shrink: 0;
   }
   .pillar.systemic .pillar-item-dot { background: #f87171; }
   .pillar.infra .pillar-item-dot    { background: #fbbf24; }
   .pillar.protocol .pillar-item-dot { background: #00dcc8; }
 
   .pillar-item-text {
-    font-size: 12.5px; color: rgba(255,255,255,0.50);
-    line-height: 1.5;
+    font-size: 15px; color: rgba(255,255,255,0.55);
+    line-height: 1.55;
   }
-  .pillar-item-text strong { color: rgba(255,255,255,0.85); font-weight: 700; }
+  .pillar-item-text strong { color: rgba(255,255,255,0.90); font-weight: 700; }
 
-  /* Gap / planned items */
-  .gap-section {
-    margin-top: 14px; padding: 10px 12px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 6px;
-  }
-  .gap-label {
-    font-size: 9px; font-weight: 800; letter-spacing: 0.1em;
-    text-transform: uppercase; color: rgba(255,255,255,0.22);
-    margin-bottom: 6px;
-  }
-  .gap-text {
-    font-size: 11.5px; color: rgba(255,255,255,0.32); line-height: 1.45;
-  }
-
-  /* Bottom bar */
   .bottom-bar {
-    margin-top: 18px;
+    margin-top: 22px;
     background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    padding: 14px 24px;
-    display: flex; align-items: center; gap: 16px;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 18px 28px;
+    display: flex; align-items: center; gap: 18px;
   }
   .bottom-icon {
-    width: 32px; height: 32px; border-radius: 6px;
+    width: 36px; height: 36px; border-radius: 8px;
     background: rgba(0,220,200,0.10);
     border: 1px solid rgba(0,220,200,0.20);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
-  .bottom-icon svg { width: 16px; height: 16px; }
+  .bottom-icon svg { width: 18px; height: 18px; }
   .bottom-text {
-    font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; flex: 1;
+    font-size: 15px; color: rgba(255,255,255,0.45); line-height: 1.5; flex: 1;
   }
-  .bottom-text strong { color: rgba(255,255,255,0.75); }
+  .bottom-text strong { color: rgba(255,255,255,0.80); }
   .bottom-verdict {
-    font-size: 13px; font-weight: 700; color: #00dcc8;
+    font-size: 15px; font-weight: 700; color: #00dcc8;
     text-align: right; flex-shrink: 0; white-space: nowrap;
   }
 
@@ -213,140 +162,99 @@
 <body>
 <div id="slide">
 
-  <!-- Background blobs -->
   <div class="blob blob-tl"></div>
   <div class="blob blob-br"></div>
-  <div class="blob blob-mid"></div>
 
-  <!-- Header -->
   <div class="header-bar">
-    <span class="header-label">Investors Deck</span>
+    <span class="header-label">Investor Deck</span>
     <div class="header-line"></div>
     <span class="header-url">keyvaultfund.com</span>
   </div>
 
   <div class="content">
 
-    <!-- Title -->
-    <div class="title-row">
-      <div>
-        <div class="title">Built to <span>Survive</span> the Worst</div>
-        <div class="subtitle">How KeyVault is structurally protected against the failures that wiped out billions in crypto.</div>
-      </div>
-    </div>
+    <div class="title">Built to <span>Survive</span> the Worst</div>
+    <div class="subtitle">How KeyVault is structurally protected against the failures that wiped out billions in crypto.</div>
 
     <div class="divider"></div>
 
-    <!-- 3 Pillars -->
     <div class="pillars">
 
       <!-- Column 1: Systemic -->
       <div class="pillar systemic">
-        <div class="risk-events">
+        <div class="risk-tags">
           <span class="risk-tag">FTX · $8B</span>
           <span class="risk-tag">Mt. Gox · $450M</span>
           <span class="risk-tag">Terra/Luna · $40B</span>
         </div>
-        <div class="pillar-title">Systemic Exchange &amp; Protocol Collapse</div>
-        <div class="pillar-tagline">Centralized custody, commingled funds, or circular yield mechanics</div>
-
-        <div class="what-happened">
-          <div class="what-label">Root cause</div>
-          <div class="what-text">Customer funds held &amp; spent by a central party (FTX, Mt. Gox), or yield backed by circular collateral with no real value (Terra).</div>
-        </div>
-
-        <div class="protect-label">How KV is protected</div>
+        <div class="pillar-title">Exchange &amp; Protocol Collapse</div>
+        <div class="pillar-tagline">Centralized custody or yield backed by nothing real</div>
         <div class="pillar-items">
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Non-custodial vault.</strong> Smart contract holds assets. Manager can trade — cannot withdraw. No human controls your funds.</div>
+            <div class="pillar-item-text"><strong>Non-custodial vault.</strong> Smart contract holds all assets. The manager can trade — but cannot withdraw. No human controls your funds.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Real yield, not circular.</strong> JLP earns trading fees from actual perpetuals traders. No algorithmic stablecoins. No circular collateral.</div>
+            <div class="pillar-item-text"><strong>Real yield only.</strong> JLP earns fees from actual perpetuals traders. No algorithmic stablecoins, no circular collateral.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>On-chain verifiable.</strong> Every dollar visible on-chain at vault address G3RT2...UZp — no trust required.</div>
+            <div class="pillar-item-text"><strong>Fully on-chain.</strong> Every dollar is visible on-chain at the vault address — no trust required, verify anytime.</div>
           </div>
         </div>
       </div>
 
       <!-- Column 2: Infrastructure -->
       <div class="pillar infra">
-        <div class="risk-events">
-          <span class="risk-tag">Custody Provider Risk</span>
+        <div class="risk-tags">
+          <span class="risk-tag">Custody Failure</span>
           <span class="risk-tag">Key Compromise</span>
         </div>
-        <div class="pillar-title">Infrastructure &amp; Custody Provider Failure</div>
-        <div class="pillar-tagline">What if Cobo freezes, is hacked, or acts like FTX?</div>
-
-        <div class="what-happened">
-          <div class="what-label">Key distinction</div>
-          <div class="what-text">Cobo holds MPC key shards — not your assets. Assets sit in on-chain DeFi protocols (Drift, Jupiter, Voltr). A Cobo freeze doesn't move your funds.</div>
-        </div>
-
-        <div class="protect-label">How KV is protected</div>
+        <div class="pillar-title">Custody Provider Failure</div>
+        <div class="pillar-tagline">What if Cobo freezes, is hacked, or shuts down?</div>
         <div class="pillar-items">
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>MPC custody.</strong> No single person at Cobo can unilaterally move funds. Multi-party key shards required for any action.</div>
+            <div class="pillar-item-text"><strong>Cobo holds shards, not assets.</strong> Assets live in on-chain DeFi protocols. A Cobo freeze cannot move your funds.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Trading ≠ withdrawal.</strong> Prime Number has trading access only. Withdrawal restriction is enforced at the smart contract level in the Voltr vault — even a rogue curator cannot withdraw capital.</div>
+            <div class="pillar-item-text"><strong>Self-custody recovery.</strong> KV holds 2-of-3 key shards. If Cobo disappears, we recover everything independently — no Cobo required.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Cobo insurance + HK regulation.</strong> Institutional-grade provider, regulated, with coverage for key loss scenarios.</div>
+            <div class="pillar-item-text"><strong>Curator cannot withdraw.</strong> Prime Number's access is trading-only. Withdrawal restriction is enforced at the smart contract level.</div>
           </div>
-        </div>
-
-        <div class="gap-section">
-          <div class="gap-label">Planned hardening</div>
-          <div class="gap-text">Emergency multi-sig recovery wallet + secondary custody provider (Fireblocks/Anchorage) as AUM scales.</div>
         </div>
       </div>
 
       <!-- Column 3: Protocol -->
       <div class="pillar protocol">
-        <div class="risk-events">
+        <div class="risk-tags">
           <span class="risk-tag">Smart Contract Hack</span>
           <span class="risk-tag">Protocol Insolvency</span>
         </div>
         <div class="pillar-title">DeFi Protocol Hack or Collapse</div>
         <div class="pillar-tagline">Drift, Hyperliquid, Aster, or Jupiter gets exploited</div>
-
-        <div class="what-happened">
-          <div class="what-label">The reality</div>
-          <div class="what-text">No DeFi protocol is zero-risk. Hyperliquid faced a $200M exploit attempt (DPRK) in 2025 and survived. Drift has 3 independent audits. Aster is the newest and least tested.</div>
-        </div>
-
-        <div class="protect-label">How KV is protected</div>
         <div class="pillar-items">
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>4-protocol diversification.</strong> Capital spread across Drift, Hyperliquid, Aster, and Jupiter — no single protocol failure is total loss.</div>
+            <div class="pillar-item-text"><strong>4-protocol diversification.</strong> Capital spread across Drift, Hyperliquid, Aster, and Jupiter — no single failure is a total loss.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Battle-tested protocols.</strong> Drift audited by Trail of Bits, Neodyme &amp; OtterSec. Jupiter $2.5B+ TVL. Prioritize proven over novel.</div>
+            <div class="pillar-item-text"><strong>Battle-tested protocols.</strong> Drift audited by Trail of Bits, Neodyme &amp; OtterSec. Jupiter $2.5B+ TVL. We prioritize proven over novel.</div>
           </div>
           <div class="pillar-item">
             <div class="pillar-item-dot"></div>
             <div class="pillar-item-text"><strong>24/7 monitoring.</strong> Automated alerts on TVL drops, exploit activity, and liquidation thresholds with circuit breaker response.</div>
           </div>
         </div>
-
-        <div class="gap-section">
-          <div class="gap-label">Planned hardening</div>
-          <div class="gap-text">Smart contract insurance via Nexus Mutual for Drift + Jupiter positions. Max exposure % cap per protocol.</div>
-        </div>
       </div>
 
     </div>
 
-    <!-- Bottom bar -->
     <div class="bottom-bar">
       <div class="bottom-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="#00dcc8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -354,7 +262,7 @@
         </svg>
       </div>
       <div class="bottom-text">
-        <strong>The pattern behind every major crypto collapse:</strong> centralized control of customer funds, or yield backed by nothing real. KeyVault's architecture was designed from day one to make both impossible — non-custodial smart contracts, real fee-based yield, and multi-layer protocol diversification.
+        <strong>The pattern behind every major crypto collapse:</strong> centralized control of customer funds, or yield backed by nothing real. KeyVault was designed from day one to make both impossible.
       </div>
       <div class="bottom-verdict">Zero custody. Real yield. Built to survive.</div>
     </div>
