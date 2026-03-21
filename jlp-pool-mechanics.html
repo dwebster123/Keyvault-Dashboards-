@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JLP Pool Mechanics — Jupiter Perpetuals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============ THEME — Deep blue + gold, blueprint feel ============ */
+  :root {
+    --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+
+    --bg: #0b1221;
+    --surface: #111c30;
+    --surface2: #162035;
+    --surface3: #1c2a45;
+    --border: rgba(255, 255, 255, 0.07);
+    --border-bright: rgba(255, 255, 255, 0.14);
+    --text: #e2eaf8;
+    --text-dim: #7a94bf;
+
+    --gold: #d4a73a;
+    --gold-dim: rgba(212, 167, 58, 0.12);
+    --gold-bright: #f0c055;
+    --blue: #4a90d9;
+    --blue-dim: rgba(74, 144, 217, 0.12);
+    --green: #4caf82;
+    --green-dim: rgba(76, 175, 130, 0.12);
+    --red: #e05c5c;
+    --red-dim: rgba(224, 92, 92, 0.12);
+    --amber: #f0a830;
+    --amber-dim: rgba(240, 168, 48, 0.10);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f4f7fc;
+      --surface: #ffffff;
+      --surface2: #edf1fa;
+      --surface3: #e2e9f5;
+      --border: rgba(0, 0, 0, 0.08);
+      --border-bright: rgba(0, 0, 0, 0.15);
+      --text: #0f1c33;
+      --text-dim: #4a6080;
+
+      --gold: #b8861e;
+      --gold-dim: rgba(184, 134, 30, 0.10);
+      --gold-bright: #a0720f;
+      --blue: #2a6fbe;
+      --blue-dim: rgba(42, 111, 190, 0.10);
+      --green: #2d8a5e;
+      --green-dim: rgba(45, 138, 94, 0.10);
+      --red: #c0392b;
+      --red-dim: rgba(192, 57, 43, 0.10);
+      --amber: #c97d10;
+      --amber-dim: rgba(201, 125, 16, 0.10);
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: var(--text);
+    font-family: var(--font-body);
+    padding: 48px 32px;
+    min-height: 100vh;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeScale {
+    from { opacity: 0; transform: scale(0.94); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .animate { animation: fadeUp 0.45s ease-out both; animation-delay: calc(var(--i, 0) * 0.07s); }
+  .animate-scale { animation: fadeScale 0.4s ease-out both; animation-delay: calc(var(--i, 0) * 0.07s); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  .container { max-width: 1080px; margin: 0 auto; }
+
+  /* ============ HEADER ============ */
+  .header { margin-bottom: 44px; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -1.2px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  h1 span { color: var(--gold); }
+
+  .lead {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    max-width: 680px;
+  }
+
+  /* ============ SECTION LABELS ============ */
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ============ VE-CARD ============ */
+  .ve-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+  }
+  .ve-card--hero {
+    background: var(--surface2);
+    border-color: var(--border-bright);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+  }
+  .ve-card--accent {
+    border-color: var(--gold);
+    border-left-width: 3px;
+  }
+
+  /* ============ MERMAID ============ */
+  .mermaid-wrap {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 32px 20px 24px;
+    overflow: auto;
+    margin-bottom: 32px;
+  }
+  .mermaid-wrap .mermaid {
+    display: flex;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    transform-origin: top center;
+  }
+  .zoom-controls {
+    position: absolute;
+    top: 8px; right: 8px;
+    display: flex; gap: 2px;
+    z-index: 10;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px;
+  }
+  .zoom-controls button {
+    width: 26px; height: 26px;
+    border: none;
+    background: transparent;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, color 0.15s;
+  }
+  .zoom-controls button:hover { background: var(--border-bright); color: var(--text); }
+  .mermaid-wrap.is-zoomed { cursor: grab; }
+  .mermaid-wrap.is-panning { cursor: grabbing; user-select: none; }
+  .mermaid .nodeLabel { font-family: var(--font-body) !important; font-size: 15px !important; }
+  .mermaid .edgeLabel { font-family: var(--font-mono) !important; font-size: 12px !important; }
+
+  /* ============ KEY INSIGHT GRID ============ */
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .insight-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .insight-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .insight-card.gold::before { background: var(--gold); }
+  .insight-card.blue::before { background: var(--blue); }
+  .insight-card.green::before { background: var(--green); }
+  .insight-card.red::before { background: var(--red); }
+
+  .insight-num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .insight-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .insight-card.gold .insight-title { color: var(--gold); }
+  .insight-card.blue .insight-title { color: var(--blue); }
+  .insight-card.green .insight-title { color: var(--green); }
+  .insight-card.red .insight-title { color: var(--red); }
+  .insight-body {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text-dim);
+  }
+
+  /* ============ PRICE FORMULA ============ */
+  .formula-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .formula-row:last-child { border-bottom: none; }
+
+  .formula-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    width: 120px;
+    flex-shrink: 0;
+  }
+  .formula-eq {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--gold);
+    background: var(--gold-dim);
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(212,167,58,0.2);
+    white-space: nowrap;
+  }
+  .formula-note {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ============ CAP RATIONALE TABLE ============ */
+  .reason-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .reason-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .reason-icon {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 7px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .reason-icon.gold { background: var(--gold-dim); color: var(--gold); }
+  .reason-icon.blue { background: var(--blue-dim); color: var(--blue); }
+  .reason-icon.green { background: var(--green-dim); color: var(--green); }
+  .reason-icon.red { background: var(--red-dim); color: var(--red); }
+
+  .reason-body strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 3px; }
+  .reason-body span { color: var(--text-dim); }
+
+  /* ============ KV RISK CALLOUT ============ */
+  .risk-box {
+    background: var(--red-dim);
+    border: 1px solid var(--red);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+  .risk-box h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--red);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .risk-box p { font-size: 13px; line-height: 1.65; color: var(--text-dim); }
+  .risk-box p + p { margin-top: 8px; }
+  .risk-box strong { color: var(--text); }
+
+  /* ============ TWO COLUMN ============ */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 680px) {
+    .two-col { grid-template-columns: 1fr; }
+    h1 { font-size: 26px; }
+    body { padding: 24px 16px; }
+  }
+
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="eyebrow animate" style="--i:0">Jupiter Perpetuals — Liquidity Pool</div>
+    <h1 class="animate" style="--i:1">How <span>JLP</span> Works</h1>
+    <p class="lead animate" style="--i:2">
+      JLP is the liquidity pool backing Jupiter's perpetuals exchange. Traders trade against the pool.
+      Fees flow in and compound into token price automatically — no claiming, no reinvesting.
+    </p>
+  </div>
+
+  <!-- FLOW DIAGRAM -->
+  <div class="section-label animate" style="--i:3">01 — full system flow</div>
+  <div class="mermaid-wrap animate" style="--i:4">
+    <div class="zoom-controls">
+      <button onclick="zoomDiagram(this,1.2)" title="Zoom in">+</button>
+      <button onclick="zoomDiagram(this,0.8)" title="Zoom out">−</button>
+      <button onclick="resetZoom(this)" title="Reset">↺</button>
+    </div>
+    <pre class="mermaid">
+      graph TD
+        A["💰 Liquidity Provider\nDeposits SOL / USDC / BTC / ETH"] -->|"deposit asset"| B["JLP Pool\n~$1B+ AUM\nSOL · ETH · BTC · USDC · USDT"]
+        B -->|"mint JLP at\ncurrent virtual price"| C["🪙 JLP Token\nReceived by LP"]
+
+        D["📈 Perps Trader\nOpens long / short"] -->|"uses pool as\ncounterparty"| B
+
+        B -->|"100% trading fees collected"| E["Fee Distribution\n75% → JLP Pool\n25% → Jupiter Protocol"]
+
+        E -->|"fees added to AUM\nwithout minting new JLP"| F["⬆️ Virtual Price Rises\nAll existing JLP holders benefit"]
+
+        D -->|"trader wins"| G["Pool AUM decreases\n⬇️ Virtual price dips"]
+        D -->|"trader loses"| H["Pool AUM increases\n⬆️ Virtual price rises"]
+
+        C -->|"redeem / sell"| I["Burn JLP at\nvirtual price\nor market price\n(whichever is higher)"]
+        I -->|"assets returned"| A
+
+        J["AUM Cap\nSet by Jupiter"] -->|"limits new minting\nwhen cap hit"| B
+
+        classDef pool fill:#162035,stroke:#4a90d9,color:#e2eaf8
+        classDef fee fill:#1a1e10,stroke:#4caf82,color:#e2eaf8
+        classDef price fill:#1e1a10,stroke:#d4a73a,color:#e2eaf8
+        classDef risk fill:#1e1010,stroke:#e05c5c,color:#e2eaf8
+        classDef actor fill:#111c30,stroke:#7a94bf,color:#e2eaf8
+        classDef cap fill:#1c1220,stroke:#b06ad4,color:#e2eaf8
+
+        class B pool
+        class E,F fee
+        class G,H,I price
+        class D,A actor
+        class J cap
+    </pre>
+  </div>
+
+  <!-- KEY INSIGHTS -->
+  <div class="section-label animate" style="--i:5">02 — core mechanics</div>
+  <div class="insight-grid">
+    <div class="insight-card gold animate" style="--i:6">
+      <div class="insight-num">01</div>
+      <div class="insight-title">Fees raise price, not supply</div>
+      <div class="insight-body">75% of all perps trading fees flow into the pool AUM without minting new JLP. This makes the token price rise for all existing holders automatically.</div>
+    </div>
+    <div class="insight-card blue animate" style="--i:7">
+      <div class="insight-num">02</div>
+      <div class="insight-title">New entrants don't dilute you</div>
+      <div class="insight-body">New LPs mint JLP at the current (higher) virtual price. They don't receive past fee accrual — they start earning from their entry price forward.</div>
+    </div>
+    <div class="insight-card green animate" style="--i:8">
+      <div class="insight-num">03</div>
+      <div class="insight-title">Auto-compounding NAV</div>
+      <div class="insight-body">Yield compounds directly into the token price. No claiming, no restaking. Your JLP is just worth more each day as fees accumulate.</div>
+    </div>
+    <div class="insight-card red animate" style="--i:9">
+      <div class="insight-num">04</div>
+      <div class="insight-title">Traders are the risk</div>
+      <div class="insight-body">The pool is the counterparty to every trade. Winning traders take from the pool; losing traders add to it. Net trader PnL is the main source of NAV volatility.</div>
+    </div>
+  </div>
+
+  <!-- PRICE FORMULAS -->
+  <div class="section-label animate" style="--i:10">03 — price mechanics</div>
+  <div class="ve-card ve-card--hero animate" style="--i:11; margin-bottom: 32px;">
+    <h2>Virtual Price vs Market Price</h2>
+    <div class="formula-row">
+      <div class="formula-label">Virtual Price</div>
+      <div class="formula-eq">Pool AUM ÷ JLP Supply</div>
+      <div class="formula-note">The true NAV. Rises as fees flow in, falls if traders win big.</div>
+    </div>
+    <div class="formula-row">
+      <div class="formula-label">Market Price</div>
+      <div class="formula-eq">Secondary DEX price</div>
+      <div class="formula-note">What JLP trades for on spot markets. Usually tracks virtual price closely.</div>
+    </div>
+    <div class="formula-row">
+      <div class="formula-label">Redemption Rule</div>
+      <div class="formula-eq">max(virtual, market)</div>
+      <div class="formula-note">If market price drops below virtual price, you always redeem at virtual. Built-in floor.</div>
+    </div>
+    <div class="formula-row">
+      <div class="formula-label">KV Net Yield</div>
+      <div class="formula-eq">JLP yield − hedge cost</div>
+      <div class="formula-note">KV earns the JLP fee yield while hedging out SOL/BTC/ETH price exposure. What remains is near-pure USDC yield.</div>
+    </div>
+  </div>
+
+  <!-- AUM CAP RATIONALE -->
+  <div class="section-label animate" style="--i:12">04 — why jupiter caps the pool</div>
+  <div class="ve-card animate" style="--i:13; margin-bottom: 32px;">
+    <h2>The AUM Cap: A Trading Venue Decision, Not an LP Decision</h2>
+    <ul class="reason-list">
+      <li class="reason-item">
+        <span class="reason-icon gold">01</span>
+        <div class="reason-body">
+          <strong>Fees scale with volume, not AUM</strong>
+          <span>Jupiter earns 25% of trading fees. Fee dollars = volume × rate. Pool size doesn't enter the equation. Doubling AUM without doubling volume halves LP yield — Jupiter earns the same, but the product looks worse.</span>
+        </div>
+      </li>
+      <li class="reason-item">
+        <span class="reason-icon blue">02</span>
+        <div class="reason-body">
+          <strong>Utilization must stay high</strong>
+          <span>Capital not deployed as collateral backing open positions earns nothing. Unlimited inflows would crater utilization, meaning most LP capital just sits idle dragging down the blended APY.</span>
+        </div>
+      </li>
+      <li class="reason-item">
+        <span class="reason-icon green">03</span>
+        <div class="reason-body">
+          <strong>Jupiter can't overpromise liquidity</strong>
+          <span>The pool is the counterparty. More capital = more potential liability if traders win. If OI-to-pool ratio gets too high, one bad run of winning traders could seriously damage the pool. The cap keeps risk ratios healthy and ensures Jupiter can always honor positions.</span>
+        </div>
+      </li>
+      <li class="reason-item">
+        <span class="reason-icon red">04</span>
+        <div class="reason-body">
+          <strong>The cap grows as volume scales</strong>
+          <span>Jupiter raises the cap deliberately as organic trading demand increases. It's a pacing mechanism — "we have confidence capital will follow demand" — not a permanent ceiling. Growing the cap is a signal of product maturity, not LP generosity.</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- KV RISK -->
+  <div class="section-label animate" style="--i:14">05 — risk to keyvault</div>
+  <div class="risk-box animate" style="--i:15">
+    <h3>⚠ Yield Compression Risk</h3>
+    <p>KV's alpha = <strong>JLP yield − hedging costs</strong>. If Jupiter uncaps the pool and capital floods in without proportional volume growth, JLP yield compresses — but hedge costs (funding rates, borrow) don't follow. The spread tightens or disappears.</p>
+    <p>The mitigation: the <strong>cross-platform strategy</strong> routes to whichever venue has the best utilization at any given time, reducing dependence on JLP alone. But JLP remains the core yield engine — this is a real, slow-moving risk worth monitoring and disclosing in the PPM.</p>
+  </div>
+
+  <!-- MINT/BURN FLOW -->
+  <div class="section-label animate" style="--i:16">06 — mint &amp; burn detail</div>
+  <div class="two-col">
+    <div class="ve-card animate" style="--i:17">
+      <h2 style="color: var(--green)">Minting JLP (Buying In)</h2>
+      <ul class="reason-list">
+        <li class="reason-item">
+          <span class="reason-icon green">1</span>
+          <div class="reason-body"><strong>Deposit asset</strong><span>SOL, ETH, BTC, USDC, or USDT into the pool</span></div>
+        </li>
+        <li class="reason-item">
+          <span class="reason-icon green">2</span>
+          <div class="reason-body"><strong>Pool prices your deposit</strong><span>Calculates AUM contribution at current virtual price</span></div>
+        </li>
+        <li class="reason-item">
+          <span class="reason-icon green">3</span>
+          <div class="reason-body"><strong>JLP minted to you</strong><span>Amount = deposit value ÷ virtual price. Small fee (0–0.6%) based on pool composition needs</span></div>
+        </li>
+        <li class="reason-item">
+          <span class="reason-icon green">4</span>
+          <div class="reason-body"><strong>Routed automatically</strong><span>Jupiter Swap mints directly or routes via DEX if secondary price is better</span></div>
+        </li>
+      </ul>
+    </div>
+    <div class="ve-card animate" style="--i:18">
+      <h2 style="color: var(--red)">Burning JLP (Exiting)</h2>
+      <ul class="reason-list">
+        <li class="reason-item">
+          <span class="reason-icon red">1</span>
+          <div class="reason-body"><strong>Return JLP tokens</strong><span>To the pool contract</span></div>
+        </li>
+        <li class="reason-item">
+          <span class="reason-icon red">2</span>
+          <div class="reason-body"><strong>Tokens burned</strong><span>Supply decreases, AUM stays constant → remaining holders unaffected</span></div>
+        </li>
+        <li class="reason-item">
+          <span class="reason-icon red">3</span>
+          <div class="reason-body"><strong>Assets returned</strong><span>Proportional to your share. Redeemed at virtual price if market price is lower</span></div>
+        </li>
+        <li class="reason-item">
+          <span class="reason-icon red">4</span>
+          <div class="reason-body"><strong>Same fee applies</strong><span>Exit fee based on how much the pool needs that asset at redemption time</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer animate" style="--i:19">
+    <span>JLP Pool Mechanics — KeyVault Fund reference</span>
+    <span>Source: Jupiter Perpetuals Docs + jup.ag · Generated 2026-03-20</span>
+  </div>
+
+</div>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  import elkLayouts from 'https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk/dist/mermaid-layout-elk.esm.min.mjs';
+
+  const isDark = !window.matchMedia('(prefers-color-scheme: light)').matches;
+
+  mermaid.registerLayoutLoaders(elkLayouts);
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    look: 'classic',
+    layout: 'elk',
+    themeVariables: {
+      primaryColor: isDark ? '#162035' : '#dce8f5',
+      primaryBorderColor: isDark ? '#4a90d9' : '#2a6fbe',
+      primaryTextColor: isDark ? '#e2eaf8' : '#0f1c33',
+      secondaryColor: isDark ? '#1a1e10' : '#e8f5e2',
+      secondaryBorderColor: isDark ? '#4caf82' : '#2d8a5e',
+      secondaryTextColor: isDark ? '#e2eaf8' : '#0f1c33',
+      tertiaryColor: isDark ? '#1e1a10' : '#fdf5e0',
+      tertiaryBorderColor: isDark ? '#d4a73a' : '#b8861e',
+      tertiaryTextColor: isDark ? '#e2eaf8' : '#0f1c33',
+      lineColor: isDark ? '#4a6a9a' : '#5a7aaa',
+      fontSize: '14px',
+      fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+      edgeLabelBackground: isDark ? '#111c30' : '#ffffff',
+    }
+  });
+</script>
+<script>
+  function updateZoomState(wrap) {
+    var t = wrap.querySelector('.mermaid');
+    wrap.classList.toggle('is-zoomed', parseFloat(t.dataset.zoom||'1') > 1);
+  }
+  function zoomDiagram(btn, factor) {
+    var wrap = btn.closest('.mermaid-wrap');
+    var t = wrap.querySelector('.mermaid');
+    var next = Math.min(Math.max((parseFloat(t.dataset.zoom||'1')) * factor, 0.3), 5);
+    t.dataset.zoom = next;
+    t.style.transform = 'scale(' + next + ')';
+    updateZoomState(wrap);
+  }
+  function resetZoom(btn) {
+    var wrap = btn.closest('.mermaid-wrap');
+    var t = wrap.querySelector('.mermaid');
+    t.dataset.zoom = '1';
+    t.style.transform = 'scale(1)';
+    updateZoomState(wrap);
+  }
+  document.querySelectorAll('.mermaid-wrap').forEach(function(wrap) {
+    wrap.addEventListener('wheel', function(e) {
+      if (!e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
+      var t = wrap.querySelector('.mermaid');
+      var next = Math.min(Math.max((parseFloat(t.dataset.zoom||'1')) * (e.deltaY < 0 ? 1.1 : 0.9), 0.3), 5);
+      t.dataset.zoom = next;
+      t.style.transform = 'scale(' + next + ')';
+      updateZoomState(wrap);
+    }, { passive: false });
+    var sx, sy, sl, st;
+    wrap.addEventListener('mousedown', function(e) {
+      if (e.target.closest('.zoom-controls')) return;
+      if (parseFloat(wrap.querySelector('.mermaid').dataset.zoom||'1') <= 1) return;
+      wrap.classList.add('is-panning');
+      sx = e.clientX; sy = e.clientY; sl = wrap.scrollLeft; st = wrap.scrollTop;
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (!wrap.classList.contains('is-panning')) return;
+      wrap.scrollLeft = sl - (e.clientX - sx);
+      wrap.scrollTop = st - (e.clientY - sy);
+    });
+    window.addEventListener('mouseup', function() { wrap.classList.remove('is-panning'); });
+  });
+</script>
+</body>
+</html>
