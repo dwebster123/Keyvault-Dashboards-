@@ -245,11 +245,7 @@
         <!-- Metrics -->
         <div class="metrics-grid">
             <div class="metric-card"><div class="label">Projected End Value</div><div class="value green" id="mEndVal">—</div></div>
-            <div class="metric-card"><div class="label">Total Fees Paid</div><div class="value pink" id="mTotalFees">—</div></div>
-            <div class="metric-card"><div class="label">Implied Gross APY</div><div class="value purple" id="mGrossAPY">—</div></div>
             <div class="metric-card"><div class="label">Net APY</div><div class="value green" id="mNetAPY">—</div></div>
-            <div class="metric-card"><div class="label">Management Fees</div><div class="value pink" id="mMgmtFees">—</div></div>
-            <div class="metric-card"><div class="label">Performance Fees</div><div class="value pink" id="mPerfFees">—</div></div>
         </div>
 
 <!-- portfolio growth chart removed -->
@@ -361,17 +357,11 @@ function calculate() {
     const impliedGross = solveGrossForNet(targetNetAnnual, initial, years, badYear);
     const result = simulate(impliedGross, initial, years, badYear);
 
-    const totalFees = result.totalMgmt + result.totalPerf;
     const netAPY = (Math.pow(result.endValue / initial, 1 / years) - 1) * 100;
-    const grossAPY = impliedGross * 100;
 
     // Update metrics
     $('mEndVal').textContent = fmt(result.endValue);
-    $('mTotalFees').textContent = fmt(totalFees);
-    $('mGrossAPY').textContent = pct(grossAPY);
     $('mNetAPY').textContent = pct(netAPY);
-    $('mMgmtFees').textContent = fmt(result.totalMgmt);
-    $('mPerfFees').textContent = fmt(result.totalPerf);
 
     // Update table
     const tbody = document.querySelector('#feeTable tbody');
