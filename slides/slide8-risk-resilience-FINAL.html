@@ -6,12 +6,13 @@
 <title>Slide 8 — Built to Survive</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #000; overflow: hidden; }
+  body { background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; width: 100vw; height: 100vh; }
   #slide {
     width: 1920px; height: 1080px;
     background: #050508;
     position: relative; overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    transform-origin: center center;
   }
 
   .blob { position: absolute; border-radius: 50%; pointer-events: none; }
@@ -272,5 +273,16 @@
   <div class="confidential">Confidential — Not For Distribution</div>
 
 </div>
+<script>
+  function scaleSlide() {
+    var slide = document.getElementById('slide');
+    var scaleX = window.innerWidth / 1920;
+    var scaleY = window.innerHeight / 1080;
+    var scale = Math.min(scaleX, scaleY);
+    slide.style.transform = 'scale(' + scale + ')';
+  }
+  scaleSlide();
+  window.addEventListener('resize', scaleSlide);
+</script>
 </body>
 </html>
