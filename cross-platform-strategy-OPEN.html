@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KeyVault — Cross-Platform JLP Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: rgba(255,255,255,0.07);
+    --border-bright: rgba(255,255,255,0.15);
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --gold: #d4a73a;
+    --gold-dim: rgba(212,167,58,0.12);
+    --gold-mid: rgba(212,167,58,0.25);
+    --teal: #1e8a7a;
+    --teal-bright: #26c49e;
+    --teal-dim: rgba(38,196,158,0.12);
+    --slate: #1e3a5f;
+    --slate-bright: #4f9cf9;
+    --slate-dim: rgba(79,156,249,0.12);
+    --amber: #d97706;
+    --amber-dim: rgba(217,119,6,0.12);
+    --red: #e05252;
+    --red-dim: rgba(224,82,82,0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 32px 32px;
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    padding: 48px 24px 80px;
+  }
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.1s forwards;
+  }
+  .header .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .header .sub {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 560px;
+  }
+
+  /* Section labels */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* Flow diagram */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.25s forwards;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  /* Layers */
+  .layer {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    position: relative;
+  }
+  .layer.layer--investors {
+    border-color: var(--gold-mid);
+    background: linear-gradient(135deg, var(--gold-dim), var(--surface));
+  }
+  .layer.layer--kv {
+    border-color: rgba(79,156,249,0.3);
+    background: linear-gradient(135deg, var(--slate-dim), var(--surface));
+  }
+  .layer.layer--custody {
+    border-color: rgba(38,196,158,0.3);
+    background: linear-gradient(135deg, var(--teal-dim), var(--surface));
+  }
+  .layer.layer--voltr {
+    border-color: rgba(38,196,158,0.2);
+    background: var(--surface2);
+  }
+  .layer.layer--platforms {
+    border-color: var(--border-bright);
+    background: var(--surface);
+  }
+  .layer.layer--yield {
+    border-color: rgba(212,167,58,0.3);
+    background: linear-gradient(135deg, var(--gold-dim), var(--surface));
+  }
+
+  .layer-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .layer-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .layer-desc {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .layer-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 8px;
+  }
+  .badge--gold { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--gold-mid); }
+  .badge--teal { background: var(--teal-dim); color: var(--teal-bright); border: 1px solid rgba(38,196,158,0.25); }
+  .badge--slate { background: var(--slate-dim); color: var(--slate-bright); border: 1px solid rgba(79,156,249,0.25); }
+  .badge--amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(217,119,6,0.25); }
+  .badge--red { background: var(--red-dim); color: var(--red); border: 1px solid rgba(224,82,82,0.25); }
+
+  /* Arrow connector */
+  .arrow-down {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 36px;
+    position: relative;
+  }
+  .arrow-down::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 28px;
+    background: linear-gradient(to bottom, var(--border-bright), var(--gold));
+  }
+  .arrow-down::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--gold);
+  }
+  .arrow-down .arrow-label {
+    position: absolute;
+    right: calc(50% + 16px);
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* Platforms grid */
+  .platforms-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .platform-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 12px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .platform-card:hover {
+    border-color: var(--border-bright);
+    transform: translateY(-2px);
+  }
+  .platform-card.highlight { border-color: rgba(38,196,158,0.35); }
+  .platform-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .platform-role {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  /* Comparison section */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.5s forwards;
+  }
+  .compare-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .compare-card.old { border-color: rgba(224,82,82,0.25); }
+  .compare-card.new { border-color: rgba(38,196,158,0.35); }
+  .compare-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .compare-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .compare-dot.red { background: var(--red); }
+  .compare-dot.green { background: var(--teal-bright); }
+  .compare-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .compare-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .compare-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .compare-items li {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    padding-left: 16px;
+    position: relative;
+  }
+  .compare-items li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .compare-card.old .compare-items li::before { background: var(--red); opacity: 0.6; }
+  .compare-card.new .compare-items li::before { background: var(--teal-bright); opacity: 0.7; }
+  .compare-items li strong { color: var(--text); }
+
+  /* Metrics row */
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.65s forwards;
+  }
+  .metric {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .metric-val {
+    font-size: 1.9rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .metric-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  /* Who does what */
+  .roles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.8s forwards;
+  }
+  .role-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .role-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .role-desc {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+  @media (max-width: 640px) {
+    .platforms-grid { grid-template-columns: repeat(2, 1fr); }
+    .comparison { grid-template-columns: 1fr; }
+    .metrics-row { grid-template-columns: repeat(2, 1fr); }
+    .roles { grid-template-columns: 1fr; }
+    .header h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="eyebrow">KeyVault Fund · Strategy Architecture</div>
+    <h1>Cross-Platform JLP Strategy</h1>
+    <p class="sub">A multi-protocol yield system that routes capital dynamically across four DeFi platforms — eliminating single-source liquidity constraints and negative borrow carry.</p>
+  </div>
+
+  <!-- METRICS -->
+  <div class="metrics-row">
+    <div class="metric">
+      <div class="metric-val">33%</div>
+      <div class="metric-label">Annualized APY<br>backtest (Nov 2025 → Mar 2026)</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val">3×</div>
+      <div class="metric-label">Leverage on JLP position via multi-platform borrow</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val">4</div>
+      <div class="metric-label">DeFi protocols integrated via Cobo + Voltr routing</div>
+    </div>
+  </div>
+
+  <!-- FLOW DIAGRAM -->
+  <div class="section-label" style="opacity:0;animation:fadeUp 0.6s ease 0.15s forwards">Capital flow</div>
+  <div class="flow">
+
+    <!-- Investors -->
+    <div class="flow-row">
+      <div class="layer layer--investors">
+        <div class="layer-tag">Tier 1 — Capital Source</div>
+        <div class="layer-title">Investors (LPs)</div>
+        <div class="layer-desc">Accredited investors. USD in via Circle / Coinbase Prime fiat rails. SEC Reg D compliant. Minimum entry TBD.</div>
+        <span class="layer-badge badge--gold">Fiat → USDC</span>
+      </div>
+    </div>
+
+    <div class="arrow-down"><span class="arrow-label">deploy capital</span></div>
+
+    <!-- KeyVault -->
+    <div class="flow-row">
+      <div class="layer layer--kv">
+        <div class="layer-tag">Tier 2 — Fund Manager</div>
+        <div class="layer-title">KeyVault Fund</div>
+        <div class="layer-desc">Capital allocator and curator. Sources LPs, defines strategy risk parameters, monitors performance. Works with Prime Number to deploy and manage capital. GP: Deven Webster.</div>
+        <span class="layer-badge badge--slate">Allocate → Cobo</span>
+      </div>
+    </div>
+
+    <div class="arrow-down"><span class="arrow-label">institutional custody</span></div>
+
+    <!-- Cobo -->
+    <div class="flow-row">
+      <div class="layer layer--custody">
+        <div class="layer-tag">Tier 3 — Custody & Access Layer</div>
+        <div class="layer-title">Cobo MPC Custody</div>
+        <div class="layer-desc">Institutional-grade MPC wallet custody. Assets held securely while enabling programmatic access to multiple DeFi protocols simultaneously. Manager can trade — cannot withdraw. Non-custodial enforced by smart contract.</div>
+        <span class="layer-badge badge--teal">MPC · Multi-protocol access</span>
+      </div>
+    </div>
+
+    <div class="arrow-down"><span class="arrow-label">strategy execution</span></div>
+
+    <!-- Voltr -->
+    <div class="flow-row">
+      <div class="layer layer--voltr">
+        <div class="layer-tag">Tier 4 — Strategy Router</div>
+        <div class="layer-title">Voltr Vault (Solana)</div>
+        <div class="layer-desc">Embedded within Cobo. Programmatic vault that routes capital to optimal sources at any time — best borrow rates, deepest liquidity, lowest funding carry. Automated by Prime Number's quant strategy engine.</div>
+        <span class="layer-badge badge--teal">Dynamic routing · Prime Number automated</span>
+      </div>
+    </div>
+
+    <div class="arrow-down"><span class="arrow-label">routes to best conditions</span></div>
+
+    <!-- Platforms -->
+    <div class="layer layer--platforms">
+      <div class="layer-tag">Tier 5 — DeFi Execution Layer</div>
+      <div class="layer-title" style="margin-bottom:12px">Four-Protocol Stack</div>
+      <div class="platforms-grid">
+        <div class="platform-card highlight">
+          <div class="platform-name">Jupiter</div>
+          <div class="platform-role">JLP pool · trading fee yield · swap routing</div>
+        </div>
+        <div class="platform-card highlight">
+          <div class="platform-name">Drift</div>
+          <div class="platform-role">Perps borrow · funding rates · hedge shorts</div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-name">Hyperliquid</div>
+          <div class="platform-role">Additional borrow source · funding arb</div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-name">Aster</div>
+          <div class="platform-role">Solana lending · borrow cost arbitrage</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down"><span class="arrow-label">net yield after costs</span></div>
+
+    <!-- Yield output -->
+    <div class="flow-row">
+      <div class="layer layer--yield">
+        <div class="layer-tag">Tier 6 — Yield Output</div>
+        <div class="layer-title">Delta-Neutral Net Yield → Investors</div>
+        <div class="layer-desc">JLP fee yield (3× leveraged) minus blended borrow cost across platforms. Price risk hedged via matched short positions. What remains is stable, market-neutral USDC yield distributed to LPs.</div>
+        <span class="layer-badge badge--gold">Target: 25–35% net APY</span>
+        <span class="layer-badge badge--slate" style="margin-left:8px">Market-neutral</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMPARISON -->
+  <div class="section-label" style="opacity:0;animation:fadeUp 0.6s ease 0.4s forwards">Why cross-platform vs KV1</div>
+  <div class="comparison">
+    <div class="compare-card old">
+      <div class="compare-header">
+        <div class="compare-dot red"></div>
+        <div>
+          <div class="compare-title">KV1 — Current Vault</div>
+          <div class="compare-subtitle">Drift-only · degraded since Oct 2025</div>
+        </div>
+      </div>
+      <ul class="compare-items">
+        <li><strong>Single-platform borrow:</strong> Drift only — hits capacity ceiling, can't scale</li>
+        <li><strong>Negative funding:</strong> When Drift funding turns negative, hedge costs money</li>
+        <li><strong>No routing:</strong> Stuck with whatever Drift offers regardless of market conditions</li>
+        <li><strong>Negative carry:</strong> High borrow costs eating into JLP fee yield</li>
+        <li><strong>Result:</strong> ~5% live APY vs 18% target — strategy degraded since Oct</li>
+      </ul>
+    </div>
+    <div class="compare-card new">
+      <div class="compare-header">
+        <div class="compare-dot green"></div>
+        <div>
+          <div class="compare-title">Cross-Platform — New Strategy</div>
+          <div class="compare-subtitle">Cobo + Voltr · 4 protocols · In development</div>
+        </div>
+      </div>
+      <ul class="compare-items">
+        <li><strong>Multi-source borrow:</strong> Drift + Hyperliquid + Aster — no single capacity constraint</li>
+        <li><strong>Funding arbitrage:</strong> Routes borrows to platform with best rate at any moment</li>
+        <li><strong>Dynamic routing:</strong> Voltr constantly rebalances to optimal conditions</li>
+        <li><strong>Carry elimination:</strong> Borrow costs arbitraged away across platforms</li>
+        <li><strong>Result:</strong> JLP fee yield compounds cleanly without carry drag — 33% backtest APY</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- WHO DOES WHAT -->
+  <div class="section-label" style="opacity:0;animation:fadeUp 0.6s ease 0.7s forwards">Roles</div>
+  <div class="roles">
+    <div class="role-card">
+      <div class="role-name" style="color:var(--gold)">KeyVault</div>
+      <div class="role-desc">Capital allocator. Sources LPs, defines risk parameters, monitors performance. Brings the funds.</div>
+    </div>
+    <div class="role-card">
+      <div class="role-name" style="color:var(--teal-bright)">Prime Number (HK)</div>
+      <div class="role-desc">Strategy curator and automation engine. Builds and runs the Voltr routing logic across all four platforms.</div>
+    </div>
+    <div class="role-card">
+      <div class="role-name" style="color:var(--slate-bright)">Cobo + Voltr</div>
+      <div class="role-desc">Infrastructure stack. Institutional custody (Cobo) + Solana vault execution layer (Voltr). Enables multi-protocol access from a single custody account.</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
