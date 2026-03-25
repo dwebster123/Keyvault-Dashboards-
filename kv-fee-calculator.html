@@ -516,36 +516,24 @@ function calc() {
   const cogs       = parseFloat(document.getElementById('cogs').value) || 0;
   const primePct   = parseFloat(document.getElementById('prime-reward-pct').value) || 0;
 
-  // Quarterly management fee calculation
-  const qRate = mgmtPct / 4 / 100;
-  const growthPerQ = grossApy / 4 / 100;
+  // ── STEP 1: Management fee (flat on initial AUM, matching spreadsheet) ──
+  const totalMgmtFee = initial * (mgmtPct / 100);
 
-  let nav = initial;
-  let totalMgmtFee = 0;
-  const quarters = [];
-  for (let q = 0; q < 4; q++) {
-    const qStartNav = nav;
-    const fee = qStartNav * qRate;
-    totalMgmtFee += fee;
-    nav = (qStartNav - fee) * (1 + growthPerQ); // nav after fee grows
-    quarters.push({ q: q+1, startNav: qStartNav, fee, endNav: nav });
-  }
-
-  // Net invested capital = initial - total mgmt fee
+  // ── STEP 2: Net invested capital ──
   const netInvestedCapital = initial - totalMgmtFee;
 
-  // Total value after gross return (applied to net invested capital for year)
-  const totalValueAfterGross = initial * (1 + grossApy / 100);
-  const grossProfit = totalValueAfterGross - initial; // gross $ profit
+  // ── STEP 3: Returns calculated on net invested capital ──
+  const totalValueAfterGross = netInvestedCapital * (1 + grossApy / 100);
+  const grossProfit = totalValueAfterGross - netInvestedCapital;  // = netInvestedCapital * grossApy%
 
-  // Benchmark
-  const benchmarkProfit = initial * (benchApy / 100);
+  // ── STEP 4: Benchmark on net invested capital ──
+  const benchmarkProfit = netInvestedCapital * (benchApy / 100);
   const outperformanceValue = grossProfit - benchmarkProfit;
 
-  // Performance fees
+  // ── STEP 5: Performance fees on gross profit ──
   const basePerfFee = grossProfit * (basePerfPct / 100);
 
-  // Kicker: only if gross > benchmark
+  // Kicker only applies when gross APY > benchmark APY
   let kickerFee = 0;
   let realPerfPct = basePerfPct;
   if (grossApy > benchApy) {
@@ -555,64 +543,76 @@ function calc() {
   }
   const totalPerfFee = basePerfFee + kickerFee;
 
-  // Net final value before COGS
-  const netFinalValue = totalValueAfterGross - totalMgmtFee - totalPerfFee;
+  // ── STEP 6: Net final value (investor value before COGS) ──
+  const netFinalValue = totalValueAfterGross - totalPerfFee;
 
-  // Investor return
-  const investorReturn = netFinalValue - initial;
-  const investorReturnPct = (investorReturn / initial) * 100;
+  // ── STEP 7: Investor return vs net invested capital ──
+  const investorReturn = netFinalValue - netInvestedCapital;
+  const investorReturnPct = (investorReturn / netInvestedCapital) * 100;
 
-  // Prime Number reward
+  // ── STEP 8: Prime Number reward on gross profit ──
   const primeReward = grossProfit * (primePct / 100);
 
-  // KV profits
-  const kvMgmtRevenue = totalMgmtFee;
-  const kvPerfRevenue = totalPerfFee;
-  const kvGross = kvMgmtRevenue + kvPerfRevenue;
-  const kvNet = kvGross - cogs - primeReward;
+  // ── STEP 9: Total KV profits = mgmt + perf - COGS + prime (prime is KV income per sheet) ──
+  const kvNet = totalMgmtFee + totalPerfFee - cogs + primeReward;
 
-  // Investor net (after COGS borne by KV perf fee, not deducted from investor)
-  const investorNetDollar = investorReturn; // COGS come from KV profits, not investor value
-  // Per the spreadsheet, net final value before COGS is shown, COGS is a KV expense
+  // ── Quarterly breakdown (informational — shows what quarterly charging looks like) ──
+  const qRate = mgmtPct / 4 / 100;
+  const growthPerQ = grossApy / 4 / 100;
+  let nav = initial;
+  let totalMgmtFeeQ = 0;
+  const quarters = [];
+  for (let q = 0; q < 4; q++) {
+    const qStartNav = nav;
+    const fee = qStartNav * qRate;
+    totalMgmtFeeQ += fee;
+    nav = qStartNav * (1 + growthPerQ); // nav grows (fee separate for display)
+    quarters.push({ q: q+1, startNav: qStartNav, fee });
+  }
 
-  // Update KPIs
+  // ── Update KPIs ──
   document.getElementById('kpi-investor-pct').textContent = fmtPct(investorReturnPct);
   document.getElementById('kpi-investor-dollar').textContent = fmt(investorReturn);
   document.getElementById('kpi-kv-profit').textContent = fmt(kvNet);
   document.getElementById('kpi-mgmt-fee').textContent = fmt(totalMgmtFee);
-  document.getElementById('kpi-mgmt-fee-sub').textContent = fmtPct(mgmtPct) + ' ann. / quarterly on NAV';
+  document.getElementById('kpi-mgmt-fee-sub').textContent = fmtPct(mgmtPct) + ' of initial AUM';
 
-  // Update quarterly breakdown
+  // ── Quarterly breakdown display ──
   const qGrid = document.getElementById('q-breakdown');
   qGrid.innerHTML = quarters.map(q => `
     <div class="q-cell">
-      <div class="q-label">Q${q.q}</div>
+      <div class="q-label">Q${q.q} NAV</div>
       <div class="q-nav">${fmt(q.startNav)}</div>
-      <div class="q-fee">−${fmt(q.fee)}</div>
+      <div class="q-fee">fee: ${fmt(q.fee)}</div>
     </div>
-  `).join('');
+  `).join('') + `
+    <div class="q-cell" style="border-color:var(--accent-border)">
+      <div class="q-label">Total (quarterly)</div>
+      <div class="q-nav" style="color:var(--accent)">${fmt(totalMgmtFeeQ)}</div>
+      <div class="q-fee" style="color:var(--text-muted)">vs ${fmt(totalMgmtFee)} flat</div>
+    </div>`;
 
-  // Build output table
+  // ── Build output table ──
   const rows = [
     { section: 'Capital' },
-    { label: 'Initial Investment', value: fmt(initial), cls: '' },
-    { label: `Management Fee (${fmtPct(mgmtPct)} ann., quarterly on NAV)`, value: fmt(-totalMgmtFee), cls: 'negative' },
+    { label: 'Initial Investment', value: fmt(initial) },
+    { label: `Management Fee (${fmtPct(mgmtPct)} of initial AUM)`, value: fmt(-totalMgmtFee), cls: 'negative' },
     { label: 'Net Invested Capital', value: fmt(netInvestedCapital), cls: 'highlight' },
-    { section: 'Returns' },
-    { label: `Total Value After Gross Return (${fmtPct(grossApy)})`, value: fmt(totalValueAfterGross), cls: '' },
-    { label: `Gross Achieved APY — ${fmtPct(grossApy)} ← benchmark number`, value: fmt(grossProfit), cls: 'highlight' },
+    { section: 'Returns (on net invested capital)' },
+    { label: `Total Value After Gross Return (${fmtPct(grossApy)})`, value: fmt(totalValueAfterGross) },
+    { label: `Gross Achieved APY ${fmtPct(grossApy)} ← benchmark number`, value: fmt(grossProfit), cls: 'highlight' },
     { label: `Benchmark APY (${fmtPct(benchApy)})`, value: fmt(benchmarkProfit), cls: 'muted' },
     { label: 'Outperformance Value', value: fmt(outperformanceValue), cls: outperformanceValue >= 0 ? 'positive' : 'negative' },
     { section: 'Performance Fees' },
     { label: `KV Base Performance Fee (${fmtPct(basePerfPct, 0)} of gross profit)`, value: fmt(-basePerfFee), cls: 'negative' },
-    { label: `KV Kicker Performance Fee (${fmtPct(kickerPct, 0)} — above benchmark)`, value: fmt(-kickerFee), cls: kickerFee > 0 ? 'negative' : 'muted' },
+    { label: `KV Kicker Performance Fee (${fmtPct(kickerPct, 0)} — above benchmark only)`, value: fmt(-kickerFee), cls: kickerFee > 0 ? 'negative' : 'muted' },
     { label: `KV Real Performance Fee (${fmtPct(realPerfPct, 2)})`, value: fmt(-totalPerfFee), cls: 'negative' },
-    { label: 'Net Final Value (before additional COGS)', value: fmt(netFinalValue), cls: 'highlight' },
+    { label: 'Net Final Value (excl. additional COGS)', value: fmt(netFinalValue), cls: 'highlight' },
     { section: 'Investor Return' },
     { label: 'Investor Net Return', value: `${fmtPct(investorReturnPct)} / ${fmt(investorReturn)}`, cls: 'highlight' },
     { section: 'KeyVault Costs & Profits' },
     { label: 'Additional COGS (salary, software, 3rd party)', value: fmt(-cogs), cls: 'negative' },
-    { label: `Prime Number Reward (${fmtPct(primePct, 0)} of gross profit)`, value: fmt(-primeReward), cls: 'negative' },
+    { label: `Prime Number Reward (${fmtPct(primePct, 0)} of gross profit)`, value: fmt(primeReward), cls: 'muted' },
     { label: 'Total KeyVault Profits', value: fmt(kvNet), cls: 'total' },
   ];
 
@@ -625,9 +625,8 @@ function calc() {
   }).join('');
 }
 
-// Wire all inputs
 document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
-calc(); // initial render
+calc();
 </script>
 </body>
 </html>
