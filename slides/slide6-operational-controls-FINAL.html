@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Slide 6 — Your Capital Is Protected</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -16,219 +15,130 @@
   }
 
   .blob { position: absolute; border-radius: 50%; pointer-events: none; }
-  .blob-tl {
-    width: 700px; height: 700px;
-    background: radial-gradient(circle, rgba(0,200,220,0.12) 0%, transparent 70%);
-    filter: blur(90px); top: -100px; left: -100px;
-  }
-  .blob-br {
-    width: 800px; height: 800px;
-    background: radial-gradient(circle, rgba(140,40,200,0.22) 0%, transparent 70%);
-    filter: blur(80px); bottom: -200px; right: -180px;
-  }
-  .blob-mid {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(0,220,200,0.08) 0%, transparent 70%);
-    filter: blur(70px); top: 300px; left: 800px;
-  }
+  .blob-tl { width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,200,220,0.10) 0%, transparent 70%); filter: blur(90px); top: -100px; left: -100px; }
+  .blob-br { width: 800px; height: 800px; background: radial-gradient(circle, rgba(140,40,200,0.18) 0%, transparent 70%); filter: blur(80px); bottom: -200px; right: -180px; }
 
   .header-bar {
     position: absolute; top: 44px; left: 72px; right: 72px;
     display: flex; align-items: center; gap: 20px;
   }
-  .header-label {
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 0.25em; text-transform: uppercase;
-    color: rgba(255,255,255,0.40); white-space: nowrap;
-  }
-  .header-line {
-    flex: 1; height: 1px;
-    background: linear-gradient(90deg, rgba(255,255,255,0.20), rgba(255,255,255,0.06));
-  }
-  .header-url {
-    font-size: 11px; letter-spacing: 0.12em;
-    color: rgba(255,255,255,0.40); white-space: nowrap;
-  }
+  .header-label { font-size: 11px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.40); white-space: nowrap; }
+  .header-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.20), rgba(255,255,255,0.06)); }
+  .header-url { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.40); white-space: nowrap; }
 
   .content {
     position: absolute; top: 100px; left: 72px; right: 72px; bottom: 50px;
     display: flex; flex-direction: column;
   }
 
-  .title-row {
-    display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
-  }
-  .title {
-    font-size: 44px; font-weight: 900; text-transform: uppercase;
-    letter-spacing: -0.02em; color: #fff; line-height: 1.05;
-  }
+  .title-row { margin-bottom: 6px; }
+  .title { font-size: 42px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #fff; line-height: 1.05; }
   .title span { color: #00dcc8; }
-  .subtitle {
-    font-size: 16px; color: rgba(255,255,255,0.40);
-    margin-top: 8px; letter-spacing: 0.02em; font-weight: 400;
-  }
+  .subtitle { font-size: 15px; color: rgba(255,255,255,0.38); margin-top: 6px; letter-spacing: 0.02em; }
 
-  .divider {
-    height: 1px; margin: 18px 0 22px;
-    background: linear-gradient(90deg, rgba(0,220,200,0.25), rgba(255,255,255,0.06), transparent);
-  }
+  .divider { height: 1px; margin: 14px 0 18px; background: linear-gradient(90deg, rgba(0,220,200,0.25), rgba(255,255,255,0.06), transparent); }
 
-  /* 3 Pillar Layout */
-  .pillars {
-    display: flex; gap: 24px; flex: 1; min-height: 0;
-  }
+  /* Scenario cards */
+  .scenarios { display: flex; gap: 20px; flex: 1; min-height: 0; }
 
-  .pillar {
+  .scenario {
     flex: 1;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.06);
     border-radius: 10px;
-    padding: 28px 28px 22px;
+    padding: 0;
     display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.015);
+  }
+
+  /* Disaster header band */
+  .scenario-header {
+    padding: 18px 24px 16px;
     position: relative;
-    overflow: hidden;
   }
-  .pillar::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 3px; border-radius: 10px 10px 0 0;
-  }
-  .pillar.custody::before { background: #00dcc8; box-shadow: 0 0 12px rgba(0,220,200,0.5); }
-  .pillar.infra::before { background: #7c3aed; box-shadow: 0 0 12px rgba(124,58,237,0.5); }
-  .pillar.compliance::before { background: #f59e0b; box-shadow: 0 0 12px rgba(245,158,11,0.5); }
+  .scenario.exchange .scenario-header { background: rgba(239,68,68,0.08); border-bottom: 1px solid rgba(239,68,68,0.15); }
+  .scenario.luna    .scenario-header { background: rgba(245,158,11,0.08); border-bottom: 1px solid rgba(245,158,11,0.15); }
+  .scenario.over    .scenario-header { background: rgba(167,139,250,0.08); border-bottom: 1px solid rgba(167,139,250,0.15); }
 
-  .pillar-icon {
-    width: 40px; height: 40px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 14px;
-    font-size: 13px; font-weight: 900; letter-spacing: 0.02em;
+  .disaster-tag {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 3px; display: inline-flex; align-items: center; gap: 5px;
+    margin-bottom: 8px;
   }
-  .pillar.custody .pillar-icon {
-    background: rgba(0,220,200,0.10);
-    border: 1px solid rgba(0,220,200,0.25);
-    color: #00dcc8;
-  }
-  .pillar.infra .pillar-icon {
-    background: rgba(124,58,237,0.10);
-    border: 1px solid rgba(124,58,237,0.25);
-    color: #a78bfa;
-  }
-  .pillar.compliance .pillar-icon {
-    background: rgba(245,158,11,0.10);
-    border: 1px solid rgba(245,158,11,0.25);
-    color: #f59e0b;
-  }
+  .scenario.exchange .disaster-tag { background: rgba(239,68,68,0.15); color: #f87171; }
+  .scenario.luna    .disaster-tag { background: rgba(245,158,11,0.15); color: #fbbf24; }
+  .scenario.over    .disaster-tag { background: rgba(167,139,250,0.15); color: #a78bfa; }
 
-  .pillar-title {
-    font-size: 20px; font-weight: 900; color: #fff;
-    letter-spacing: -0.01em; line-height: 1.15;
-    margin-bottom: 6px;
+  .scenario-title { font-size: 20px; font-weight: 900; color: #fff; line-height: 1.1; letter-spacing: -0.01em; }
+  .scenario-damage {
+    font-size: 11px; margin-top: 5px; font-weight: 600; letter-spacing: 0.03em;
   }
-  .pillar-tagline {
-    font-size: 12px; color: rgba(255,255,255,0.35);
-    margin-bottom: 18px; line-height: 1.4;
+  .scenario.exchange .scenario-damage { color: rgba(248,113,113,0.7); }
+  .scenario.luna    .scenario-damage { color: rgba(251,191,36,0.7); }
+  .scenario.over    .scenario-damage { color: rgba(167,139,250,0.7); }
+
+  /* What went wrong */
+  .what-went-wrong {
+    padding: 14px 24px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .section-label {
+    font-size: 8px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.25); margin-bottom: 6px;
+  }
+  .wrong-text {
+    font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.5;
   }
 
-  .pillar-items {
-    display: flex; flex-direction: column; gap: 14px;
+  /* Why we're safe */
+  .why-safe {
+    padding: 14px 24px 18px;
     flex: 1;
   }
-  .pillar-item {
-    display: flex; gap: 12px; align-items: flex-start;
-  }
-  .pillar-item-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    margin-top: 7px; flex-shrink: 0;
-  }
-  .pillar.custody .pillar-item-dot { background: #00dcc8; }
-  .pillar.infra .pillar-item-dot { background: #a78bfa; }
-  .pillar.compliance .pillar-item-dot { background: #f59e0b; }
+  .why-safe .section-label { color: #00dcc8; opacity: 0.6; }
 
-  .pillar-item-text {
-    font-size: 13px; color: rgba(255,255,255,0.55);
-    line-height: 1.5;
+  .protection-item {
+    display: flex; gap: 10px; align-items: flex-start; margin-bottom: 11px;
   }
-  .pillar-item-text strong {
-    color: rgba(255,255,255,0.85); font-weight: 700;
+  .protection-item:last-child { margin-bottom: 0; }
+  .shield-dot {
+    width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
   }
+  .scenario.exchange .shield-dot { background: rgba(0,220,200,0.10); border: 1px solid rgba(0,220,200,0.2); }
+  .scenario.luna    .shield-dot { background: rgba(0,220,200,0.10); border: 1px solid rgba(0,220,200,0.2); }
+  .scenario.over    .shield-dot { background: rgba(0,220,200,0.10); border: 1px solid rgba(0,220,200,0.2); }
 
-  .pillar-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 10px; border-radius: 3px;
-    font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
-    text-transform: uppercase; margin-top: auto;
-    width: fit-content;
-  }
-  .pillar.custody .pillar-badge {
-    background: rgba(0,220,200,0.08); border: 1px solid rgba(0,220,200,0.20);
-    color: rgba(0,220,200,0.70);
-  }
-  .pillar.infra .pillar-badge {
-    background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.20);
-    color: rgba(167,139,250,0.70);
-  }
-  .pillar.compliance .pillar-badge {
-    background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.20);
-    color: rgba(245,158,11,0.70);
-  }
+  .checkmark { font-size: 10px; color: #00dcc8; }
 
-  /* Bottom proof bar */
+  .protection-text { font-size: 12.5px; color: rgba(255,255,255,0.55); line-height: 1.45; }
+  .protection-text strong { color: rgba(255,255,255,0.88); font-weight: 700; }
+
+  /* Bottom bar */
   .proof-bar {
-    display: flex; gap: 16px; margin-top: 18px; align-items: stretch;
+    display: flex; gap: 16px; margin-top: 16px; align-items: stretch;
   }
   .proof-item {
-    flex: 1;
-    background: rgba(255,255,255,0.025);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 6px;
-    padding: 14px 18px;
-    text-align: center;
+    flex: 1; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px; padding: 12px 18px; text-align: center;
   }
-  .proof-value {
-    font-size: 24px; font-weight: 900; color: #00dcc8;
-    letter-spacing: -0.02em; line-height: 1;
-  }
-  .proof-value.purple { color: #a78bfa; }
-  .proof-value.amber { color: #f59e0b; }
+  .proof-value { font-size: 22px; font-weight: 900; color: #00dcc8; letter-spacing: -0.02em; line-height: 1; }
   .proof-value.white { color: rgba(255,255,255,0.85); }
-  .proof-label {
-    font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.30);
-    letter-spacing: 0.06em; text-transform: uppercase;
-    margin-top: 4px;
-  }
-
+  .proof-label { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.28); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; }
   .vault-addr {
-    flex: 1.5;
-    background: rgba(0,220,200,0.03);
-    border: 1px solid rgba(0,220,200,0.15);
-    border-radius: 6px;
-    padding: 14px 18px;
-    display: flex; flex-direction: column; justify-content: center;
+    flex: 1.8; background: rgba(0,220,200,0.03); border: 1px solid rgba(0,220,200,0.15);
+    border-radius: 6px; padding: 12px 18px; display: flex; flex-direction: column; justify-content: center;
   }
-  .vault-addr-label {
-    font-size: 9px; font-weight: 700; color: rgba(0,220,200,0.50);
-    letter-spacing: 0.10em; text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .vault-addr-val {
-    font-size: 11px; font-weight: 600; color: rgba(0,220,200,0.70);
-    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-    letter-spacing: 0.02em;
-    word-break: break-all;
-  }
+  .vault-addr-label { font-size: 9px; font-weight: 700; color: rgba(0,220,200,0.50); letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 4px; }
+  .vault-addr-val { font-size: 11px; font-weight: 600; color: rgba(0,220,200,0.70); font-family: 'SF Mono', 'Fira Code', monospace; word-break: break-all; }
 
-  .footer {
-    position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
-    font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: rgba(255,255,255,0.10); white-space: nowrap;
-  }
+  .footer { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.10); white-space: nowrap; }
 </style>
 </head>
 <body>
 <div id="slide">
   <div class="blob blob-tl"></div>
   <div class="blob blob-br"></div>
-  <div class="blob blob-mid"></div>
 
   <div class="header-bar">
     <span class="header-label">Investors Deck</span>
@@ -238,98 +148,119 @@
 
   <div class="content">
     <div class="title-row">
-      <div>
-        <div class="title">Your Capital Is <span>Protected</span></div>
-        <div class="subtitle">Non-custodial. Audited. Regulated. Every layer designed to safeguard investor assets.</div>
-      </div>
+      <div class="title">If It Happened Again, <span>We'd Survive It</span></div>
+      <div class="subtitle">The biggest crypto disasters in history — and exactly why Key Vault is protected against each one.</div>
     </div>
 
     <div class="divider"></div>
 
-    <div class="pillars">
-      <!-- Pillar 1: Custody -->
-      <div class="pillar custody">
-        <div class="pillar-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00dcc8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <div class="scenarios">
+
+      <!-- SCENARIO 1: Exchange Collapse -->
+      <div class="scenario exchange">
+        <div class="scenario-header">
+          <div class="disaster-tag">
+            <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Exchange Collapse
+          </div>
+          <div class="scenario-title">Mt. Gox &amp; FTX</div>
+          <div class="scenario-damage">$450M stolen (2014) · $8B misappropriated (2022)</div>
         </div>
-        <div class="pillar-title">Non-Custodial Custody</div>
-        <div class="pillar-tagline">Smart contracts hold assets — not humans, not bank accounts.</div>
-        <div class="pillar-items">
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Manager can trade but cannot withdraw.</strong> The vault smart contract enforces this — no exceptions.</div>
+        <div class="what-went-wrong">
+          <div class="section-label">What went wrong</div>
+          <div class="wrong-text">Customer funds held by a central exchange. When the exchange failed — through hacks or fraud — investor assets were gone with it.</div>
+        </div>
+        <div class="why-safe">
+          <div class="section-label">Why Key Vault survives this</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>Non-custodial smart contracts.</strong> Assets live on-chain in a vault — no exchange holds your funds.</div>
           </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Only you withdraw your funds.</strong> Depositors initiate their own redemptions directly on-chain.</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>Manager can trade but cannot withdraw.</strong> The smart contract enforces this — not a policy, not a promise.</div>
           </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>100% on-chain verifiable.</strong> Check vault holdings anytime via Solscan — no trust required.</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>Only you redeem your capital.</strong> Withdrawals are initiated by the investor directly on-chain. No intermediary can block or steal.</div>
           </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>No commingling.</strong> Investor capital is never mixed with operating funds or personal accounts.</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>100% verifiable anytime.</strong> Vault address is public — check holdings on Solscan at any moment.</div>
           </div>
         </div>
-        <div class="pillar-badge">No Single Point of Failure</div>
       </div>
 
-      <!-- Pillar 2: Infrastructure -->
-      <div class="pillar infra">
-        <div class="pillar-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <!-- SCENARIO 2: Luna/Terra -->
+      <div class="scenario luna">
+        <div class="scenario-header">
+          <div class="disaster-tag">
+            <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            Algorithmic Collapse
+          </div>
+          <div class="scenario-title">Terra / Luna</div>
+          <div class="scenario-damage">$40B wiped in 72 hours (May 2022)</div>
         </div>
-        <div class="pillar-title">Audited Infrastructure</div>
-        <div class="pillar-tagline">Built on battle-tested protocols with institutional-grade security.</div>
-        <div class="pillar-items">
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Drift Protocol</strong> — audited by Trail of Bits, Neodyme, and OtterSec. $25M Series B from Multicoin, Blockchain Capital.</div>
+        <div class="what-went-wrong">
+          <div class="section-label">What went wrong</div>
+          <div class="wrong-text">An algorithmic stablecoin with no real backing entered a death spiral. As UST depegged, LUNA was minted infinitely to compensate — collapsing both to zero within days.</div>
+        </div>
+        <div class="why-safe">
+          <div class="section-label">Why Key Vault survives this</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>Delta-neutral by design.</strong> We hold no directional crypto exposure — JLP fees are earned regardless of SOL/BTC/ETH price direction.</div>
           </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Jupiter / JLP</strong> — $2.5B+ TVL. Largest perpetuals LP pool on Solana. Revenue from trading fees, not direction.</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>No algorithmic stablecoins.</strong> Capital is denominated in USDC — battle-tested, fully-backed, Circle-issued.</div>
           </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Pyth + Switchboard oracles</strong> with multi-oracle validation and circuit breakers for price integrity.</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>Short hedges absorb the crash.</strong> A Luna-style price collapse triggers our short positions, offsetting any long-side losses automatically.</div>
           </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>24/7 automated monitoring</strong> of leverage, margin, liquidation thresholds, and hedge ratios with real-time alerts.</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>Yield from fees, not tokenomics.</strong> Revenue comes from real trading activity — not token emissions or unsustainable ponzinomics.</div>
           </div>
         </div>
-        <div class="pillar-badge">3 Independent Audits</div>
       </div>
 
-      <!-- Pillar 3: Compliance -->
-      <div class="pillar compliance">
-        <div class="pillar-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M3 7v1a3 3 0 0 0 6 0V7m0 0V3h6v4m0 0v1a3 3 0 0 0 6 0V7"/><path d="M6 21V10"/><path d="M18 21V10"/><path d="M12 21V11"/></svg>
+      <!-- SCENARIO 3: Overleveraged Blowup -->
+      <div class="scenario over">
+        <div class="scenario-header">
+          <div class="disaster-tag">
+            <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Rehypothecation &amp; Leverage
+          </div>
+          <div class="scenario-title">3AC, Celsius &amp; BlockFi</div>
+          <div class="scenario-damage">$10B+ in customer losses (2022 contagion)</div>
         </div>
-        <div class="pillar-title">Regulated & Compliant</div>
-        <div class="pillar-tagline">Institutional structure under top-tier legal and fund administration.</div>
-        <div class="pillar-items">
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Morrison Cohen LLP</strong> — New York law firm overseeing fund structure, SEC compliance, and regulatory monitoring.</div>
+        <div class="what-went-wrong">
+          <div class="section-label">What went wrong</div>
+          <div class="wrong-text">Funds borrowed against customer deposits, re-lent those assets, and ran extreme leverage. When markets moved, cascading liquidations made repayment impossible.</div>
+        </div>
+        <div class="why-safe">
+          <div class="section-label">Why Key Vault survives this</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>No rehypothecation.</strong> Investor capital is never lent out, borrowed against, or used as collateral for anything else.</div>
           </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>NAV Consulting</strong> — independent fund administrator. Daily NAV stamps at 5 PM EST with auditable trail.</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>Smart-contract enforced leverage limits.</strong> Maximum drawdown and leverage thresholds are coded — not discretionary.</div>
           </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Full KYC/AML compliance.</strong> All investors verified. Accredited investors only (SEC Reg D).</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>No commingling.</strong> Investor capital is strictly separated from operating funds and personal accounts — audited by NAV Consulting daily.</div>
           </div>
-          <div class="pillar-item">
-            <div class="pillar-item-dot"></div>
-            <div class="pillar-item-text"><strong>Fiat on/off ramp</strong> via Circle and Coinbase Prime. USD in, USD out — institutional rails.</div>
+          <div class="protection-item">
+            <div class="shield-dot"><span class="checkmark">✓</span></div>
+            <div class="protection-text"><strong>Morrison Cohen LLP oversight.</strong> Institutional legal structure with SEC Reg D compliance and independent fund administration.</div>
           </div>
         </div>
-        <div class="pillar-badge">SEC-Compliant Structure</div>
       </div>
+
     </div>
 
     <!-- Bottom proof bar -->
@@ -343,11 +274,11 @@
         <div class="proof-label">Security Incidents</div>
       </div>
       <div class="proof-item">
-        <div class="proof-value purple">3</div>
-        <div class="proof-label">Independent Audits</div>
+        <div class="proof-value" style="color:#a78bfa">−1.01%</div>
+        <div class="proof-label">Max Drawdown</div>
       </div>
       <div class="proof-item">
-        <div class="proof-value amber">Daily</div>
+        <div class="proof-value" style="color:#f59e0b">Daily</div>
         <div class="proof-label">NAV Verification</div>
       </div>
       <div class="vault-addr">
