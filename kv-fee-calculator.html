@@ -365,7 +365,7 @@ function calc() {
   const totalValueAfterGross = netCapital + kvGrossProfit;
   const netFinalValue = totalValueAfterGross - kvTotalPerfFee; // investor gets this
   const investorReturn = netFinalValue - netCapital;
-  const investorNetApy = (investorReturn / netCapital) * 100;
+  const investorNetApy = (investorReturn / initial) * 100;
 
   // ── STEP 10: KV profits ──
   const kvProfit = mgmtFee + kvTotalPerfFee + primeRebate - cogs;
