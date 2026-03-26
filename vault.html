@@ -1015,6 +1015,8 @@
                     ]);
                     primeCurrent = localCurrent;
                     history = localHistory;
+                    // Expose pn-kv1-history globally for cross-platform comparison chart
+                    if (localHistory) window._pnKv1History = localHistory;
                 } catch (e) {
                     console.warn('Local data failed:', e);
                 }
@@ -1024,6 +1026,7 @@
                             fetchWithFallback('https://app.primenumber.trade/data/PN_KV1.json'),
                             fetchWithFallback('https://app.primenumber.trade/data/PN_KV1_history.json')
                         ]);
+                        if (history) window._pnKv1History = history;
                     } catch (e) {
                         console.warn('Prime Number API fallback failed (CORS), using official NAV data instead');
                     }
@@ -2130,28 +2133,47 @@
                 kvDataMap[d] = roi;
             });
 
-            // Build prime data map
-            const primeDataMap = {};
-            primeProFormaData.filter(d => d.date >= windowStart).forEach(d => {
-                primeDataMap[d.date] = d.roi * NET_INVESTOR_FACTOR_CP;
-            });
-            const primeStartDate = Object.keys(primeDataMap).sort()[0];
-            const primeBaseline = primeStartDate ? primeDataMap[primeStartDate] : 0;
-            Object.keys(primeDataMap).forEach(d => {
-                primeDataMap[d] = primeDataMap[d] - primeBaseline;
-            });
-
-            // Split pro forma vs live
+            // Build pro-forma map (hardcoded data up to LIVE_TRADING_CUTOFF)
             const primeProFormaMap = {};
-            const primeLiveMap = {};
-            Object.entries(primeDataMap).forEach(([date, val]) => {
-                if (date <= LIVE_TRADING_CUTOFF) primeProFormaMap[date] = val;
-                else primeLiveMap[date] = val;
+            primeProFormaData.filter(d => d.date >= windowStart && d.date <= LIVE_TRADING_CUTOFF).forEach(d => {
+                primeProFormaMap[d.date] = d.roi * NET_INVESTOR_FACTOR_CP;
             });
-            const bridgeDate = Object.keys(primeDataMap).filter(d => d <= LIVE_TRADING_CUTOFF).sort().pop();
-            if (bridgeDate) primeLiveMap[bridgeDate] = primeProFormaMap[bridgeDate];
-            const nextDate = Object.keys(primeDataMap).filter(d => d > LIVE_TRADING_CUTOFF).sort()[0];
-            if (nextDate) primeProFormaMap[nextDate] = primeLiveMap[nextDate];
+            // Re-baseline pro-forma to 0 at window start
+            const pfStartDate = Object.keys(primeProFormaMap).sort()[0];
+            const pfBaseline = pfStartDate ? primeProFormaMap[pfStartDate] : 0;
+            Object.keys(primeProFormaMap).forEach(d => { primeProFormaMap[d] -= pfBaseline; });
+
+            // Build live map from pn-kv1-history (actual vault data post-cutoff)
+            const primeLiveMap = {};
+            if (window._pnKv1History && window._pnKv1History.length > 0) {
+                const liveEntries = window._pnKv1History.filter(h => {
+                    const d = (h.update_time_utc || '').slice(0, 10);
+                    return d >= LIVE_TRADING_CUTOFF;
+                });
+                if (liveEntries.length > 0) {
+                    const liveBaseline = liveEntries[0].SharePrice;
+                    // Anchor live line to end of pro-forma
+                    const pfEndDate = Object.keys(primeProFormaMap).sort().pop();
+                    const pfEndVal = pfEndDate ? primeProFormaMap[pfEndDate] : 0;
+                    liveEntries.forEach(h => {
+                        const d = (h.update_time_utc || '').slice(0, 10);
+                        const rawRoi = ((h.SharePrice - liveBaseline) / liveBaseline) * 100 * NET_INVESTOR_FACTOR_CP;
+                        primeLiveMap[d] = pfEndVal + rawRoi;
+                    });
+                }
+            }
+
+            // Bridge: connect pro-forma to live at cutoff point
+            const bridgeDate = Object.keys(primeProFormaMap).sort().pop();
+            if (bridgeDate && Object.keys(primeLiveMap).length > 0) {
+                primeLiveMap[bridgeDate] = primeProFormaMap[bridgeDate];
+            }
+            // Also extend pro-forma one step into live for visual continuity
+            const firstLiveDate = Object.keys(primeLiveMap).filter(d => d > LIVE_TRADING_CUTOFF).sort()[0];
+            if (firstLiveDate) primeProFormaMap[firstLiveDate] = primeLiveMap[firstLiveDate];
+
+            // Combined prime map for metrics
+            const primeDataMap = { ...primeProFormaMap, ...primeLiveMap };
 
             const allDates = new Set([...Object.keys(kvDataMap), ...Object.keys(primeDataMap)]);
             const sortedDates = Array.from(allDates).sort();
@@ -2189,7 +2211,7 @@
                             fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2.5, spanGaps: false, order: 2
                         },
                         {
-                            label: 'Cross-Platform JLP — Pro Forma (through Jan 15)',
+                            label: 'Cross-Platform JLP — Backtest (through Jan 15)',
                             data: proFormaArr,
                             borderColor: 'rgba(244,114,182,0.5)',
                             backgroundColor: 'transparent',
@@ -2197,7 +2219,7 @@
                             fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2, spanGaps: true, order: 1
                         },
                         {
-                            label: 'Cross-Platform JLP — Live (Jan 15+)',
+                            label: 'Cross-Platform JLP — Live Vault (Jan 15+)',
                             data: liveArr,
                             borderColor: '#f472b6',
                             backgroundColor: 'rgba(244,114,182,0.08)',
