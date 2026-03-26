@@ -77,12 +77,14 @@ scale();
 window.addEventListener('resize', scale);
 
 const ctx = document.getElementById('chart').getContext('2d');
-const labels = ['Bonds\n(AGG, 10Y avg)', 'S&P 500\n(10Y avg)', 'Hedge Funds\n(HFRI avg)', 'Key Vault'];
-const values = [0.3, 0.72, 0.9, 5.89];
+const labels = ['Bonds\n(AGG, 10Y avg)', 'S&P 500\n(10Y avg)', 'Hedge Funds\n(HFRI avg)', 'Bitcoin\n(BTC, 5Y avg)', 'Renaissance\nMedallion (est.)', 'Key Vault'];
+const values = [0.3, 0.72, 0.9, 1.0, 2.0, 5.89];
 const kvGrad = ctx.createLinearGradient(0, 300, 0, 0);
 kvGrad.addColorStop(0, 'rgba(0,212,255,0.6)');
 kvGrad.addColorStop(1, 'rgba(0,212,255,0.95)');
 const colors = [
+  'rgba(239,68,68,0.75)',
+  'rgba(239,68,68,0.75)',
   'rgba(239,68,68,0.75)',
   'rgba(239,68,68,0.75)',
   'rgba(239,68,68,0.75)',
@@ -93,7 +95,7 @@ new Chart(ctx, {
   type: 'bar',
   data: {
     labels,
-    datasets: [{ data: values, backgroundColor: colors, borderWidth: 0, borderRadius: 3, barThickness: 68 }]
+    datasets: [{ data: values, backgroundColor: colors, borderWidth: 0, borderRadius: 3, barThickness: 52 }]
   },
   options: {
     responsive: true,
@@ -114,7 +116,7 @@ new Chart(ctx, {
       x: {
         grid: { display: false },
         ticks: {
-          color: (ctx) => ctx.index === 3 ? '#00d4ff' : 'rgba(255,255,255,0.7)',
+          color: (ctx) => ctx.index === 5 ? '#00d4ff' : 'rgba(255,255,255,0.7)',
           font: { size: 15, weight: '700' }
         }
       },
@@ -135,7 +137,7 @@ new Chart(ctx, {
         data.datasets[0].data.forEach((val, i) => {
           const bar = chart.getDatasetMeta(0).data[i];
           c.save();
-          const isKV = i === 3;
+          const isKV = i === 5;
           c.fillStyle = isKV ? '#00d4ff' : '#ef4444';
           c.font = `bold ${isKV ? 24 : 17}px -apple-system, Arial`;
           c.textBaseline = 'bottom';
