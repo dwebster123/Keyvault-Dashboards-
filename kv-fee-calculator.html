@@ -464,7 +464,10 @@ toggleCb.addEventListener('change', () => {
   calc();
 });
 
-document.querySelectorAll('input[type="number"]').forEach(el => el.addEventListener('input', calc));
+document.querySelectorAll('input[type="number"]').forEach(el => {
+  el.addEventListener('input', calc);
+  el.addEventListener('wheel', e => e.preventDefault(), { passive: false });
+});
 calc();
 </script>
 </body>
