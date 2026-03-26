@@ -430,14 +430,14 @@ function calc() {
     { label: `Investor Net APY${rebateToInvestor ? ' ✦ incl. Prime rebate' : ''}`, value: `${fmtPct(investorNetApy)} / ${fmt(investorReturn)}`, cls: 'highlight-green' },
 
     { section: 'KeyVault Economics' },
-    { label: `Management Fee revenue`, value: fmt(mgmtFee), cls: 'positive' },
-    { label: `KV Performance Fee revenue`, value: fmt(kvTotalPerfFee), cls: 'positive' },
+    { label: 'Management Fee revenue', value: fmt(mgmtFee), cls: 'positive' },
+    { label: `KV Performance Fee (on KV Gross Profit)`, value: fmt(kvTotalPerfFee), cls: 'positive' },
     { label: `Prime Rebate received (${fmtPct(primeRebatePct, 0)} × Prime fee)`, value: fmt(primeRebate), cls: 'positive' },
     ...(rebateToInvestor ? [
-      { label: `  KV perf fee on rebate (${fmtPct(kvPerfPct, 0)})`, value: fmt(kvRebatePerfFee), cls: 'positive' },
-      { label: `  Remitted to investors (${fmtPct(100 - kvPerfPct, 0)} of rebate)`, value: fmt(-investorRebateBonus), cls: 'muted' },
+      { label: `  └ KV perf fee on rebate (${fmtPct(kvPerfPct, 0)})`, value: fmt(kvRebatePerfFee), cls: 'positive' },
+      { label: `  └ Remitted to investors`, value: fmt(-investorRebateBonus), cls: 'negative' },
     ] : []),
-    { label: `COGS (salary, software, 3rd party)`, value: fmt(-cogs), cls: 'negative' },
+    { label: 'COGS (salary, software, 3rd party)', value: fmt(-cogs), cls: 'negative' },
     { label: 'Total KeyVault Profit', value: fmt(kvProfit), cls: 'total total-kv' },
   ];
 
