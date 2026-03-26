@@ -36,8 +36,8 @@
     position: absolute; top: 108px; left: 80px; right: 80px; bottom: 40px;
     display: flex; flex-direction: column;
   }
-  .title { font-size: 68px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #fff; line-height: 1; }
-  .subtitle { font-size: 17px; color: rgba(255,255,255,0.5); margin-top: 10px; letter-spacing: 0.04em; }
+  .title { font-size: 72px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: #fff; line-height: 1; }
+  .subtitle { font-size: 20px; color: rgba(255,255,255,0.55); margin-top: 10px; letter-spacing: 0.04em; }
 
   /* Two side-by-side chart panels */
   .panels {
@@ -73,10 +73,10 @@
   }
 
   .panel-title {
-    font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 4px; letter-spacing: -0.01em;
+    font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 4px; letter-spacing: -0.01em;
   }
   .panel-desc {
-    font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 16px; line-height: 1.4;
+    font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 16px; line-height: 1.4;
   }
 
   .chart-wrap { flex: 1; min-height: 0; position: relative; }
@@ -149,7 +149,7 @@ const valueLabelPlugin = (isKVIndex, suffix) => ({
       ctx.save();
       const isKV = i === isKVIndex;
       ctx.fillStyle = isKV ? '#00d4ff' : '#ef4444';
-      ctx.font = `bold ${isKV ? 17 : 14}px -apple-system, Arial`;
+      ctx.font = `bold ${isKV ? 22 : 17}px -apple-system, Arial`;
       ctx.textBaseline = 'bottom'; ctx.textAlign = 'center';
       ctx.fillText(val + suffix, bar.x, bar.y - 6);
       ctx.restore();
