@@ -290,6 +290,20 @@
         </div>
         <div class="field-hint">Salary, software, 3rd-party. Borne by KV profits.</div>
       </div>
+
+      <div class="section-divider"></div>
+      <div class="section-sub">Scenario Toggle</div>
+      <div class="field">
+        <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;">
+          <div style="position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;">
+            <input type="checkbox" id="rebate-to-investor" style="opacity:0;width:0;height:0;position:absolute;">
+            <span id="toggle-track" style="position:absolute;inset:0;background:var(--surface3);border:1px solid var(--border-bright);border-radius:22px;cursor:pointer;transition:background 0.2s;"></span>
+            <span id="toggle-thumb" style="position:absolute;top:3px;left:3px;width:14px;height:14px;background:var(--text-muted);border-radius:50%;transition:transform 0.2s,background 0.2s;"></span>
+          </div>
+          <span style="font-size:0.77rem;font-weight:500;color:var(--text-dim);">Remit Prime rebate to investors</span>
+        </label>
+        <div class="field-hint">Passes the Prime rebate through to investors as additional return instead of retaining it as KV profit.</div>
+      </div>
     </div>
 
     <!-- OUTPUTS -->
@@ -323,7 +337,8 @@ function calc() {
   const benchmarkApy  = parseFloat(document.getElementById('benchmark-apy').value) || 0;
   const kvPerfPct     = parseFloat(document.getElementById('kv-perf-pct').value) || 0;
   const kvKickerPct   = parseFloat(document.getElementById('kv-kicker-pct').value) || 0;
-  const cogs          = parseFloat(document.getElementById('cogs').value) || 0;
+  const cogs              = parseFloat(document.getElementById('cogs').value) || 0;
+  const rebateToInvestor  = document.getElementById('rebate-to-investor').checked;
 
   // ── STEP 1: Management fee (flat on initial AUM) ──
   const mgmtFee = initial * (mgmtPct / 100);
@@ -361,14 +376,17 @@ function calc() {
   const primeRebate = primePerfFee * (primeRebatePct / 100);
 
   // ── STEP 9: Investor net return ──
-  // Total value = net capital + KV gross profit
+  // If toggle on, Prime rebate passes through to investor
+  const investorRebateBonus = rebateToInvestor ? primeRebate : 0;
   const totalValueAfterGross = netCapital + kvGrossProfit;
-  const netFinalValue = totalValueAfterGross - kvTotalPerfFee; // investor gets this
+  const netFinalValue = totalValueAfterGross - kvTotalPerfFee + investorRebateBonus;
   const investorReturn = netFinalValue - netCapital;
   const investorNetApy = (investorReturn / initial) * 100;
 
   // ── STEP 10: KV profits ──
-  const kvProfit = mgmtFee + kvTotalPerfFee + primeRebate - cogs;
+  // If rebate remitted to investor, KV doesn't keep it
+  const kvRebateKept = rebateToInvestor ? 0 : primeRebate;
+  const kvProfit = mgmtFee + kvTotalPerfFee + kvRebateKept - cogs;
 
   // ── Update KPIs ──
   document.getElementById('kpi-prime-apy').textContent = fmtPct(primeGrossApy);
@@ -391,7 +409,7 @@ function calc() {
     { section: 'INTERNAL — Prime Wholesale Layer', internal: true },
     { label: `Prime Gross APY (${fmtPct(primeGrossApy)}) × Net Capital`, value: fmt(primeGrossProfit), cls: 'internal-row' },
     { label: `Prime Performance Fee (${fmtPct(primePerfPct, 0)} of gross profit)`, value: fmt(-primePerfFee), cls: 'internal-row' },
-    { label: `Prime Rebate to KV (${fmtPct(primeRebatePct, 0)} of Prime fee)`, value: fmt(primeRebate), cls: 'internal-row positive' },
+    { label: `Prime Rebate (${fmtPct(primeRebatePct, 0)} of Prime fee) → ${rebateToInvestor ? 'remitted to investors ↓' : 'kept by KV'}`, value: fmt(primeRebate), cls: rebateToInvestor ? 'internal-row' : 'internal-row positive' },
 
     { section: 'KV Gross — Investor-Facing Benchmark Basis' },
     { label: `KV Gross Profit (Prime Gross × ${fmtPct(100 - primePerfPct, 0)})`, value: fmt(kvGrossProfit) },
@@ -405,13 +423,13 @@ function calc() {
     { label: `KV Real Performance Fee (${fmtPct(kvRealPerfPct, 2)})`, value: fmt(-kvTotalPerfFee), cls: 'negative' },
 
     { section: 'Investor Return' },
-    { label: 'Net Final Value (investor capital + KV gross profit − KV perf fee)', value: fmt(netFinalValue) },
-    { label: `Investor Net APY`, value: `${fmtPct(investorNetApy)} / ${fmt(investorReturn)}`, cls: 'highlight-green' },
+    { label: `Net Final Value${rebateToInvestor ? ' (+ Prime rebate passed through)' : ''}`, value: fmt(netFinalValue) },
+    { label: `Investor Net APY${rebateToInvestor ? ' ✦ incl. Prime rebate' : ''}`, value: `${fmtPct(investorNetApy)} / ${fmt(investorReturn)}`, cls: 'highlight-green' },
 
     { section: 'KeyVault Economics' },
     { label: `Management Fee revenue`, value: fmt(mgmtFee), cls: 'positive' },
     { label: `KV Performance Fee revenue`, value: fmt(kvTotalPerfFee), cls: 'positive' },
-    { label: `Prime Rebate received (${fmtPct(primeRebatePct, 0)} × Prime fee)`, value: fmt(primeRebate), cls: 'positive' },
+    { label: `Prime Rebate ${rebateToInvestor ? '(remitted to investors — not retained)' : `received (${fmtPct(primeRebatePct, 0)} × Prime fee)`}`, value: rebateToInvestor ? fmt(0) : fmt(primeRebate), cls: rebateToInvestor ? 'muted' : 'positive' },
     { label: `COGS (salary, software, 3rd party)`, value: fmt(-cogs), cls: 'negative' },
     { label: 'Total KeyVault Profit', value: fmt(kvProfit), cls: 'total total-kv' },
   ];
@@ -426,7 +444,20 @@ function calc() {
   }).join('');
 }
 
-document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
+// Toggle styling
+const toggleCb = document.getElementById('rebate-to-investor');
+const toggleTrack = document.getElementById('toggle-track');
+const toggleThumb = document.getElementById('toggle-thumb');
+toggleCb.addEventListener('change', () => {
+  const on = toggleCb.checked;
+  toggleTrack.style.background = on ? 'rgba(63,185,80,0.4)' : 'var(--surface3)';
+  toggleTrack.style.borderColor = on ? 'rgba(63,185,80,0.5)' : 'var(--border-bright)';
+  toggleThumb.style.transform = on ? 'translateX(18px)' : 'translateX(0)';
+  toggleThumb.style.background = on ? 'var(--green)' : 'var(--text-muted)';
+  calc();
+});
+
+document.querySelectorAll('input[type="number"]').forEach(el => el.addEventListener('input', calc));
 calc();
 </script>
 </body>
