@@ -2155,9 +2155,24 @@
 
             const allDates = new Set([...Object.keys(kvDataMap), ...Object.keys(primeDataMap)]);
             const sortedDates = Array.from(allDates).sort();
-            const kvArr = sortedDates.map(d => kvDataMap[d] !== undefined ? kvDataMap[d] : null);
-            const proFormaArr = sortedDates.map(d => primeProFormaMap[d] !== undefined ? primeProFormaMap[d] : null);
-            const liveArr = sortedDates.map(d => primeLiveMap[d] !== undefined ? primeLiveMap[d] : null);
+
+            // Forward-fill helper: carry last known value forward, but only after the series has started
+            function forwardFill(map, dates) {
+                const mapDates = Object.keys(map).sort();
+                if (mapDates.length === 0) return dates.map(() => null);
+                const seriesStart = mapDates[0];
+                const seriesEnd = mapDates[mapDates.length - 1];
+                let last = null;
+                return dates.map(d => {
+                    if (d < seriesStart || d > seriesEnd) return null;
+                    if (map[d] !== undefined) { last = map[d]; return last; }
+                    return last; // carry forward within range
+                });
+            }
+
+            const kvArr = forwardFill(kvDataMap, sortedDates);
+            const proFormaArr = forwardFill(primeProFormaMap, sortedDates);
+            const liveArr = forwardFill(primeLiveMap, sortedDates);
 
             if (cpCompChartInstance) { cpCompChartInstance.destroy(); cpCompChartInstance = null; }
 
