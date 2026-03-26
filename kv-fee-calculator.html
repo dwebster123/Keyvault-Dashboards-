@@ -376,16 +376,18 @@ function calc() {
   const primeRebate = primePerfFee * (primeRebatePct / 100);
 
   // ── STEP 9: Investor net return ──
-  // If toggle on, Prime rebate passes through to investor
-  const investorRebateBonus = rebateToInvestor ? primeRebate : 0;
+  // If toggle on: KV takes 20% perf fee on rebate, remits the rest to investor
+  const kvRebatePerfFee = rebateToInvestor ? primeRebate * (kvPerfPct / 100) : 0;
+  const investorRebateBonus = rebateToInvestor ? primeRebate - kvRebatePerfFee : 0;
   const totalValueAfterGross = netCapital + kvGrossProfit;
   const netFinalValue = totalValueAfterGross - kvTotalPerfFee + investorRebateBonus;
   const investorReturn = netFinalValue - netCapital;
   const investorNetApy = (investorReturn / initial) * 100;
 
   // ── STEP 10: KV profits ──
-  // If rebate remitted to investor, KV doesn't keep it
-  const kvRebateKept = rebateToInvestor ? 0 : primeRebate;
+  // Toggle OFF: KV keeps full rebate
+  // Toggle ON: KV keeps 20% perf fee on rebate only
+  const kvRebateKept = rebateToInvestor ? kvRebatePerfFee : primeRebate;
   const kvProfit = mgmtFee + kvTotalPerfFee + kvRebateKept - cogs;
 
   // ── Update KPIs ──
@@ -429,7 +431,11 @@ function calc() {
     { section: 'KeyVault Economics' },
     { label: `Management Fee revenue`, value: fmt(mgmtFee), cls: 'positive' },
     { label: `KV Performance Fee revenue`, value: fmt(kvTotalPerfFee), cls: 'positive' },
-    { label: `Prime Rebate ${rebateToInvestor ? '(remitted to investors — not retained)' : `received (${fmtPct(primeRebatePct, 0)} × Prime fee)`}`, value: rebateToInvestor ? fmt(0) : fmt(primeRebate), cls: rebateToInvestor ? 'muted' : 'positive' },
+    { label: `Prime Rebate received (${fmtPct(primeRebatePct, 0)} × Prime fee)`, value: fmt(primeRebate), cls: 'positive' },
+    ...(rebateToInvestor ? [
+      { label: `  KV perf fee on rebate (${fmtPct(kvPerfPct, 0)})`, value: fmt(kvRebatePerfFee), cls: 'positive' },
+      { label: `  Remitted to investors (${fmtPct(100 - kvPerfPct, 0)} of rebate)`, value: fmt(-investorRebateBonus), cls: 'muted' },
+    ] : []),
     { label: `COGS (salary, software, 3rd party)`, value: fmt(-cogs), cls: 'negative' },
     { label: 'Total KeyVault Profit', value: fmt(kvProfit), cls: 'total total-kv' },
   ];
