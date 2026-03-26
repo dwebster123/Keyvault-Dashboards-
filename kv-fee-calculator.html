@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KeyVault Fund Fee Calculator</title>
+<title>KeyVault Internal Fee Calculator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -21,605 +21,406 @@
     --accent: #d4a73a;
     --accent-dim: rgba(212,167,58,0.10);
     --accent-border: rgba(212,167,58,0.25);
-    --blue: #1f6feb;
-    --blue-dim: rgba(31,111,235,0.12);
     --green: #3fb950;
     --green-dim: rgba(63,185,80,0.10);
     --red: #f85149;
-    --red-dim: rgba(248,81,73,0.10);
+    --blue: #58a6ff;
+    --blue-dim: rgba(88,166,255,0.10);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,0.10);
     --font-body: 'IBM Plex Sans', system-ui, sans-serif;
     --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
   }
   @media (prefers-color-scheme: light) {
     :root {
-      --bg: #f4f1eb;
-      --surface: #ffffff;
-      --surface2: #f8f5ef;
-      --surface3: #eee9df;
-      --border: rgba(0,0,0,0.07);
-      --border-bright: rgba(0,0,0,0.14);
-      --text: #1c2333;
-      --text-dim: #576170;
-      --text-muted: #9aa0ab;
-      --accent: #a07820;
-      --accent-dim: rgba(160,120,32,0.08);
-      --accent-border: rgba(160,120,32,0.20);
-      --blue: #0969da;
-      --blue-dim: rgba(9,105,218,0.08);
-      --green: #1a7f37;
-      --green-dim: rgba(26,127,55,0.08);
-      --red: #cf222e;
-      --red-dim: rgba(207,34,46,0.08);
+      --bg: #f4f1eb; --surface: #fff; --surface2: #f8f5ef; --surface3: #eee9df;
+      --border: rgba(0,0,0,0.07); --border-bright: rgba(0,0,0,0.14);
+      --text: #1c2333; --text-dim: #576170; --text-muted: #9aa0ab;
+      --accent: #a07820; --accent-dim: rgba(160,120,32,0.08); --accent-border: rgba(160,120,32,0.20);
+      --green: #1a7f37; --green-dim: rgba(26,127,55,0.08);
+      --red: #cf222e; --blue: #0969da; --blue-dim: rgba(9,105,218,0.08);
+      --purple: #7c3aed; --purple-dim: rgba(124,58,237,0.08);
     }
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: var(--font-body);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 2rem 1.5rem 4rem;
-  }
-
-  /* subtle grid bg */
+  body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1.5rem 4rem; }
   body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events: none; z-index: 0;
   }
-
-  .page { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; }
+  .page { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
 
   /* HEADER */
-  header { margin-bottom: 2.5rem; }
-  .header-label {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.5rem;
-  }
-  h1 {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-  }
+  header { margin-bottom: 2rem; }
+  .header-label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; }
+  .internal-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(248,81,73,0.12); border: 1px solid rgba(248,81,73,0.25); color: var(--red); padding: 2px 8px; border-radius: 3px; margin-bottom: 0.5rem; }
+  h1 { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.02em; }
   h1 span { color: var(--accent); }
-  .subtitle {
-    margin-top: 0.4rem;
-    font-size: 0.875rem;
-    color: var(--text-dim);
-  }
+  .subtitle { font-size: 0.85rem; color: var(--text-dim); margin-top: 0.3rem; }
 
-  /* GRID LAYOUT */
-  .layout {
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    gap: 1.5rem;
-    align-items: start;
-  }
-  @media (max-width: 700px) {
-    .layout { grid-template-columns: 1fr; }
-  }
+  /* LAYOUT */
+  .layout { display: grid; grid-template-columns: 320px 1fr; gap: 1.5rem; align-items: start; }
+  @media (max-width: 750px) { .layout { grid-template-columns: 1fr; } }
 
   /* CARDS */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.5rem;
-  }
-  .card-title {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border);
-  }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; animation: fadeUp 0.3s ease both; }
+  .card-title { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.1rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border); }
+  .section-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+  .section-sub { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.8rem; }
 
   /* INPUTS */
-  .field { margin-bottom: 1.1rem; }
+  .field { margin-bottom: 0.9rem; }
   .field:last-child { margin-bottom: 0; }
-  label {
-    display: block;
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: var(--text-dim);
-    margin-bottom: 0.35rem;
-  }
-  .input-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-  .input-prefix {
-    position: absolute;
-    left: 0.75rem;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    pointer-events: none;
-  }
-  .input-suffix {
-    position: absolute;
-    right: 0.75rem;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    pointer-events: none;
-  }
-  input[type="number"] {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border-bright);
-    border-radius: 6px;
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 0.88rem;
-    padding: 0.55rem 2.5rem 0.55rem 1.75rem;
-    outline: none;
-    transition: border-color 0.15s, background 0.15s;
-    -moz-appearance: textfield;
-  }
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
-  input[type="number"]:focus {
-    border-color: var(--accent-border);
-    background: var(--surface3);
-  }
-  input[type="number"].no-prefix { padding-left: 0.75rem; }
+  label { display: block; font-size: 0.77rem; font-weight: 500; color: var(--text-dim); margin-bottom: 0.3rem; }
+  .label-internal { font-size: 0.65rem; color: var(--red); margin-left: 0.4rem; opacity: 0.8; }
+  .input-wrap { position: relative; display: flex; align-items: center; }
+  .input-prefix { position: absolute; left: 0.7rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); pointer-events: none; }
+  .input-suffix { position: absolute; right: 0.7rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); pointer-events: none; }
+  input[type="number"] { width: 100%; background: var(--surface2); border: 1px solid var(--border-bright); border-radius: 6px; color: var(--text); font-family: var(--font-mono); font-size: 0.85rem; padding: 0.5rem 2.2rem 0.5rem 1.6rem; outline: none; transition: border-color 0.15s; -moz-appearance: textfield; }
+  input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  input[type="number"]:focus { border-color: var(--accent-border); background: var(--surface3); }
+  input[type="number"].no-prefix { padding-left: 0.7rem; }
+  .field-hint { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.4; }
 
-  .field-hint {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-top: 0.3rem;
-  }
-
-  /* DIVIDER */
-  .section-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 1.25rem 0;
-  }
-  .section-sub {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.9rem;
-  }
-
-  /* OUTPUT TABLE */
-  .output-table { width: 100%; border-collapse: collapse; }
-  .output-table tr { border-bottom: 1px solid var(--border); }
-  .output-table tr:last-child { border-bottom: none; }
-  .output-table td {
-    padding: 0.6rem 0.25rem;
-    font-size: 0.84rem;
-    vertical-align: middle;
-  }
-  .output-table td:first-child {
-    color: var(--text-dim);
-    width: 60%;
-    padding-right: 1rem;
-    line-height: 1.35;
-  }
-  .output-table td:last-child {
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    text-align: right;
-    color: var(--text);
-    white-space: nowrap;
-  }
-  .output-table tr.highlight td { background: var(--accent-dim); }
-  .output-table tr.highlight td:first-child { color: var(--text); font-weight: 500; }
-  .output-table tr.highlight td:last-child { color: var(--accent); font-weight: 600; }
-  .output-table tr.section-header td {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    padding-top: 1rem;
-    padding-bottom: 0.3rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .output-table tr.section-header td:last-child { text-align: right; }
-  .output-table tr.total td {
-    border-top: 2px solid var(--border-bright);
-    padding-top: 0.75rem;
-    font-weight: 600;
-  }
-  .output-table tr.total td:first-child { color: var(--text); }
-  .output-table tr.total td:last-child { color: var(--green); font-size: 0.9rem; }
-  .output-table tr.negative td:last-child { color: var(--red); }
-  .output-table tr.positive td:last-child { color: var(--green); }
-  .output-table tr.muted td:first-child { color: var(--text-muted); font-style: italic; }
-  .output-table tr.muted td:last-child { color: var(--text-muted); }
-
-  /* KPI HERO */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  @media (max-width: 600px) { .kpi-grid { grid-template-columns: 1fr 1fr; } }
-  .kpi {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1rem 1.1rem;
-  }
-  .kpi-label {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.4rem;
-  }
-  .kpi-value {
-    font-family: var(--font-mono);
-    font-size: 1.35rem;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1;
-  }
+  /* KPI GRID */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.85rem; margin-bottom: 1.25rem; }
+  @media (max-width: 600px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1rem; animation: fadeUp 0.25s ease both; }
+  .kpi.internal { border-color: rgba(248,81,73,0.2); background: rgba(248,81,73,0.04); }
+  .kpi-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+  .kpi-value { font-family: var(--font-mono); font-size: 1.3rem; font-weight: 500; color: var(--text); line-height: 1; }
   .kpi-value.green { color: var(--green); }
   .kpi-value.amber { color: var(--accent); }
+  .kpi-value.blue { color: var(--blue); }
+  .kpi-value.purple { color: var(--purple); }
   .kpi-value.red { color: var(--red); }
-  .kpi-sub {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-top: 0.25rem;
-  }
+  .kpi-sub { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.2rem; }
 
-  /* QUARTERLY BREAKDOWN */
-  .q-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.6rem;
-    margin-top: 0.75rem;
-  }
-  @media (max-width: 500px) { .q-grid { grid-template-columns: repeat(2, 1fr); } }
-  .q-cell {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.6rem 0.7rem;
-  }
-  .q-label {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-    margin-bottom: 0.2rem;
-  }
-  .q-nav {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--text-dim);
-    margin-bottom: 0.1rem;
-  }
-  .q-fee {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--accent);
-  }
+  /* WATERFALL TABLE */
+  .waterfall { width: 100%; border-collapse: collapse; }
+  .waterfall tr { border-bottom: 1px solid var(--border); }
+  .waterfall tr:last-child { border-bottom: none; }
+  .waterfall td { padding: 0.55rem 0.25rem; font-size: 0.82rem; vertical-align: middle; }
+  .waterfall td:first-child { color: var(--text-dim); width: 58%; padding-right: 1rem; line-height: 1.35; }
+  .waterfall td:last-child { font-family: var(--font-mono); font-size: 0.8rem; text-align: right; color: var(--text); white-space: nowrap; }
 
-  /* NOTE */
-  .note {
-    margin-top: 1.5rem;
-    background: var(--blue-dim);
-    border: 1px solid rgba(31,111,235,0.2);
-    border-radius: 6px;
-    padding: 0.85rem 1rem;
-    font-size: 0.78rem;
-    color: var(--text-dim);
-    line-height: 1.55;
-  }
-  .note strong { color: var(--text); }
+  .waterfall tr.section-header td { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding-top: 0.9rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--border); }
+  .waterfall tr.section-header td:last-child { text-align: right; }
 
-  /* WATERMARK note */
-  .watermark-note {
-    margin-top: 1rem;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent-border);
-    border-radius: 0 6px 6px 0;
-    padding: 0.75rem 1rem;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-  }
+  .waterfall tr.highlight td { background: var(--accent-dim); }
+  .waterfall tr.highlight td:first-child { color: var(--text); font-weight: 500; }
+  .waterfall tr.highlight td:last-child { color: var(--accent); font-weight: 600; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .card { animation: fadeUp 0.3s ease both; }
-  .kpi  { animation: fadeUp 0.25s ease both; }
+  .waterfall tr.highlight-green td { background: var(--green-dim); }
+  .waterfall tr.highlight-green td:first-child { color: var(--text); font-weight: 500; }
+  .waterfall tr.highlight-green td:last-child { color: var(--green); font-weight: 600; }
+
+  .waterfall tr.highlight-blue td { background: var(--blue-dim); }
+  .waterfall tr.highlight-blue td:first-child { color: var(--text); font-weight: 500; }
+  .waterfall tr.highlight-blue td:last-child { color: var(--blue); font-weight: 600; }
+
+  .waterfall tr.highlight-purple td { background: var(--purple-dim); }
+  .waterfall tr.highlight-purple td:first-child { color: var(--text); font-weight: 500; }
+  .waterfall tr.highlight-purple td:last-child { color: var(--purple); font-weight: 600; }
+
+  .waterfall tr.internal-row td:first-child { color: rgba(248,81,73,0.6); font-size: 0.78rem; }
+  .waterfall tr.internal-row td:last-child { color: rgba(248,81,73,0.7); }
+
+  .waterfall tr.negative td:last-child { color: var(--red); }
+  .waterfall tr.positive td:last-child { color: var(--green); }
+  .waterfall tr.muted td { opacity: 0.55; }
+
+  .waterfall tr.total td { border-top: 2px solid var(--border-bright); padding-top: 0.7rem; font-weight: 600; }
+  .waterfall tr.total td:first-child { color: var(--text); font-size: 0.86rem; }
+  .waterfall tr.total td:last-child { color: var(--green); font-size: 0.88rem; }
+
+  .waterfall tr.total-kv td:last-child { color: var(--accent); }
+
+  /* INTERNAL NOTICE */
+  .internal-notice { margin-top: 1rem; background: rgba(248,81,73,0.06); border: 1px solid rgba(248,81,73,0.18); border-radius: 6px; padding: 0.75rem 1rem; font-size: 0.75rem; color: rgba(248,81,73,0.7); font-family: var(--font-mono); line-height: 1.5; }
+
+  /* APY FLOW */
+  .apy-flow { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .apy-node { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem 0.75rem; text-align: center; }
+  .apy-node.internal { border-color: rgba(248,81,73,0.25); background: rgba(248,81,73,0.06); }
+  .apy-node.kv { border-color: var(--accent-border); background: var(--accent-dim); }
+  .apy-node.investor { border-color: rgba(63,185,80,0.25); background: var(--green-dim); }
+  .apy-node-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.2rem; }
+  .apy-node-val { font-family: var(--font-mono); font-size: 1rem; font-weight: 500; }
+  .apy-node.internal .apy-node-val { color: var(--red); }
+  .apy-node.kv .apy-node-val { color: var(--accent); }
+  .apy-node.investor .apy-node-val { color: var(--green); }
+  .apy-arrow { color: var(--text-muted); font-size: 1rem; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 <div class="page">
-
   <header>
+    <div class="internal-badge">⚠ Internal Use Only — Not Investor Facing</div>
     <div class="header-label">KeyVault Fund</div>
-    <h1>Fee <span>&amp;</span> Return Calculator</h1>
-    <p class="subtitle">Adjust inputs — all outputs update instantly. Management fee applied quarterly on NAV.</p>
+    <h1>Full Fee <span>Waterfall</span> Calculator</h1>
+    <p class="subtitle">All layers tracked: Prime wholesale → KV gross → KV net → investor return. Adjust any input.</p>
   </header>
 
   <!-- KPI heroes -->
   <div class="kpi-grid">
-    <div class="kpi">
-      <div class="kpi-label">Investor Net Return</div>
-      <div class="kpi-value green" id="kpi-investor-pct">—</div>
-      <div class="kpi-sub" id="kpi-investor-dollar">—</div>
+    <div class="kpi internal">
+      <div class="kpi-label">Prime Gross APY</div>
+      <div class="kpi-value red" id="kpi-prime-apy">—</div>
+      <div class="kpi-sub">Pre–Prime fee (internal)</div>
     </div>
     <div class="kpi">
-      <div class="kpi-label">Total KV Profits</div>
+      <div class="kpi-label">KV Gross APY</div>
+      <div class="kpi-value amber" id="kpi-kv-apy">—</div>
+      <div class="kpi-sub">After Prime fee · benchmark basis</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Investor Net APY</div>
+      <div class="kpi-value green" id="kpi-investor-apy">—</div>
+      <div class="kpi-sub">After all KV fees</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Total KV Profit</div>
       <div class="kpi-value amber" id="kpi-kv-profit">—</div>
-      <div class="kpi-sub">after COGS &amp; Prime</div>
+      <div class="kpi-sub">Mgmt + perf + Prime rebate − COGS</div>
     </div>
-    <div class="kpi">
-      <div class="kpi-label">Mgmt Fee (quarterly)</div>
-      <div class="kpi-value" id="kpi-mgmt-fee">—</div>
-      <div class="kpi-sub" id="kpi-mgmt-fee-sub">—</div>
+  </div>
+
+  <!-- APY Flow -->
+  <div class="card" style="margin-bottom:1.25rem;animation-delay:0.05s">
+    <div class="card-title">APY Waterfall — Three Layers</div>
+    <div class="apy-flow" id="apy-flow">
+      <div class="apy-node internal"><div class="apy-node-label">Prime Gross APY</div><div class="apy-node-val" id="flow-prime">—</div></div>
+      <div class="apy-arrow">−20% Prime fee →</div>
+      <div class="apy-node kv"><div class="apy-node-label">KV Gross APY (benchmark basis)</div><div class="apy-node-val" id="flow-kv">—</div></div>
+      <div class="apy-arrow">−KV perf fee →</div>
+      <div class="apy-node investor"><div class="apy-node-label">Investor Net APY</div><div class="apy-node-val" id="flow-investor">—</div></div>
     </div>
   </div>
 
   <div class="layout">
     <!-- INPUTS -->
-    <div class="card" style="animation-delay:0.05s">
-      <div class="card-title">Inputs / Variables</div>
+    <div class="card" style="animation-delay:0.08s">
+      <div class="card-title">Inputs</div>
 
       <div class="section-sub">Fund</div>
       <div class="field">
         <label>Initial Investment (AUM)</label>
         <div class="input-wrap">
           <span class="input-prefix">$</span>
-          <input type="number" id="initial-investment" value="45500000" step="100000">
+          <input type="number" id="initial-investment" value="45500000" step="500000">
         </div>
       </div>
 
       <div class="section-divider"></div>
-      <div class="section-sub">Fee Structure</div>
-
+      <div class="section-sub">Management Fee</div>
       <div class="field">
-        <label>Annual Management Fee %</label>
+        <label>Annual Mgmt Fee %</label>
         <div class="input-wrap">
-          <input type="number" id="mgmt-fee-pct" class="no-prefix" value="2.00" step="0.1" min="0" max="10">
+          <input type="number" id="mgmt-fee-pct" class="no-prefix" value="2.00" step="0.25" min="0" max="5">
           <span class="input-suffix">%</span>
         </div>
-        <div class="field-hint">Charged as ¼ of this rate per quarter on quarter-start NAV</div>
+        <div class="field-hint">Charged flat on initial AUM. Taken first — all APY calc runs on net invested capital.</div>
       </div>
 
+      <div class="section-divider"></div>
+      <div class="section-sub">APY Inputs <span class="label-internal">● internal</span></div>
       <div class="field">
-        <label>Gross Achieved APY %</label>
+        <label>Prime Gross APY <span class="label-internal">internal</span></label>
         <div class="input-wrap">
-          <input type="number" id="gross-apy" class="no-prefix" value="18.00" step="0.5" min="0" max="100">
+          <input type="number" id="prime-gross-apy" class="no-prefix" value="25.00" step="0.5" min="0">
           <span class="input-suffix">%</span>
         </div>
+        <div class="field-hint">Raw vault APY from Prime's report (pre-fees). Never shown to investors.</div>
+      </div>
+      <div class="field">
+        <label>Prime Performance Fee %</label>
+        <div class="input-wrap">
+          <input type="number" id="prime-perf-pct" class="no-prefix" value="20" step="1" min="0" max="50">
+          <span class="input-suffix">%</span>
+        </div>
+        <div class="field-hint">Prime's cut of gross profit → net of this = KV Gross APY (Drift-published).</div>
+      </div>
+      <div class="field">
+        <label>Prime Rebate to KV %</label>
+        <div class="input-wrap">
+          <input type="number" id="prime-rebate-pct" class="no-prefix" value="50" step="5" min="0" max="100">
+          <span class="input-suffix">%</span>
+        </div>
+        <div class="field-hint">Prime refunds this % of their performance fee back to KV as profit.</div>
       </div>
 
+      <div class="section-divider"></div>
+      <div class="section-sub">KV Performance Fees</div>
       <div class="field">
         <label>Benchmark APY %</label>
         <div class="input-wrap">
-          <input type="number" id="benchmark-apy" class="no-prefix" value="20.00" step="0.5" min="0" max="100">
+          <input type="number" id="benchmark-apy" class="no-prefix" value="20.00" step="0.5" min="0">
           <span class="input-suffix">%</span>
         </div>
+        <div class="field-hint">Compared against KV Gross APY. Kicker triggers when KV Gross &gt; benchmark.</div>
+      </div>
+      <div class="field">
+        <label>KV Base Performance Fee %</label>
+        <div class="input-wrap">
+          <input type="number" id="kv-perf-pct" class="no-prefix" value="20" step="1" min="0" max="50">
+          <span class="input-suffix">%</span>
+        </div>
+        <div class="field-hint">Applied to KV Gross Profit.</div>
+      </div>
+      <div class="field">
+        <label>KV Kicker Fee % (above benchmark)</label>
+        <div class="input-wrap">
+          <input type="number" id="kv-kicker-pct" class="no-prefix" value="5" step="1" min="0" max="20">
+          <span class="input-suffix">%</span>
+        </div>
+        <div class="field-hint">Only applies when KV Gross APY &gt; benchmark APY.</div>
       </div>
 
       <div class="section-divider"></div>
-      <div class="section-sub">Performance Fees</div>
-
-      <div class="field">
-        <label>Base Performance Fee %</label>
-        <div class="input-wrap">
-          <input type="number" id="base-perf-fee" class="no-prefix" value="20" step="1" min="0" max="50">
-          <span class="input-suffix">%</span>
-        </div>
-        <div class="field-hint">Applied to gross profit</div>
-      </div>
-
-      <div class="field">
-        <label>Kicker Fee % (above benchmark)</label>
-        <div class="input-wrap">
-          <input type="number" id="kicker-fee" class="no-prefix" value="5" step="1" min="0" max="20">
-          <span class="input-suffix">%</span>
-        </div>
-        <div class="field-hint">Only applies when gross APY &gt; benchmark APY</div>
-      </div>
-
-      <div class="section-divider"></div>
-      <div class="section-sub">Costs &amp; Partners</div>
-
+      <div class="section-sub">Operating Costs</div>
       <div class="field">
         <label>Additional COGS</label>
         <div class="input-wrap">
           <span class="input-prefix">$</span>
-          <input type="number" id="cogs" value="200000" step="10000">
+          <input type="number" id="cogs" value="200000" step="25000">
         </div>
-        <div class="field-hint">Salary, software, 3rd party</div>
-      </div>
-
-      <div class="field">
-        <label>Prime Number Reward %</label>
-        <div class="input-wrap">
-          <input type="number" id="prime-reward-pct" class="no-prefix" value="10" step="1" min="0" max="50">
-          <span class="input-suffix">%</span>
-        </div>
-        <div class="field-hint">% of gross profit</div>
+        <div class="field-hint">Salary, software, 3rd-party. Borne by KV profits.</div>
       </div>
     </div>
 
     <!-- OUTPUTS -->
     <div>
-      <div class="card" style="animation-delay:0.1s">
-        <div class="card-title">Quarterly Management Fee Breakdown</div>
-        <div style="font-size:0.78rem;color:var(--text-dim);margin-bottom:0.5rem;">NAV compounds at gross APY/4 each quarter. Fee = quarterly rate × quarter-start NAV.</div>
-        <div class="q-grid" id="q-breakdown"></div>
-      </div>
-
-      <div class="card" style="margin-top:1rem;animation-delay:0.15s">
-        <div class="card-title">Full P&amp;L Model</div>
-        <table class="output-table" id="output-table">
-        </table>
-
-        <div class="watermark-note">* Watermarking / high-water mark not yet modeled</div>
-      </div>
-
-      <div class="note">
-        <strong>Management fee logic:</strong> The annual fee % is divided by 4 and applied each quarter against the NAV at the start of that quarter. NAV grows by <code>gross_apy / 4</code> each quarter before the next fee is applied. This produces a slightly higher total fee than a single annual charge on initial capital.
+      <div class="card" style="animation-delay:0.12s">
+        <div class="card-title">Full Waterfall</div>
+        <table class="waterfall" id="waterfall-table"></table>
+        <div class="internal-notice">⚠ Rows marked INTERNAL reflect Prime's wholesale economics and are not disclosed to investors. Investor-facing reporting begins at "KV Gross APY."</div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-function fmt(n, decimals=0) {
+function fmt(n, d=0) {
   if (n === null || isNaN(n)) return '—';
-  const abs = Math.abs(n);
-  const str = abs.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-  return (n < 0 ? '-$' : '$') + str;
+  const s = Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+  return (n < 0 ? '-$' : '$') + s;
 }
-function fmtPct(n, decimals=2) {
+function fmtPct(n, d=2) {
   if (n === null || isNaN(n)) return '—';
-  return n.toFixed(decimals) + '%';
+  return n.toFixed(d) + '%';
 }
 
 function calc() {
-  const initial    = parseFloat(document.getElementById('initial-investment').value) || 0;
-  const mgmtPct    = parseFloat(document.getElementById('mgmt-fee-pct').value) || 0;
-  const grossApy   = parseFloat(document.getElementById('gross-apy').value) || 0;
-  const benchApy   = parseFloat(document.getElementById('benchmark-apy').value) || 0;
-  const basePerfPct= parseFloat(document.getElementById('base-perf-fee').value) || 0;
-  const kickerPct  = parseFloat(document.getElementById('kicker-fee').value) || 0;
-  const cogs       = parseFloat(document.getElementById('cogs').value) || 0;
-  const primePct   = parseFloat(document.getElementById('prime-reward-pct').value) || 0;
+  const initial       = parseFloat(document.getElementById('initial-investment').value) || 0;
+  const mgmtPct       = parseFloat(document.getElementById('mgmt-fee-pct').value) || 0;
+  const primeGrossApy = parseFloat(document.getElementById('prime-gross-apy').value) || 0;
+  const primePerfPct  = parseFloat(document.getElementById('prime-perf-pct').value) || 0;
+  const primeRebatePct= parseFloat(document.getElementById('prime-rebate-pct').value) || 0;
+  const benchmarkApy  = parseFloat(document.getElementById('benchmark-apy').value) || 0;
+  const kvPerfPct     = parseFloat(document.getElementById('kv-perf-pct').value) || 0;
+  const kvKickerPct   = parseFloat(document.getElementById('kv-kicker-pct').value) || 0;
+  const cogs          = parseFloat(document.getElementById('cogs').value) || 0;
 
-  // ── STEP 1: Management fee (flat on initial AUM, matching spreadsheet) ──
-  const totalMgmtFee = initial * (mgmtPct / 100);
+  // ── STEP 1: Management fee (flat on initial AUM) ──
+  const mgmtFee = initial * (mgmtPct / 100);
 
-  // ── STEP 2: Net invested capital ──
-  const netInvestedCapital = initial - totalMgmtFee;
+  // ── STEP 2: Net Invested Capital ──
+  const netCapital = initial - mgmtFee;
 
-  // ── STEP 3: Returns calculated on net invested capital ──
-  const totalValueAfterGross = netInvestedCapital * (1 + grossApy / 100);
-  const grossProfit = totalValueAfterGross - netInvestedCapital;  // = netInvestedCapital * grossApy%
+  // ── STEP 3: Prime Gross Profit (internal) ──
+  const primeGrossProfit = netCapital * (primeGrossApy / 100);
 
-  // ── STEP 4: Benchmark on net invested capital ──
-  const benchmarkProfit = netInvestedCapital * (benchApy / 100);
-  const outperformanceValue = grossProfit - benchmarkProfit;
+  // ── STEP 4: Prime takes their performance fee ──
+  const primePerfFee = primeGrossProfit * (primePerfPct / 100);
 
-  // ── STEP 5: Performance fees on gross profit ──
-  const basePerfFee = grossProfit * (basePerfPct / 100);
+  // ── STEP 5: KV Gross Profit = what's left after Prime's cut ──
+  const kvGrossProfit = primeGrossProfit - primePerfFee;
+  const kvGrossApy = (kvGrossProfit / netCapital) * 100; // = primeGrossApy × (1 - primePerfPct/100)
 
-  // Kicker only applies when gross APY > benchmark APY
-  let kickerFee = 0;
-  let realPerfPct = basePerfPct;
-  if (grossApy > benchApy) {
-    const outperf = grossProfit - benchmarkProfit;
-    kickerFee = outperf * (kickerPct / 100);
-    realPerfPct = basePerfPct + kickerPct;
+  // ── STEP 6: KV benchmark comparison ──
+  const benchmarkProfit = netCapital * (benchmarkApy / 100);
+  const outperformance = kvGrossProfit - benchmarkProfit;
+
+  // ── STEP 7: KV performance fee on KV Gross Profit ──
+  const kvBasePerfFee = kvGrossProfit * (kvPerfPct / 100);
+
+  // Kicker: only if KV Gross APY > benchmark
+  let kvKickerFee = 0;
+  let kvRealPerfPct = kvPerfPct;
+  if (kvGrossApy > benchmarkApy) {
+    kvKickerFee = outperformance * (kvKickerPct / 100);
+    kvRealPerfPct = kvPerfPct + kvKickerPct;
   }
-  const totalPerfFee = basePerfFee + kickerFee;
+  const kvTotalPerfFee = kvBasePerfFee + kvKickerFee;
 
-  // ── STEP 6: Net final value (investor value before COGS) ──
-  const netFinalValue = totalValueAfterGross - totalPerfFee;
+  // ── STEP 8: Prime rebate to KV ──
+  const primeRebate = primePerfFee * (primeRebatePct / 100);
 
-  // ── STEP 7: Investor return vs net invested capital ──
-  const investorReturn = netFinalValue - netInvestedCapital;
-  const investorReturnPct = (investorReturn / netInvestedCapital) * 100;
+  // ── STEP 9: Investor net return ──
+  // Total value = net capital + KV gross profit
+  const totalValueAfterGross = netCapital + kvGrossProfit;
+  const netFinalValue = totalValueAfterGross - kvTotalPerfFee; // investor gets this
+  const investorReturn = netFinalValue - netCapital;
+  const investorNetApy = (investorReturn / netCapital) * 100;
 
-  // ── STEP 8: Prime Number reward on gross profit ──
-  const primeReward = grossProfit * (primePct / 100);
-
-  // ── STEP 9: Total KV profits = mgmt + perf - COGS + prime (prime is KV income per sheet) ──
-  const kvNet = totalMgmtFee + totalPerfFee - cogs + primeReward;
-
-  // ── Quarterly breakdown (informational — shows what quarterly charging looks like) ──
-  const qRate = mgmtPct / 4 / 100;
-  const growthPerQ = grossApy / 4 / 100;
-  let nav = initial;
-  let totalMgmtFeeQ = 0;
-  const quarters = [];
-  for (let q = 0; q < 4; q++) {
-    const qStartNav = nav;
-    const fee = qStartNav * qRate;
-    totalMgmtFeeQ += fee;
-    nav = qStartNav * (1 + growthPerQ); // nav grows (fee separate for display)
-    quarters.push({ q: q+1, startNav: qStartNav, fee });
-  }
+  // ── STEP 10: KV profits ──
+  const kvProfit = mgmtFee + kvTotalPerfFee + primeRebate - cogs;
 
   // ── Update KPIs ──
-  document.getElementById('kpi-investor-pct').textContent = fmtPct(investorReturnPct);
-  document.getElementById('kpi-investor-dollar').textContent = fmt(investorReturn);
-  document.getElementById('kpi-kv-profit').textContent = fmt(kvNet);
-  document.getElementById('kpi-mgmt-fee').textContent = fmt(totalMgmtFee);
-  document.getElementById('kpi-mgmt-fee-sub').textContent = fmtPct(mgmtPct) + ' of initial AUM';
+  document.getElementById('kpi-prime-apy').textContent = fmtPct(primeGrossApy);
+  document.getElementById('kpi-kv-apy').textContent = fmtPct(kvGrossApy);
+  document.getElementById('kpi-investor-apy').textContent = fmtPct(investorNetApy);
+  document.getElementById('kpi-kv-profit').textContent = fmt(kvProfit);
 
-  // ── Quarterly breakdown display ──
-  const qGrid = document.getElementById('q-breakdown');
-  qGrid.innerHTML = quarters.map(q => `
-    <div class="q-cell">
-      <div class="q-label">Q${q.q} NAV</div>
-      <div class="q-nav">${fmt(q.startNav)}</div>
-      <div class="q-fee">fee: ${fmt(q.fee)}</div>
-    </div>
-  `).join('') + `
-    <div class="q-cell" style="border-color:var(--accent-border)">
-      <div class="q-label">Total (quarterly)</div>
-      <div class="q-nav" style="color:var(--accent)">${fmt(totalMgmtFeeQ)}</div>
-      <div class="q-fee" style="color:var(--text-muted)">vs ${fmt(totalMgmtFee)} flat</div>
-    </div>`;
+  // ── APY flow ──
+  document.getElementById('flow-prime').textContent = fmtPct(primeGrossApy);
+  document.getElementById('flow-kv').textContent = fmtPct(kvGrossApy);
+  document.getElementById('flow-investor').textContent = fmtPct(investorNetApy);
 
-  // ── Build output table ──
+  // ── Waterfall table ──
   const rows = [
     { section: 'Capital' },
-    { label: 'Initial Investment', value: fmt(initial) },
-    { label: `Management Fee (${fmtPct(mgmtPct)} of initial AUM)`, value: fmt(-totalMgmtFee), cls: 'negative' },
-    { label: 'Net Invested Capital', value: fmt(netInvestedCapital), cls: 'highlight' },
-    { section: 'Returns (on net invested capital)' },
-    { label: `Total Value After Gross Return (${fmtPct(grossApy)})`, value: fmt(totalValueAfterGross) },
-    { label: `Gross Achieved APY ${fmtPct(grossApy)} ← benchmark number`, value: fmt(grossProfit), cls: 'highlight' },
-    { label: `Benchmark APY (${fmtPct(benchApy)})`, value: fmt(benchmarkProfit), cls: 'muted' },
-    { label: 'Outperformance Value', value: fmt(outperformanceValue), cls: outperformanceValue >= 0 ? 'positive' : 'negative' },
-    { section: 'Performance Fees' },
-    { label: `KV Base Performance Fee (${fmtPct(basePerfPct, 0)} of gross profit)`, value: fmt(-basePerfFee), cls: 'negative' },
-    { label: `KV Kicker Performance Fee (${fmtPct(kickerPct, 0)} — above benchmark only)`, value: fmt(-kickerFee), cls: kickerFee > 0 ? 'negative' : 'muted' },
-    { label: `KV Real Performance Fee (${fmtPct(realPerfPct, 2)})`, value: fmt(-totalPerfFee), cls: 'negative' },
-    { label: 'Net Final Value (excl. additional COGS)', value: fmt(netFinalValue), cls: 'highlight' },
+    { label: 'Initial Investment (AUM)', value: fmt(initial) },
+    { label: `Management Fee (${fmtPct(mgmtPct)} of initial AUM)`, value: fmt(-mgmtFee), cls: 'negative' },
+    { label: 'Net Invested Capital', value: fmt(netCapital), cls: 'highlight' },
+
+    { section: 'INTERNAL — Prime Wholesale Layer', internal: true },
+    { label: `Prime Gross APY (${fmtPct(primeGrossApy)}) × Net Capital`, value: fmt(primeGrossProfit), cls: 'internal-row' },
+    { label: `Prime Performance Fee (${fmtPct(primePerfPct, 0)} of gross profit)`, value: fmt(-primePerfFee), cls: 'internal-row' },
+    { label: `Prime Rebate to KV (${fmtPct(primeRebatePct, 0)} of Prime fee)`, value: fmt(primeRebate), cls: 'internal-row positive' },
+
+    { section: 'KV Gross — Investor-Facing Benchmark Basis' },
+    { label: `KV Gross Profit (Prime Gross × ${fmtPct(100 - primePerfPct, 0)})`, value: fmt(kvGrossProfit) },
+    { label: `KV Gross APY = ${fmtPct(kvGrossApy)} ← benchmark basis (Drift-published)`, value: fmt(kvGrossProfit), cls: 'highlight' },
+    { label: `Benchmark APY (${fmtPct(benchmarkApy)})`, value: fmt(benchmarkProfit), cls: 'muted' },
+    { label: 'Outperformance vs Benchmark', value: fmt(outperformance), cls: outperformance >= 0 ? 'positive' : 'negative' },
+
+    { section: 'KV Performance Fees' },
+    { label: `KV Base Performance Fee (${fmtPct(kvPerfPct, 0)} of KV Gross Profit)`, value: fmt(-kvBasePerfFee), cls: 'negative' },
+    { label: `KV Kicker Fee (${fmtPct(kvKickerPct, 0)} of outperformance — above benchmark only)`, value: fmt(-kvKickerFee), cls: kvKickerFee > 0 ? 'negative' : 'muted' },
+    { label: `KV Real Performance Fee (${fmtPct(kvRealPerfPct, 2)})`, value: fmt(-kvTotalPerfFee), cls: 'negative' },
+
     { section: 'Investor Return' },
-    { label: 'Investor Net Return', value: `${fmtPct(investorReturnPct)} / ${fmt(investorReturn)}`, cls: 'highlight' },
-    { section: 'KeyVault Costs & Profits' },
-    { label: 'Additional COGS (salary, software, 3rd party)', value: fmt(-cogs), cls: 'negative' },
-    { label: `Prime Number Reward (${fmtPct(primePct, 0)} of gross profit)`, value: fmt(primeReward), cls: 'muted' },
-    { label: 'Total KeyVault Profits', value: fmt(kvNet), cls: 'total' },
+    { label: 'Net Final Value (investor capital + KV gross profit − KV perf fee)', value: fmt(netFinalValue) },
+    { label: `Investor Net APY`, value: `${fmtPct(investorNetApy)} / ${fmt(investorReturn)}`, cls: 'highlight-green' },
+
+    { section: 'KeyVault Economics' },
+    { label: `Management Fee revenue`, value: fmt(mgmtFee), cls: 'positive' },
+    { label: `KV Performance Fee revenue`, value: fmt(kvTotalPerfFee), cls: 'positive' },
+    { label: `Prime Rebate received (${fmtPct(primeRebatePct, 0)} × Prime fee)`, value: fmt(primeRebate), cls: 'positive' },
+    { label: `COGS (salary, software, 3rd party)`, value: fmt(-cogs), cls: 'negative' },
+    { label: 'Total KeyVault Profit', value: fmt(kvProfit), cls: 'total total-kv' },
   ];
 
-  const table = document.getElementById('output-table');
+  const table = document.getElementById('waterfall-table');
   table.innerHTML = rows.map(r => {
     if (r.section) {
-      return `<tr class="section-header"><td>${r.section}</td><td>Amount</td></tr>`;
+      const isInternal = r.internal;
+      return `<tr class="section-header"><td colspan="2" style="${isInternal ? 'color:rgba(248,81,73,0.5)' : ''}">${r.section}</td></tr>`;
     }
     return `<tr class="${r.cls || ''}"><td>${r.label}</td><td>${r.value}</td></tr>`;
   }).join('');
