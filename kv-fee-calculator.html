@@ -370,40 +370,55 @@ function calc() {
   // ON:  charged quarterly on beginning-of-quarter NAV
   //      NAV grows each quarter as prime gross return accrues before fee is taken
   //      Q1: NAV = initial,  Q2: NAV after Q1 net growth, Q3: after Q2, Q4: after Q3
+  // ── STEP 1: Management fee ──
+  // Real flow: mgmt fee is deducted from investor deposit BEFORE capital enters the vault.
+  // Prime never sees the mgmt fee portion — it never earns returns on it.
+  //
+  // Flat mode (toggle OFF):  2% × initial, taken once upfront on initial AUM.
+  // Quarterly mode (toggle ON): charged quarterly on the beginning-of-quarter vault NAV
+  //   (i.e. the growing value of the deployed capital, post-Prime returns).
+  //   This requires a forward simulation: each quarter's NAV grows at the KV gross quarterly rate,
+  //   then the next quarter's fee is charged on that grown NAV.
+  //   Net Invested Capital must be determined first (chicken-and-egg), so we solve iteratively:
+  //   start with a flat fee estimate → derive netCapital → simulate quarters → done.
+
   let mgmtFee;
-  let mgmtFeeDetail = null; // for waterfall display when quarterly
+  let mgmtFeeDetail = null;
+
   if (!mgmtNavQuarterly) {
+    // Flat: straightforward
     mgmtFee = initial * (mgmtPct / 100);
   } else {
-    // Quarterly: simulate four quarters.
-    // Fee is charged on beginning-of-quarter NAV; NAV then grows at the quarterly-equivalent rate.
-    // Use proper quarterly compounding: quarterlyRate = (1 + annualRate)^(1/4) - 1
-    // This avoids overstating NAV growth (and thus fees) vs. simple annual/4 division.
-    const quarterlyMgmtRate  = (mgmtPct / 100) / 4;
-    // NAV growth uses KV gross APY (post-Prime fee), since that's what the published
-    // fund NAV reflects — Prime's cut is already taken at the vault level.
-    const kvGrossApyPreview = primeGrossApy * (1 - primePerfPct / 100);
-    const quarterlyNavGrowthRate = Math.pow(1 + kvGrossApyPreview / 100, 0.25) - 1;
-    let nav = initial;
+    // Quarterly NAV:
+    // Step A — estimate flat mgmt fee to get an approximate netCapital for NAV growth rate
+    const mgmtFeeFlat = initial * (mgmtPct / 100);
+    const approxNetCapital = initial - mgmtFeeFlat;
+    // KV gross APY (post-Prime fee) drives vault NAV growth between quarters
+    const kvGrossApyEst = primeGrossApy * (1 - primePerfPct / 100);
+    const quarterlyNavGrowthRate = Math.pow(1 + kvGrossApyEst / 100, 0.25) - 1;
+    const quarterlyMgmtRate = (mgmtPct / 100) / 4;
+
+    // Step B — simulate: fee is charged on beginning-of-quarter NAV of DEPLOYED capital
+    // Q1 NAV = approxNetCapital (capital in vault after upfront flat fee estimate as seed)
+    // We use the flat-fee netCapital as the Q1 starting NAV since the fee comes out before vault entry
+    let nav = approxNetCapital;
     let totalMgmt = 0;
     const qNavs = [];
     for (let q = 0; q < 4; q++) {
-      const qMgmt = nav * quarterlyMgmtRate;   // fee on beginning-of-quarter NAV
+      const qMgmt = nav * quarterlyMgmtRate;
       totalMgmt += qMgmt;
       qNavs.push({ q: q + 1, nav: nav, fee: qMgmt });
-      const navAfterFee = nav - qMgmt;
-      nav = navAfterFee * (1 + quarterlyNavGrowthRate); // NAV into next quarter
+      nav = nav * (1 + quarterlyNavGrowthRate); // grow for next quarter (fee taken separately)
     }
     mgmtFee = totalMgmt;
     mgmtFeeDetail = qNavs;
   }
 
   // ── STEP 2: Net Invested Capital ──
-  // Flat mode: mgmt fee is taken upfront → netCapital = initial - mgmtFee (what's actually deployed).
-  // Quarterly mode: full `initial` is deployed; fees are deducted from NAV each quarter.
-  //   Performance is calculated on `initial` (consistent with how the vault actually operates).
-  //   The mgmt fee burden is subtracted separately at the investor return stage.
-  const netCapital = initial - (mgmtNavQuarterly ? 0 : mgmtFee);
+  // Mgmt fee always comes out of the investor deposit before reaching the vault.
+  // In quarterly mode the Q1 starting NAV uses approxNetCapital above,
+  // but for the performance calc we use initial - mgmtFee as the effective deployed capital.
+  const netCapital = initial - mgmtFee;
 
   // ── STEP 3: Prime Gross Profit (internal) ──
   const primeGrossProfit = netCapital * (primeGrossApy / 100);
@@ -446,11 +461,8 @@ function calc() {
   const kvRebatePerfFee = rebateToInvestor ? primeRebate * (kvPerfPct / 100) : 0;
   const investorRebateBonus = rebateToInvestor ? primeRebate - kvRebatePerfFee : 0;
   const totalValueAfterGross = netCapital + kvGrossProfit;
-  // In quarterly mode, mgmt fees are drawn from the fund throughout the year (already in mgmtFee total).
-  // Subtract them from the investor's final value so investor APY correctly reflects the full fee burden.
-  const mgmtFeeInvestorBurden = mgmtNavQuarterly ? mgmtFee : 0; // flat mode already deducted via netCapital
-  const netFinalValue = totalValueAfterGross - kvTotalPerfFee + investorRebateBonus - mgmtFeeInvestorBurden;
-  const investorReturn = netFinalValue - initial; // always vs. initial capital put in
+  const netFinalValue = totalValueAfterGross - kvTotalPerfFee + investorRebateBonus;
+  const investorReturn = netFinalValue - initial; // vs. what investor originally put in
   const investorNetApy = (investorReturn / initial) * 100;
 
   // ── STEP 10: KV profits ──
@@ -475,13 +487,12 @@ function calc() {
     { section: 'Capital' },
     { label: 'Initial Investment (AUM)', value: fmt(initial) },
     ...(mgmtNavQuarterly && mgmtFeeDetail ? [
-      { label: `Management Fee — Quarterly NAV (${fmtPct(mgmtPct)} p.a. = ${fmtPct(mgmtPct/4,3)}/qtr on beginning NAV)`, value: fmt(-mgmtFee), cls: 'negative' },
-      ...mgmtFeeDetail.map(q => ({ label: `<span style="padding-left:1rem;color:var(--text-muted)">└ Q${q.q}: ${fmtPct(mgmtPct/4,3)} × ${fmt(q.nav)} NAV</span>`, value: fmt(-q.fee), cls: 'muted' })),
-      { label: 'Capital Deployed (full initial, fees drawn quarterly)', value: fmt(netCapital), cls: 'highlight' },
+      { label: `Management Fee — Quarterly on Vault NAV (${fmtPct(mgmtPct)} p.a. = ${fmtPct(mgmtPct/4,3)}/qtr)`, value: fmt(-mgmtFee), cls: 'negative' },
+      ...mgmtFeeDetail.map(q => ({ label: `<span style="padding-left:1rem;color:var(--text-muted)">└ Q${q.q}: ${fmtPct(mgmtPct/4,3)} × ${fmt(q.nav)} vault NAV</span>`, value: fmt(-q.fee), cls: 'muted' })),
     ] : [
-      { label: `Management Fee (${fmtPct(mgmtPct)} p.a. of initial AUM)`, value: fmt(-mgmtFee), cls: 'negative' },
-      { label: 'Net Invested Capital', value: fmt(netCapital), cls: 'highlight' },
+      { label: `Management Fee (${fmtPct(mgmtPct)} p.a. on initial AUM, deducted before vault entry)`, value: fmt(-mgmtFee), cls: 'negative' },
     ]),
+    { label: 'Net Capital Deployed into Vault', value: fmt(netCapital), cls: 'highlight' },
 
     { section: 'INTERNAL — Prime Wholesale Layer', internal: true },
     { label: `Prime Gross APY (${fmtPct(primeGrossApy)}) × Net Capital`, value: fmt(primeGrossProfit), cls: 'internal-row' },
