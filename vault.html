@@ -1908,15 +1908,20 @@
                 if (res.ok) {
                     const latest = await res.json();
                     const lastEntry = primeProFormaData[primeProFormaData.length - 1];
-                    if (latest && latest.endDate && latest.endDate > lastEntry.date) {
-                        const dailyRate = (latest.annualized / 100) / 365;
-                        const daysDiff = Math.floor((new Date(latest.endDate) - new Date(lastEntry.date)) / 86400000);
-                        for (let i = 1; i <= daysDiff; i++) {
-                            const d = new Date(lastEntry.date + 'T12:00:00');
+                    if (latest && latest.endDate && !isNaN(latest.cumulative) && latest.endDate > lastEntry.date) {
+                        // Linear interpolation to actual cumulative — same as fetchJlpStrategyLatest
+                        const startDate = new Date(lastEntry.date + 'T12:00:00');
+                        const endDate = new Date(latest.endDate + 'T12:00:00');
+                        const totalDays = Math.round((endDate - startDate) / 86400000);
+                        const startRoi = lastEntry.roi;
+                        const endRoi = latest.cumulative;
+                        for (let i = 1; i <= totalDays; i++) {
+                            const d = new Date(startDate);
                             d.setDate(d.getDate() + i);
                             const dateStr = d.toISOString().slice(0, 10);
                             if (!primeProFormaData.find(e => e.date === dateStr)) {
-                                primeProFormaData.push({ date: dateStr, roi: parseFloat((lastEntry.roi * (1 + dailyRate * i)).toFixed(2)) });
+                                const interpolated = startRoi + (endRoi - startRoi) * (i / totalDays);
+                                primeProFormaData.push({ date: dateStr, roi: parseFloat(interpolated.toFixed(2)) });
                             }
                         }
                     }
