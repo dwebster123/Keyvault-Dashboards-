@@ -297,6 +297,17 @@
       <div class="field">
         <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;">
           <div style="position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;">
+            <input type="checkbox" id="mgmt-nav-quarterly" style="opacity:0;width:0;height:0;position:absolute;">
+            <span id="mgmt-nav-track" style="position:absolute;inset:0;background:var(--surface3);border:1px solid var(--border-bright);border-radius:22px;cursor:pointer;transition:background 0.2s;"></span>
+            <span id="mgmt-nav-thumb" style="position:absolute;top:3px;left:3px;width:14px;height:14px;background:var(--text-muted);border-radius:50%;transition:transform 0.2s,background 0.2s;"></span>
+          </div>
+          <span style="font-size:0.77rem;font-weight:500;color:var(--text-dim);">Mgmt fee on quarterly NAV</span>
+        </label>
+        <div class="field-hint">OFF: flat on initial principal (current). ON: charged each quarter on beginning-of-quarter NAV — higher as fund grows.</div>
+      </div>
+      <div class="field">
+        <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;">
+          <div style="position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;">
             <input type="checkbox" id="kicker-retroactive" style="opacity:0;width:0;height:0;position:absolute;">
             <span id="kicker-track" style="position:absolute;inset:0;background:var(--surface3);border:1px solid var(--border-bright);border-radius:22px;cursor:pointer;transition:background 0.2s;"></span>
             <span id="kicker-thumb" style="position:absolute;top:3px;left:3px;width:14px;height:14px;background:var(--text-muted);border-radius:50%;transition:transform 0.2s,background 0.2s;"></span>
@@ -352,9 +363,36 @@ function calc() {
   const cogs              = parseFloat(document.getElementById('cogs').value) || 0;
   const rebateToInvestor   = document.getElementById('rebate-to-investor').checked;
   const kickerRetroactive  = document.getElementById('kicker-retroactive').checked;
+  const mgmtNavQuarterly   = document.getElementById('mgmt-nav-quarterly').checked;
 
-  // ── STEP 1: Management fee (flat on initial AUM) ──
-  const mgmtFee = initial * (mgmtPct / 100);
+  // ── STEP 1: Management fee ──
+  // OFF: flat on initial AUM
+  // ON:  charged quarterly on beginning-of-quarter NAV
+  //      NAV grows each quarter as prime gross return accrues before fee is taken
+  //      Q1: NAV = initial,  Q2: NAV after Q1 net growth, Q3: after Q2, Q4: after Q3
+  let mgmtFee;
+  let mgmtFeeDetail = null; // for waterfall display when quarterly
+  if (!mgmtNavQuarterly) {
+    mgmtFee = initial * (mgmtPct / 100);
+  } else {
+    // Quarterly: simulate four quarters
+    // Each quarter the vault earns (primeGrossApy/4)% gross, then 2%/4 mgmt fee is taken on beginning NAV
+    const quarterlyMgmtRate = (mgmtPct / 100) / 4;
+    const quarterlyGrossRate = (primeGrossApy / 100) / 4;
+    let nav = initial;
+    let totalMgmt = 0;
+    const qNavs = [];
+    for (let q = 0; q < 4; q++) {
+      const qMgmt = nav * quarterlyMgmtRate;   // fee on beginning-of-quarter NAV
+      totalMgmt += qMgmt;
+      qNavs.push({ q: q + 1, nav: nav, fee: qMgmt });
+      const navAfterFee = nav - qMgmt;
+      const grossGain = navAfterFee * quarterlyGrossRate;
+      nav = navAfterFee + grossGain;            // NAV going into next quarter
+    }
+    mgmtFee = totalMgmt;
+    mgmtFeeDetail = qNavs;
+  }
 
   // ── STEP 2: Net Invested Capital ──
   const netCapital = initial - mgmtFee;
@@ -425,7 +463,12 @@ function calc() {
   const rows = [
     { section: 'Capital' },
     { label: 'Initial Investment (AUM)', value: fmt(initial) },
-    { label: `Management Fee (${fmtPct(mgmtPct)} of initial AUM)`, value: fmt(-mgmtFee), cls: 'negative' },
+    ...(mgmtNavQuarterly && mgmtFeeDetail ? [
+      { label: `Management Fee — Quarterly NAV (${fmtPct(mgmtPct)} p.a.)`, value: fmt(-mgmtFee), cls: 'negative' },
+      ...mgmtFeeDetail.map(q => ({ label: `  └ Q${q.q}: ${fmtPct(mgmtPct/4,3)} × ${fmt(q.nav)} NAV`, value: fmt(-q.fee), cls: 'muted' })),
+    ] : [
+      { label: `Management Fee (${fmtPct(mgmtPct)} of initial AUM)`, value: fmt(-mgmtFee), cls: 'negative' },
+    ]),
     { label: 'Net Invested Capital', value: fmt(netCapital), cls: 'highlight' },
 
     { section: 'INTERNAL — Prime Wholesale Layer', internal: true },
@@ -469,6 +512,19 @@ function calc() {
     return `<tr class="${r.cls || ''}"><td>${r.label}</td><td>${r.value}</td></tr>`;
   }).join('');
 }
+
+// Mgmt fee on quarterly NAV toggle
+const mgmtNavCb    = document.getElementById('mgmt-nav-quarterly');
+const mgmtNavTrack = document.getElementById('mgmt-nav-track');
+const mgmtNavThumb = document.getElementById('mgmt-nav-thumb');
+mgmtNavCb.addEventListener('change', () => {
+  const on = mgmtNavCb.checked;
+  mgmtNavTrack.style.background   = on ? 'rgba(88,166,255,0.4)' : 'var(--surface3)';
+  mgmtNavTrack.style.borderColor  = on ? 'rgba(88,166,255,0.5)' : 'var(--border-bright)';
+  mgmtNavThumb.style.transform    = on ? 'translateX(18px)' : 'translateX(0)';
+  mgmtNavThumb.style.background   = on ? 'var(--blue)' : 'var(--text-muted)';
+  calc();
+});
 
 // Kicker retroactive toggle
 const kickerCb = document.getElementById('kicker-retroactive');
