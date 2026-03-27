@@ -2133,10 +2133,10 @@
                 kvDataMap[d] = roi;
             });
 
-            // Build prime data map from pro-forma + JLP extension (gross, no fee haircut)
+            // Build prime data map from pro-forma + JLP extension, net of fees (same factor as KV for apples-to-apples)
             const primeDataMap = {};
             primeProFormaData.filter(d => d.date >= windowStart).forEach(d => {
-                primeDataMap[d.date] = d.roi; // gross ROI, no fee factor
+                primeDataMap[d.date] = d.roi * NET_INVESTOR_FACTOR_CP;
             });
             // Re-baseline to 0 at window start
             const primeStartDate = Object.keys(primeDataMap).sort()[0];
@@ -2250,9 +2250,9 @@
 
             document.getElementById('comparisonMetricsVault').innerHTML = `
                 <div class="metric-card realized"><div class="metric-label">Current Strategy ROI (Actual)</div><div class="metric-value realized">+${kvRoi.toFixed(2)}%</div><div class="metric-subtext">Net of fees · ${days} days</div></div>
-                <div class="metric-card" style="border-color:rgba(244,114,182,0.4)"><div class="metric-label">Cross-Platform JLP ROI</div><div class="metric-value" style="color:#f472b6">+${primeRoi.toFixed(2)}%</div><div class="metric-subtext">Gross · ${days} days</div></div>
+                <div class="metric-card" style="border-color:rgba(244,114,182,0.4)"><div class="metric-label">Cross-Platform JLP ROI</div><div class="metric-value" style="color:#f472b6">+${primeRoi.toFixed(2)}%</div><div class="metric-subtext">Net of fees · ${days} days</div></div>
                 <div class="metric-card realized"><div class="metric-label">Current Strategy APY</div><div class="metric-value realized">+${kvAPY.toFixed(2)}%</div><div class="metric-subtext">Annualized, net of fees</div></div>
-                <div class="metric-card" style="border-color:rgba(244,114,182,0.4)"><div class="metric-label">Cross-Platform APY</div><div class="metric-value" style="color:#f472b6">+${primeAPY.toFixed(2)}%</div><div class="metric-subtext">Annualized, gross</div></div>
+                <div class="metric-card" style="border-color:rgba(244,114,182,0.4)"><div class="metric-label">Cross-Platform APY</div><div class="metric-value" style="color:#f472b6">+${primeAPY.toFixed(2)}%</div><div class="metric-subtext">Annualized, net of fees</div></div>
                 <div class="metric-card highlight" style="grid-column:span 2"><div class="metric-label">Cross-Platform Outperformance</div><div class="metric-value" style="color:#a78bfa">${outperf >= 0 ? '+' : ''}${outperf.toFixed(2)}%</div><div class="metric-subtext">Additional return vs current strategy (same period)</div></div>
             `;
         }
