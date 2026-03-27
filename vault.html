@@ -1927,7 +1927,7 @@
 
         // ── Cross-Platform Comparison Tab ──────────────────────────────────
         const LIVE_TRADING_CUTOFF = '2026-01-15';
-        const NET_INVESTOR_FACTOR_CP = 1 - 0.20; // 0.80
+        const NET_INVESTOR_FACTOR_CP = 0.80 * 0.80; // 0.64 — Prime Number 20% fee × KV 20% performance fee
         let cpCompChartInstance = null;
         let cpCompPeriod = 'all';
 
