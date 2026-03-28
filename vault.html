@@ -856,15 +856,15 @@
 
         // =========== FEE STRUCTURE ===========
         const FEE_CONFIG = {
-            performanceFeeRate: 0.20,
-            primeNumberFeeRate: 0.10,
-            totalFeeRate: 0.30,
-            managementFeeRate: 0.02
+            performanceFeeRate: 0.20,   // KV's cut from investors
+            primeNumberFeeRate: 0.10,   // Prime's cut from gross vault returns
+            managementFeeRate: 0.02     // Annual mgmt fee on AUM
+            // Note: totalFeeRate removed — was 0.30 but never used and caused confusion
         };
 
-        const PRIME_NET_FACTOR = 1 - FEE_CONFIG.primeNumberFeeRate;
-        // Share prices are already net of Prime's 10% fee.
-        // Only apply KV's 20% on top to get net-to-investor return.
+        const PRIME_NET_FACTOR = 1 - FEE_CONFIG.primeNumberFeeRate; // 0.90
+        // All share price data (spreadsheet era + Drift era) is net of Prime's 10% fee already.
+        // Only KV's 20% performance fee is applied on top to arrive at investor net return.
         const NET_INVESTOR_FACTOR = 1 - FEE_CONFIG.performanceFeeRate; // 0.80
 
         function getQuarterEndDates(year) {
@@ -1107,7 +1107,10 @@
             const totalDays = Math.max(1, Math.round((lastDate - firstDate) / (1000 * 60 * 60 * 24)));
             const currentBalance = tvl;
             const totalShares = data.totalShares || TOTAL_SHARES || (tvl / sharePrice);
-            const cumulativeNetDeposits = totalShares;
+            // cumulativeNetDeposits = the original capital deployed into the vault.
+            // Since inception share price was $1.00, shares issued ≈ dollars deposited.
+            // We use totalShares × initialSharePrice to correctly scale even if initial price ≠ $1.00.
+            const cumulativeNetDeposits = totalShares * initialSharePrice;
             // TRUE EARNINGS: Public vault (hardcoded, final) + Private vault (live)
             // Public vault earnings (LOCKED - all capital withdrawn, never changes):
             //   EVd3ATEW: $203,650 | Dq95Pq71: $8,305 | AV3oo27Y: $34
@@ -1130,7 +1133,12 @@
             const unrealizedFeeDollars = (performanceFees.unrealizedFees / 100) * cumulativeNetDeposits;
             const primeRealizedFeeDollars = realizedFeeDollars * (FEE_CONFIG.primeNumberFeeRate / FEE_CONFIG.performanceFeeRate);
             const primeUnrealizedFeeDollars = unrealizedFeeDollars * (FEE_CONFIG.primeNumberFeeRate / FEE_CONFIG.performanceFeeRate);
-            const managementFeeDollars = cumulativeNetDeposits * (FEE_CONFIG.managementFeeRate / (1 - FEE_CONFIG.managementFeeRate));
+            // Management fee = 2% of original investor deposits (charged before vault entry).
+            // If investor deposited $X, they paid $X × 2% = mgmtFee, and $X × 98% went into vault.
+            // cumulativeNetDeposits = shares × initialPrice ≈ what went INTO the vault.
+            // So original deposits = cumulativeNetDeposits / (1 - managementFeeRate).
+            const originalDeposits = cumulativeNetDeposits / (1 - FEE_CONFIG.managementFeeRate);
+            const managementFeeDollars = originalDeposits * FEE_CONFIG.managementFeeRate;
             const totalRealizedRevenue = realizedFeeDollars + primeRealizedFeeDollars + managementFeeDollars;
             const totalUnrealizedRevenue = unrealizedFeeDollars + primeUnrealizedFeeDollars;
             const totalRevenue = totalRealizedRevenue + totalUnrealizedRevenue;
@@ -1143,7 +1151,7 @@
             const projectedPrimeFees = (projectedGrossReturn / 100) * FEE_CONFIG.primeNumberFeeRate * cumulativeNetDeposits;
             const projectedTotalRevenue = projectedPerformanceFees + projectedPrimeFees + managementFeeDollars;
             return {
-                currentBalance, cumulativeNetDeposits, sharePrice, grossReturn, netReturn,
+                currentBalance, cumulativeNetDeposits, originalDeposits, sharePrice, grossReturn, netReturn,
                 allTimeAPY, rollingAPYs, totalPNL, totalDays, updateTime, history: sortedHistory,
                 performanceFees, realizedFeeDollars, unrealizedFeeDollars,
                 primeRealizedFeeDollars, primeUnrealizedFeeDollars, managementFeeDollars,
@@ -1503,7 +1511,7 @@
                         </div>
                         <div class="metric-card management">
                             <div class="metric-label"><span class="icon">💵</span> Original Deposits</div>
-                            <div class="metric-value management" style="opacity: 0.7;">${formatCurrency(m.cumulativeNetDeposits + m.managementFeeDollars)}</div>
+                            <div class="metric-value management" style="opacity: 0.7;">${formatCurrency(m.originalDeposits)}</div>
                             <div class="metric-subtext">Before 2% deduction</div>
                         </div>
                     </div>
@@ -1932,7 +1940,12 @@
 
         // ── Cross-Platform Comparison Tab ──────────────────────────────────
         const LIVE_TRADING_CUTOFF = '2026-01-15';
-        const NET_INVESTOR_FACTOR_CP = 0.80 * 0.80; // 0.64 — Prime Number 20% fee × KV 20% performance fee
+        // KV share price data is already net of Prime's 10% fee (same as index.html).
+        // Only KV's 20% performance fee is applied on top → 0.80.
+        // Cross-Platform JLP data is also pre-net of Prime's fee in its ROI series,
+        // so the same 0.80 factor applies for an apples-to-apples comparison.
+        // Using 0.64 (0.80×0.80) was incorrect — it double-counted Prime's cut on the KV line.
+        const NET_INVESTOR_FACTOR_CP = NET_INVESTOR_FACTOR; // 0.80
         let cpCompChartInstance = null;
         let cpCompPeriod = 'all';
 
