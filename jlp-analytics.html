@@ -329,13 +329,13 @@ const CG_SOL_URL = 'https://api.coingecko.com/api/v3/coins/solana/market_chart?v
 const CG_ETH_URL = 'https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=365';
 const CG_BTC_URL = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365';
 
-// Fee structure: 20% performance (KeyVault) + 10% manager (Prime Number) = 30% total
-// Share price from vault API is net of Prime's 10% only
+// Fee structure: 20% performance (KeyVault) + 20% manager (Prime Number) = 40% total
+// Share price from vault API is net of Prime's 20% only
 const PERFORMANCE_FEE_RATE = 0.20;
-const PRIME_NUMBER_FEE_RATE = 0.10;
-const TOTAL_FEE_RATE = PERFORMANCE_FEE_RATE + PRIME_NUMBER_FEE_RATE; // 0.30
-const PRIME_NET_FACTOR = 1 - PRIME_NUMBER_FEE_RATE; // 0.90
-// Share price is already net of PM's 10% fee (confirmed Feb 2026).
+const PRIME_NUMBER_FEE_RATE = 0.20;
+const TOTAL_FEE_RATE = PERFORMANCE_FEE_RATE + PRIME_NUMBER_FEE_RATE; // 0.40
+const PRIME_NET_FACTOR = 1 - PRIME_NUMBER_FEE_RATE; // 0.80
+// Share price is already net of PM's 20% fee (confirmed Feb 2026).
 // NET_INVESTOR_FACTOR only applies KV's 20% performance fee on top.
 const NET_INVESTOR_FACTOR = 1 - PERFORMANCE_FEE_RATE; // 0.80
 
@@ -555,7 +555,7 @@ function renderWaterfall() {
             ${cols.map(c => fmtPct(results[c].expectedNet, results[c].expectedNet >= 0 ? 'wf-positive' : 'wf-negative')).join('')}
         </tr>
         <tr>
-            <td>− Performance Fees (30%)<span class="wf-sub">10% Prime Number + 20% KeyVault</span></td>
+            <td>− Performance Fees (40%)<span class="wf-sub">20% Prime Number + 20% KeyVault</span></td>
             ${cols.map(c => {
                 const fee = results[c].expectedNet > 0 ? results[c].expectedNet * TOTAL_FEE_RATE : 0;
                 return fee > 0
