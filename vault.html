@@ -863,7 +863,7 @@
         };
 
         const PRIME_NET_FACTOR = 1 - FEE_CONFIG.primeNumberFeeRate; // 0.80
-        // All share price data (spreadsheet era + Drift era) is net of Prime's 10% fee already.
+        // All share price data (spreadsheet era + Drift era) is net of Prime's 20% fee already.
         // Only KV's 20% performance fee is applied on top to arrive at investor net return.
         const NET_INVESTOR_FACTOR = 1 - FEE_CONFIG.performanceFeeRate; // 0.80
 
