@@ -857,12 +857,12 @@
         // =========== FEE STRUCTURE ===========
         const FEE_CONFIG = {
             performanceFeeRate: 0.20,   // KV's cut from investors
-            primeNumberFeeRate: 0.10,   // Prime's cut from gross vault returns
+            primeNumberFeeRate: 0.20,   // Prime's cut from gross vault returns
             managementFeeRate: 0.02     // Annual mgmt fee on AUM
             // Note: totalFeeRate removed — was 0.30 but never used and caused confusion
         };
 
-        const PRIME_NET_FACTOR = 1 - FEE_CONFIG.primeNumberFeeRate; // 0.90
+        const PRIME_NET_FACTOR = 1 - FEE_CONFIG.primeNumberFeeRate; // 0.80
         // All share price data (spreadsheet era + Drift era) is net of Prime's 10% fee already.
         // Only KV's 20% performance fee is applied on top to arrive at investor net return.
         const NET_INVESTOR_FACTOR = 1 - FEE_CONFIG.performanceFeeRate; // 0.80
@@ -1942,7 +1942,7 @@
         const LIVE_TRADING_CUTOFF = '2026-01-15';
         // Two different fee treatments for the comparison chart:
         //   KV line:              share price already net of Prime's 10% → apply KV 20% only → × 0.80
-        //   Cross-platform line:  data comes directly from Prime (gross) → apply Prime 10% then KV 20% → × 0.90 × 0.80 = 0.72
+        //   Cross-platform line:  data comes directly from Prime (gross) → apply Prime 20% then KV 20% → × 0.80 × 0.80 = 0.64
         const NET_INVESTOR_FACTOR_KV    = NET_INVESTOR_FACTOR;                        // 0.80
         const NET_INVESTOR_FACTOR_PRIME = PRIME_NET_FACTOR * NET_INVESTOR_FACTOR;     // 0.72
         let cpCompChartInstance = null;
