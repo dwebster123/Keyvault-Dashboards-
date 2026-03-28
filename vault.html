@@ -1940,12 +1940,11 @@
 
         // ── Cross-Platform Comparison Tab ──────────────────────────────────
         const LIVE_TRADING_CUTOFF = '2026-01-15';
-        // KV share price data is already net of Prime's 10% fee (same as index.html).
-        // Only KV's 20% performance fee is applied on top → 0.80.
-        // Cross-Platform JLP data is also pre-net of Prime's fee in its ROI series,
-        // so the same 0.80 factor applies for an apples-to-apples comparison.
-        // Using 0.64 (0.80×0.80) was incorrect — it double-counted Prime's cut on the KV line.
-        const NET_INVESTOR_FACTOR_CP = NET_INVESTOR_FACTOR; // 0.80
+        // Two different fee treatments for the comparison chart:
+        //   KV line:              share price already net of Prime's 10% → apply KV 20% only → × 0.80
+        //   Cross-platform line:  data comes directly from Prime (gross) → apply Prime 10% then KV 20% → × 0.90 × 0.80 = 0.72
+        const NET_INVESTOR_FACTOR_KV    = NET_INVESTOR_FACTOR;                        // 0.80
+        const NET_INVESTOR_FACTOR_PRIME = PRIME_NET_FACTOR * NET_INVESTOR_FACTOR;     // 0.72
         let cpCompChartInstance = null;
         let cpCompPeriod = 'all';
 
@@ -2147,14 +2146,15 @@
             const kvDataMap = {};
             kvFiltered.forEach(h => {
                 const d = (h.update_time_utc || h.timestamp || '').slice(0, 10);
-                const roi = ((h.SharePrice - kvBaseline) / kvBaseline) * 100 * NET_INVESTOR_FACTOR_CP;
+                // KV share price is already net of Prime's fee — only apply KV's 20% perf fee
+                const roi = ((h.SharePrice - kvBaseline) / kvBaseline) * 100 * NET_INVESTOR_FACTOR_KV;
                 kvDataMap[d] = roi;
             });
 
-            // Build prime data map from pro-forma + JLP extension, net of fees (same factor as KV for apples-to-apples)
+            // Cross-platform data comes directly from Prime (gross) — apply Prime 10% + KV 20%
             const primeDataMap = {};
             primeProFormaData.filter(d => d.date >= windowStart).forEach(d => {
-                primeDataMap[d.date] = d.roi * NET_INVESTOR_FACTOR_CP;
+                primeDataMap[d.date] = d.roi * NET_INVESTOR_FACTOR_PRIME;
             });
             // Re-baseline to 0 at window start
             const primeStartDate = Object.keys(primeDataMap).sort()[0];
