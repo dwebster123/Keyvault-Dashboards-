@@ -540,8 +540,12 @@
         //   - All share prices (spreadsheet era + Drift era) are net of Prime's 10% manager fee.
         //   - Dashboard applies KV's 20% performance fee on top to arrive at investor net returns.
         //   - NET_INVESTOR_FACTOR = 0.80 (investor keeps 80% of gross gains after KV's 20% cut).
+        //   - All share price data is already net of Prime's 10% fee — only KV's 20% is applied here.
+        //   - Cross-platform comparison data comes directly from Prime (gross) and needs both fees applied.
         const PERFORMANCE_FEE_RATE = 0.20;
-        const NET_INVESTOR_FACTOR = 1 - PERFORMANCE_FEE_RATE; // 0.80
+        const PRIME_FEE_RATE = 0.10;
+        const NET_INVESTOR_FACTOR = 1 - PERFORMANCE_FEE_RATE;                    // 0.80 — for KV share price data
+        const NET_INVESTOR_FACTOR_PRIME = (1 - PRIME_FEE_RATE) * NET_INVESTOR_FACTOR; // 0.72 — for cross-platform (gross from Prime)
 
         // Prime Number Pro Forma Data - 3x Jupiter JLP (backtested, NOT live results)
         // Tail end gets extended at runtime by fetchJlpStrategyLatest()
@@ -1315,10 +1319,10 @@
             // Get the KeyVault share price at the start of the window as baseline
             const kvBaseline = kvDataFiltered[0].net;
 
-            // Create a map of pro forma data by date (net of KV's 20% perf fee)
+            // Cross-platform data is gross from Prime — apply Prime's 10% then KV's 20% (× 0.72)
             const primeDataMap = {};
             primeProFormaData.filter(d => d.date >= windowStart).forEach(d => {
-                primeDataMap[d.date] = d.roi * NET_INVESTOR_FACTOR;
+                primeDataMap[d.date] = d.roi * NET_INVESTOR_FACTOR_PRIME;
             });
 
             // Rebase pro forma data to the window start (subtract starting value so both lines start at 0)
