@@ -1,8 +1,8 @@
 {
   "strategy": "3x JLP (borrow SOL) + Mixed Funding",
   "startDate": "2025-11-06",
-  "endDate": "2026-03-28",
-  "cumulative": 12.68,
-  "annualized": 32.36,
-  "fetchedAt": "2026-03-28T21:00:07.210Z"
+  "endDate": "2026-03-29",
+  "cumulative": 12.72,
+  "annualized": 32.24,
+  "fetchedAt": "2026-03-29T21:00:09.117Z"
 }
