@@ -9,7 +9,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { getDriftVaultProgram, VAULT_PROGRAM_ID } = require('@drift-labs/vaults-sdk');
 
-const RPC = 'https://mainnet.helius-rpc.com/?api-key=86b538c8-91f4-4ae5-95ec-4392a2fbecaf';
+const RPC = 'https://mainnet.helius-rpc.com/?api-key=41552a6e-8694-4969-9880-f75b4a95559e';
 const VAULT_ADDRESS = '2dNSa3fBPMoxcs46NhtdLeTJuLasDt6VYNG4vopa7mWw';
 
 const connection = new Connection(RPC, 'confirmed');
