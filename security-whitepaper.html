@@ -5,10 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KeyVault Fund — Security & Liability White Paper</title>
 <style>
+:root {
+  --kv-ice: #5ad7ff;
+  --kv-cyan: #35c3f7;
+  --kv-sky: #249fe8;
+  --kv-blue: #167fd0;
+  --kv-ink: #071017;
+  --kv-panel: #0c1720;
+  --kv-line: rgba(90, 215, 255, 0.22);
+  --kv-text: #d6eaf4;
+  --kv-muted: #91a8b7;
+}
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0d0d1f 100%);
+  background: linear-gradient(145deg, #071017 0%, #0c1822 48%, #09131c 100%);
   color: #ffffff;
   line-height: 1.7;
   min-height: 100vh;
@@ -16,68 +27,75 @@ body {
 .container { max-width: 900px; margin: 0 auto; padding: 40px 24px 60px; }
 /* Header */
 .header { text-align: center; margin-bottom: 56px; padding-top: 24px; }
-.header img {
-  display: inline-block;
-  height: 160px;
-  max-width: min(78vw, 360px);
-  width: auto;
+.logo-frame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 28px;
-  padding: 18px 28px;
-  border-radius: 24px;
-  background: radial-gradient(circle at top, rgba(0,212,255,0.24), rgba(124,58,237,0.12) 48%, rgba(255,255,255,0.03) 100%);
-  border: 1px solid rgba(255,255,255,0.16);
-  box-shadow: 0 24px 56px rgba(0,0,0,0.32), 0 0 44px rgba(0,212,255,0.24);
-  filter: brightness(0) invert(1) drop-shadow(0 0 16px rgba(255,255,255,0.22));
+  padding: 18px 24px;
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at top, rgba(90, 215, 255, 0.14), rgba(7, 16, 23, 0) 58%),
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border: 1px solid rgba(90, 215, 255, 0.14);
+  box-shadow: 0 24px 56px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.04), 0 0 48px rgba(53, 195, 247, 0.14);
+}
+.header img {
+  display: block;
+  width: min(300px, 78vw);
+  height: auto;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.34), 0 0 32px rgba(53, 195, 247, 0.18);
 }
 .header h1 {
   font-size: 2.4rem; font-weight: 700; margin-bottom: 8px;
-  background: linear-gradient(135deg, #00d4ff, #7c3aed);
+  background: linear-gradient(135deg, var(--kv-ice), var(--kv-cyan), var(--kv-blue));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.header .subtitle { color: #8b8ba7; font-size: 1rem; }
+.header .subtitle { color: var(--kv-muted); font-size: 1rem; }
 /* TOC */
 .toc {
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04); border: 1px solid var(--kv-line);
   border-radius: 12px; padding: 28px 32px; margin-bottom: 32px;
 }
 .toc h2 {
-  font-size: 1.1rem; color: #00d4ff; margin-bottom: 14px; text-transform: uppercase;
+  font-size: 1.1rem; color: var(--kv-cyan); margin-bottom: 14px; text-transform: uppercase;
   letter-spacing: 1.5px; font-weight: 600;
 }
 .toc ol { padding-left: 20px; }
 .toc li { margin-bottom: 6px; }
-.toc a { color: #8b8ba7; text-decoration: none; transition: color .2s; }
-.toc a:hover { color: #00d4ff; }
+.toc a { color: var(--kv-muted); text-decoration: none; transition: color .2s; }
+.toc a:hover { color: var(--kv-cyan); }
 /* Cards */
 .card {
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04); border: 1px solid var(--kv-line);
   border-radius: 12px; padding: 32px; margin-bottom: 28px;
 }
 .card h2 {
   font-size: 1.6rem; font-weight: 700; margin-bottom: 18px;
-  background: linear-gradient(135deg, #00d4ff, #7c3aed);
+  background: linear-gradient(135deg, var(--kv-ice), var(--kv-cyan), var(--kv-blue));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.card h3 { font-size: 1.15rem; color: #f472b6; margin: 24px 0 10px; font-weight: 600; }
-.card p { color: #d1d1e0; margin-bottom: 14px; }
-.card ul, .card ol { color: #d1d1e0; padding-left: 22px; margin-bottom: 14px; }
+.card h3 { font-size: 1.15rem; color: var(--kv-cyan); margin: 24px 0 10px; font-weight: 600; }
+.card p { color: var(--kv-text); margin-bottom: 14px; }
+.card ul, .card ol { color: var(--kv-text); padding-left: 22px; margin-bottom: 14px; }
 .card li { margin-bottom: 6px; }
 .card strong { color: #ffffff; }
-.card a { color: #00d4ff; text-decoration: none; }
+.card a { color: var(--kv-cyan); text-decoration: none; }
 .card a:hover { text-decoration: underline; }
 .card code {
-  background: rgba(0,212,255,0.1); color: #00d4ff; padding: 2px 6px;
+  background: rgba(53,195,247,0.12); color: var(--kv-ice); padding: 2px 6px;
   border-radius: 4px; font-size: 0.9em; word-break: break-all;
 }
 /* Tables */
 table { width: 100%; border-collapse: collapse; margin: 16px 0 20px; font-size: 0.92rem; }
 th {
-  text-align: left; padding: 10px 14px; color: #00d4ff;
-  border-bottom: 2px solid rgba(0,212,255,0.3); font-weight: 600;
+  text-align: left; padding: 10px 14px; color: var(--kv-cyan);
+  border-bottom: 2px solid rgba(53,195,247,0.3); font-weight: 600;
 }
-td { padding: 10px 14px; color: #d1d1e0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+td { padding: 10px 14px; color: var(--kv-text); border-bottom: 1px solid rgba(255,255,255,0.06); }
 tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
 /* Disclaimer */
 .disclaimer {
@@ -93,17 +111,18 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
 .disclaimer strong { color: #f472b6; }
 /* Footer */
 .footer {
-  text-align: center; padding: 40px 0 0; color: #6b6b8d; font-size: 0.88rem;
+  text-align: center; padding: 40px 0 0; color: #6e8797; font-size: 0.88rem;
   border-top: 1px solid rgba(255,255,255,0.08); margin-top: 28px;
 }
-.footer strong { color: #8b8ba7; }
+.footer strong { color: var(--kv-muted); }
 .footer p { margin-bottom: 6px; }
-.footer code { background: rgba(0,212,255,0.1); color: #00d4ff; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+.footer code { background: rgba(53,195,247,0.12); color: var(--kv-ice); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
 /* Responsive */
 @media (max-width: 640px) {
   .container { padding: 20px 14px 40px; }
   .header h1 { font-size: 1.7rem; }
-  .header img { height: 118px; max-width: 82vw; padding: 14px 20px; }
+  .logo-frame { padding: 14px 16px; }
+  .header img { width: min(240px, 84vw); }
   .card { padding: 20px 16px; }
   table { font-size: 0.82rem; }
   th, td { padding: 8px 8px; }
@@ -130,7 +149,9 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
 <div class="container">
 
 <div class="header">
-  <img src="logo.png" alt="KeyVault">
+  <div class="logo-frame">
+    <img src="kv-logo-blue.png" alt="KeyVault">
+  </div>
   <h1>Security &amp; Liability White Paper</h1>
   <p class="subtitle">Version 2.0 &nbsp;|&nbsp; April 2026 &nbsp;|&nbsp; Prepared by KeyVault Fund Management</p>
 </div>
