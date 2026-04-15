@@ -1,0 +1,31 @@
+{
+  "vault": "BbhQpnex9btpNqzYgL3REpTPZsAeJ3VGYtV1mmLhQ7oc",
+  "vaultName": "JLP Hedge Vault Pro V1",
+  "timezone": "America/Los_Angeles",
+  "targetDailyStampHourLocal": 14,
+  "targetDailyStampLabel": "2:00 PM PT",
+  "lastUpdated": "2026-04-15T18:33:02.163Z",
+  "snapshots": [
+    {
+      "date": "2026-04-15",
+      "timestamp": "2026-04-15T18:33:02.163Z",
+      "capturedAtPacific": "April 15, 2026 at 11:33:02 AM PDT",
+      "slot": 413438052,
+      "sharePrice": 0.999991561191,
+      "circulatingSharePrice": 0.999991898789,
+      "totalValueUsdc": 2500.000002,
+      "lpSupply": 2500.020255192,
+      "dilutedLpSupply": 2500.0210992,
+      "unharvestedFeeLp": 0.000844008,
+      "highWaterMark": 0.999999999998,
+      "discountToHighWaterBps": 0.084388,
+      "lockedProfitUsdc": 0.000001,
+      "assetMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "lpMint": "AX6AuJEkhopUNwRprLpwSbKqpSeRnf2gsxeiPkvW2HRG",
+      "vaultLastUpdatedTs": "2026-04-14T19:44:26.000Z",
+      "vaultLastUpdatedPacific": "April 14, 2026 at 12:44:26 PM PDT",
+      "highWaterMarkLastUpdatedTs": "2026-04-11T17:31:52.000Z",
+      "highWaterMarkLastUpdatedPacific": "April 11, 2026 at 10:31:52 AM PDT"
+    }
+  ]
+}

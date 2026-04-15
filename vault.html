@@ -945,8 +945,10 @@
         let currentData = null;
         let historicalData = null;
         let investorFlows = null;
+        let voltrShareHistory = null;
         let historyChartInstance = null;
         let flowChartInstance = null;
+        let voltrShareChartInstance = null;
         let activeTab = 'overview';
 
         const CORS_PROXIES = [
@@ -1054,6 +1056,13 @@
                 } catch (e) {
                     console.warn('No investor flows data');
                     investorFlows = [];
+                }
+
+                try {
+                    voltrShareHistory = await (await fetch('data/voltr-cross-platform-share-history.json?t=' + Date.now())).json();
+                } catch (e) {
+                    console.warn('No Voltr share history yet');
+                    voltrShareHistory = null;
                 }
 
                 const current = driftData || primeCurrent;
@@ -1193,6 +1202,34 @@
                 month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
                 timeZone: 'America/Los_Angeles'
             }) + ' PT';
+        }
+
+        function formatPacificDateTime(dateStr) {
+            return new Date(dateStr).toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                timeZone: 'America/Los_Angeles',
+                timeZoneName: 'short'
+            });
+        }
+
+        function formatPacificCalendarDate(dateStr) {
+            if (!dateStr) return '—';
+            const [year, month, day] = String(dateStr).split('-').map(Number);
+            if (!year || !month || !day) return String(dateStr);
+            return new Intl.DateTimeFormat('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                timeZone: 'America/Los_Angeles'
+            }).format(new Date(Date.UTC(year, month - 1, day, 12)));
+        }
+
+        function formatSharePrice(value) {
+            return typeof value === 'number' && isFinite(value) ? value.toFixed(6) : '—';
         }
 
         function formatQuarterDate(date) {
@@ -1340,12 +1377,8 @@
             const flows = getAllFlows();
             const flowMetrics = calculateFlowMetrics(flows, historicalData);
 
-            const navSource = currentData.source === 'official-nav' ? 'Official NAV' : 'Live';
-            const navDate = currentData.source === 'official-nav'
-                ? new Date(currentData.navDate + 'T17:00:00-05:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' })
-                : formatDate(m.updateTime);
             document.getElementById('updateTime').textContent = currentData.source === 'official-nav'
-                ? `${navSource}: ${navDate} — 5:00 PM EST`
+                ? `Official NAV Stamp: ${formatPacificDateTime(currentData.update_time_utc || m.updateTime)}`
                 : `Last Updated: ${formatDate(m.updateTime)}`;
 
             document.getElementById('content').innerHTML = `
@@ -1577,6 +1610,17 @@
                     </div>
                     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:0.82rem;color:#8b8ba7;line-height:1.6;">
                         <strong style="color:#c8c8e0;">Note:</strong> Cross-Platform JLP reflects <em>pro forma backtested performance through Jan 15, 2026</em>, and <em>live trading results thereafter</em>. KeyVault (Current) reflects actual live results throughout. Both shown net of fees.
+                    </div>
+                    <div class="metrics-grid" id="voltrShareMetrics" style="margin-bottom:20px;"></div>
+                    <div class="chart-card" style="margin-bottom:20px;">
+                        <h3><span class="icon">🕒</span> Live Voltr Share Price Track</h3>
+                        <div style="font-size:0.8rem;color:#8b8ba7;line-height:1.6;margin:-6px 0 16px 0;">
+                            The Cross-Platform JLP vault now has its own on-chain share-price feed from the Voltr vault account. Daily chart marks target <strong style="color:#c8c8e0;">2:00 PM Pacific</strong>, and earlier points before the new tracker started were not archived, so the chart begins with the first recorded Voltr stamp.
+                        </div>
+                        <div class="chart-wrapper tall">
+                            <canvas id="voltrShareChart"></canvas>
+                        </div>
+                        <div id="voltrShareChartNote" style="margin-top:14px;font-size:0.78rem;color:#6b6b8d;line-height:1.6;"></div>
                     </div>
                     <div class="chart-card">
                         <h3 style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
@@ -1935,6 +1979,7 @@
                     }
                 }
             } catch(e) { console.warn('Could not extend prime data:', e); }
+            renderVoltrShareSection();
             renderCPComparisonChart(cpCompPeriod);
         }
 
@@ -2118,6 +2163,176 @@
             btn.style.color = '#00d4ff';
             btn.style.borderColor = 'rgba(0,212,255,0.3)';
             renderCPComparisonChart(period);
+        }
+
+        function renderVoltrShareSection() {
+            const metricsEl = document.getElementById('voltrShareMetrics');
+            const chartNoteEl = document.getElementById('voltrShareChartNote');
+            const chartCanvas = document.getElementById('voltrShareChart');
+            if (!metricsEl || !chartNoteEl || !chartCanvas) return;
+
+            const snapshots = Array.isArray(voltrShareHistory?.snapshots)
+                ? [...voltrShareHistory.snapshots].sort((a, b) => a.date.localeCompare(b.date))
+                : [];
+            const latest = snapshots[snapshots.length - 1] || null;
+            const targetLabel = voltrShareHistory?.targetDailyStampLabel || '2:00 PM PT';
+
+            if (!latest) {
+                metricsEl.innerHTML = `
+                    <div class="metric-card highlight" style="grid-column:span 3;">
+                        <div class="metric-label"><span class="icon">🕒</span> Voltr Share History</div>
+                        <div class="metric-value" style="font-size:1.25rem;">Waiting for first on-chain stamp</div>
+                        <div class="metric-subtext">Run the Voltr share stamp once, then the Cross-Platform chart will begin filling in daily ${targetLabel} points.</div>
+                    </div>
+                `;
+                chartNoteEl.textContent = `No Voltr share-price snapshots found yet. The chart will populate after the first ${targetLabel} Pacific stamp.`;
+                if (voltrShareChartInstance) {
+                    voltrShareChartInstance.destroy();
+                    voltrShareChartInstance = null;
+                }
+                return;
+            }
+
+            metricsEl.innerHTML = `
+                <div class="metric-card highlight">
+                    <div class="metric-label"><span class="icon">💠</span> Current Voltr Share Price</div>
+                    <div class="metric-value">${formatSharePrice(latest.sharePrice)}</div>
+                    <div class="metric-subtext">USDC per diluted LP share</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label"><span class="icon">🕒</span> Latest Share Stamp</div>
+                    <div class="metric-value" style="font-size:1.15rem;">${formatPacificDateTime(latest.timestamp)}</div>
+                    <div class="metric-subtext">Vault state last updated ${formatPacificDateTime(latest.vaultLastUpdatedTs)}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label"><span class="icon">📅</span> Daily Chart Target</div>
+                    <div class="metric-value" style="font-size:1.35rem;">${targetLabel}</div>
+                    <div class="metric-subtext">Scheduled in America/Los_Angeles</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label"><span class="icon">💰</span> Vault TVL</div>
+                    <div class="metric-value">${formatCurrency(latest.totalValueUsdc || 0)}</div>
+                    <div class="metric-subtext">${(latest.dilutedLpSupply || 0).toFixed(3)} diluted LP shares</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label"><span class="icon">🏁</span> High-Water Mark</div>
+                    <div class="metric-value">${formatSharePrice(latest.highWaterMark)}</div>
+                    <div class="metric-subtext">${(latest.discountToHighWaterBps || 0).toFixed(3)} bps below high water</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label"><span class="icon">📈</span> Data Points Collected</div>
+                    <div class="metric-value">${snapshots.length}</div>
+                    <div class="metric-subtext">Chart starts ${formatPacificCalendarDate(snapshots[0]?.date)}</div>
+                </div>
+            `;
+
+            chartNoteEl.textContent = snapshots.length < 2
+                ? `Chart started with the ${formatPacificCalendarDate(latest.date)} on-chain stamp. Daily ${targetLabel} Pacific snapshots will build the history forward from here.`
+                : `Showing ${snapshots.length} on-chain share-price snapshots. Latest capture: ${formatPacificDateTime(latest.timestamp)}.`;
+
+            if (voltrShareChartInstance) {
+                voltrShareChartInstance.destroy();
+                voltrShareChartInstance = null;
+            }
+
+            const labels = snapshots.map(s => s.date);
+            const sharePriceSeries = snapshots.map(s => s.sharePrice);
+            const highWaterSeries = snapshots.map(s => s.highWaterMark || null);
+
+            voltrShareChartInstance = new Chart(chartCanvas.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Voltr Share Price',
+                            data: sharePriceSeries,
+                            borderColor: '#00d4ff',
+                            backgroundColor: 'rgba(0,212,255,0.12)',
+                            fill: true,
+                            tension: 0.25,
+                            pointRadius: snapshots.length === 1 ? 4 : 2,
+                            pointHoverRadius: 5,
+                            borderWidth: 2.5
+                        },
+                        {
+                            label: 'High-Water Mark',
+                            data: highWaterSeries,
+                            borderColor: 'rgba(244,114,182,0.9)',
+                            backgroundColor: 'transparent',
+                            fill: false,
+                            tension: 0.2,
+                            pointRadius: 0,
+                            pointHoverRadius: 0,
+                            borderWidth: 2,
+                            borderDash: [6, 4]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: { color: '#8b8ba7', usePointStyle: true, padding: 14 }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26,26,62,0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#c8c8e0',
+                            callbacks: {
+                                title: items => {
+                                    const point = snapshots[items[0].dataIndex];
+                                    return `${formatPacificCalendarDate(point.date)} · ${targetLabel} target`;
+                                },
+                                label: ctx => {
+                                    if (ctx.parsed.y === null) return null;
+                                    const point = snapshots[ctx.dataIndex];
+                                    if (ctx.datasetIndex === 0) {
+                                        return ` Share price: ${Number(ctx.parsed.y).toFixed(6)} USDC`;
+                                    }
+                                    return ` High-water mark: ${Number(ctx.parsed.y).toFixed(6)} USDC`;
+                                },
+                                afterBody: items => {
+                                    const point = snapshots[items[0].dataIndex];
+                                    return [
+                                        `Captured: ${formatPacificDateTime(point.timestamp)}`,
+                                        `Vault update: ${formatPacificDateTime(point.vaultLastUpdatedTs)}`
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#6b6b8d',
+                                maxTicksLimit: 8,
+                                callback: (_, index) => {
+                                    const date = labels[index];
+                                    return formatPacificCalendarDate(date);
+                                }
+                            }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#8b8ba7',
+                                callback: value => Number(value).toFixed(4)
+                            },
+                            title: {
+                                display: true,
+                                text: 'USDC per share',
+                                color: '#6b6b8d'
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         function renderCPComparisonChart(period) {
