@@ -6,55 +6,82 @@
     <title>KeyVault Investment Calculator</title>
     <!-- chart.js removed -->
     <style>
+        :root {
+            --kv-ice: #5ad7ff;
+            --kv-cyan: #35c3f7;
+            --kv-sky: #249fe8;
+            --kv-blue: #167fd0;
+            --kv-ink: #071017;
+            --kv-panel: #0c1720;
+            --kv-line: rgba(90, 215, 255, 0.22);
+            --kv-text: #d6eaf4;
+            --kv-muted: #91a8b7;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d1f 100%);
+            background: linear-gradient(145deg, #071017 0%, #0c1822 48%, #09131c 100%);
             min-height: 100vh;
             color: #ffffff;
             padding: 20px;
         }
 
-        a { color: #7c3aed; text-decoration: none; }
+        a { color: var(--kv-cyan); text-decoration: none; }
         a:hover { text-decoration: underline; }
 
-        .nav { text-align: center; margin-bottom: 10px; font-size: 0.9rem; }
+        .nav { text-align: center; margin-bottom: 10px; font-size: 0.9rem; color: var(--kv-muted); }
 
         .header {
             text-align: center;
             margin-bottom: 30px;
-            padding: 20px;
+            padding: 24px 20px 20px;
+        }
+        .logo-frame {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+            padding: 18px 24px;
+            border-radius: 26px;
+            background:
+                radial-gradient(circle at top, rgba(90, 215, 255, 0.14), rgba(7, 16, 23, 0) 58%),
+                linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+            border: 1px solid rgba(90, 215, 255, 0.14);
+            box-shadow: 0 24px 56px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.04), 0 0 48px rgba(53, 195, 247, 0.14);
         }
         .header img.logo {
-            height: 120px;
-            margin-bottom: 16px;
-            filter: brightness(0) invert(1);
+            display: block;
+            width: min(360px, 82vw);
+            height: auto;
+            border-radius: 14px;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.34), 0 0 32px rgba(53, 195, 247, 0.18);
+            filter: brightness(0) saturate(100%) invert(71%) sepia(79%) saturate(2022%) hue-rotate(165deg) brightness(101%) contrast(95%);
         }
         .header h1 {
             font-size: 2.5rem;
-            background: linear-gradient(90deg, #00d4ff, #7c3aed, #f472b6);
+            background: linear-gradient(135deg, var(--kv-ice), var(--kv-cyan), var(--kv-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 10px;
         }
-        .header .subtitle { color: #8b8ba7; font-size: 1rem; }
+        .header .subtitle { color: var(--kv-muted); font-size: 1rem; }
 
         .dashboard { max-width: 1200px; margin: 0 auto; }
 
         /* Input Controls */
         .controls {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.04);
             backdrop-filter: blur(10px);
             border-radius: 12px;
             padding: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--kv-line);
             margin-bottom: 24px;
         }
         .controls h2 {
             font-size: 1.2rem;
-            color: #f472b6;
+            color: var(--kv-cyan);
             margin-bottom: 16px;
         }
         .control-grid {
@@ -64,7 +91,7 @@
         }
         .control-group label {
             display: block;
-            color: #8b8ba7;
+            color: var(--kv-muted);
             font-size: 0.85rem;
             margin-bottom: 6px;
         }
@@ -73,7 +100,7 @@
             width: 100%;
             padding: 10px 14px;
             background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(90,215,255,0.18);
             border-radius: 8px;
             color: #fff;
             font-size: 1rem;
@@ -81,12 +108,12 @@
         }
         .control-group input[type="number"]:focus,
         .control-group select:focus {
-            border-color: #7c3aed;
+            border-color: var(--kv-cyan);
         }
         .control-group input[type="range"] {
             width: 100%;
             margin-top: 4px;
-            accent-color: #7c3aed;
+            accent-color: var(--kv-cyan);
         }
         .range-row {
             display: flex;
@@ -98,7 +125,7 @@
             min-width: 50px;
             text-align: right;
             font-weight: 600;
-            color: #22c55e;
+            color: var(--kv-ice);
         }
 
         /* Scenario Buttons */
@@ -111,15 +138,15 @@
         .scenario-btn {
             padding: 10px 20px;
             border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(90,215,255,0.18);
             background: rgba(255,255,255,0.05);
             color: #fff;
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.2s;
         }
-        .scenario-btn:hover { background: rgba(124,58,237,0.3); border-color: #7c3aed; }
-        .scenario-btn.active { background: rgba(124,58,237,0.4); border-color: #7c3aed; color: #f472b6; font-weight: 600; }
+        .scenario-btn:hover { background: rgba(53,195,247,0.16); border-color: var(--kv-cyan); }
+        .scenario-btn.active { background: rgba(53,195,247,0.18); border-color: var(--kv-cyan); color: var(--kv-ice); font-weight: 600; }
 
         .toggle-row {
             display: flex;
@@ -127,8 +154,8 @@
             gap: 10px;
             margin-top: 12px;
         }
-        .toggle-row input[type="checkbox"] { accent-color: #7c3aed; width: 18px; height: 18px; }
-        .toggle-row label { color: #8b8ba7; font-size: 0.9rem; cursor: pointer; }
+        .toggle-row input[type="checkbox"] { accent-color: var(--kv-cyan); width: 18px; height: 18px; }
+        .toggle-row label { color: var(--kv-muted); font-size: 0.9rem; cursor: pointer; }
 
         /* Metrics */
         .metrics-grid {
@@ -138,53 +165,55 @@
             margin-bottom: 24px;
         }
         .metric-card {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.04);
             backdrop-filter: blur(10px);
             border-radius: 12px;
             padding: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--kv-line);
             text-align: center;
             transition: transform 0.3s ease;
         }
         .metric-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .metric-card .label { color: #8b8ba7; font-size: 0.8rem; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-card .label { color: var(--kv-muted); font-size: 0.8rem; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
         .metric-card .value { font-size: 1.5rem; font-weight: 700; }
         .metric-card .value.green { color: #22c55e; }
-        .metric-card .value.pink { color: #f472b6; }
-        .metric-card .value.purple { color: #7c3aed; }
+        .metric-card .value.pink { color: var(--kv-cyan); }
+        .metric-card .value.purple { color: var(--kv-blue); }
 
         /* Chart */
         .chart-container {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.04);
             backdrop-filter: blur(10px);
             border-radius: 12px;
             padding: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--kv-line);
             margin-bottom: 24px;
         }
-        .chart-container h2 { font-size: 1.1rem; color: #f472b6; margin-bottom: 16px; }
+        .chart-container h2 { font-size: 1.1rem; color: var(--kv-cyan); margin-bottom: 16px; }
 
         /* Table */
         .table-container {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.04);
             backdrop-filter: blur(10px);
             border-radius: 12px;
             padding: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--kv-line);
             overflow-x: auto;
         }
-        .table-container h2 { font-size: 1.1rem; color: #f472b6; margin-bottom: 16px; }
+        .table-container h2 { font-size: 1.1rem; color: var(--kv-cyan); margin-bottom: 16px; }
         table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        th { color: #8b8ba7; text-align: right; padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; white-space: nowrap; }
+        th { color: var(--kv-cyan); text-align: right; padding: 10px 12px; border-bottom: 1px solid rgba(53,195,247,0.24); font-weight: 600; white-space: nowrap; }
         th:first-child { text-align: left; }
-        td { padding: 10px 12px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); white-space: nowrap; }
-        td:first-child { text-align: left; color: #7c3aed; font-weight: 600; }
+        td { color: var(--kv-text); padding: 10px 12px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); white-space: nowrap; }
+        td:first-child { text-align: left; color: var(--kv-cyan); font-weight: 600; }
         tr:hover td { background: rgba(255,255,255,0.03); }
-        .fee-col { color: #f472b6; }
+        .fee-col { color: var(--kv-ice); }
         .green-col { color: #22c55e; }
 
         @media (max-width: 600px) {
             .header h1 { font-size: 1.6rem; }
+            .logo-frame { padding: 14px 16px; }
+            .header img.logo { width: min(280px, 84vw); }
             .metric-card .value { font-size: 1.2rem; }
             .control-grid { grid-template-columns: 1fr; }
             .metrics-grid { grid-template-columns: repeat(2, 1fr); }
@@ -195,7 +224,9 @@
     <div class="dashboard">
         <div class="nav"><a href="index.html">← Back to Dashboard</a></div>
         <div class="header">
-            <img src="logo.png" alt="KeyVault" class="logo">
+            <div class="logo-frame">
+                <img src="logo.png" alt="KeyVault" class="logo">
+            </div>
             <h1>KeyVault Investment Calculator</h1>
             <p class="subtitle">Model projected returns after management fees, performance fees & high water mark</p>
         </div>
@@ -415,41 +446,41 @@ calculate();
 }
 .dist-section .section-header h2 {
     font-size: 1.9rem;
-    background: linear-gradient(90deg, #22c55e, #00d4ff);
+    background: linear-gradient(135deg, var(--kv-ice), var(--kv-cyan), var(--kv-blue));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 8px;
 }
 .dist-section .section-header p {
-    color: #8b8ba7;
+    color: var(--kv-muted);
     font-size: 0.95rem;
     max-width: 680px;
     margin: 0 auto;
     line-height: 1.6;
 }
 .dist-controls {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.04);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 24px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid var(--kv-line);
     margin-bottom: 24px;
 }
-.dist-controls h3 { color: #22c55e; font-size: 1.1rem; margin-bottom: 16px; }
+.dist-controls h3 { color: var(--kv-cyan); font-size: 1.1rem; margin-bottom: 16px; }
 .dist-control-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
 }
-.dist-control-grid .control-group label { color: #8b8ba7; font-size: 0.85rem; display: block; margin-bottom: 6px; }
+.dist-control-grid .control-group label { color: var(--kv-muted); font-size: 0.85rem; display: block; margin-bottom: 6px; }
 .dist-control-grid input[type="number"], .dist-control-grid select {
     width: 100%; padding: 10px 14px;
     background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid rgba(90,215,255,0.18);
     border-radius: 8px; color: #fff; font-size: 1rem; outline: none;
 }
-.dist-control-grid input:focus, .dist-control-grid select:focus { border-color: #22c55e; }
+.dist-control-grid input:focus, .dist-control-grid select:focus { border-color: var(--kv-cyan); }
 
 .scenario-cards {
     display: grid;
@@ -460,58 +491,58 @@ calculate();
 @media(max-width:700px) { .scenario-cards { grid-template-columns: 1fr; } }
 
 .scenario-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--kv-line);
     border-radius: 12px;
     padding: 20px;
     text-align: center;
     transition: transform 0.2s;
 }
 .scenario-card:hover { transform: translateY(-3px); }
-.scenario-card.highlight { border-color: #22c55e; background: rgba(34,197,94,0.07); }
-.scenario-card .sc-label { font-size: 0.8rem; color: #8b8ba7; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.scenario-card.highlight { border-color: var(--kv-cyan); background: rgba(53,195,247,0.08); }
+.scenario-card .sc-label { font-size: 0.8rem; color: var(--kv-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
 .scenario-card .sc-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 16px; }
 .scenario-card .sc-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.85rem; }
 .scenario-card .sc-row:last-child { border-bottom: none; }
-.scenario-card .sc-key { color: #8b8ba7; }
+.scenario-card .sc-key { color: var(--kv-muted); }
 .scenario-card .sc-val { font-weight: 600; }
 .scenario-card .sc-val.green { color: #22c55e; }
-.scenario-card .sc-val.pink { color: #f472b6; }
-.scenario-card .sc-val.cyan { color: #00d4ff; }
+.scenario-card .sc-val.pink { color: var(--kv-ice); }
+.scenario-card .sc-val.cyan { color: var(--kv-cyan); }
 
 .hwm-insight {
-    background: rgba(34,197,94,0.08);
-    border: 1px solid rgba(34,197,94,0.25);
+    background: rgba(53,195,247,0.08);
+    border: 1px solid rgba(90,215,255,0.22);
     border-radius: 10px;
     padding: 16px 20px;
     margin-bottom: 24px;
     font-size: 0.9rem;
-    color: #c8f5db;
+    color: var(--kv-text);
     line-height: 1.6;
 }
-.hwm-insight strong { color: #22c55e; }
+.hwm-insight strong { color: var(--kv-cyan); }
 
 .dist-table-container {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.04);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 24px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid var(--kv-line);
     overflow-x: auto;
     margin-bottom: 24px;
 }
-.dist-table-container h3 { font-size: 1.05rem; color: #22c55e; margin-bottom: 8px; }
-.dist-table-container .tbl-sub { color: #8b8ba7; font-size: 0.82rem; margin-bottom: 14px; }
+.dist-table-container h3 { font-size: 1.05rem; color: var(--kv-cyan); margin-bottom: 8px; }
+.dist-table-container .tbl-sub { color: var(--kv-muted); font-size: 0.82rem; margin-bottom: 14px; }
 .dist-table-container table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-.dist-table-container th { color: #8b8ba7; text-align: right; padding: 9px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; white-space: nowrap; }
+.dist-table-container th { color: var(--kv-cyan); text-align: right; padding: 9px 10px; border-bottom: 1px solid rgba(53,195,247,0.24); font-weight: 600; white-space: nowrap; }
 .dist-table-container th:first-child { text-align: left; }
-.dist-table-container td { padding: 9px 10px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); white-space: nowrap; }
-.dist-table-container td:first-child { text-align: left; color: #7c3aed; font-weight: 600; }
+.dist-table-container td { color: var(--kv-text); padding: 9px 10px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); white-space: nowrap; }
+.dist-table-container td:first-child { text-align: left; color: var(--kv-cyan); font-weight: 600; }
 .dist-table-container tr:hover td { background: rgba(255,255,255,0.03); }
-.dist-table-container .dist-col { color: #00d4ff; }
-.dist-table-container .fee-col { color: #f472b6; }
+.dist-table-container .dist-col { color: var(--kv-cyan); }
+.dist-table-container .fee-col { color: var(--kv-ice); }
 .dist-table-container .green-col { color: #22c55e; }
-.dist-table-container .hwm-tag { font-size: 0.75rem; color: #22c55e; }
+.dist-table-container .hwm-tag { font-size: 0.75rem; color: var(--kv-cyan); }
 </style>
 
 <div class="dist-section">
@@ -530,7 +561,7 @@ calculate();
             <div class="control-group">
                 <label>Annual Vault Return (before KV fees) (%)</label>
                 <input type="number" id="dGrossReturn" value="26" min="1" max="80" step="0.5">
-                <div style="color:#6b6b8d;font-size:0.75rem;margin-top:4px;">Enter expected vault return before KeyVault's performance fee is applied.</div>
+                <div style="color:#6e8797;font-size:0.75rem;margin-top:4px;">Enter expected vault return before KeyVault's performance fee is applied.</div>
             </div>
             <div class="control-group">
                 <label>Time Horizon</label>
@@ -584,7 +615,7 @@ calculate();
             </thead>
             <tbody id="dDetailTable"></tbody>
         </table>
-        <p style="color:#6b6b8d;font-size:0.78rem;margin-top:10px;">*Total Value = End NAV + cumulative distributions received. This is what the investor actually has.</p>
+        <p style="color:#6e8797;font-size:0.78rem;margin-top:10px;">*Total Value = End NAV + cumulative distributions received. This is what the investor actually has.</p>
     </div>
 </div>
 
@@ -681,8 +712,8 @@ function renderDist() {
 
     const scenarios = [
         { label: 'Full Reinvestment', pct: 0, color: '#22c55e' },
-        { label: '50% Distribution',  pct: 0.5, color: '#00d4ff' },
-        { label: 'Full Distribution', pct: 1.0, color: '#f472b6' },
+        { label: '50% Distribution',  pct: 0.5, color: '#35c3f7' },
+        { label: 'Full Distribution', pct: 1.0, color: '#5ad7ff' },
     ];
 
     // ── Scenario comparison cards ──────────────────────────────────────────
