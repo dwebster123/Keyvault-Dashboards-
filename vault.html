@@ -280,8 +280,7 @@
         .hero-main,
         .source-panel,
         .metric-card,
-        .chart-card,
-        .table-card {
+        .chart-card {
             background: var(--panel);
             border: 1px solid var(--line);
             border-radius: 12px;
@@ -347,34 +346,6 @@
             overflow-wrap: anywhere;
         }
 
-        .source-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 38px;
-            padding: 9px 13px;
-            border-radius: 8px;
-            border: 1px solid var(--line);
-            background: var(--panel-soft);
-            color: var(--ink);
-            font-size: 13px;
-            font-weight: 700;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .button.primary {
-            border-color: transparent;
-            background: linear-gradient(135deg, var(--cyan), var(--blue));
-            color: #fff;
-        }
-
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -402,6 +373,25 @@
             letter-spacing: 0.04em;
             text-transform: uppercase;
             margin-bottom: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .info-tip {
+            display: inline-grid;
+            place-items: center;
+            width: 16px;
+            height: 16px;
+            border: 1px solid rgba(90, 215, 255, 0.32);
+            border-radius: 999px;
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 900;
+            line-height: 1;
+            cursor: help;
+            text-transform: none;
         }
 
         .metric-value {
@@ -488,72 +478,6 @@
             height: 430px;
         }
 
-        .lower-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 18px;
-            align-items: start;
-        }
-
-        .table-card {
-            padding: 20px;
-        }
-
-        .section-title {
-            margin: 0 0 14px;
-            font-size: 16px;
-            letter-spacing: 0;
-        }
-
-        .table-scroll {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        th {
-            padding: 10px 12px;
-            color: var(--muted);
-            background: rgba(255, 255, 255, 0.06);
-            border-bottom: 1px solid var(--line);
-            text-align: left;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 11px 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            color: var(--ink);
-            font-variant-numeric: tabular-nums;
-            white-space: nowrap;
-        }
-
-        tr:last-child td {
-            border-bottom: 0;
-        }
-
-        td.right,
-        th.right {
-            text-align: right;
-        }
-
-        .positive-text {
-            color: var(--green);
-            font-weight: 800;
-        }
-
-        .negative-text {
-            color: var(--red);
-            font-weight: 800;
-        }
-
         .error-box {
             padding: 18px;
             border-radius: 8px;
@@ -594,10 +518,6 @@
 
         @media (max-width: 900px) {
             .hero,
-            .lower-grid {
-                grid-template-columns: 1fr;
-            }
-
             .metrics-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -672,9 +592,9 @@
             <div class="topbar-actions">
                 <div class="status-pill" id="dataStatus">
                     <span class="status-dot" id="statusDot"></span>
-                    <span id="statusText">Loading strategy report</span>
+                    <span id="statusText">Loading performance data</span>
                 </div>
-                <button class="icon-button" id="legacyMenuBtn" type="button" aria-label="Open legacy vault strategy reference" aria-expanded="false" aria-controls="legacyMenu">
+                <button class="icon-button" id="legacyMenuBtn" type="button" aria-label="Open non-cross-platform legacy vault performance reference" aria-expanded="false" aria-controls="legacyMenu">
                     <span class="hamburger-lines" aria-hidden="true">
                         <span></span>
                         <span></span>
@@ -684,10 +604,10 @@
                 <div class="legacy-menu" id="legacyMenu" role="dialog" aria-label="Legacy vault strategy reference">
                     <div class="legacy-menu-head">
                         <p class="legacy-kicker">Historical reference</p>
-                        <h2 class="legacy-menu-title">Legacy Vault Strategy</h2>
+                        <h2 class="legacy-menu-title">Non-Cross-Platform Legacy Vault Performance</h2>
                         <p class="legacy-menu-copy">
-                            Hard-coded Drift-era performance through the cross-platform launch date,
-                            re-netted through the current KeyVault fee model.
+                            Historical Drift-era performance through the cross-platform launch date,
+                            re-netted through the current KeyVault fee model for reference only.
                         </p>
                     </div>
                     <div class="legacy-stats" id="legacyStats"></div>
@@ -706,20 +626,16 @@
                 <div class="eyebrow">Cross-platform strategy dashboard</div>
                 <h1>KeyVault Cross-Platform Performance Dashboard</h1>
                 <p class="hero-copy">
-                    This dashboard uses the current JLP strategy report as the active data source.
-                    Cross-platform performance is displayed as investor net return using the KeyVault fee model,
-                    with the old Drift-era vault kept only as an archived reference in the menu.
+                    This dashboard uses our cross-platform performance data net of the KeyVault fee model.
+                    The old Drift-era vault is kept only as an archived reference in the menu.
                 </p>
             </div>
             <aside class="source-panel">
                 <div>
                     <p class="source-title">Data feed</p>
                     <p class="source-text" id="sourceMeta">
-                        Loading latest strategy report.
+                        Loading latest performance data.
                     </p>
-                </div>
-                <div class="source-actions">
-                    <button class="button primary" type="button" id="refreshBtn">Refresh</button>
                 </div>
             </aside>
         </section>
@@ -730,7 +646,7 @@
             <div class="chart-head">
                 <div>
                     <h2 class="chart-title">Net Return Since Cross-Platform Launch</h2>
-                    <p class="chart-caption" id="returnChartCaption">Cross-platform return is netted through the KeyVault fee model.</p>
+                    <p class="chart-caption" id="returnChartCaption">Cross-platform return is shown net of KeyVault performance fees.</p>
                 </div>
                 <div class="period-controls" aria-label="Chart period">
                     <button class="period-btn active" data-return-period="all" type="button">All</button>
@@ -762,26 +678,6 @@
             </div>
         </section>
 
-        <section class="lower-grid">
-            <div class="table-card">
-                <h2 class="section-title">Recent Daily Points</h2>
-                <div class="table-scroll">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th class="right">Net Cumulative</th>
-                                <th class="right">Net Daily Change</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recentRows">
-                            <tr><td colspan="3">Loading...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
         <footer>
             Internal dashboard. Data is for informational review only and is not financial advice.
         </footer>
@@ -791,7 +687,7 @@
         const SOURCE_REPORT_URL = ['https://app.', 'pr', 'imenumber.trade/data/jlp_report.html'].join('');
         const REPORT_PROXY_URL = `https://keyvault.deven-m-webster.workers.dev/?url=${encodeURIComponent(SOURCE_REPORT_URL)}`;
         const TARGET_SERIES = '3x JLP (borrow SOL) + Aster Funding';
-        const LEGACY_VAULT_NAME = 'Legacy Vault Strategy';
+        const LEGACY_VAULT_NAME = 'Non-Cross-Platform Legacy Vault Performance';
         const LEGACY_VAULT_END_DATE = '2025-11-06';
         const NET_FEE_MODEL = {
             strategyManagerPerfPct: 20,
@@ -814,11 +710,9 @@
         const statusDot = document.getElementById('statusDot');
         const statusText = document.getElementById('statusText');
         const metricsGrid = document.getElementById('metricsGrid');
-        const recentRows = document.getElementById('recentRows');
         const sourceMeta = document.getElementById('sourceMeta');
         const returnChartCaption = document.getElementById('returnChartCaption');
         const apyChartCaption = document.getElementById('apyChartCaption');
-        const refreshBtn = document.getElementById('refreshBtn');
         const legacyMenuBtn = document.getElementById('legacyMenuBtn');
         const legacyMenu = document.getElementById('legacyMenu');
         const legacyStats = document.getElementById('legacyStats');
@@ -1326,7 +1220,7 @@
 
         async function fetchStrategyReport() {
             const response = await fetch(`${REPORT_PROXY_URL}&t=${Date.now()}`, { cache: 'no-store' });
-            if (!response.ok) throw new Error(`Strategy report request failed: ${response.status}`);
+            if (!response.ok) throw new Error(`Performance data request failed: ${response.status}`);
             return response.text();
         }
 
@@ -1391,30 +1285,45 @@
                 : null;
             const oneEightySubtext = metrics.oneEightyDayIsComplete
                 ? 'Cross-platform strategy only'
-                : `${metrics.oneEightyDayAvailableDays} of 180 days captured · ${metrics.oneEightyDayDaysUntilAvailable} days remaining`;
+                : `${metrics.oneEightyDayAvailableDays} of 180 days captured - ${metrics.oneEightyDayDaysUntilAvailable} days remaining`;
             metricsGrid.innerHTML = `
                 <div class="metric-card">
-                    <div class="metric-label">Net Live-to-Date Return</div>
+                    <div class="metric-label">
+                        Net ROI Since Inception
+                        <span class="info-tip" tabindex="0" title="ROI is the cumulative investor net return since the cross-platform strategy went live. It is not annualized.">?</span>
+                    </div>
                     <div class="metric-value positive">${formatPercent(netLiveReturn)}</div>
                     <div class="metric-subtext">${formatDate(metrics.startDate)} through ${formatDate(metrics.endDate)}</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">Net Live-to-Date APY</div>
+                    <div class="metric-label">
+                        Net APY Since Inception
+                        <span class="info-tip" tabindex="0" title="APY annualizes the live-to-date net return so different time periods can be compared.">?</span>
+                    </div>
                     <div class="metric-value positive">${formatPercent(netLiveApy)}</div>
-                    <div class="metric-subtext">Investor net · management fee already baked in</div>
+                    <div class="metric-subtext">Investor net - management fee already baked in</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">Net 30D Rolling APY</div>
+                    <div class="metric-label">
+                        Net 30D Rolling APY
+                        <span class="info-tip" tabindex="0" title="30D rolling APY annualizes the most recent 30 days of investor net performance.">?</span>
+                    </div>
                     <div class="metric-value positive">${formatPercent(netThirtyDayApy)}</div>
                     <div class="metric-subtext">Cross-platform strategy only</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">Net 90D Rolling APY</div>
+                    <div class="metric-label">
+                        Net 90D Rolling APY
+                        <span class="info-tip" tabindex="0" title="90D rolling APY annualizes the most recent 90 days of investor net performance.">?</span>
+                    </div>
                     <div class="metric-value positive">${formatPercent(netNinetyDayApy)}</div>
                     <div class="metric-subtext">Cross-platform strategy only</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">Net 180D Rolling APY</div>
+                    <div class="metric-label">
+                        Net 180D Rolling APY
+                        <span class="info-tip" tabindex="0" title="180D rolling APY will populate once 180 days of cross-platform performance are available.">?</span>
+                    </div>
                     <div class="metric-value ${metrics.oneEightyDayIsComplete ? 'positive' : 'pending'}">${metrics.oneEightyDayIsComplete ? formatPercent(netOneEightyDayApy) : 'Pending'}</div>
                     <div class="metric-subtext">${oneEightySubtext}</div>
                 </div>
@@ -1432,7 +1341,7 @@
                     labels,
                     datasets: [
                         {
-                            label: `${TARGET_SERIES} (net)`,
+                            label: 'Cross-platform performance',
                             data: strategyData,
                             borderColor: '#059669',
                             backgroundColor: 'rgba(5, 150, 105, 0.12)',
@@ -1500,7 +1409,7 @@
 
             const latestPoint = reportData.points[reportData.points.length - 1];
             const comparison = getOverlapComparison();
-            returnChartCaption.textContent = `Cross-platform return is shown net of strategy and KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(latestPoint.date)}. Legacy vault history is archived in the menu and stops at ${formatDate(comparison.legacyEndDate)}.`;
+            returnChartCaption.textContent = `Cross-platform return is shown net of KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(latestPoint.date)}. Legacy vault history is archived in the menu and stops at ${formatDate(comparison.legacyEndDate)}.`;
         }
 
         function renderApyChart() {
@@ -1515,7 +1424,7 @@
                     labels,
                     datasets: [
                         {
-                            label: `${TARGET_SERIES} net APY`,
+                            label: 'Cross-platform performance',
                             data: apyData,
                             borderColor: '#00d4ff',
                             backgroundColor: 'rgba(0, 212, 255, 0.1)',
@@ -1540,7 +1449,7 @@
                             bodyColor: '#c8c8e0',
                             callbacks: {
                                 title: items => formatDate(labels[items[0].dataIndex]),
-                                label: ctx => ` Net APY: ${formatPercent(ctx.parsed.y)}`
+                                label: ctx => ` Cross-platform performance: ${formatPercent(ctx.parsed.y)}`
                             }
                         }
                     },
@@ -1572,36 +1481,16 @@
             apyChartCaption.textContent = `Annualized investor net APY from ${formatDate(comparison.startDate)} through each report date. Period buttons change the visible window, not the fee model.`;
         }
 
-        function renderRecentRows() {
-            const points = reportData.points;
-            const rows = points.slice(-12).reverse().map(point => {
-                const originalIndex = points.findIndex(p => p.date === point.date);
-                const previous = originalIndex > 0 ? points[originalIndex - 1] : null;
-                const netValue = netReportCumulativeForPoint(point);
-                const previousNetValue = previous ? netReportCumulativeForPoint(previous) : null;
-                const delta = Number.isFinite(netValue) && Number.isFinite(previousNetValue) ? netValue - previousNetValue : 0;
-                return `
-                    <tr>
-                        <td>${formatDate(point.date)}</td>
-                        <td class="right positive-text">${formatPercent(netValue)}</td>
-                        <td class="right ${delta >= 0 ? 'positive-text' : 'negative-text'}">${formatPercent(delta)}</td>
-                    </tr>
-                `;
-            }).join('');
-            recentRows.innerHTML = rows;
-        }
-
         function renderSourceMeta() {
             const { metrics } = reportData;
             const comparison = getOverlapComparison();
             const coverage = reportData.coverage || `${metrics.startDate} through ${metrics.endDate}`;
             const stampText = freshnessStamp?.stampedAtEastern || 'Pending daily 5:00 PM ET stamp';
             sourceMeta.innerHTML = `
-                Latest report: <strong>${reportData.lastUpdated}</strong><br>
+                Last timestamp: <strong>${reportData.lastUpdated}</strong><br>
                 Coverage: <strong>${coverage}</strong><br>
-                Display basis: <strong>Investor net return</strong><br>
-                Comparison basis: <strong>${formatDate(comparison.startDate)} go-live</strong><br>
-                Active series: <strong>${TARGET_SERIES}</strong><br>
+                Display Basis: <strong>Investor Net Return</strong><br>
+                Vault go-live date: <strong>${formatDate(comparison.startDate)}</strong><br>
                 Daily stamp: <strong>${stampText}</strong>
             `;
         }
@@ -1610,33 +1499,31 @@
             renderMetrics();
             renderReturnChart();
             renderApyChart();
-            renderRecentRows();
             renderSourceMeta();
-            setStatus('ready', `Strategy report loaded: ${reportData.lastUpdated}`);
+            setStatus('ready', `Last timestamp: ${reportData.lastUpdated}`);
         }
 
         function renderError(error) {
-            setStatus('error', 'Strategy report failed');
+            setStatus('error', 'Performance data failed');
             metricsGrid.innerHTML = `
                 <div class="error-box" style="grid-column:1 / -1;">
-                    <strong>Could not load strategy report.</strong><br>
+                    <strong>Could not load performance data.</strong><br>
                     ${error.message}<br>
-                    Refresh the dashboard or try again shortly.
+                    Reload the dashboard or try again shortly.
                 </div>
             `;
-            recentRows.innerHTML = '<tr><td colspan="3">No report data loaded.</td></tr>';
             sourceMeta.textContent = 'The dashboard did not load report data.';
         }
 
         async function loadDashboard() {
             try {
-                setStatus('', 'Loading strategy report');
+                setStatus('', 'Loading performance data');
                 metricsGrid.innerHTML = `
                     <div class="metric-card" style="grid-column:1 / -1;">
                         <div class="loading">
                             <div>
                                 <div class="spinner"></div>
-                                Loading strategy report...
+                                Loading performance data...
                             </div>
                         </div>
                     </div>
@@ -1689,7 +1576,6 @@
             if (event.key === 'Escape') setLegacyMenuOpen(false);
         });
 
-        refreshBtn.addEventListener('click', loadDashboard);
         window.addEventListener('resize', () => {
             returnChartInstance?.resize();
             apyChartInstance?.resize();
