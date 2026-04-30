@@ -466,6 +466,14 @@
             margin-bottom: 18px;
         }
 
+        .chart-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            min-width: 272px;
+        }
+
         .chart-title {
             margin: 0;
             font-size: 20px;
@@ -486,7 +494,6 @@
             flex-wrap: wrap;
             gap: 8px;
             justify-content: flex-end;
-            min-width: 272px;
         }
 
         .period-btn {
@@ -505,6 +512,65 @@
             background: linear-gradient(135deg, var(--cyan), var(--blue));
             border-color: transparent;
             color: #fff;
+        }
+
+        .toggle-control {
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+            gap: 9px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .toggle-control input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .toggle-track {
+            position: relative;
+            width: 42px;
+            height: 22px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            transition: background 0.18s ease, border-color 0.18s ease;
+        }
+
+        .toggle-track::after {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--muted);
+            transition: transform 0.18s ease, background 0.18s ease;
+        }
+
+        .toggle-control input:checked + .toggle-track {
+            border-color: rgba(244, 114, 182, 0.5);
+            background: rgba(244, 114, 182, 0.16);
+        }
+
+        .toggle-control input:checked + .toggle-track::after {
+            background: #f472b6;
+            transform: translateX(20px);
+        }
+
+        .toggle-control input:focus-visible + .toggle-track {
+            outline: 2px solid rgba(90, 215, 255, 0.48);
+            outline-offset: 3px;
         }
 
         .chart-wrap {
@@ -560,9 +626,13 @@
                 flex-direction: column;
             }
 
+            .chart-actions {
+                align-items: flex-start;
+                min-width: 0;
+            }
+
             .period-controls {
                 justify-content: flex-start;
-                min-width: 0;
             }
         }
 
@@ -679,14 +749,21 @@
         <section class="chart-card">
             <div class="chart-head">
                 <div>
-                    <h2 class="chart-title">Net Return Since Cross-Platform Launch</h2>
+                    <h2 class="chart-title">Net ROI Since Cross-Platform Launch</h2>
                     <p class="chart-caption" id="returnChartCaption">Cross-platform return is shown net of KeyVault performance fees.</p>
                 </div>
-                <div class="period-controls" aria-label="Chart period">
-                    <button class="period-btn active" data-return-period="all" type="button">All</button>
-                    <button class="period-btn" data-return-period="180" type="button">180D</button>
-                    <button class="period-btn" data-return-period="90" type="button">90D</button>
-                    <button class="period-btn" data-return-period="30" type="button">30D</button>
+                <div class="chart-actions">
+                    <label class="toggle-control" for="legacyOverlayToggle">
+                        <input id="legacyOverlayToggle" type="checkbox">
+                        <span class="toggle-track" aria-hidden="true"></span>
+                        <span>Legacy ROI</span>
+                    </label>
+                    <div class="period-controls" aria-label="Chart period">
+                        <button class="period-btn active" data-return-period="all" type="button">All</button>
+                        <button class="period-btn" data-return-period="180" type="button">180D</button>
+                        <button class="period-btn" data-return-period="90" type="button">90D</button>
+                        <button class="period-btn" data-return-period="30" type="button">30D</button>
+                    </div>
                 </div>
             </div>
             <div class="chart-wrap">
@@ -740,6 +817,7 @@
         let freshnessStamp = null;
         let activeReturnPeriod = 'all';
         let activeApyPeriod = 'all';
+        let showLegacyReturnOverlay = false;
 
         const statusDot = document.getElementById('statusDot');
         const statusText = document.getElementById('statusText');
@@ -747,6 +825,7 @@
         const sourceMeta = document.getElementById('sourceMeta');
         const returnChartCaption = document.getElementById('returnChartCaption');
         const apyChartCaption = document.getElementById('apyChartCaption');
+        const legacyOverlayToggle = document.getElementById('legacyOverlayToggle');
         const legacyMenuBtn = document.getElementById('legacyMenuBtn');
         const legacyMenu = document.getElementById('legacyMenu');
         const legacyStats = document.getElementById('legacyStats');
@@ -776,6 +855,12 @@
             const start = new Date(`${startDate}T12:00:00Z`);
             const end = new Date(`${endDate}T12:00:00Z`);
             return Math.max(1, Math.round((end - start) / 86400000));
+        }
+
+        function elapsedDaysBetween(startDate, endDate) {
+            const start = new Date(`${startDate}T12:00:00Z`);
+            const end = new Date(`${endDate}T12:00:00Z`);
+            return Math.max(0, Math.round((end - start) / 86400000));
         }
 
         function impliedAnnualizationDays(cumulativeReturn, annualizedReturn, startDate, endDate) {
@@ -904,6 +989,20 @@
                     value: adjusted.investorNetReturn,
                     ...adjusted
                 };
+            });
+        }
+
+        function getDayMatchedLegacyRoiSeries(labels, comparison) {
+            const metrics = getLegacyVaultMetrics();
+            const legacyStartDate = metrics.first.date;
+            const legacyByElapsedDay = new Map(metrics.netSeries.map(point => [
+                elapsedDaysBetween(legacyStartDate, point.date),
+                point.value
+            ]));
+
+            return labels.map(date => {
+                const elapsedDay = elapsedDaysBetween(comparison.startDate, date);
+                return legacyByElapsedDay.has(elapsedDay) ? legacyByElapsedDay.get(elapsedDay) : null;
             });
         }
 
@@ -1287,7 +1386,8 @@
                     if (!strategyMap.has(date)) return null;
                     const grossReturn = rebaseCumulativeReturn(strategyMap.get(date), comparison.strategyBaseValue);
                     return netCumulativeFromGrossReturn(grossReturn, daysBetween(comparison.startDate, date));
-                })
+                }),
+                legacyData: getDayMatchedLegacyRoiSeries(labels, comparison)
             };
         }
 
@@ -1356,7 +1456,39 @@
         }
 
         function renderReturnChart() {
-            const { labels, strategyData } = getChartSeries();
+            const { labels, strategyData, legacyData } = getChartSeries();
+            const datasets = [
+                {
+                    label: 'Cross-platform performance',
+                    data: strategyData,
+                    borderColor: '#059669',
+                    backgroundColor: 'rgba(5, 150, 105, 0.12)',
+                    borderWidth: 3,
+                    tension: 0.24,
+                    fill: true,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    spanGaps: false,
+                    order: 1
+                }
+            ];
+
+            if (showLegacyReturnOverlay) {
+                datasets.push({
+                    label: 'Legacy ROI (day-matched)',
+                    data: legacyData,
+                    borderColor: '#f472b6',
+                    backgroundColor: 'rgba(244, 114, 182, 0)',
+                    borderWidth: 2,
+                    borderDash: [6, 6],
+                    tension: 0.25,
+                    fill: false,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    spanGaps: false,
+                    order: 2
+                });
+            }
 
             if (returnChartInstance) returnChartInstance.destroy();
 
@@ -1364,21 +1496,7 @@
                 type: 'line',
                 data: {
                     labels,
-                    datasets: [
-                        {
-                            label: 'Cross-platform performance',
-                            data: strategyData,
-                            borderColor: '#059669',
-                            backgroundColor: 'rgba(5, 150, 105, 0.12)',
-                            borderWidth: 3,
-                            tension: 0.24,
-                            fill: true,
-                            pointRadius: 0,
-                            pointHoverRadius: 5,
-                            spanGaps: false,
-                            order: 1
-                        }
-                    ]
+                    datasets
                 },
                 options: {
                     responsive: true,
@@ -1424,7 +1542,7 @@
                             },
                             title: {
                                 display: true,
-                                text: 'Net return since cross-platform launch',
+                                text: 'Net ROI since cross-platform launch',
                                 color: '#8b8ba7'
                             }
                         }
@@ -1434,7 +1552,9 @@
 
             const latestPoint = reportData.points[reportData.points.length - 1];
             const comparison = getOverlapComparison();
-            returnChartCaption.textContent = `Cross-platform return is shown net of KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(latestPoint.date)}. Legacy vault history is archived in the menu and stops at ${formatDate(comparison.legacyEndDate)}.`;
+            returnChartCaption.textContent = showLegacyReturnOverlay
+                ? `Cross-platform ROI is shown net of KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(latestPoint.date)}. The dotted legacy ROI line is day-matched from the archived legacy vault for elapsed-day comparison.`
+                : `Cross-platform ROI is shown net of KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(latestPoint.date)}. Toggle Legacy ROI to compare against the day-matched archived legacy vault.`;
         }
 
         function renderApyChart() {
@@ -1573,6 +1693,11 @@
                 button.classList.add('active');
                 if (reportData) renderReturnChart();
             });
+        });
+
+        legacyOverlayToggle.addEventListener('change', () => {
+            showLegacyReturnOverlay = legacyOverlayToggle.checked;
+            if (reportData) renderReturnChart();
         });
 
         document.querySelectorAll('[data-apy-period]').forEach(button => {
