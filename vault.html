@@ -92,6 +92,160 @@
             font-size: 13px;
             white-space: nowrap;
             backdrop-filter: blur(10px);
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        #statusText {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .topbar-actions {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .icon-button {
+            display: inline-grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--ink);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .icon-button:hover,
+        .icon-button[aria-expanded="true"] {
+            border-color: rgba(0, 212, 255, 0.32);
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .hamburger-lines {
+            display: grid;
+            gap: 4px;
+            width: 18px;
+        }
+
+        .hamburger-lines span {
+            display: block;
+            height: 2px;
+            border-radius: 999px;
+            background: currentColor;
+        }
+
+        .legacy-menu {
+            position: absolute;
+            z-index: 30;
+            top: calc(100% + 12px);
+            right: 0;
+            display: none;
+            width: min(560px, calc(100vw - 40px));
+            max-height: calc(100vh - 112px);
+            overflow: auto;
+            padding: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 12px;
+            background:
+                linear-gradient(135deg, rgba(10, 10, 26, 0.98), rgba(26, 26, 62, 0.98));
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.52);
+            backdrop-filter: blur(18px);
+        }
+
+        .legacy-menu.open {
+            display: block;
+        }
+
+        .legacy-menu-head {
+            margin-bottom: 14px;
+        }
+
+        .legacy-kicker {
+            margin: 0 0 6px;
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .legacy-menu-title {
+            margin: 0;
+            font-size: 18px;
+            line-height: 1.15;
+        }
+
+        .legacy-menu-copy {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .legacy-stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .legacy-stat {
+            min-width: 0;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .legacy-stat-label {
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .legacy-stat-value {
+            color: var(--ink);
+            font-size: 19px;
+            font-weight: 850;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .legacy-stat-value.positive {
+            color: var(--green);
+        }
+
+        .legacy-stat-value.negative {
+            color: var(--red);
+        }
+
+        .legacy-stat-subtext {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.35;
+        }
+
+        .legacy-chart-wrap {
+            position: relative;
+            height: 230px;
+            margin-top: 4px;
+        }
+
+        .legacy-note {
+            margin: 12px 0 0;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.45;
         }
 
         .status-dot {
@@ -462,6 +616,29 @@
                 flex-direction: column;
             }
 
+            .topbar-actions {
+                width: 100%;
+                justify-content: space-between;
+                margin-left: 0;
+            }
+
+            .status-pill {
+                flex: 1;
+            }
+
+            .legacy-menu {
+                position: fixed;
+                top: 88px;
+                right: 16px;
+                left: 16px;
+                width: auto;
+                max-height: calc(100vh - 110px);
+            }
+
+            .legacy-stats {
+                grid-template-columns: 1fr;
+            }
+
             .metrics-grid {
                 grid-template-columns: 1fr;
             }
@@ -478,9 +655,34 @@
             <div class="brand">
                 <img src="kv-logo-blue.png" alt="KeyVault">
             </div>
-            <div class="status-pill" id="dataStatus">
-                <span class="status-dot" id="statusDot"></span>
-                <span id="statusText">Loading Prime report</span>
+            <div class="topbar-actions">
+                <div class="status-pill" id="dataStatus">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="statusText">Loading Prime report</span>
+                </div>
+                <button class="icon-button" id="legacyMenuBtn" type="button" aria-label="Open legacy vault strategy reference" aria-expanded="false" aria-controls="legacyMenu">
+                    <span class="hamburger-lines" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
+                <div class="legacy-menu" id="legacyMenu" role="dialog" aria-label="Legacy vault strategy reference">
+                    <div class="legacy-menu-head">
+                        <p class="legacy-kicker">Historical reference</p>
+                        <h2 class="legacy-menu-title">Legacy Vault Strategy</h2>
+                        <p class="legacy-menu-copy">
+                            Hard-coded PN_JLP1 / Drift-era performance through the cross-platform launch date.
+                        </p>
+                    </div>
+                    <div class="legacy-stats" id="legacyStats"></div>
+                    <div class="legacy-chart-wrap">
+                        <canvas id="legacyVaultChart"></canvas>
+                    </div>
+                    <p class="legacy-note">
+                        TVL and daily NAV stamp fields are intentionally excluded here; this is only an archived performance reference.
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -491,7 +693,7 @@
                 <p class="hero-copy">
                     This dashboard uses the Prime Number JLP report as the current strategy data source.
                     Cross-platform performance is displayed as investor net return using the KeyVault fee model,
-                    with the old Drift-era vault kept only as a rebased historical chart reference.
+                    with the old Drift-era vault kept only as an archived reference in the menu.
                 </p>
             </div>
             <aside class="source-panel">
@@ -575,7 +777,9 @@
         const PRIME_REPORT_URL = 'https://app.primenumber.trade/data/jlp_report.html';
         const REPORT_PROXY_URL = `https://keyvault.deven-m-webster.workers.dev/?url=${encodeURIComponent(PRIME_REPORT_URL)}`;
         const TARGET_SERIES = '3x JLP (borrow SOL) + Aster Funding';
-        const HISTORICAL_REFERENCE_SERIES = 'Historical KeyVault/Drift Strategy (reference only)';
+        const LEGACY_VAULT_NAME = 'Legacy Vault Strategy';
+        const LEGACY_VAULT_END_DATE = '2025-11-06';
+        const LEGACY_NET_INVESTOR_FACTOR = 0.8;
         const NET_FEE_MODEL = {
             primePerfPct: 20,
             benchmarkApy: 20,
@@ -588,6 +792,7 @@
 
         let returnChartInstance = null;
         let apyChartInstance = null;
+        let legacyChartInstance = null;
         let reportData = null;
         let freshnessStamp = null;
         let activeReturnPeriod = 'all';
@@ -601,6 +806,9 @@
         const returnChartCaption = document.getElementById('returnChartCaption');
         const apyChartCaption = document.getElementById('apyChartCaption');
         const refreshBtn = document.getElementById('refreshBtn');
+        const legacyMenuBtn = document.getElementById('legacyMenuBtn');
+        const legacyMenu = document.getElementById('legacyMenu');
+        const legacyStats = document.getElementById('legacyStats');
 
         function setStatus(type, text) {
             statusDot.className = `status-dot ${type}`;
@@ -714,32 +922,206 @@
             return (((1 + value / 100) / (1 + baseValue / 100)) - 1) * 100;
         }
 
+        function getLegacyVaultPoints() {
+            return HISTORICAL_DRIFT_REFERENCE.filter(point => isOnOrBefore(point.date, LEGACY_VAULT_END_DATE));
+        }
+
+        function getLegacyDailyNetChanges(points) {
+            return points.map((point, index) => {
+                if (index === 0) return { date: point.date, value: 0 };
+                const previous = points[index - 1];
+                const dailyGross = rebaseCumulativeReturn(point.value, previous.value);
+                return {
+                    date: point.date,
+                    value: dailyGross * LEGACY_NET_INVESTOR_FACTOR
+                };
+            });
+        }
+
+        function getLegacyRollingApy(points, days) {
+            const latest = points[points.length - 1];
+            const daysAvailable = Math.min(days, points.length);
+            const start = points[points.length - daysAvailable];
+            const returnPct = rebaseCumulativeReturn(latest.value, start.value) * LEGACY_NET_INVESTOR_FACTOR;
+            return {
+                daysAvailable,
+                returnPct,
+                apy: (returnPct / daysAvailable) * 365
+            };
+        }
+
+        function getLegacyVaultMetrics() {
+            const points = getLegacyVaultPoints();
+            const first = points[0];
+            const latest = points[points.length - 1];
+            const grossReturn = rebaseCumulativeReturn(latest.value, first.value);
+            const netReturn = grossReturn * LEGACY_NET_INVESTOR_FACTOR;
+            const netApy = (netReturn / points.length) * 365;
+            const dailyChanges = getLegacyDailyNetChanges(points);
+            const dailyReturns = dailyChanges.slice(1).map(point => point.value / 100);
+            const averageDailyReturn = dailyReturns.reduce((sum, value) => sum + value, 0) / dailyReturns.length;
+            const dailyStdDev = Math.sqrt(
+                dailyReturns.reduce((sum, value) => sum + Math.pow(value - averageDailyReturn, 2), 0) /
+                Math.max(1, dailyReturns.length - 1)
+            );
+            const riskFreeDaily = 0.05 / 365;
+            const sharpeRatio = dailyStdDev > 0
+                ? ((averageDailyReturn - riskFreeDaily) / dailyStdDev) * Math.sqrt(365)
+                : 0;
+            const bestDay = dailyChanges.reduce((best, point) => point.value > best.value ? point : best, dailyChanges[0]);
+            const worstDay = dailyChanges.reduce((worst, point) => point.value < worst.value ? point : worst, dailyChanges[0]);
+
+            return {
+                points,
+                first,
+                latest,
+                netReturn,
+                netApy,
+                sharpeRatio,
+                days: points.length,
+                rolling90: getLegacyRollingApy(points, 90),
+                rolling180: getLegacyRollingApy(points, 180),
+                bestDay,
+                worstDay
+            };
+        }
+
+        function renderLegacyStats() {
+            const metrics = getLegacyVaultMetrics();
+            legacyStats.innerHTML = `
+                <div class="legacy-stat">
+                    <div class="legacy-stat-label">Net Return</div>
+                    <div class="legacy-stat-value positive">${formatPercent(metrics.netReturn)}</div>
+                    <div class="legacy-stat-subtext">${formatDate(metrics.first.date)} to ${formatDate(metrics.latest.date)}</div>
+                </div>
+                <div class="legacy-stat">
+                    <div class="legacy-stat-label">Net APY</div>
+                    <div class="legacy-stat-value positive">${formatPercent(metrics.netApy)}</div>
+                    <div class="legacy-stat-subtext">All-time annualized</div>
+                </div>
+                <div class="legacy-stat">
+                    <div class="legacy-stat-label">90D APY</div>
+                    <div class="legacy-stat-value positive">${formatPercent(metrics.rolling90.apy)}</div>
+                    <div class="legacy-stat-subtext">${formatPercent(metrics.rolling90.returnPct)} over ${metrics.rolling90.daysAvailable} days</div>
+                </div>
+                <div class="legacy-stat">
+                    <div class="legacy-stat-label">180D APY</div>
+                    <div class="legacy-stat-value positive">${formatPercent(metrics.rolling180.apy)}</div>
+                    <div class="legacy-stat-subtext">${formatPercent(metrics.rolling180.returnPct)} over ${metrics.rolling180.daysAvailable} days</div>
+                </div>
+                <div class="legacy-stat">
+                    <div class="legacy-stat-label">Sharpe Ratio</div>
+                    <div class="legacy-stat-value">${metrics.sharpeRatio.toFixed(2)}</div>
+                    <div class="legacy-stat-subtext">Daily returns, 5% risk-free proxy</div>
+                </div>
+                <div class="legacy-stat">
+                    <div class="legacy-stat-label">Days Captured</div>
+                    <div class="legacy-stat-value">${metrics.days}</div>
+                    <div class="legacy-stat-subtext">Stops at cross-platform launch</div>
+                </div>
+                <div class="legacy-stat">
+                    <div class="legacy-stat-label">Best Day</div>
+                    <div class="legacy-stat-value positive">${formatPercent(metrics.bestDay.value)}</div>
+                    <div class="legacy-stat-subtext">${formatDate(metrics.bestDay.date)}</div>
+                </div>
+                <div class="legacy-stat">
+                    <div class="legacy-stat-label">Worst Day</div>
+                    <div class="legacy-stat-value ${metrics.worstDay.value >= 0 ? 'positive' : 'negative'}">${formatPercent(metrics.worstDay.value)}</div>
+                    <div class="legacy-stat-subtext">${formatDate(metrics.worstDay.date)}</div>
+                </div>
+            `;
+        }
+
+        function renderLegacyChart() {
+            const metrics = getLegacyVaultMetrics();
+            const labels = metrics.points.map(point => point.date);
+            const data = metrics.points.map(point => (
+                rebaseCumulativeReturn(point.value, metrics.first.value) * LEGACY_NET_INVESTOR_FACTOR
+            ));
+
+            if (legacyChartInstance) legacyChartInstance.destroy();
+
+            legacyChartInstance = new Chart(document.getElementById('legacyVaultChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: `${LEGACY_VAULT_NAME} net return`,
+                        data,
+                        borderColor: '#f472b6',
+                        backgroundColor: 'rgba(244, 114, 182, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.25,
+                        fill: true,
+                        pointRadius: 0,
+                        pointHoverRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.96)',
+                            titleColor: '#fff',
+                            bodyColor: '#c8c8e0',
+                            callbacks: {
+                                title: items => formatDate(labels[items[0].dataIndex]),
+                                label: ctx => ` Net return: ${formatPercent(ctx.parsed.y)}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: {
+                                color: '#8b8ba7',
+                                maxTicksLimit: 5,
+                                callback: (_, index) => formatDate(labels[index])
+                            }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: {
+                                color: '#8b8ba7',
+                                callback: value => `${Number(value).toFixed(0)}%`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function setLegacyMenuOpen(isOpen) {
+            legacyMenu.classList.toggle('open', isOpen);
+            legacyMenuBtn.setAttribute('aria-expanded', String(isOpen));
+            if (isOpen) {
+                renderLegacyStats();
+                requestAnimationFrame(renderLegacyChart);
+            }
+        }
+
         function getOverlapComparison() {
             const startDate = reportData.metrics.startDate;
             const primeLast = reportData.points[reportData.points.length - 1];
-            const driftLast = HISTORICAL_DRIFT_REFERENCE[HISTORICAL_DRIFT_REFERENCE.length - 1];
-            const endDate = earlierDate(primeLast.date, driftLast.date);
             const primeStart = findPointOnOrAfter(reportData.points, startDate) || reportData.points[0];
-            const primeEnd = findPointOnOrBefore(reportData.points, endDate) || primeLast;
-            const driftStart = findPointOnOrBefore(HISTORICAL_DRIFT_REFERENCE, startDate) || HISTORICAL_DRIFT_REFERENCE[0];
-            const driftEnd = findPointOnOrBefore(HISTORICAL_DRIFT_REFERENCE, endDate) || driftLast;
-            const days = daysBetween(primeStart.date, endDate);
+            const primeEnd = primeLast;
+            const legacyPoints = getLegacyVaultPoints();
+            const days = daysBetween(primeStart.date, primeEnd.date);
             const primeCumulative = rebaseCumulativeReturn(primeEnd.value, primeStart.value);
-            const driftCumulative = rebaseCumulativeReturn(driftEnd.value, driftStart.value);
             const primeAnnualized = (primeCumulative / days) * 365;
-            const driftAnnualized = (driftCumulative / days) * 365;
 
             return {
                 startDate: primeStart.date,
-                endDate,
+                endDate: primeEnd.date,
                 days,
                 primeBaseValue: primeStart.value,
-                driftBaseValue: driftStart.value,
                 primeCumulative,
-                driftCumulative,
                 primeAnnualized,
-                driftAnnualized,
-                driftFullStartDate: HISTORICAL_DRIFT_REFERENCE[0].date
+                legacyStartDate: legacyPoints[0].date,
+                legacyEndDate: legacyPoints[legacyPoints.length - 1].date
             };
         }
 
@@ -919,17 +1301,10 @@
 
         function getChartSeries() {
             const comparison = getOverlapComparison();
-            const latest = reportData.points[reportData.points.length - 1];
             const primePoints = getFilteredPoints()
                 .filter(point => isOnOrAfter(point.date, comparison.startDate));
-            const referencePoints = filterPointsByPeriod(HISTORICAL_DRIFT_REFERENCE, latest.date, activeReturnPeriod)
-                .filter(point => isOnOrAfter(point.date, comparison.startDate));
-            const labels = [...new Set([
-                ...referencePoints.map(point => point.date),
-                ...primePoints.map(point => point.date)
-            ])].sort();
+            const labels = primePoints.map(point => point.date);
             const primeMap = new Map(primePoints.map(point => [point.date, point.value]));
-            const referenceMap = new Map(referencePoints.map(point => [point.date, point.value]));
 
             return {
                 labels,
@@ -937,8 +1312,7 @@
                     if (!primeMap.has(date)) return null;
                     const grossReturn = rebaseCumulativeReturn(primeMap.get(date), comparison.primeBaseValue);
                     return netCumulativeFromGrossReturn(grossReturn, daysBetween(comparison.startDate, date));
-                }),
-                referenceData: labels.map(date => referenceMap.has(date) ? rebaseCumulativeReturn(referenceMap.get(date), comparison.driftBaseValue) : null)
+                })
             };
         }
 
@@ -1001,8 +1375,7 @@
         }
 
         function renderReturnChart() {
-            const { labels, primeData, referenceData } = getChartSeries();
-            const hasReferenceData = referenceData.some(value => value !== null);
+            const { labels, primeData } = getChartSeries();
 
             if (returnChartInstance) returnChartInstance.destroy();
 
@@ -1023,21 +1396,7 @@
                             pointHoverRadius: 5,
                             spanGaps: false,
                             order: 1
-                        },
-                        ...(hasReferenceData ? [{
-                            label: HISTORICAL_REFERENCE_SERIES,
-                            data: referenceData,
-                            borderColor: '#8b8ba7',
-                            backgroundColor: 'transparent',
-                            borderWidth: 2,
-                            borderDash: [7, 5],
-                            tension: 0.18,
-                            fill: false,
-                            pointRadius: 0,
-                            pointHoverRadius: 4,
-                            spanGaps: true,
-                            order: 2
-                        }] : [])
+                        }
                     ]
                 },
                 options: {
@@ -1094,7 +1453,7 @@
 
             const primeLast = reportData.points[reportData.points.length - 1];
             const comparison = getOverlapComparison();
-            returnChartCaption.textContent = `Cross-platform return is shown net of Prime and KeyVault performance fees from ${formatDate(comparison.startDate)}. Historical Drift history exists back to ${formatDate(comparison.driftFullStartDate)} and remains a dotted reference line; Drift stops at ${formatDate(comparison.endDate)} while Prime continues to ${formatDate(primeLast.date)}.`;
+            returnChartCaption.textContent = `Cross-platform return is shown net of Prime and KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(primeLast.date)}. Legacy vault history is archived in the menu and stops at ${formatDate(comparison.legacyEndDate)}.`;
         }
 
         function renderApyChart() {
@@ -1266,12 +1625,31 @@
             });
         });
 
+        legacyMenuBtn.addEventListener('click', event => {
+            event.stopPropagation();
+            setLegacyMenuOpen(!legacyMenu.classList.contains('open'));
+        });
+
+        legacyMenu.addEventListener('click', event => {
+            event.stopPropagation();
+        });
+
+        document.addEventListener('click', () => {
+            setLegacyMenuOpen(false);
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') setLegacyMenuOpen(false);
+        });
+
         refreshBtn.addEventListener('click', loadDashboard);
         window.addEventListener('resize', () => {
             returnChartInstance?.resize();
             apyChartInstance?.resize();
+            legacyChartInstance?.resize();
         });
 
+        renderLegacyStats();
         loadDashboard();
     </script>
 </body>
