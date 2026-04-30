@@ -514,17 +514,35 @@
             <div class="chart-head">
                 <div>
                     <h2 class="chart-title">Net Return Since Cross-Platform Launch</h2>
-                    <p class="chart-caption" id="chartCaption">Cross-platform return is netted through the KeyVault fee model.</p>
+                    <p class="chart-caption" id="returnChartCaption">Cross-platform return is netted through the KeyVault fee model.</p>
                 </div>
                 <div class="period-controls" aria-label="Chart period">
-                    <button class="period-btn active" data-period="all" type="button">All</button>
-                    <button class="period-btn" data-period="180" type="button">180D</button>
-                    <button class="period-btn" data-period="90" type="button">90D</button>
-                    <button class="period-btn" data-period="30" type="button">30D</button>
+                    <button class="period-btn active" data-return-period="all" type="button">All</button>
+                    <button class="period-btn" data-return-period="180" type="button">180D</button>
+                    <button class="period-btn" data-return-period="90" type="button">90D</button>
+                    <button class="period-btn" data-return-period="30" type="button">30D</button>
                 </div>
             </div>
             <div class="chart-wrap">
                 <canvas id="strategyChart"></canvas>
+            </div>
+        </section>
+
+        <section class="chart-card">
+            <div class="chart-head">
+                <div>
+                    <h2 class="chart-title">Net APY Performance</h2>
+                    <p class="chart-caption" id="apyChartCaption">Annualized investor net APY from the cross-platform launch date.</p>
+                </div>
+                <div class="period-controls" aria-label="APY chart period">
+                    <button class="period-btn active" data-apy-period="all" type="button">All</button>
+                    <button class="period-btn" data-apy-period="180" type="button">180D</button>
+                    <button class="period-btn" data-apy-period="90" type="button">90D</button>
+                    <button class="period-btn" data-apy-period="30" type="button">30D</button>
+                </div>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="apyPerformanceChart"></canvas>
             </div>
         </section>
 
@@ -568,17 +586,20 @@
         };
         const HISTORICAL_DRIFT_REFERENCE = [{"date":"2025-02-26","value":0},{"date":"2025-02-27","value":0.18},{"date":"2025-02-28","value":-0.05},{"date":"2025-03-01","value":0.39},{"date":"2025-03-02","value":0.49},{"date":"2025-03-03","value":0.95},{"date":"2025-03-04","value":0.47},{"date":"2025-03-05","value":0.8},{"date":"2025-03-06","value":0.89},{"date":"2025-03-07","value":0.89},{"date":"2025-03-08","value":0.77},{"date":"2025-03-09","value":0.83},{"date":"2025-03-10","value":0.62},{"date":"2025-03-11","value":0.58},{"date":"2025-03-12","value":0.58},{"date":"2025-03-13","value":0.52},{"date":"2025-03-14","value":0.6},{"date":"2025-03-15","value":0.97},{"date":"2025-03-16","value":1},{"date":"2025-03-17","value":1.01},{"date":"2025-03-18","value":0.96},{"date":"2025-03-19","value":0.98},{"date":"2025-03-20","value":1.27},{"date":"2025-03-21","value":1.24},{"date":"2025-03-22","value":1.07},{"date":"2025-03-23","value":1.15},{"date":"2025-03-24","value":1.3},{"date":"2025-03-25","value":1.4},{"date":"2025-03-26","value":1.45},{"date":"2025-03-27","value":1.45},{"date":"2025-03-28","value":1.26},{"date":"2025-03-29","value":1.23},{"date":"2025-03-30","value":1.24},{"date":"2025-03-31","value":1.32},{"date":"2025-04-01","value":1.36},{"date":"2025-04-02","value":1.29},{"date":"2025-04-03","value":1.19},{"date":"2025-04-04","value":0.79},{"date":"2025-04-05","value":0.95},{"date":"2025-04-06","value":1.05},{"date":"2025-04-07","value":0.73},{"date":"2025-04-08","value":0.96},{"date":"2025-04-09","value":1.01},{"date":"2025-04-10","value":1.27},{"date":"2025-04-11","value":1.36},{"date":"2025-04-12","value":1.68},{"date":"2025-04-13","value":1.99},{"date":"2025-04-14","value":2.03},{"date":"2025-04-15","value":2.12},{"date":"2025-04-16","value":2.2},{"date":"2025-04-17","value":2.25},{"date":"2025-04-18","value":2.42},{"date":"2025-04-19","value":2.75},{"date":"2025-04-20","value":2.64},{"date":"2025-04-21","value":2.55},{"date":"2025-04-22","value":2.58},{"date":"2025-04-23","value":2.96},{"date":"2025-04-24","value":3},{"date":"2025-04-25","value":3.04},{"date":"2025-04-26","value":2.97},{"date":"2025-04-27","value":3.03},{"date":"2025-04-28","value":3.02},{"date":"2025-04-29","value":2.98},{"date":"2025-04-30","value":2.91},{"date":"2025-05-01","value":2.94},{"date":"2025-05-02","value":3.17},{"date":"2025-05-03","value":3.12},{"date":"2025-05-04","value":3.11},{"date":"2025-05-05","value":3.14},{"date":"2025-05-06","value":2.91},{"date":"2025-05-07","value":3.28},{"date":"2025-05-08","value":3.29},{"date":"2025-05-09","value":3.85},{"date":"2025-05-10","value":4.23},{"date":"2025-05-11","value":4.37},{"date":"2025-05-12","value":4.39},{"date":"2025-05-13","value":4.33},{"date":"2025-05-14","value":4.88},{"date":"2025-05-15","value":4.79},{"date":"2025-05-16","value":4.87},{"date":"2025-05-17","value":4.85},{"date":"2025-05-18","value":4.76},{"date":"2025-05-19","value":4.76},{"date":"2025-05-20","value":4.84},{"date":"2025-05-21","value":4.82},{"date":"2025-05-22","value":4.94},{"date":"2025-05-23","value":5.24},{"date":"2025-05-24","value":5.09},{"date":"2025-05-25","value":4.94},{"date":"2025-05-26","value":5.19},{"date":"2025-05-27","value":5.14},{"date":"2025-05-28","value":5.16},{"date":"2025-05-29","value":5.39},{"date":"2025-05-30","value":5.4},{"date":"2025-05-31","value":5.05},{"date":"2025-06-01","value":5.2},{"date":"2025-06-02","value":5.04},{"date":"2025-06-03","value":5.27},{"date":"2025-06-04","value":5.24},{"date":"2025-06-05","value":5.23},{"date":"2025-06-06","value":5.05},{"date":"2025-06-07","value":5.17},{"date":"2025-06-08","value":5.27},{"date":"2025-06-09","value":5.29},{"date":"2025-06-10","value":5.71},{"date":"2025-06-11","value":5.88},{"date":"2025-06-12","value":5.89},{"date":"2025-06-13","value":5.36},{"date":"2025-06-14","value":5.51},{"date":"2025-06-15","value":5.59},{"date":"2025-06-16","value":5.84},{"date":"2025-06-17","value":5.72},{"date":"2025-06-18","value":5.46},{"date":"2025-06-19","value":5.4},{"date":"2025-06-20","value":5.38},{"date":"2025-06-21","value":5.17},{"date":"2025-06-22","value":5.07},{"date":"2025-06-23","value":5.03},{"date":"2025-06-24","value":5.61},{"date":"2025-06-25","value":5.83},{"date":"2025-06-26","value":5.82},{"date":"2025-06-27","value":5.8},{"date":"2025-06-28","value":5.93},{"date":"2025-06-29","value":6.14},{"date":"2025-06-30","value":6.3},{"date":"2025-07-01","value":6.29},{"date":"2025-07-02","value":6.56},{"date":"2025-07-03","value":6.84},{"date":"2025-07-04","value":6.8},{"date":"2025-07-05","value":6.63},{"date":"2025-07-06","value":6.58},{"date":"2025-07-07","value":6.7},{"date":"2025-07-08","value":6.7},{"date":"2025-07-09","value":6.85},{"date":"2025-07-10","value":7},{"date":"2025-07-11","value":7.57},{"date":"2025-07-12","value":7.84},{"date":"2025-07-13","value":7.7},{"date":"2025-07-14","value":8.05},{"date":"2025-07-15","value":8.13},{"date":"2025-07-16","value":8.27},{"date":"2025-07-17","value":8.92},{"date":"2025-07-18","value":9.6},{"date":"2025-07-19","value":9.39},{"date":"2025-07-20","value":9.46},{"date":"2025-07-21","value":10.21},{"date":"2025-07-22","value":10.89},{"date":"2025-07-23","value":11.12},{"date":"2025-07-24","value":11.01},{"date":"2025-07-25","value":11.09},{"date":"2025-07-26","value":11.52},{"date":"2025-07-27","value":11.65},{"date":"2025-07-28","value":11.97},{"date":"2025-07-29","value":11.96},{"date":"2025-07-30","value":11.87},{"date":"2025-07-31","value":11.92},{"date":"2025-08-01","value":11.65},{"date":"2025-08-02","value":11.38},{"date":"2025-08-03","value":11.23},{"date":"2025-08-04","value":11.42},{"date":"2025-08-05","value":11.61},{"date":"2025-08-06","value":11.47},{"date":"2025-08-07","value":11.87},{"date":"2025-08-08","value":12.2},{"date":"2025-08-09","value":12.31},{"date":"2025-08-10","value":12.52},{"date":"2025-08-11","value":12.78},{"date":"2025-08-12","value":12.88},{"date":"2025-08-13","value":14.03},{"date":"2025-08-14","value":14.7},{"date":"2025-08-15","value":14.45},{"date":"2025-08-16","value":14.35},{"date":"2025-08-17","value":14.28},{"date":"2025-08-18","value":14.19},{"date":"2025-08-19","value":13.95},{"date":"2025-08-20","value":13.93},{"date":"2025-08-21","value":14.13},{"date":"2025-08-22","value":14.12},{"date":"2025-08-23","value":14.65},{"date":"2025-08-24","value":14.91},{"date":"2025-08-25","value":14.95},{"date":"2025-08-26","value":14.66},{"date":"2025-08-27","value":15.21},{"date":"2025-08-28","value":15.57},{"date":"2025-08-29","value":15.78},{"date":"2025-08-30","value":15.69},{"date":"2025-08-31","value":15.58},{"date":"2025-09-01","value":15.56},{"date":"2025-09-02","value":15.75},{"date":"2025-09-03","value":15.89},{"date":"2025-09-04","value":15.96},{"date":"2025-09-05","value":15.97},{"date":"2025-09-06","value":15.89},{"date":"2025-09-07","value":15.8},{"date":"2025-09-08","value":15.97},{"date":"2025-09-09","value":16.36},{"date":"2025-09-10","value":16.45},{"date":"2025-09-11","value":16.73},{"date":"2025-09-12","value":17.46},{"date":"2025-09-13","value":17.83},{"date":"2025-09-14","value":18.14},{"date":"2025-09-15","value":18.22},{"date":"2025-09-16","value":18.15},{"date":"2025-09-17","value":18.25},{"date":"2025-09-18","value":18.51},{"date":"2025-09-19","value":18.7},{"date":"2025-09-20","value":18.57},{"date":"2025-09-21","value":18.55},{"date":"2025-09-22","value":18.24},{"date":"2025-09-23","value":18.24},{"date":"2025-09-24","value":18.2},{"date":"2025-09-25","value":18.1},{"date":"2025-09-26","value":18.19},{"date":"2025-09-27","value":18.48},{"date":"2025-09-28","value":18.53},{"date":"2025-09-29","value":18.77},{"date":"2025-09-30","value":18.87},{"date":"2025-10-01","value":19.1},{"date":"2025-10-02","value":19.48},{"date":"2025-10-03","value":19.95},{"date":"2025-10-04","value":19.95},{"date":"2025-10-05","value":20.25},{"date":"2025-10-06","value":20.18},{"date":"2025-10-07","value":20.22},{"date":"2025-10-08","value":20.17},{"date":"2025-10-09","value":20.29},{"date":"2025-10-10","value":20.1},{"date":"2025-10-11","value":19.68},{"date":"2025-10-12","value":19.85},{"date":"2025-10-13","value":19.98},{"date":"2025-10-14","value":19.93},{"date":"2025-10-15","value":19.99},{"date":"2025-10-16","value":19.79},{"date":"2025-10-17","value":19.78},{"date":"2025-10-18","value":19.7},{"date":"2025-10-19","value":19.81},{"date":"2025-10-20","value":20.07},{"date":"2025-10-21","value":19.87},{"date":"2025-10-22","value":19.91},{"date":"2025-10-23","value":20.01},{"date":"2025-10-24","value":20.39},{"date":"2025-10-25","value":20.49},{"date":"2025-10-26","value":20.61},{"date":"2025-10-27","value":20.88},{"date":"2025-10-28","value":20.87},{"date":"2025-10-29","value":20.93},{"date":"2025-10-30","value":20.86},{"date":"2025-10-31","value":20.8},{"date":"2025-11-01","value":20.76},{"date":"2025-11-02","value":20.66},{"date":"2025-11-03","value":20.79},{"date":"2025-11-04","value":20.85},{"date":"2025-11-05","value":21.15},{"date":"2025-11-06","value":21.2},{"date":"2025-11-07","value":21.36},{"date":"2025-11-08","value":21.56},{"date":"2025-11-09","value":21.58},{"date":"2025-11-10","value":21.58},{"date":"2025-11-11","value":21.6},{"date":"2025-11-12","value":21.77},{"date":"2025-11-13","value":21.82},{"date":"2025-11-14","value":21.95},{"date":"2025-11-15","value":22.26},{"date":"2025-11-16","value":22.28},{"date":"2025-11-17","value":22.32},{"date":"2025-11-18","value":22.58},{"date":"2025-11-19","value":22.58},{"date":"2025-11-20","value":22.62},{"date":"2025-11-21","value":22.68},{"date":"2025-11-22","value":22.64},{"date":"2025-11-23","value":22.61},{"date":"2025-11-24","value":22.68},{"date":"2025-11-25","value":22.84},{"date":"2025-11-26","value":22.8},{"date":"2025-11-27","value":22.67},{"date":"2025-11-28","value":22.56},{"date":"2025-11-29","value":22.51},{"date":"2025-11-30","value":22.58},{"date":"2025-12-01","value":22.67},{"date":"2025-12-02","value":22.76},{"date":"2025-12-03","value":22.9},{"date":"2025-12-04","value":22.85},{"date":"2025-12-05","value":23},{"date":"2025-12-06","value":23},{"date":"2025-12-07","value":23.05},{"date":"2025-12-08","value":22.99},{"date":"2025-12-09","value":23.02},{"date":"2025-12-10","value":22.83},{"date":"2025-12-11","value":22.83},{"date":"2025-12-12","value":22.74},{"date":"2025-12-13","value":22.74},{"date":"2025-12-14","value":22.74},{"date":"2025-12-15","value":22.74},{"date":"2025-12-16","value":23.05},{"date":"2025-12-17","value":23.05},{"date":"2025-12-18","value":22.95},{"date":"2025-12-19","value":23.16},{"date":"2025-12-20","value":23.16},{"date":"2025-12-21","value":23.16},{"date":"2025-12-22","value":23.2},{"date":"2025-12-23","value":23.29},{"date":"2025-12-24","value":23.44},{"date":"2025-12-25","value":23.53},{"date":"2025-12-26","value":23.55},{"date":"2025-12-27","value":23.55},{"date":"2025-12-28","value":23.63},{"date":"2025-12-29","value":23.64},{"date":"2025-12-30","value":23.7},{"date":"2025-12-31","value":23.78},{"date":"2026-01-01","value":23.78},{"date":"2026-01-02","value":23.78},{"date":"2026-01-03","value":23.78},{"date":"2026-01-04","value":23.78},{"date":"2026-01-05","value":23.71},{"date":"2026-01-06","value":23.71},{"date":"2026-01-07","value":23.8},{"date":"2026-01-08","value":23.8},{"date":"2026-01-09","value":23.85},{"date":"2026-01-10","value":24.14},{"date":"2026-01-11","value":23.7},{"date":"2026-01-12","value":23.87},{"date":"2026-01-13","value":23.92},{"date":"2026-01-14","value":23.7},{"date":"2026-01-15","value":23.84},{"date":"2026-01-16","value":23.75},{"date":"2026-01-17","value":23.68},{"date":"2026-01-18","value":23.86},{"date":"2026-01-19","value":24.16},{"date":"2026-01-20","value":24.01},{"date":"2026-01-21","value":24.07},{"date":"2026-01-22","value":24.42},{"date":"2026-01-23","value":24.76},{"date":"2026-01-24","value":24.64},{"date":"2026-01-25","value":24.7},{"date":"2026-01-26","value":24.58},{"date":"2026-01-27","value":24.45},{"date":"2026-01-28","value":24.32},{"date":"2026-01-29","value":24.37},{"date":"2026-01-30","value":24.42},{"date":"2026-01-31","value":24.67},{"date":"2026-02-01","value":24.53},{"date":"2026-02-02","value":24.65},{"date":"2026-02-03","value":24.39},{"date":"2026-02-04","value":24.55},{"date":"2026-02-05","value":24.48},{"date":"2026-02-06","value":24.85},{"date":"2026-02-07","value":24.58},{"date":"2026-02-08","value":24.65},{"date":"2026-02-09","value":24.33},{"date":"2026-02-10","value":24.12},{"date":"2026-02-11","value":24.47},{"date":"2026-02-12","value":24.52},{"date":"2026-02-13","value":23.86},{"date":"2026-02-14","value":23.9},{"date":"2026-02-15","value":23.88},{"date":"2026-02-16","value":24.07},{"date":"2026-02-17","value":23.59},{"date":"2026-02-18","value":24.59},{"date":"2026-02-19","value":24.57},{"date":"2026-02-20","value":24.42},{"date":"2026-02-21","value":24.78},{"date":"2026-02-22","value":25.08},{"date":"2026-02-23","value":24.83},{"date":"2026-02-24","value":25.05},{"date":"2026-02-25","value":24.69},{"date":"2026-02-26","value":25.32},{"date":"2026-02-27","value":25.68},{"date":"2026-02-28","value":25.25},{"date":"2026-03-01","value":24.92},{"date":"2026-03-02","value":25.22},{"date":"2026-03-03","value":25.41},{"date":"2026-03-04","value":24.87},{"date":"2026-03-05","value":24.81},{"date":"2026-03-06","value":25.43},{"date":"2026-03-07","value":25.35},{"date":"2026-03-08","value":25.45},{"date":"2026-03-09","value":25.4},{"date":"2026-03-10","value":25.23},{"date":"2026-03-11","value":25.11},{"date":"2026-03-12","value":25.01},{"date":"2026-03-13","value":24.69},{"date":"2026-03-14","value":24.88},{"date":"2026-03-15","value":25.06},{"date":"2026-03-16","value":24.79},{"date":"2026-03-17","value":25.24},{"date":"2026-03-19","value":25.17},{"date":"2026-03-20","value":25.13},{"date":"2026-03-21","value":25.04},{"date":"2026-03-22","value":25.05},{"date":"2026-03-23","value":24.58},{"date":"2026-03-24","value":24.67},{"date":"2026-03-25","value":25.06},{"date":"2026-03-26","value":25.94},{"date":"2026-03-27","value":25.63},{"date":"2026-03-28","value":25.47},{"date":"2026-03-29","value":25.07},{"date":"2026-03-30","value":25.89},{"date":"2026-03-31","value":25.54},{"date":"2026-04-01","value":25.71},{"date":"2026-04-02","value":25.71},{"date":"2026-04-03","value":25.71}];
 
-        let chartInstance = null;
+        let returnChartInstance = null;
+        let apyChartInstance = null;
         let reportData = null;
         let freshnessStamp = null;
-        let activePeriod = 'all';
+        let activeReturnPeriod = 'all';
+        let activeApyPeriod = 'all';
 
         const statusDot = document.getElementById('statusDot');
         const statusText = document.getElementById('statusText');
         const metricsGrid = document.getElementById('metricsGrid');
         const recentRows = document.getElementById('recentRows');
         const sourceMeta = document.getElementById('sourceMeta');
-        const chartCaption = document.getElementById('chartCaption');
+        const returnChartCaption = document.getElementById('returnChartCaption');
+        const apyChartCaption = document.getElementById('apyChartCaption');
         const refreshBtn = document.getElementById('refreshBtn');
 
         function setStatus(type, text) {
@@ -659,9 +680,9 @@
             return cutoff;
         }
 
-        function filterPointsByPeriod(points, latestDate) {
-            if (activePeriod === 'all') return points;
-            const cutoff = getPeriodCutoff(latestDate, Number(activePeriod));
+        function filterPointsByPeriod(points, latestDate, period = 'all') {
+            if (period === 'all') return points;
+            const cutoff = getPeriodCutoff(latestDate, Number(period));
             return points.filter(point => dateAtNoon(point.date) >= cutoff);
         }
 
@@ -893,7 +914,7 @@
         function getFilteredPoints() {
             if (!reportData) return [];
             const latest = reportData.points[reportData.points.length - 1];
-            return filterPointsByPeriod(reportData.points, latest.date);
+            return filterPointsByPeriod(reportData.points, latest.date, activeReturnPeriod);
         }
 
         function getChartSeries() {
@@ -901,7 +922,7 @@
             const latest = reportData.points[reportData.points.length - 1];
             const primePoints = getFilteredPoints()
                 .filter(point => isOnOrAfter(point.date, comparison.startDate));
-            const referencePoints = filterPointsByPeriod(HISTORICAL_DRIFT_REFERENCE, latest.date)
+            const referencePoints = filterPointsByPeriod(HISTORICAL_DRIFT_REFERENCE, latest.date, activeReturnPeriod)
                 .filter(point => isOnOrAfter(point.date, comparison.startDate));
             const labels = [...new Set([
                 ...referencePoints.map(point => point.date),
@@ -918,6 +939,22 @@
                     return netCumulativeFromGrossReturn(grossReturn, daysBetween(comparison.startDate, date));
                 }),
                 referenceData: labels.map(date => referenceMap.has(date) ? rebaseCumulativeReturn(referenceMap.get(date), comparison.driftBaseValue) : null)
+            };
+        }
+
+        function getApyChartSeries() {
+            const comparison = getOverlapComparison();
+            const latest = reportData.points[reportData.points.length - 1];
+            const primePoints = filterPointsByPeriod(reportData.points, latest.date, activeApyPeriod)
+                .filter(point => isOnOrAfter(point.date, comparison.startDate));
+
+            return {
+                labels: primePoints.map(point => point.date),
+                apyData: primePoints.map(point => {
+                    const grossReturn = rebaseCumulativeReturn(point.value, comparison.primeBaseValue);
+                    const grossApy = (grossReturn / daysBetween(comparison.startDate, point.date)) * 365;
+                    return applyInvestorNetFeeModel(grossApy);
+                })
             };
         }
 
@@ -963,13 +1000,13 @@
             `;
         }
 
-        function renderChart() {
+        function renderReturnChart() {
             const { labels, primeData, referenceData } = getChartSeries();
             const hasReferenceData = referenceData.some(value => value !== null);
 
-            if (chartInstance) chartInstance.destroy();
+            if (returnChartInstance) returnChartInstance.destroy();
 
-            chartInstance = new Chart(document.getElementById('strategyChart').getContext('2d'), {
+            returnChartInstance = new Chart(document.getElementById('strategyChart').getContext('2d'), {
                 type: 'line',
                 data: {
                     labels,
@@ -1057,7 +1094,76 @@
 
             const primeLast = reportData.points[reportData.points.length - 1];
             const comparison = getOverlapComparison();
-            chartCaption.textContent = `Cross-platform return is shown net of Prime and KeyVault performance fees from ${formatDate(comparison.startDate)}. Historical Drift history exists back to ${formatDate(comparison.driftFullStartDate)} and remains a dotted reference line; Drift stops at ${formatDate(comparison.endDate)} while Prime continues to ${formatDate(primeLast.date)}.`;
+            returnChartCaption.textContent = `Cross-platform return is shown net of Prime and KeyVault performance fees from ${formatDate(comparison.startDate)}. Historical Drift history exists back to ${formatDate(comparison.driftFullStartDate)} and remains a dotted reference line; Drift stops at ${formatDate(comparison.endDate)} while Prime continues to ${formatDate(primeLast.date)}.`;
+        }
+
+        function renderApyChart() {
+            const { labels, apyData } = getApyChartSeries();
+            const comparison = getOverlapComparison();
+
+            if (apyChartInstance) apyChartInstance.destroy();
+
+            apyChartInstance = new Chart(document.getElementById('apyPerformanceChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: `${TARGET_SERIES} net APY`,
+                            data: apyData,
+                            borderColor: '#00d4ff',
+                            backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.28,
+                            fill: true,
+                            pointRadius: 0,
+                            pointHoverRadius: 5,
+                            spanGaps: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 62, 0.96)',
+                            titleColor: '#fff',
+                            bodyColor: '#c8c8e0',
+                            callbacks: {
+                                title: items => formatDate(labels[items[0].dataIndex]),
+                                label: ctx => ` Net APY: ${formatPercent(ctx.parsed.y)}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: {
+                                color: '#8b8ba7',
+                                maxTicksLimit: 9,
+                                callback: (_, index) => formatDate(labels[index])
+                            }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: {
+                                color: '#8b8ba7',
+                                callback: value => `${Number(value).toFixed(0)}%`
+                            },
+                            title: {
+                                display: true,
+                                text: 'Net APY',
+                                color: '#8b8ba7'
+                            }
+                        }
+                    }
+                }
+            });
+
+            apyChartCaption.textContent = `Annualized investor net APY from ${formatDate(comparison.startDate)} through each report date. Period buttons change the visible window, not the fee model.`;
         }
 
         function renderRecentRows() {
@@ -1096,7 +1202,8 @@
 
         function renderDashboard() {
             renderMetrics();
-            renderChart();
+            renderReturnChart();
+            renderApyChart();
             renderRecentRows();
             renderSourceMeta();
             setStatus('ready', `Prime report loaded: ${reportData.lastUpdated}`);
@@ -1141,17 +1248,29 @@
             }
         }
 
-        document.querySelectorAll('.period-btn').forEach(button => {
+        document.querySelectorAll('[data-return-period]').forEach(button => {
             button.addEventListener('click', () => {
-                activePeriod = button.dataset.period;
-                document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
+                activeReturnPeriod = button.dataset.returnPeriod;
+                document.querySelectorAll('[data-return-period]').forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
-                if (reportData) renderChart();
+                if (reportData) renderReturnChart();
+            });
+        });
+
+        document.querySelectorAll('[data-apy-period]').forEach(button => {
+            button.addEventListener('click', () => {
+                activeApyPeriod = button.dataset.apyPeriod;
+                document.querySelectorAll('[data-apy-period]').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                if (reportData) renderApyChart();
             });
         });
 
         refreshBtn.addEventListener('click', loadDashboard);
-        window.addEventListener('resize', () => chartInstance?.resize());
+        window.addEventListener('resize', () => {
+            returnChartInstance?.resize();
+            apyChartInstance?.resize();
+        });
 
         loadDashboard();
     </script>
