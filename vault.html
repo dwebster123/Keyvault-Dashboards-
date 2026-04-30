@@ -1959,6 +1959,13 @@
                 const res = await fetch('data/jlp-strategy-latest.json?t=' + Date.now());
                 if (res.ok) {
                     const latest = await res.json();
+                    if (Array.isArray(latest.points) && latest.points.length > 0) {
+                        primeProFormaData = latest.points
+                            .filter(point => point.date && !isNaN(point.roi))
+                            .map(point => ({ date: point.date, roi: Number(point.roi) }));
+                        renderCPComparisonChart(cpCompPeriod);
+                        return;
+                    }
                     const lastEntry = primeProFormaData[primeProFormaData.length - 1];
                     if (latest && latest.endDate && !isNaN(latest.cumulative) && latest.endDate > lastEntry.date) {
                         // Linear interpolation to actual cumulative — same as fetchJlpStrategyLatest
@@ -2124,12 +2131,19 @@
             {date: "2026-03-13", roi: 11.61}
         ];
 
-        // Fetch the latest JLP 3x Mixed strategy data point and extend primeProFormaData
+        // Fetch the latest JLP 3x strategy data and refresh primeProFormaData
         async function fetchJlpStrategyLatest() {
             try {
                 const res = await fetch('data/jlp-strategy-latest.json?t=' + Date.now());
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const latest = await res.json();
+                if (Array.isArray(latest.points) && latest.points.length > 0) {
+                    primeProFormaData = latest.points
+                        .filter(point => point.date && !isNaN(point.roi))
+                        .map(point => ({ date: point.date, roi: Number(point.roi) }));
+                    console.log(`[JLP Strategy] Loaded ${primeProFormaData.length} Prime points through ${latest.endDate}`);
+                    return;
+                }
                 // latest = { endDate, cumulative, annualized, fetchedAt }
                 if (!latest.endDate || isNaN(latest.cumulative)) return;
                 const lastEntry = primeProFormaData[primeProFormaData.length - 1];

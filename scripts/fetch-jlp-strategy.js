@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
  * fetch-jlp-strategy.js
- * Fetches the Prime Number JLP report and extracts the
- * "3x JLP (borrow SOL) + Mixed Funding" row.
+ * Fetches the Prime Number JLP report and extracts the current
+ * "3x JLP (borrow SOL) + Aster Funding" summary and chart series.
  * Saves to data/jlp-strategy-latest.json
  */
 
@@ -11,7 +11,7 @@ const path = require('path');
 
 const REPORT_URL   = 'https://app.primenumber.trade/data/jlp_report.html';
 const OUT_PATH     = path.join(__dirname, '..', 'data', 'jlp-strategy-latest.json');
-const STRATEGY_KEY = '3x JLP (borrow SOL) + Mixed Funding';
+const STRATEGY_KEY = '3x JLP (borrow SOL) + Aster Funding';
 
 async function fetchReport() {
     const res = await fetch(REPORT_URL, { signal: AbortSignal.timeout(20_000) });
@@ -50,13 +50,30 @@ function parseStrategy(html, strategyName) {
     return { strategy: strategyName, startDate, endDate, cumulative, annualized };
 }
 
+function parseStrategyPoints(html, strategyName) {
+    const match = html.match(/chart2\.setOption\((\{.*?\})\);\s*window\.addEventListener/s);
+    if (!match) return [];
+
+    const chart = JSON.parse(match[1]);
+    const dates = chart?.xAxis?.data;
+    const series = chart?.series?.find(s => s.name === strategyName);
+    if (!Array.isArray(dates) || !Array.isArray(series?.data)) return [];
+
+    return dates.map((date, i) => ({
+        date,
+        roi: Number(series.data[i])
+    })).filter(point => point.date && Number.isFinite(point.roi));
+}
+
 async function main() {
     console.log(`[jlp-strategy] Fetching ${REPORT_URL} …`);
     const html = await fetchReport();
     const result = parseStrategy(html, STRATEGY_KEY);
+    const points = parseStrategyPoints(html, STRATEGY_KEY);
 
     const out = {
         ...result,
+        points,
         fetchedAt: new Date().toISOString(),
     };
 
@@ -65,6 +82,7 @@ async function main() {
     console.log(`[jlp-strategy]    ${result.strategy}`);
     console.log(`[jlp-strategy]    ${result.startDate} → ${result.endDate}`);
     console.log(`[jlp-strategy]    Cumulative: +${result.cumulative}%  |  Annualized: +${result.annualized}%`);
+    console.log(`[jlp-strategy]    Points: ${points.length}`);
 }
 
 main().catch(e => {

@@ -60,9 +60,9 @@ else
   ERRORS=$((ERRORS + 1))
 fi
 
-# 4b. Fetch JLP Strategy report (3x Mixed) — for Cross Platform comparison chart
+# 4b. Fetch JLP Strategy report (3x Aster) — for Cross Platform comparison chart
 echo ""
-echo "[4b] Fetching JLP Strategy report (3x Mixed Funding)..."
+echo "[4b] Fetching JLP Strategy report (3x Aster Funding)..."
 if node scripts/fetch-jlp-strategy.js 2>&1; then
   echo "  ✅ JLP strategy report OK"
 else
