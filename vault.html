@@ -1027,8 +1027,6 @@
                 primeGrossApy: fullPeriod.primeGrossApy,
                 sharpeRatio,
                 days: fullPeriod.days,
-                rolling90: getLegacyRollingApy(points, 90),
-                rolling180: getLegacyRollingApy(points, 180),
                 bestDay,
                 worstDay
             };
@@ -1046,16 +1044,6 @@
                     <div class="legacy-stat-label">Net Annualized APY</div>
                     <div class="legacy-stat-value positive">${formatPercent(metrics.netApy)}</div>
                     <div class="legacy-stat-subtext">${formatDate(metrics.first.date)} to ${formatDate(metrics.latest.date)}</div>
-                </div>
-                <div class="legacy-stat">
-                    <div class="legacy-stat-label">90D APY</div>
-                    <div class="legacy-stat-value positive">${formatPercent(metrics.rolling90.apy)}</div>
-                    <div class="legacy-stat-subtext">${formatPercent(metrics.rolling90.returnPct)} over ${metrics.rolling90.daysAvailable} days</div>
-                </div>
-                <div class="legacy-stat">
-                    <div class="legacy-stat-label">180D APY</div>
-                    <div class="legacy-stat-value positive">${formatPercent(metrics.rolling180.apy)}</div>
-                    <div class="legacy-stat-subtext">${formatPercent(metrics.rolling180.returnPct)} over ${metrics.rolling180.daysAvailable} days</div>
                 </div>
                 <div class="legacy-stat">
                     <div class="legacy-stat-label">Sharpe Ratio</div>
