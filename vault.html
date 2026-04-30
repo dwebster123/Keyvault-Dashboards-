@@ -382,6 +382,7 @@
         .info-tip {
             display: inline-grid;
             place-items: center;
+            position: relative;
             width: 16px;
             height: 16px;
             border: 1px solid rgba(90, 215, 255, 0.32);
@@ -392,6 +393,39 @@
             line-height: 1;
             cursor: help;
             text-transform: none;
+        }
+
+        .info-tip[data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            z-index: 50;
+            top: calc(100% + 9px);
+            left: 50%;
+            width: 260px;
+            max-width: calc(100vw - 48px);
+            padding: 10px 12px;
+            border: 1px solid rgba(90, 215, 255, 0.22);
+            border-radius: 8px;
+            background: rgba(7, 16, 23, 0.98);
+            color: var(--ink);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
+            font-size: 12px;
+            font-weight: 650;
+            letter-spacing: 0;
+            line-height: 1.42;
+            text-align: left;
+            text-transform: none;
+            white-space: normal;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -4px);
+            transition: opacity 0.16s ease, transform 0.16s ease;
+        }
+
+        .info-tip[data-tooltip]:hover::after,
+        .info-tip[data-tooltip]:focus::after {
+            opacity: 1;
+            transform: translate(-50%, 0);
         }
 
         .metric-value {
@@ -1290,7 +1324,7 @@
                 <div class="metric-card">
                     <div class="metric-label">
                         Net ROI Since Inception
-                        <span class="info-tip" tabindex="0" title="ROI is the cumulative investor net return since the cross-platform strategy went live. It is not annualized.">?</span>
+                        <span class="info-tip" tabindex="0" aria-label="Net ROI explanation" data-tooltip="ROI is the cumulative investor net return since the cross-platform strategy went live. This is the actual net gain over the period, not an annualized number.">?</span>
                     </div>
                     <div class="metric-value positive">${formatPercent(netLiveReturn)}</div>
                     <div class="metric-subtext">${formatDate(metrics.startDate)} through ${formatDate(metrics.endDate)}</div>
@@ -1298,32 +1332,23 @@
                 <div class="metric-card">
                     <div class="metric-label">
                         Net APY Since Inception
-                        <span class="info-tip" tabindex="0" title="APY annualizes the live-to-date net return so different time periods can be compared.">?</span>
+                        <span class="info-tip" tabindex="0" aria-label="Net APY explanation" data-tooltip="APY annualizes the live-to-date investor net return. Use this to compare performance against other annual yield numbers, but remember it is derived from the shorter live period.">?</span>
                     </div>
                     <div class="metric-value positive">${formatPercent(netLiveApy)}</div>
                     <div class="metric-subtext">Investor net - management fee already baked in</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">
-                        Net 30D Rolling APY
-                        <span class="info-tip" tabindex="0" title="30D rolling APY annualizes the most recent 30 days of investor net performance.">?</span>
-                    </div>
+                    <div class="metric-label">Net 30D Rolling APY</div>
                     <div class="metric-value positive">${formatPercent(netThirtyDayApy)}</div>
                     <div class="metric-subtext">Cross-platform strategy only</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">
-                        Net 90D Rolling APY
-                        <span class="info-tip" tabindex="0" title="90D rolling APY annualizes the most recent 90 days of investor net performance.">?</span>
-                    </div>
+                    <div class="metric-label">Net 90D Rolling APY</div>
                     <div class="metric-value positive">${formatPercent(netNinetyDayApy)}</div>
                     <div class="metric-subtext">Cross-platform strategy only</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">
-                        Net 180D Rolling APY
-                        <span class="info-tip" tabindex="0" title="180D rolling APY will populate once 180 days of cross-platform performance are available.">?</span>
-                    </div>
+                    <div class="metric-label">Net 180D Rolling APY</div>
                     <div class="metric-value ${metrics.oneEightyDayIsComplete ? 'positive' : 'pending'}">${metrics.oneEightyDayIsComplete ? formatPercent(netOneEightyDayApy) : 'Pending'}</div>
                     <div class="metric-subtext">${oneEightySubtext}</div>
                 </div>
