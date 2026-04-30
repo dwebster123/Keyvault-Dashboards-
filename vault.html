@@ -130,7 +130,7 @@
 
         .icon-button:hover,
         .icon-button[aria-expanded="true"] {
-            border-color: rgba(0, 212, 255, 0.32);
+            border-color: rgba(53, 195, 247, 0.32);
             background: rgba(255, 255, 255, 0.09);
         }
 
@@ -367,8 +367,80 @@
         .metric-card:focus-within {
             transform: translateY(-3px);
             z-index: 20;
-            border-color: rgba(0, 212, 255, 0.3);
+            border-color: rgba(53, 195, 247, 0.3);
             box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34);
+        }
+
+        .metric-card.headline-metric {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(260px, 0.56fr);
+            gap: 22px;
+            align-items: center;
+            text-align: left;
+            min-height: 164px;
+            padding: 26px 30px;
+            overflow: hidden;
+            border-color: rgba(90, 215, 255, 0.42);
+            background:
+                radial-gradient(circle at 78% 18%, rgba(90, 215, 255, 0.20), transparent 34%),
+                linear-gradient(135deg, rgba(53, 195, 247, 0.16), rgba(22, 127, 208, 0.08) 46%, rgba(255, 255, 255, 0.04));
+            box-shadow: 0 26px 70px rgba(0, 0, 0, 0.38), 0 0 56px rgba(53, 195, 247, 0.16);
+        }
+
+        .headline-copy-block {
+            position: relative;
+            z-index: 1;
+        }
+
+        .headline-value-wrap {
+            position: relative;
+            z-index: 1;
+            text-align: right;
+        }
+
+        .headline-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--cyan);
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .headline-title {
+            margin: 0;
+            color: var(--ink);
+            font-size: clamp(22px, 3vw, 34px);
+            line-height: 1.06;
+            font-weight: 900;
+        }
+
+        .headline-copy {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .headline-value {
+            font-size: clamp(48px, 7vw, 76px);
+            line-height: 0.95;
+            font-weight: 950;
+            font-variant-numeric: tabular-nums;
+            color: var(--pink);
+            text-shadow: 0 0 34px rgba(90, 215, 255, 0.18);
+        }
+
+        .headline-window {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.45;
+            overflow-wrap: anywhere;
         }
 
         .metric-label {
@@ -564,12 +636,12 @@
         }
 
         .toggle-control input:checked + .toggle-track {
-            border-color: rgba(244, 114, 182, 0.5);
-            background: rgba(244, 114, 182, 0.16);
+            border-color: rgba(90, 215, 255, 0.5);
+            background: rgba(90, 215, 255, 0.16);
         }
 
         .toggle-control input:checked + .toggle-track::after {
-            background: #f472b6;
+            background: #5ad7ff;
             transform: translateX(20px);
         }
 
@@ -627,6 +699,15 @@
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
+            .metric-card.headline-metric {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .headline-value-wrap {
+                text-align: center;
+            }
+
             .chart-head {
                 flex-direction: column;
             }
@@ -644,6 +725,9 @@
         @media (max-width: 620px) {
             .page {
                 padding: 16px;
+                width: 100%;
+                max-width: 100vw;
+                overflow-x: hidden;
             }
 
             .topbar {
@@ -652,13 +736,18 @@
             }
 
             .topbar-actions {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) 38px;
                 width: 100%;
+                min-width: 0;
+                max-width: 100%;
                 justify-content: space-between;
                 margin-left: 0;
             }
 
             .status-pill {
                 flex: 1;
+                overflow: hidden;
             }
 
             .brand {
@@ -682,8 +771,63 @@
                 grid-template-columns: 1fr;
             }
 
+            .hero {
+                grid-template-columns: 1fr;
+                width: 100%;
+            }
+
             .metrics-grid {
                 grid-template-columns: 1fr;
+                width: 100%;
+            }
+
+            .hero-main,
+            .source-panel,
+            .metric-card,
+            .chart-card {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .hero-main,
+            .metric-card.headline-metric {
+                padding: 24px 22px;
+            }
+
+            h1 {
+                font-size: clamp(22px, 6.2vw, 24px);
+                max-width: calc(100vw - 76px);
+                word-break: break-word;
+            }
+
+            .hero-copy,
+            .source-text {
+                max-width: calc(100vw - 76px);
+            }
+
+            .hero-copy,
+            .source-text,
+            .headline-copy,
+            .headline-window {
+                word-break: break-word;
+            }
+
+            .headline-title {
+                font-size: clamp(21px, 6vw, 28px);
+                max-width: calc(100vw - 76px);
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .headline-value {
+                font-size: clamp(42px, 13vw, 52px);
+            }
+
+            .headline-copy,
+            .headline-window {
+                max-width: calc(100vw - 76px);
+                margin-left: auto;
+                margin-right: auto;
             }
 
             .chart-wrap {
@@ -1127,8 +1271,8 @@
                     datasets: [{
                         label: `${LEGACY_VAULT_NAME} net return`,
                         data,
-                        borderColor: '#f472b6',
-                        backgroundColor: 'rgba(244, 114, 182, 0.1)',
+                        borderColor: '#5ad7ff',
+                        backgroundColor: 'rgba(90, 215, 255, 0.1)',
                         borderWidth: 2,
                         tension: 0.25,
                         fill: true,
@@ -1326,7 +1470,7 @@
             const seven = getLookbackReturn(points, 7);
             const thirty = getLookbackReturn(points, 30);
             const ninety = getLookbackReturn(points, 90);
-            const oneEighty = getLookbackReturn(points, 180);
+            const twelveMonth = getLookbackReturn(points, 365);
 
             return {
                 source: SOURCE_REPORT_URL,
@@ -1346,11 +1490,12 @@
                     thirtyDayChange: thirty.change,
                     ninetyDayAnnualized: summary?.ninetyDayAnnualized ?? ninety.annualized,
                     ninetyDayChange: ninety.change,
-                    oneEightyDayAnnualized: oneEighty.isComplete ? oneEighty.annualized : null,
-                    oneEightyDayChange: oneEighty.isComplete ? oneEighty.change : null,
-                    oneEightyDayIsComplete: oneEighty.isComplete,
-                    oneEightyDayAvailableDays: oneEighty.availableDays,
-                    oneEightyDayDaysUntilAvailable: oneEighty.daysUntilAvailable,
+                    trailingTwelveMonthAnnualized: twelveMonth.isComplete ? twelveMonth.annualized : annualized,
+                    trailingTwelveMonthChange: twelveMonth.isComplete ? twelveMonth.change : cumulative,
+                    trailingTwelveMonthIsComplete: twelveMonth.isComplete,
+                    trailingTwelveMonthStartDate: twelveMonth.start?.date || first.date,
+                    trailingTwelveMonthAvailableDays: twelveMonth.availableDays,
+                    trailingTwelveMonthDaysUntilAvailable: twelveMonth.daysUntilAvailable,
                     maxDrawdown: computeMaxDrawdown(points)
                 }
             };
@@ -1419,13 +1564,33 @@
             const netLiveReturn = netCumulativeFromGrossReturn(metrics.cumulative, liveDays);
             const netThirtyDayApy = applyInvestorNetFeeModel(metrics.thirtyDayAnnualized);
             const netNinetyDayApy = applyInvestorNetFeeModel(metrics.ninetyDayAnnualized);
-            const netOneEightyDayApy = metrics.oneEightyDayIsComplete
-                ? applyInvestorNetFeeModel(metrics.oneEightyDayAnnualized)
-                : null;
-            const oneEightySubtext = metrics.oneEightyDayIsComplete
-                ? 'Cross-platform strategy only'
-                : `${metrics.oneEightyDayAvailableDays} of 180 days captured - ${metrics.oneEightyDayDaysUntilAvailable} days remaining`;
+            const netHeadlineApy = metrics.trailingTwelveMonthIsComplete
+                ? applyInvestorNetFeeModel(metrics.trailingTwelveMonthAnnualized)
+                : netLiveApy;
+            const headlineTitle = metrics.trailingTwelveMonthIsComplete
+                ? 'Trailing 12M Net APY'
+                : 'Headline Net APY';
+            const headlineCopy = metrics.trailingTwelveMonthIsComplete
+                ? 'The clean one-number answer: investor net annualized performance over the latest trailing 12-month window.'
+                : 'The clean one-number answer while the cross-platform record builds. This shows live-to-date net APY until a full trailing 12 months is available.';
+            const headlineWindow = metrics.trailingTwelveMonthIsComplete
+                ? `${formatDate(metrics.trailingTwelveMonthStartDate)} through ${formatDate(metrics.endDate)}`
+                : `${metrics.trailingTwelveMonthAvailableDays} of 365 days captured - trailing 12M begins automatically when complete`;
             metricsGrid.innerHTML = `
+                <div class="metric-card headline-metric">
+                    <div class="headline-copy-block">
+                        <div class="headline-kicker">
+                            One-answer performance
+                            <span class="info-tip" tabindex="0" aria-label="Headline APY explanation" data-tooltip="This is the headline investor net APY. Once the strategy has 365 days of live data, it automatically becomes the trailing 12-month net APY. Until then, it uses live-to-date net APY so the dashboard still gives one clear answer.">?</span>
+                        </div>
+                        <h2 class="headline-title">${headlineTitle}</h2>
+                        <p class="headline-copy">${headlineCopy}</p>
+                    </div>
+                    <div class="headline-value-wrap">
+                        <div class="headline-value">${formatPercent(netHeadlineApy)}</div>
+                        <div class="headline-window">${headlineWindow}</div>
+                    </div>
+                </div>
                 <div class="metric-card">
                     <div class="metric-label">
                         Net ROI Since Inception
@@ -1452,11 +1617,6 @@
                     <div class="metric-value positive">${formatPercent(netNinetyDayApy)}</div>
                     <div class="metric-subtext">Cross-platform strategy only</div>
                 </div>
-                <div class="metric-card">
-                    <div class="metric-label">Net 180D Rolling APY</div>
-                    <div class="metric-value ${metrics.oneEightyDayIsComplete ? 'positive' : 'pending'}">${metrics.oneEightyDayIsComplete ? formatPercent(netOneEightyDayApy) : 'Pending'}</div>
-                    <div class="metric-subtext">${oneEightySubtext}</div>
-                </div>
             `;
         }
 
@@ -1482,8 +1642,8 @@
                 datasets.push({
                     label: 'Legacy ROI (same dates)',
                     data: legacyData,
-                    borderColor: '#f472b6',
-                    backgroundColor: 'rgba(244, 114, 182, 0)',
+                    borderColor: '#5ad7ff',
+                    backgroundColor: 'rgba(90, 215, 255, 0)',
                     borderWidth: 2,
                     borderDash: [6, 6],
                     tension: 0.25,
@@ -1576,8 +1736,8 @@
                         {
                             label: 'Cross-platform performance',
                             data: apyData,
-                            borderColor: '#00d4ff',
-                            backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                            borderColor: '#35c3f7',
+                            backgroundColor: 'rgba(53, 195, 247, 0.1)',
                             borderWidth: 3,
                             tension: 0.28,
                             fill: true,

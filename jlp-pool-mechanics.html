@@ -8,25 +8,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ============ THEME — Deep blue + gold, blueprint feel ============ */
+  /* ============ THEME — KeyVault cyan/blue system ============ */
   :root {
     --font-body: 'IBM Plex Sans', system-ui, sans-serif;
     --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
 
-    --bg: #0b1221;
-    --surface: #111c30;
-    --surface2: #162035;
-    --surface3: #1c2a45;
-    --border: rgba(255, 255, 255, 0.07);
-    --border-bright: rgba(255, 255, 255, 0.14);
-    --text: #e2eaf8;
-    --text-dim: #7a94bf;
+    --bg: #071017;
+    --surface: rgba(255, 255, 255, 0.04);
+    --surface2: rgba(255, 255, 255, 0.07);
+    --surface3: rgba(255, 255, 255, 0.09);
+    --border: rgba(90, 215, 255, 0.16);
+    --border-bright: rgba(90, 215, 255, 0.30);
+    --text: #d6eaf4;
+    --text-dim: #91a8b7;
 
-    --gold: #d4a73a;
-    --gold-dim: rgba(212, 167, 58, 0.12);
-    --gold-bright: #f0c055;
-    --blue: #4a90d9;
-    --blue-dim: rgba(74, 144, 217, 0.12);
+    --gold: #35c3f7;
+    --gold-dim: rgba(53, 195, 247, 0.12);
+    --gold-bright: #5ad7ff;
+    --blue: #167fd0;
+    --blue-dim: rgba(22, 127, 208, 0.12);
     --green: #4caf82;
     --green-dim: rgba(76, 175, 130, 0.12);
     --red: #e05c5c;
@@ -37,20 +37,20 @@
 
   @media (prefers-color-scheme: light) {
     :root {
-      --bg: #f4f7fc;
-      --surface: #ffffff;
-      --surface2: #edf1fa;
-      --surface3: #e2e9f5;
-      --border: rgba(0, 0, 0, 0.08);
-      --border-bright: rgba(0, 0, 0, 0.15);
-      --text: #0f1c33;
-      --text-dim: #4a6080;
+      --bg: #071017;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface2: rgba(255, 255, 255, 0.07);
+      --surface3: rgba(255, 255, 255, 0.09);
+      --border: rgba(90, 215, 255, 0.16);
+      --border-bright: rgba(90, 215, 255, 0.30);
+      --text: #d6eaf4;
+      --text-dim: #91a8b7;
 
-      --gold: #b8861e;
-      --gold-dim: rgba(184, 134, 30, 0.10);
-      --gold-bright: #a0720f;
-      --blue: #2a6fbe;
-      --blue-dim: rgba(42, 111, 190, 0.10);
+      --gold: #35c3f7;
+      --gold-dim: rgba(53, 195, 247, 0.12);
+      --gold-bright: #5ad7ff;
+      --blue: #167fd0;
+      --blue-dim: rgba(22, 127, 208, 0.12);
       --green: #2d8a5e;
       --green-dim: rgba(45, 138, 94, 0.10);
       --red: #c0392b;
@@ -61,13 +61,14 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { min-height: 100%; background: #071017; }
 
   body {
-    background-color: var(--bg);
-    background-image:
+    background:
       linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 40px 40px;
+      linear-gradient(90deg, var(--border) 1px, transparent 1px),
+      linear-gradient(145deg, #071017 0%, #0c1822 48%, #09131c 100%);
+    background-size: 40px 40px, 40px 40px, auto;
     color: var(--text);
     font-family: var(--font-body);
     padding: 48px 32px;
@@ -98,6 +99,28 @@
   /* ============ HEADER ============ */
   .header { margin-bottom: 44px; }
 
+  .logo-frame {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    padding: 16px 22px;
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at top, rgba(90, 215, 255, 0.14), rgba(7, 16, 23, 0) 58%),
+      linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border: 1px solid rgba(90, 215, 255, 0.14);
+    box-shadow: 0 24px 56px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.04), 0 0 48px rgba(53, 195, 247, 0.14);
+  }
+  .logo-frame img {
+    display: block;
+    width: min(300px, 78vw);
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.34), 0 0 32px rgba(53, 195, 247, 0.18);
+    filter: brightness(0) saturate(100%) invert(71%) sepia(79%) saturate(2022%) hue-rotate(165deg) brightness(101%) contrast(95%);
+  }
+
   .eyebrow {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -110,9 +133,13 @@
   h1 {
     font-size: 40px;
     font-weight: 700;
-    letter-spacing: -1.2px;
+    letter-spacing: 0;
     line-height: 1.1;
     margin-bottom: 12px;
+    background: linear-gradient(135deg, #5ad7ff, #35c3f7, #167fd0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   h1 span { color: var(--gold); }
@@ -355,6 +382,8 @@
   }
   @media (max-width: 680px) {
     .two-col { grid-template-columns: 1fr; }
+    .logo-frame { padding: 14px 16px; }
+    .logo-frame img { width: min(280px, 84vw); }
     h1 { font-size: 26px; }
     body { padding: 24px 16px; }
   }
@@ -363,7 +392,7 @@
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 16px;
-    letter-spacing: -0.3px;
+    letter-spacing: 0;
   }
 
   /* ============ FOOTER ============ */
@@ -387,6 +416,9 @@
 
   <!-- HEADER -->
   <div class="header">
+    <div class="logo-frame animate" style="--i:0">
+      <img src="logo.png" alt="KeyVault">
+    </div>
     <div class="eyebrow animate" style="--i:0">Jupiter Perpetuals — Liquidity Pool</div>
     <h1 class="animate" style="--i:1">How <span>JLP</span> Works</h1>
     <p class="lead animate" style="--i:2">
@@ -422,12 +454,12 @@
 
         J["AUM Cap\nSet by Jupiter"] -->|"limits new minting\nwhen cap hit"| B
 
-        classDef pool fill:#162035,stroke:#4a90d9,color:#e2eaf8
+        classDef pool fill:#0c1720,stroke:#35c3f7,color:#d6eaf4
         classDef fee fill:#1a1e10,stroke:#4caf82,color:#e2eaf8
-        classDef price fill:#1e1a10,stroke:#d4a73a,color:#e2eaf8
+        classDef price fill:#0b1d2a,stroke:#5ad7ff,color:#d6eaf4
         classDef risk fill:#1e1010,stroke:#e05c5c,color:#e2eaf8
-        classDef actor fill:#111c30,stroke:#7a94bf,color:#e2eaf8
-        classDef cap fill:#1c1220,stroke:#b06ad4,color:#e2eaf8
+        classDef actor fill:#111c30,stroke:#91a8b7,color:#e2eaf8
+        classDef cap fill:#0f2434,stroke:#167fd0,color:#d6eaf4
 
         class B pool
         class E,F fee
@@ -599,16 +631,16 @@
     look: 'classic',
     layout: 'elk',
     themeVariables: {
-      primaryColor: isDark ? '#162035' : '#dce8f5',
-      primaryBorderColor: isDark ? '#4a90d9' : '#2a6fbe',
-      primaryTextColor: isDark ? '#e2eaf8' : '#0f1c33',
+      primaryColor: isDark ? '#0c1720' : '#0c1720',
+      primaryBorderColor: isDark ? '#35c3f7' : '#35c3f7',
+      primaryTextColor: isDark ? '#d6eaf4' : '#d6eaf4',
       secondaryColor: isDark ? '#1a1e10' : '#e8f5e2',
       secondaryBorderColor: isDark ? '#4caf82' : '#2d8a5e',
       secondaryTextColor: isDark ? '#e2eaf8' : '#0f1c33',
-      tertiaryColor: isDark ? '#1e1a10' : '#fdf5e0',
-      tertiaryBorderColor: isDark ? '#d4a73a' : '#b8861e',
-      tertiaryTextColor: isDark ? '#e2eaf8' : '#0f1c33',
-      lineColor: isDark ? '#4a6a9a' : '#5a7aaa',
+      tertiaryColor: isDark ? '#0b1d2a' : '#0b1d2a',
+      tertiaryBorderColor: isDark ? '#5ad7ff' : '#5ad7ff',
+      tertiaryTextColor: isDark ? '#d6eaf4' : '#d6eaf4',
+      lineColor: isDark ? '#35c3f7' : '#35c3f7',
       fontSize: '14px',
       fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
       edgeLabelBackground: isDark ? '#111c30' : '#ffffff',
