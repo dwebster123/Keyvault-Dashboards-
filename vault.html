@@ -857,12 +857,6 @@
             return Math.max(1, Math.round((end - start) / 86400000));
         }
 
-        function elapsedDaysBetween(startDate, endDate) {
-            const start = new Date(`${startDate}T12:00:00Z`);
-            const end = new Date(`${endDate}T12:00:00Z`);
-            return Math.max(0, Math.round((end - start) / 86400000));
-        }
-
         function impliedAnnualizationDays(cumulativeReturn, annualizedReturn, startDate, endDate) {
             if (Number.isFinite(cumulativeReturn) && Number.isFinite(annualizedReturn) && annualizedReturn !== 0) {
                 const impliedDays = Math.abs((cumulativeReturn / annualizedReturn) * 365);
@@ -992,17 +986,23 @@
             });
         }
 
-        function getDayMatchedLegacyRoiSeries(labels, comparison) {
-            const metrics = getLegacyVaultMetrics();
-            const legacyStartDate = metrics.first.date;
-            const legacyByElapsedDay = new Map(metrics.netSeries.map(point => [
-                elapsedDaysBetween(legacyStartDate, point.date),
-                point.value
-            ]));
+        function getCalendarMatchedLegacyRoiSeries(labels, comparison) {
+            const legacyBasePoint = findPointOnOrBefore(HISTORICAL_DRIFT_REFERENCE, comparison.startDate)
+                || findPointOnOrAfter(HISTORICAL_DRIFT_REFERENCE, comparison.startDate);
+            const legacyLatestPoint = HISTORICAL_DRIFT_REFERENCE[HISTORICAL_DRIFT_REFERENCE.length - 1];
+
+            if (!legacyBasePoint) return labels.map(() => null);
 
             return labels.map(date => {
-                const elapsedDay = elapsedDaysBetween(comparison.startDate, date);
-                return legacyByElapsedDay.has(elapsedDay) ? legacyByElapsedDay.get(elapsedDay) : null;
+                if (!isOnOrAfter(date, legacyBasePoint.date) || !isOnOrBefore(date, legacyLatestPoint.date)) {
+                    return null;
+                }
+
+                const legacyPoint = findPointOnOrBefore(HISTORICAL_DRIFT_REFERENCE, date);
+                if (!legacyPoint) return null;
+
+                const grossReturn = rebaseCumulativeReturn(legacyPoint.value, legacyBasePoint.value);
+                return netCumulativeFromGrossReturn(grossReturn, daysBetween(legacyBasePoint.date, legacyPoint.date));
             });
         }
 
@@ -1387,7 +1387,7 @@
                     const grossReturn = rebaseCumulativeReturn(strategyMap.get(date), comparison.strategyBaseValue);
                     return netCumulativeFromGrossReturn(grossReturn, daysBetween(comparison.startDate, date));
                 }),
-                legacyData: getDayMatchedLegacyRoiSeries(labels, comparison)
+                legacyData: getCalendarMatchedLegacyRoiSeries(labels, comparison)
             };
         }
 
@@ -1475,7 +1475,7 @@
 
             if (showLegacyReturnOverlay) {
                 datasets.push({
-                    label: 'Legacy ROI (day-matched)',
+                    label: 'Legacy ROI (same dates)',
                     data: legacyData,
                     borderColor: '#f472b6',
                     backgroundColor: 'rgba(244, 114, 182, 0)',
@@ -1553,8 +1553,8 @@
             const latestPoint = reportData.points[reportData.points.length - 1];
             const comparison = getOverlapComparison();
             returnChartCaption.textContent = showLegacyReturnOverlay
-                ? `Cross-platform ROI is shown net of KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(latestPoint.date)}. The dotted legacy ROI line is day-matched from the archived legacy vault for elapsed-day comparison.`
-                : `Cross-platform ROI is shown net of KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(latestPoint.date)}. Toggle Legacy ROI to compare against the day-matched archived legacy vault.`;
+                ? `Cross-platform ROI is shown net of KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(latestPoint.date)}. The dotted legacy ROI line uses the same calendar dates where legacy data is available.`
+                : `Cross-platform ROI is shown net of KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(latestPoint.date)}. Toggle Legacy ROI to compare against same-date legacy performance.`;
         }
 
         function renderApyChart() {
