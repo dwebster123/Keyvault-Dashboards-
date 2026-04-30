@@ -672,7 +672,8 @@
                         <p class="legacy-kicker">Historical reference</p>
                         <h2 class="legacy-menu-title">Legacy Vault Strategy</h2>
                         <p class="legacy-menu-copy">
-                            Hard-coded PN_JLP1 / Drift-era performance through the cross-platform launch date.
+                            Hard-coded PN_JLP1 / Drift-era performance through the cross-platform launch date,
+                            re-netted through the current KeyVault fee model.
                         </p>
                     </div>
                     <div class="legacy-stats" id="legacyStats"></div>
@@ -680,7 +681,7 @@
                         <canvas id="legacyVaultChart"></canvas>
                     </div>
                     <p class="legacy-note">
-                        TVL and daily NAV stamp fields are intentionally excluded here; this is only an archived performance reference.
+                        TVL and daily NAV stamp fields are intentionally excluded. Legacy share-price return is treated as gross strategy performance, then investor net fees are applied through the same current model.
                     </p>
                 </div>
             </div>
@@ -779,7 +780,6 @@
         const TARGET_SERIES = '3x JLP (borrow SOL) + Aster Funding';
         const LEGACY_VAULT_NAME = 'Legacy Vault Strategy';
         const LEGACY_VAULT_END_DATE = '2025-11-06';
-        const LEGACY_NET_INVESTOR_FACTOR = 0.8;
         const NET_FEE_MODEL = {
             primePerfPct: 20,
             benchmarkApy: 20,
@@ -926,27 +926,66 @@
             return HISTORICAL_DRIFT_REFERENCE.filter(point => isOnOrBefore(point.date, LEGACY_VAULT_END_DATE));
         }
 
-        function getLegacyDailyNetChanges(points) {
-            return points.map((point, index) => {
-                if (index === 0) return { date: point.date, value: 0 };
-                const previous = points[index - 1];
-                const dailyGross = rebaseCumulativeReturn(point.value, previous.value);
+        function feeAdjustedLegacyReturn(primeGrossReturn, startDate, endDate) {
+            const days = daysBetween(startDate, endDate);
+            const primeGrossApy = (primeGrossReturn / days) * 365;
+            const kvGrossApy = primeGrossApy * (1 - NET_FEE_MODEL.primePerfPct / 100);
+            const investorNetApy = applyInvestorNetFeeModel(primeGrossApy);
+            const investorNetReturn = (investorNetApy / 365) * days;
+
+            return {
+                days,
+                primeGrossReturn,
+                kvGrossApy,
+                primeGrossApy,
+                investorNetApy,
+                investorNetReturn
+            };
+        }
+
+        function getLegacyNetSeries(points) {
+            const first = points[0];
+            return points.map(point => {
+                const primeGrossReturn = rebaseCumulativeReturn(point.value, first.value);
+                const adjusted = point.date === first.date
+                    ? {
+                        days: 0,
+                        primeGrossReturn: 0,
+                        kvGrossApy: 0,
+                        primeGrossApy: 0,
+                        investorNetApy: 0,
+                        investorNetReturn: 0
+                    }
+                    : feeAdjustedLegacyReturn(primeGrossReturn, first.date, point.date);
+
                 return {
                     date: point.date,
-                    value: dailyGross * LEGACY_NET_INVESTOR_FACTOR
+                    value: adjusted.investorNetReturn,
+                    ...adjusted
                 };
             });
         }
 
         function getLegacyRollingApy(points, days) {
             const latest = points[points.length - 1];
-            const daysAvailable = Math.min(days, points.length);
-            const start = points[points.length - daysAvailable];
-            const returnPct = rebaseCumulativeReturn(latest.value, start.value) * LEGACY_NET_INVESTOR_FACTOR;
+            const cutoff = getPeriodCutoff(latest.date, days);
+            let start = points[0];
+            for (const point of points) {
+                if (dateAtNoon(point.date) <= cutoff) start = point;
+            }
+            const adjusted = feeAdjustedLegacyReturn(
+                rebaseCumulativeReturn(latest.value, start.value),
+                start.date,
+                latest.date
+            );
+
             return {
-                daysAvailable,
-                returnPct,
-                apy: (returnPct / daysAvailable) * 365
+                start,
+                daysAvailable: adjusted.days,
+                returnPct: adjusted.investorNetReturn,
+                apy: adjusted.investorNetApy,
+                kvGrossApy: adjusted.kvGrossApy,
+                primeGrossApy: adjusted.primeGrossApy
             };
         }
 
@@ -954,10 +993,16 @@
             const points = getLegacyVaultPoints();
             const first = points[0];
             const latest = points[points.length - 1];
-            const grossReturn = rebaseCumulativeReturn(latest.value, first.value);
-            const netReturn = grossReturn * LEGACY_NET_INVESTOR_FACTOR;
-            const netApy = (netReturn / points.length) * 365;
-            const dailyChanges = getLegacyDailyNetChanges(points);
+            const fullPeriod = feeAdjustedLegacyReturn(
+                rebaseCumulativeReturn(latest.value, first.value),
+                first.date,
+                latest.date
+            );
+            const netSeries = getLegacyNetSeries(points);
+            const dailyChanges = netSeries.map((point, index) => ({
+                date: point.date,
+                value: index === 0 ? 0 : point.value - netSeries[index - 1].value
+            }));
             const dailyReturns = dailyChanges.slice(1).map(point => point.value / 100);
             const averageDailyReturn = dailyReturns.reduce((sum, value) => sum + value, 0) / dailyReturns.length;
             const dailyStdDev = Math.sqrt(
@@ -973,12 +1018,15 @@
 
             return {
                 points,
+                netSeries,
                 first,
                 latest,
-                netReturn,
-                netApy,
+                netReturn: fullPeriod.investorNetReturn,
+                netApy: fullPeriod.investorNetApy,
+                kvGrossApy: fullPeriod.kvGrossApy,
+                primeGrossApy: fullPeriod.primeGrossApy,
                 sharpeRatio,
-                days: points.length,
+                days: fullPeriod.days,
                 rolling90: getLegacyRollingApy(points, 90),
                 rolling180: getLegacyRollingApy(points, 180),
                 bestDay,
@@ -992,12 +1040,17 @@
                 <div class="legacy-stat">
                     <div class="legacy-stat-label">Net Return</div>
                     <div class="legacy-stat-value positive">${formatPercent(metrics.netReturn)}</div>
+                    <div class="legacy-stat-subtext">Cumulative over ${metrics.days} days</div>
+                </div>
+                <div class="legacy-stat">
+                    <div class="legacy-stat-label">Net Annualized APY</div>
+                    <div class="legacy-stat-value positive">${formatPercent(metrics.netApy)}</div>
                     <div class="legacy-stat-subtext">${formatDate(metrics.first.date)} to ${formatDate(metrics.latest.date)}</div>
                 </div>
                 <div class="legacy-stat">
-                    <div class="legacy-stat-label">Net APY</div>
-                    <div class="legacy-stat-value positive">${formatPercent(metrics.netApy)}</div>
-                    <div class="legacy-stat-subtext">All-time annualized</div>
+                    <div class="legacy-stat-label">KV Gross APY</div>
+                    <div class="legacy-stat-value positive">${formatPercent(metrics.kvGrossApy)}</div>
+                    <div class="legacy-stat-subtext">After Prime performance fee</div>
                 </div>
                 <div class="legacy-stat">
                     <div class="legacy-stat-label">90D APY</div>
@@ -1017,7 +1070,7 @@
                 <div class="legacy-stat">
                     <div class="legacy-stat-label">Days Captured</div>
                     <div class="legacy-stat-value">${metrics.days}</div>
-                    <div class="legacy-stat-subtext">Stops at cross-platform launch</div>
+                    <div class="legacy-stat-subtext">Calendar days through cross-platform launch</div>
                 </div>
                 <div class="legacy-stat">
                     <div class="legacy-stat-label">Best Day</div>
@@ -1034,10 +1087,8 @@
 
         function renderLegacyChart() {
             const metrics = getLegacyVaultMetrics();
-            const labels = metrics.points.map(point => point.date);
-            const data = metrics.points.map(point => (
-                rebaseCumulativeReturn(point.value, metrics.first.value) * LEGACY_NET_INVESTOR_FACTOR
-            ));
+            const labels = metrics.netSeries.map(point => point.date);
+            const data = metrics.netSeries.map(point => point.value);
 
             if (legacyChartInstance) legacyChartInstance.destroy();
 
