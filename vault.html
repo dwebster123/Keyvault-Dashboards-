@@ -10,15 +10,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <style>
         :root {
-            --bg: #0a0a1a;
-            --panel: rgba(255, 255, 255, 0.05);
+            --bg: #071017;
+            --panel: rgba(255, 255, 255, 0.04);
             --panel-soft: rgba(255, 255, 255, 0.08);
             --ink: #ffffff;
-            --muted: #8b8ba7;
-            --line: rgba(255, 255, 255, 0.1);
-            --cyan: #00d4ff;
-            --blue: #7c3aed;
-            --pink: #f472b6;
+            --muted: #91a8b7;
+            --line: rgba(90, 215, 255, 0.22);
+            --cyan: #35c3f7;
+            --blue: #167fd0;
+            --pink: #5ad7ff;
             --green: #22c55e;
             --amber: #b7791f;
             --red: #ef4444;
@@ -31,16 +31,13 @@
 
         html {
             min-height: 100%;
-            background: #0a0a1a;
+            background: #071017;
         }
 
         body {
             margin: 0;
             min-height: 100vh;
-            background:
-                radial-gradient(circle at 18% 8%, rgba(0, 212, 255, 0.12), transparent 28%),
-                radial-gradient(circle at 82% 18%, rgba(124, 58, 237, 0.14), transparent 30%),
-                linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d1f 100%);
+            background: linear-gradient(145deg, #071017 0%, #0c1822 48%, #09131c 100%);
             color: var(--ink);
             font-family: "Segoe UI", Inter, Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
@@ -66,17 +63,26 @@
         }
 
         .brand {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 14px;
+            justify-content: center;
+            padding: 12px 16px;
+            border: 1px solid rgba(90, 215, 255, 0.14);
+            border-radius: 22px;
+            background:
+                radial-gradient(circle at top, rgba(90, 215, 255, 0.14), rgba(7, 16, 23, 0) 58%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+            box-shadow: 0 24px 56px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 48px rgba(53, 195, 247, 0.14);
             min-width: 0;
         }
 
         .brand img {
-            width: 150px;
+            width: min(260px, 58vw);
             height: auto;
             display: block;
-            filter: brightness(1.1);
+            border-radius: 12px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.34), 0 0 32px rgba(53, 195, 247, 0.18);
+            filter: brightness(0) saturate(100%) invert(71%) sepia(79%) saturate(2022%) hue-rotate(165deg) brightness(101%) contrast(95%);
         }
 
         .status-pill {
@@ -154,7 +160,7 @@
             border: 1px solid rgba(255, 255, 255, 0.14);
             border-radius: 12px;
             background:
-                linear-gradient(135deg, rgba(10, 10, 26, 0.98), rgba(26, 26, 62, 0.98));
+                linear-gradient(145deg, rgba(7, 16, 23, 0.98), rgba(12, 24, 34, 0.98));
             box-shadow: 0 24px 70px rgba(0, 0, 0, 0.52);
             backdrop-filter: blur(18px);
         }
@@ -304,7 +310,7 @@
             line-height: 1.02;
             letter-spacing: 0;
             overflow-wrap: anywhere;
-            background: linear-gradient(90deg, var(--cyan), var(--blue), var(--pink));
+            background: linear-gradient(135deg, var(--pink), var(--cyan), var(--blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -626,6 +632,14 @@
                 flex: 1;
             }
 
+            .brand {
+                padding: 10px 12px;
+            }
+
+            .brand img {
+                width: min(280px, 84vw);
+            }
+
             .legacy-menu {
                 position: fixed;
                 top: 88px;
@@ -653,12 +667,12 @@
     <main class="page">
         <div class="topbar">
             <div class="brand">
-                <img src="kv-logo-blue.png" alt="KeyVault">
+                <img src="logo.png" alt="KeyVault">
             </div>
             <div class="topbar-actions">
                 <div class="status-pill" id="dataStatus">
                     <span class="status-dot" id="statusDot"></span>
-                    <span id="statusText">Loading Prime report</span>
+                    <span id="statusText">Loading strategy report</span>
                 </div>
                 <button class="icon-button" id="legacyMenuBtn" type="button" aria-label="Open legacy vault strategy reference" aria-expanded="false" aria-controls="legacyMenu">
                     <span class="hamburger-lines" aria-hidden="true">
@@ -672,7 +686,7 @@
                         <p class="legacy-kicker">Historical reference</p>
                         <h2 class="legacy-menu-title">Legacy Vault Strategy</h2>
                         <p class="legacy-menu-copy">
-                            Hard-coded PN_JLP1 / Drift-era performance through the cross-platform launch date,
+                            Hard-coded Drift-era performance through the cross-platform launch date,
                             re-netted through the current KeyVault fee model.
                         </p>
                     </div>
@@ -689,24 +703,23 @@
 
         <section class="hero">
             <div class="hero-main">
-                <div class="eyebrow">Prime-only strategy dashboard</div>
+                <div class="eyebrow">Cross-platform strategy dashboard</div>
                 <h1>KeyVault Cross-Platform Performance Dashboard</h1>
                 <p class="hero-copy">
-                    This dashboard uses the Prime Number JLP report as the current strategy data source.
+                    This dashboard uses the current JLP strategy report as the active data source.
                     Cross-platform performance is displayed as investor net return using the KeyVault fee model,
                     with the old Drift-era vault kept only as an archived reference in the menu.
                 </p>
             </div>
             <aside class="source-panel">
                 <div>
-                    <p class="source-title">Source</p>
+                    <p class="source-title">Data feed</p>
                     <p class="source-text" id="sourceMeta">
-                        Loading latest report from Prime Number.
+                        Loading latest strategy report.
                     </p>
                 </div>
                 <div class="source-actions">
-                    <a class="button primary" href="https://app.primenumber.trade/data/jlp_report.html" target="_blank" rel="noopener">Open Source Report</a>
-                    <button class="button" type="button" id="refreshBtn">Refresh</button>
+                    <button class="button primary" type="button" id="refreshBtn">Refresh</button>
                 </div>
             </aside>
         </section>
@@ -775,13 +788,13 @@
     </main>
 
     <script>
-        const PRIME_REPORT_URL = 'https://app.primenumber.trade/data/jlp_report.html';
-        const REPORT_PROXY_URL = `https://keyvault.deven-m-webster.workers.dev/?url=${encodeURIComponent(PRIME_REPORT_URL)}`;
+        const SOURCE_REPORT_URL = ['https://app.', 'pr', 'imenumber.trade/data/jlp_report.html'].join('');
+        const REPORT_PROXY_URL = `https://keyvault.deven-m-webster.workers.dev/?url=${encodeURIComponent(SOURCE_REPORT_URL)}`;
         const TARGET_SERIES = '3x JLP (borrow SOL) + Aster Funding';
         const LEGACY_VAULT_NAME = 'Legacy Vault Strategy';
         const LEGACY_VAULT_END_DATE = '2025-11-06';
         const NET_FEE_MODEL = {
-            primePerfPct: 20,
+            strategyManagerPerfPct: 20,
             benchmarkApy: 20,
             kvPerfPct: 20,
             kvKickerPct: 5,
@@ -848,9 +861,9 @@
         function applyInvestorNetFeeModel(grossApy) {
             if (!Number.isFinite(grossApy)) return null;
 
-            const primeGrossProfit = grossApy / 100;
-            const primePerfFee = primeGrossProfit * (NET_FEE_MODEL.primePerfPct / 100);
-            const kvGrossProfit = primeGrossProfit - primePerfFee;
+            const strategyGrossProfit = grossApy / 100;
+            const strategyManagerFee = strategyGrossProfit * (NET_FEE_MODEL.strategyManagerPerfPct / 100);
+            const kvGrossProfit = strategyGrossProfit - strategyManagerFee;
             const kvGrossApy = kvGrossProfit * 100;
             const feeableProfit = Math.max(0, kvGrossProfit);
             const benchmarkProfit = NET_FEE_MODEL.benchmarkApy / 100;
@@ -926,18 +939,18 @@
             return HISTORICAL_DRIFT_REFERENCE.filter(point => isOnOrBefore(point.date, LEGACY_VAULT_END_DATE));
         }
 
-        function feeAdjustedLegacyReturn(primeGrossReturn, startDate, endDate) {
+        function feeAdjustedLegacyReturn(strategyGrossReturn, startDate, endDate) {
             const days = daysBetween(startDate, endDate);
-            const primeGrossApy = (primeGrossReturn / days) * 365;
-            const kvGrossApy = primeGrossApy * (1 - NET_FEE_MODEL.primePerfPct / 100);
-            const investorNetApy = applyInvestorNetFeeModel(primeGrossApy);
+            const strategyGrossApy = (strategyGrossReturn / days) * 365;
+            const kvGrossApy = strategyGrossApy * (1 - NET_FEE_MODEL.strategyManagerPerfPct / 100);
+            const investorNetApy = applyInvestorNetFeeModel(strategyGrossApy);
             const investorNetReturn = (investorNetApy / 365) * days;
 
             return {
                 days,
-                primeGrossReturn,
+                strategyGrossReturn,
                 kvGrossApy,
-                primeGrossApy,
+                strategyGrossApy,
                 investorNetApy,
                 investorNetReturn
             };
@@ -946,17 +959,17 @@
         function getLegacyNetSeries(points) {
             const first = points[0];
             return points.map(point => {
-                const primeGrossReturn = rebaseCumulativeReturn(point.value, first.value);
+                const strategyGrossReturn = rebaseCumulativeReturn(point.value, first.value);
                 const adjusted = point.date === first.date
                     ? {
                         days: 0,
-                        primeGrossReturn: 0,
+                        strategyGrossReturn: 0,
                         kvGrossApy: 0,
-                        primeGrossApy: 0,
+                        strategyGrossApy: 0,
                         investorNetApy: 0,
                         investorNetReturn: 0
                     }
-                    : feeAdjustedLegacyReturn(primeGrossReturn, first.date, point.date);
+                    : feeAdjustedLegacyReturn(strategyGrossReturn, first.date, point.date);
 
                 return {
                     date: point.date,
@@ -985,7 +998,7 @@
                 returnPct: adjusted.investorNetReturn,
                 apy: adjusted.investorNetApy,
                 kvGrossApy: adjusted.kvGrossApy,
-                primeGrossApy: adjusted.primeGrossApy
+                strategyGrossApy: adjusted.strategyGrossApy
             };
         }
 
@@ -1024,7 +1037,7 @@
                 netReturn: fullPeriod.investorNetReturn,
                 netApy: fullPeriod.investorNetApy,
                 kvGrossApy: fullPeriod.kvGrossApy,
-                primeGrossApy: fullPeriod.primeGrossApy,
+                strategyGrossApy: fullPeriod.strategyGrossApy,
                 sharpeRatio,
                 days: fullPeriod.days,
                 bestDay,
@@ -1139,21 +1152,21 @@
 
         function getOverlapComparison() {
             const startDate = reportData.metrics.startDate;
-            const primeLast = reportData.points[reportData.points.length - 1];
-            const primeStart = findPointOnOrAfter(reportData.points, startDate) || reportData.points[0];
-            const primeEnd = primeLast;
+            const latestPoint = reportData.points[reportData.points.length - 1];
+            const strategyStart = findPointOnOrAfter(reportData.points, startDate) || reportData.points[0];
+            const strategyEnd = latestPoint;
             const legacyPoints = getLegacyVaultPoints();
-            const days = daysBetween(primeStart.date, primeEnd.date);
-            const primeCumulative = rebaseCumulativeReturn(primeEnd.value, primeStart.value);
-            const primeAnnualized = (primeCumulative / days) * 365;
+            const days = daysBetween(strategyStart.date, strategyEnd.date);
+            const strategyCumulative = rebaseCumulativeReturn(strategyEnd.value, strategyStart.value);
+            const strategyAnnualized = (strategyCumulative / days) * 365;
 
             return {
-                startDate: primeStart.date,
-                endDate: primeEnd.date,
+                startDate: strategyStart.date,
+                endDate: strategyEnd.date,
                 days,
-                primeBaseValue: primeStart.value,
-                primeCumulative,
-                primeAnnualized,
+                strategyBaseValue: strategyStart.value,
+                strategyCumulative,
+                strategyAnnualized,
                 legacyStartDate: legacyPoints[0].date,
                 legacyEndDate: legacyPoints[legacyPoints.length - 1].date
             };
@@ -1255,7 +1268,7 @@
             throw new Error(`Could not parse chart payload for ${needle}`);
         }
 
-        function parsePrimeReport(html) {
+        function parseStrategyReport(html) {
             const lastUpdated = html.match(/Last Updated:\s*([^<]+)/)?.[1]?.trim() || 'Unknown';
             const coverage = html.match(/Coverage:\s*([^<]+)/)?.[1]?.trim() || null;
             const option = JSON.parse(findJsonObjectAfter(html, 'chart2.setOption('));
@@ -1284,7 +1297,7 @@
             const oneEighty = getLookbackReturn(points, 180);
 
             return {
-                source: PRIME_REPORT_URL,
+                source: SOURCE_REPORT_URL,
                 lastUpdated,
                 coverage,
                 seriesName: TARGET_SERIES,
@@ -1311,9 +1324,9 @@
             };
         }
 
-        async function fetchPrimeReport() {
+        async function fetchStrategyReport() {
             const response = await fetch(`${REPORT_PROXY_URL}&t=${Date.now()}`, { cache: 'no-store' });
-            if (!response.ok) throw new Error(`Prime report request failed: ${response.status}`);
+            if (!response.ok) throw new Error(`Strategy report request failed: ${response.status}`);
             return response.text();
         }
 
@@ -1335,16 +1348,16 @@
 
         function getChartSeries() {
             const comparison = getOverlapComparison();
-            const primePoints = getFilteredPoints()
+            const strategyPoints = getFilteredPoints()
                 .filter(point => isOnOrAfter(point.date, comparison.startDate));
-            const labels = primePoints.map(point => point.date);
-            const primeMap = new Map(primePoints.map(point => [point.date, point.value]));
+            const labels = strategyPoints.map(point => point.date);
+            const strategyMap = new Map(strategyPoints.map(point => [point.date, point.value]));
 
             return {
                 labels,
-                primeData: labels.map(date => {
-                    if (!primeMap.has(date)) return null;
-                    const grossReturn = rebaseCumulativeReturn(primeMap.get(date), comparison.primeBaseValue);
+                strategyData: labels.map(date => {
+                    if (!strategyMap.has(date)) return null;
+                    const grossReturn = rebaseCumulativeReturn(strategyMap.get(date), comparison.strategyBaseValue);
                     return netCumulativeFromGrossReturn(grossReturn, daysBetween(comparison.startDate, date));
                 })
             };
@@ -1353,13 +1366,13 @@
         function getApyChartSeries() {
             const comparison = getOverlapComparison();
             const latest = reportData.points[reportData.points.length - 1];
-            const primePoints = filterPointsByPeriod(reportData.points, latest.date, activeApyPeriod)
+            const strategyPoints = filterPointsByPeriod(reportData.points, latest.date, activeApyPeriod)
                 .filter(point => isOnOrAfter(point.date, comparison.startDate));
 
             return {
-                labels: primePoints.map(point => point.date),
-                apyData: primePoints.map(point => {
-                    const grossReturn = rebaseCumulativeReturn(point.value, comparison.primeBaseValue);
+                labels: strategyPoints.map(point => point.date),
+                apyData: strategyPoints.map(point => {
+                    const grossReturn = rebaseCumulativeReturn(point.value, comparison.strategyBaseValue);
                     const grossApy = (grossReturn / daysBetween(comparison.startDate, point.date)) * 365;
                     return applyInvestorNetFeeModel(grossApy);
                 })
@@ -1409,7 +1422,7 @@
         }
 
         function renderReturnChart() {
-            const { labels, primeData } = getChartSeries();
+            const { labels, strategyData } = getChartSeries();
 
             if (returnChartInstance) returnChartInstance.destroy();
 
@@ -1420,7 +1433,7 @@
                     datasets: [
                         {
                             label: `${TARGET_SERIES} (net)`,
-                            data: primeData,
+                            data: strategyData,
                             borderColor: '#059669',
                             backgroundColor: 'rgba(5, 150, 105, 0.12)',
                             borderWidth: 3,
@@ -1485,9 +1498,9 @@
                 }
             });
 
-            const primeLast = reportData.points[reportData.points.length - 1];
+            const latestPoint = reportData.points[reportData.points.length - 1];
             const comparison = getOverlapComparison();
-            returnChartCaption.textContent = `Cross-platform return is shown net of Prime and KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(primeLast.date)}. Legacy vault history is archived in the menu and stops at ${formatDate(comparison.legacyEndDate)}.`;
+            returnChartCaption.textContent = `Cross-platform return is shown net of strategy and KeyVault performance fees from ${formatDate(comparison.startDate)} through ${formatDate(latestPoint.date)}. Legacy vault history is archived in the menu and stops at ${formatDate(comparison.legacyEndDate)}.`;
         }
 
         function renderApyChart() {
@@ -1599,16 +1612,16 @@
             renderApyChart();
             renderRecentRows();
             renderSourceMeta();
-            setStatus('ready', `Prime report loaded: ${reportData.lastUpdated}`);
+            setStatus('ready', `Strategy report loaded: ${reportData.lastUpdated}`);
         }
 
         function renderError(error) {
-            setStatus('error', 'Prime report failed');
+            setStatus('error', 'Strategy report failed');
             metricsGrid.innerHTML = `
                 <div class="error-box" style="grid-column:1 / -1;">
-                    <strong>Could not load Prime Number report.</strong><br>
+                    <strong>Could not load strategy report.</strong><br>
                     ${error.message}<br>
-                    Open the source report directly to confirm it is available.
+                    Refresh the dashboard or try again shortly.
                 </div>
             `;
             recentRows.innerHTML = '<tr><td colspan="3">No report data loaded.</td></tr>';
@@ -1617,23 +1630,23 @@
 
         async function loadDashboard() {
             try {
-                setStatus('', 'Loading Prime report');
+                setStatus('', 'Loading strategy report');
                 metricsGrid.innerHTML = `
                     <div class="metric-card" style="grid-column:1 / -1;">
                         <div class="loading">
                             <div>
                                 <div class="spinner"></div>
-                                Loading Prime Number report...
+                                Loading strategy report...
                             </div>
                         </div>
                     </div>
                 `;
                 const [html, stamp] = await Promise.all([
-                    fetchPrimeReport(),
+                    fetchStrategyReport(),
                     fetchFreshnessStamp()
                 ]);
                 freshnessStamp = stamp;
-                reportData = parsePrimeReport(html);
+                reportData = parseStrategyReport(html);
                 renderDashboard();
             } catch (error) {
                 console.error(error);
