@@ -38,6 +38,18 @@ function formatEastern(date) {
   }).format(date);
 }
 
+function easternDateKey(parts) {
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function readJson(filePath) {
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
 function parsePercentText(value) {
   const parsed = Number(String(value || '').replace(/[%+,]/g, '').trim());
   return Number.isFinite(parsed) ? parsed : null;
@@ -151,6 +163,19 @@ async function main() {
   if (onlyAtFive && Number(eastern.hour) !== 17) {
     console.log(`[dashboard-stamp] Skipping: current Eastern hour is ${eastern.hour}, not 17.`);
     return;
+  }
+
+  if (onlyAtFive) {
+    const existingStamp = readJson(STAMP_PATH);
+    const existingStampDate = existingStamp?.stampedAt
+      ? easternDateKey(getEasternParts(new Date(existingStamp.stampedAt)))
+      : null;
+    const currentEasternDate = easternDateKey(eastern);
+
+    if (existingStampDate === currentEasternDate) {
+      console.log(`[dashboard-stamp] Skipping: ${currentEasternDate} is already stamped.`);
+      return;
+    }
   }
 
   const html = await fetchReport();

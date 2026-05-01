@@ -2,7 +2,7 @@ name: Dashboard Daily Stamp
 
 on:
   schedule:
-    - cron: '0 21,22 * * *'
+    - cron: '0,15,30,45 21,22 * * *'
   workflow_dispatch:
 
 permissions:
