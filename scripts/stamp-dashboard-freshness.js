@@ -5,10 +5,12 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const REPORT_URL = 'https://app.primenumber.trade/data/jlp_report.html';
+const REPORT_USER_AGENT = 'KeyVaultDashboardStamp/1.0 (+https://keyvaultfund.com)';
 const STRATEGY_KEY = '3x JLP (borrow SOL) + Aster Funding';
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const STAMP_PATH = path.join(DATA_DIR, 'dashboard-freshness.json');
 const LATEST_PATH = path.join(DATA_DIR, 'jlp-strategy-latest.json');
+const DAILY_STAMP_HOURS_ET = new Set([17, 18]);
 
 function getEasternParts(date) {
   const parts = new Intl.DateTimeFormat('en-US', {
@@ -48,6 +50,10 @@ function readJson(filePath) {
   } catch {
     return null;
   }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function parsePercentText(value) {
@@ -136,18 +142,62 @@ async function fetchReport() {
     return fs.readFileSync(process.env.PRIME_REPORT_HTML_FILE, 'utf8');
   }
 
-  try {
-    const response = await fetch(REPORT_URL, { signal: AbortSignal.timeout(30_000) });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return response.text();
-  } catch (error) {
-    console.warn(`[dashboard-stamp] Node fetch failed (${error.cause?.code || error.message}); retrying with curl.`);
-    return execFileSync('curl', ['-fsSL', REPORT_URL], {
-      encoding: 'utf8',
-      timeout: 30_000,
-      maxBuffer: 1024 * 1024
-    });
+  let lastError = null;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      const response = await fetch(REPORT_URL, {
+        headers: {
+          'Accept': 'text/html,application/xhtml+xml',
+          'User-Agent': REPORT_USER_AGENT
+        },
+        signal: AbortSignal.timeout(30_000)
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.text();
+    } catch (error) {
+      lastError = error;
+      const reason = error.cause?.code || error.message;
+      console.warn(`[dashboard-stamp] Node fetch attempt ${attempt} failed (${reason}).`);
+      if (attempt < 3) await sleep(attempt * 5_000);
+    }
   }
+
+  console.warn(`[dashboard-stamp] Retrying with curl after Node fetch failed (${lastError?.cause?.code || lastError?.message}).`);
+  return execFileSync('curl', [
+    '-fsSL',
+    '--retry', '3',
+    '--retry-all-errors',
+    '--retry-delay', '5',
+    '-A', REPORT_USER_AGENT,
+    REPORT_URL
+  ], {
+    encoding: 'utf8',
+    timeout: 60_000,
+    maxBuffer: 1024 * 1024
+  });
+}
+
+function shouldRunDailyStamp(nowParts, useDailyWindow) {
+  if (!useDailyWindow) return true;
+
+  const hour = Number(nowParts.hour);
+  if (DAILY_STAMP_HOURS_ET.has(hour)) return true;
+
+  console.log(`[dashboard-stamp] Skipping: current Eastern hour is ${nowParts.hour}, outside the 5-6 PM retry window.`);
+  return false;
+}
+
+function alreadyStampedToday(nowParts) {
+  const existingStamp = readJson(STAMP_PATH);
+  const existingStampDate = existingStamp?.stampedAt
+    ? easternDateKey(getEasternParts(new Date(existingStamp.stampedAt)))
+    : null;
+  const currentEasternDate = easternDateKey(nowParts);
+
+  if (existingStampDate !== currentEasternDate) return false;
+
+  console.log(`[dashboard-stamp] Skipping: ${currentEasternDate} is already stamped.`);
+  return true;
 }
 
 function writeJson(filePath, data) {
@@ -156,26 +206,13 @@ function writeJson(filePath, data) {
 }
 
 async function main() {
-  const onlyAtFive = process.argv.includes('--only-at-5pm-et');
+  const useDailyWindow = process.argv.includes('--daily-window-et') || process.argv.includes('--only-at-5pm-et');
   const now = new Date();
   const eastern = getEasternParts(now);
 
-  if (onlyAtFive && Number(eastern.hour) !== 17) {
-    console.log(`[dashboard-stamp] Skipping: current Eastern hour is ${eastern.hour}, not 17.`);
-    return;
-  }
-
-  if (onlyAtFive) {
-    const existingStamp = readJson(STAMP_PATH);
-    const existingStampDate = existingStamp?.stampedAt
-      ? easternDateKey(getEasternParts(new Date(existingStamp.stampedAt)))
-      : null;
-    const currentEasternDate = easternDateKey(eastern);
-
-    if (existingStampDate === currentEasternDate) {
-      console.log(`[dashboard-stamp] Skipping: ${currentEasternDate} is already stamped.`);
-      return;
-    }
+  if (useDailyWindow) {
+    if (!shouldRunDailyStamp(eastern, useDailyWindow)) return;
+    if (alreadyStampedToday(eastern)) return;
   }
 
   const html = await fetchReport();

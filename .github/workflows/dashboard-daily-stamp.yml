@@ -27,7 +27,7 @@ jobs:
       - name: Stamp dashboard freshness
         run: |
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            node scripts/stamp-dashboard-freshness.js --only-at-5pm-et
+            node scripts/stamp-dashboard-freshness.js --daily-window-et
           else
             node scripts/stamp-dashboard-freshness.js
           fi
