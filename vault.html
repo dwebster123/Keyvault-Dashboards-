@@ -980,6 +980,16 @@
         const legacyMenu = document.getElementById('legacyMenu');
         const legacyStats = document.getElementById('legacyStats');
 
+        function getCacheBustValue() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('nocache') || params.get('t') || String(Date.now());
+        }
+
+        function appendCacheBust(url) {
+            const separator = url.includes('?') ? '&' : '?';
+            return `${url}${separator}t=${encodeURIComponent(getCacheBustValue())}`;
+        }
+
         function setStatus(type, text) {
             statusDot.className = `status-dot ${type}`;
             statusText.textContent = text;
@@ -1503,14 +1513,14 @@
         }
 
         async function fetchStrategyReport() {
-            const response = await fetch(`${REPORT_PROXY_URL}&t=${Date.now()}`, { cache: 'no-store' });
+            const response = await fetch(appendCacheBust(REPORT_PROXY_URL), { cache: 'no-store' });
             if (!response.ok) throw new Error(`Performance data request failed: ${response.status}`);
             return response.text();
         }
 
         async function fetchFreshnessStamp() {
             try {
-                const response = await fetch(`data/dashboard-freshness.json?t=${Date.now()}`, { cache: 'no-store' });
+                const response = await fetch(appendCacheBust('data/dashboard-freshness.json'), { cache: 'no-store' });
                 if (!response.ok) return null;
                 return response.json();
             } catch {
