@@ -1,19 +1,19 @@
 {
   "label": "KeyVault investor dashboard daily stamp",
   "schedule": "Daily at 5:00 PM America/New_York",
-  "stampedAt": "2026-05-10T21:35:31.548Z",
-  "stampedAtEastern": "May 10, 2026, 5:35 PM EDT",
+  "stampedAt": "2026-05-11T21:55:59.779Z",
+  "stampedAtEastern": "May 11, 2026, 5:55 PM EDT",
   "sourceReportUrl": "https://app.primenumber.trade/data/jlp_report.html",
-  "sourceReportLastUpdated": "May 10, 2026",
+  "sourceReportLastUpdated": "May 11, 2026",
   "strategy": "3x JLP (borrow SOL) + Aster Funding",
   "summary": {
     "strategy": "3x JLP (borrow SOL) + Aster Funding",
     "startDate": "2025-11-06",
-    "endDate": "2026-05-10",
-    "cumulative": 13.34,
-    "annualized": 26.17,
-    "sevenDayRollingApy": 10.29,
-    "thirtyDayRollingApy": 10.96,
-    "ninetyDayRollingApy": 20.53
+    "endDate": "2026-05-11",
+    "cumulative": 13.4,
+    "annualized": 26.16,
+    "sevenDayRollingApy": 12.71,
+    "thirtyDayRollingApy": 11.26,
+    "ninetyDayRollingApy": 20.64
   }
 }
